@@ -34,5 +34,16 @@ python split_subject.py --input {csv_path} --max-texts 20
 cd cosine_similarity
 
 # example csv_path: ../dataset/subject_text20/과학.csv"
-python eval_cosine_similarity.py --input_csv {csv_path}"
+python eval_cosine_similarity.py --input_csv {csv_path}
+
+# calculate every csv files in the folder
+python batch_cosine_similarity.py --folder_path {folder_path}
+```
+
+## Rerank with Cross Encoder
+
+```bash
+# Note that you could give encoding option (default model save path = "./cross_finetuned")
+python finetune_cross_encoder.py --input_csv {csv_path}
+python eval_cross_encoder.py --input_csv {csv_path} 
 ```
