@@ -103,6 +103,14 @@ def evaluate_cosine_similarity_baseline(
     )
     acc_top3 = correct_top3 / len(true_codes)
 
+    # Top-10 accuracy
+    topk = 10
+    topk_indices = torch.topk(sims, k=topk, dim=1).indices.cpu().numpy()
+    correct_top10 = sum(
+        t in [codes[i] for i in idxs] for t, idxs in zip(true_codes, topk_indices)
+    )
+    acc_top10 = correct_top10 / len(true_codes)
+
     # Mean Reciprocal Rank (MRR)
     code_to_index = {c: i for i, c in enumerate(codes)}
     reciprocal_ranks = []
@@ -123,6 +131,7 @@ def evaluate_cosine_similarity_baseline(
     print(f"Samples evaluated: {num_samples}")
     print(f"Top-1 Accuracy: {acc_top1:.4f}")
     print(f"Top-3 Accuracy: {acc_top3:.4f}")
+    print(f"Top-10 Accuracy: {acc_top10:.4f}")
     print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
     print(f"Max Samples per Row: {max_samples_per_row}")
 
@@ -135,6 +144,7 @@ def evaluate_cosine_similarity_baseline(
         "total_samples": num_samples,
         "top1_acc": round(float(acc_top1), 4),
         "top3_acc": round(float(acc_top3), 4),
+        "top10_acc": round(float(acc_top10), 4),
         "mrr": round(float(mrr), 4),
     }
 
@@ -148,23 +158,29 @@ def evaluate_cosine_similarity_baseline(
     else:
         results = []
 
-    # Skip duplicates
-    duplicate = any(
-        r["model_name"] == result_entry["model_name"]
-        and r["subject"] == result_entry["subject"]
-        and r["num_standards"] == result_entry["num_standards"]
-        and r["total_samples"] == result_entry["total_samples"]
-        and r.get("max_samples_per_row") == result_entry["max_samples_per_row"]
-        for r in results
-    )
+    # Update or append
+    replaced = False
+    for i, r in enumerate(results):
+        if (
+            r["model_name"] == result_entry["model_name"]
+            and r["subject"] == result_entry["subject"]
+            and r["num_standards"] == result_entry["num_standards"]
+            and r["total_samples"] == result_entry["total_samples"]
+            and r.get("max_samples_per_row") == result_entry["max_samples_per_row"]
+        ):
+            results[i] = result_entry  # 덮어쓰기
+            replaced = True
+            print(f"Updated existing entry for subject '{subject}' in {json_path}")
+            break
 
-    if duplicate:
-        print(f"Entry already exists in {json_path}, skipping append.")
-    else:
+    if not replaced:
         results.append(result_entry)
-        with open(json_path, "w", encoding="utf-8") as f:
-            json.dump(results, f, ensure_ascii=False, indent=4)
-        print(f"Result appended to {json_path}")
+        print(f"Appended new entry for subject '{subject}' to {json_path}")
+
+    # Save file
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=4)
+    print(f"Results saved to {json_path}")
 
     return acc_top1, acc_top3, mrr
 

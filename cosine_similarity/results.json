@@ -1,92 +1,101 @@
 [
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "과학",
-    "num_standards": 221,
-    "max_samples_per_row": 200,
-    "total_samples": 42877,
-    "top1_acc": 0.3979,
-    "top3_acc": 0.5972,
-    "mrr": 0.5245
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "수학",
-    "num_standards": 301,
-    "max_samples_per_row": 200,
-    "total_samples": 52248,
-    "top1_acc": 0.1499,
-    "top3_acc": 0.2869,
-    "mrr": 0.2517
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "국어",
-    "num_standards": 295,
-    "max_samples_per_row": 200,
-    "total_samples": 45539,
-    "top1_acc": 0.1282,
-    "top3_acc": 0.2354,
-    "mrr": 0.2157
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "사회",
-    "num_standards": 191,
-    "max_samples_per_row": 200,
-    "total_samples": 35285,
-    "top1_acc": 0.3926,
-    "top3_acc": 0.6073,
-    "mrr": 0.5267
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "정보",
-    "num_standards": 23,
-    "max_samples_per_row": 200,
-    "total_samples": 1293,
-    "top1_acc": 0.3318,
-    "top3_acc": 0.5661,
-    "mrr": 0.4944
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "기술가정",
-    "num_standards": 99,
-    "max_samples_per_row": 200,
-    "total_samples": 18909,
-    "top1_acc": 0.2634,
-    "top3_acc": 0.4541,
-    "mrr": 0.3975
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "도덕",
-    "num_standards": 22,
-    "max_samples_per_row": 200,
-    "total_samples": 4400,
-    "top1_acc": 0.4025,
-    "top3_acc": 0.6527,
-    "mrr": 0.5622
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "사회문화",
-    "num_standards": 20,
-    "max_samples_per_row": 200,
-    "total_samples": 3904,
-    "top1_acc": 0.4022,
-    "top3_acc": 0.6642,
-    "mrr": 0.5659
-  },
-  {
-    "model_name": "jhgan/ko-sroberta-multitask",
-    "subject": "영어",
-    "num_standards": 94,
-    "max_samples_per_row": 200,
-    "total_samples": 18071,
-    "top1_acc": 0.0352,
-    "top3_acc": 0.0914,
-    "mrr": 0.1043
-  }
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "과학",
+        "num_standards": 221,
+        "max_samples_per_row": 200,
+        "total_samples": 42877,
+        "top1_acc": 0.3979,
+        "top3_acc": 0.5972,
+        "top10_acc": 0.7681,
+        "mrr": 0.5245
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "수학",
+        "num_standards": 301,
+        "max_samples_per_row": 200,
+        "total_samples": 52248,
+        "top1_acc": 0.1499,
+        "top3_acc": 0.2869,
+        "top10_acc": 0.4445,
+        "mrr": 0.2517
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "국어",
+        "num_standards": 295,
+        "max_samples_per_row": 200,
+        "total_samples": 45539,
+        "top1_acc": 0.1282,
+        "top3_acc": 0.2354,
+        "top10_acc": 0.385,
+        "mrr": 0.2157
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "사회",
+        "num_standards": 191,
+        "max_samples_per_row": 200,
+        "total_samples": 35285,
+        "top1_acc": 0.3926,
+        "top3_acc": 0.6073,
+        "top10_acc": 0.7756,
+        "mrr": 0.5267
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "정보",
+        "num_standards": 23,
+        "max_samples_per_row": 200,
+        "total_samples": 1293,
+        "top1_acc": 0.3318,
+        "top3_acc": 0.5661,
+        "top10_acc": 0.867,
+        "mrr": 0.4944
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "기술가정",
+        "num_standards": 99,
+        "max_samples_per_row": 200,
+        "total_samples": 18909,
+        "top1_acc": 0.2634,
+        "top3_acc": 0.4541,
+        "top10_acc": 0.663,
+        "mrr": 0.3975
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "도덕",
+        "num_standards": 22,
+        "max_samples_per_row": 200,
+        "total_samples": 4400,
+        "top1_acc": 0.4025,
+        "top3_acc": 0.6527,
+        "top10_acc": 0.8814,
+        "mrr": 0.5622
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "사회문화",
+        "num_standards": 20,
+        "max_samples_per_row": 200,
+        "total_samples": 3904,
+        "top1_acc": 0.4022,
+        "top3_acc": 0.6642,
+        "top10_acc": 0.9088,
+        "mrr": 0.5659
+    },
+    {
+        "model_name": "jhgan/ko-sroberta-multitask",
+        "subject": "영어",
+        "num_standards": 94,
+        "max_samples_per_row": 200,
+        "total_samples": 18071,
+        "top1_acc": 0.0352,
+        "top3_acc": 0.0914,
+        "top10_acc": 0.2227,
+        "mrr": 0.1043
+    }
 ]
