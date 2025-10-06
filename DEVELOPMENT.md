@@ -16,6 +16,8 @@ Note that we only use texts (not the images) which means **label directory** of 
 ## Preprocess Dataset
 
 ```bash
+cd dataset
+
 # extract unique standards from dataset
 python extract_standards.py {label_path}
 
@@ -24,4 +26,13 @@ python add_text_to_standards.py {label_path} --max_texts 20
 
 # split csv by subject
 python split_subject.py --input {csv_path} --max-texts 20
+```
+
+## Naive Cosine Similarity
+
+```bash
+cd cosine_similarity
+
+# example csv_path: ../dataset/subject_text20/과학.csv"
+python eval_cosine_similarity.py --input_csv {csv_path}"
 ```
