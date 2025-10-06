@@ -4,13 +4,13 @@ import os
 import pandas as pd
 
 
-def split_csv_by_subject(input_path: str, max_texts: int):
+def split_csv_by_subject(input_path: str, max_texts: int, encoding: str):
     """
     Split input csv file into subjects, parse contents and save them into subject_text{num} directory
     """
     output_dir = f"subject_text{max_texts}"
     os.makedirs(output_dir, exist_ok=True)
-    df = pd.read_csv(input_path, encoding="utf-8")
+    df = pd.read_csv(input_path, encoding=encoding)
 
     # basics
     base_cols = ["subject", "school", "grade", "code", "content"]
@@ -47,6 +47,9 @@ if __name__ == "__main__":
         default=10,
         help="Number of text columns to include (default: 10)",
     )
+    parser.add_argument(
+        "--encoding", "-e", default="utf-8", help="Encoding of CSV file"
+    )
     args = parser.parse_args()
 
-    split_csv_by_subject(args.input, args.max_texts)
+    split_csv_by_subject(args.input, args.max_texts, args.encoding)
