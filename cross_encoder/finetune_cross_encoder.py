@@ -19,6 +19,18 @@ def set_seed(seed=42):
         torch.cuda.manual_seed_all(seed)
 
 
+def detect_encoding(csv_path: str) -> str:
+    """Detect encoding using chardet (fallback to utf-8)."""
+    try:
+        with open(csv_path, "rb") as f:
+            result = chardet.detect(f.read(50000))
+        enc = result.get("encoding") or "utf-8"
+        conf = result.get("confidence", 0)
+        return enc if conf >= 0.5 else "utf-8"
+    except Exception:
+        return "utf-8"
+
+
 def build_pairs_from_csv(df, max_samples_per_row=None, neg_ratio=1.0):
     """
     Build positive and negative sentence pairs for fine-tuning a cross-encoder.
@@ -65,13 +77,16 @@ def fine_tune_cross_encoder(
     input_csv,
     base_model="bongsoo/albert-small-kor-cross-encoder-v1",
     output_dir="cross_finetuned",
-    encoding="cp949",
+    encoding=None,
     test_size=0.2,
     batch_size=8,
     epochs=2,
     lr=2e-5,
     max_samples_per_row=None,
 ):
+    if not encoding:
+        encoding = detect_encoding(input_csv)
+
     df = pd.read_csv(input_csv, encoding=encoding)
     if "content" not in df.columns or "code" not in df.columns:
         raise ValueError("CSV must contain 'code' and 'content' columns.")
@@ -144,8 +159,8 @@ if __name__ == "__main__":
         "--base_model", type=str, default="bongsoo/albert-small-kor-cross-encoder-v1"
     )
     parser.add_argument("--output_dir", type=str, default="cross_finetuned")
-    parser.add_argument("--encoding", type=str, default="utf-8")
-    parser.add_argument("--test_size", type=float, default=0.4)
+    parser.add_argument("--encoding", type=str)
+    parser.add_argument("--test_size", type=float, default=0.2)
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--lr", type=float, default=2e-5)

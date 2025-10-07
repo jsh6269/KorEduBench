@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import random
+import re
 
 import numpy as np
 import pandas as pd
@@ -18,21 +19,42 @@ def set_seed(seed: int = 42):
         torch.cuda.manual_seed_all(seed)
 
 
+def detect_encoding(csv_path: str) -> str:
+    """Detect encoding using chardet (fallback to utf-8)."""
+    try:
+        with open(csv_path, "rb") as f:
+            result = chardet.detect(f.read(50000))
+        enc = result.get("encoding") or "utf-8"
+        conf = result.get("confidence", 0)
+        return enc if conf >= 0.5 else "utf-8"
+    except Exception:
+        return "utf-8"
+
+
 def evaluate_bi_cross_pipeline(
     input_csv: str,
     bi_model_name: str,
     cross_model_name: str,
     top_k: int = 20,
-    encoding: str = "cp949",
+    encoding: str = None,
     json_path: str = "results_rerank.json",
     max_samples_per_row: int = None,
 ):
+    if not encoding:
+        encoding = detect_encoding(input_csv)
+
     # === Load CSV ===
     df = pd.read_csv(input_csv, encoding=encoding)
     required_cols = ["code", "content"]
     for col in required_cols:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
+
+    # Detect parent folder name (e.g., train / valid / test)
+    parent_folder = os.path.basename(os.path.dirname(os.path.abspath(input_csv)))
+    folder_name = None
+    if re.search(r"(train|valid|val|test)", parent_folder, re.IGNORECASE):
+        folder_name = parent_folder
 
     sample_cols = [c for c in df.columns if c.startswith("text_")]
     if not sample_cols:
@@ -93,7 +115,7 @@ def evaluate_bi_cross_pipeline(
 
     # === Cross-Encoder Stage ===
     print(f"\nRe-ranking top-{top_k} candidates using Cross-Encoder...")
-    correct_top1, correct_top3, correct_top10 = 0, 0, 0
+    correct_top1, correct_top3, correct_top10, correct_top20 = 0, 0, 0, 0
     reciprocal_ranks = []
 
     for i in tqdm(range(num_samples), desc="Reranking"):
@@ -114,6 +136,8 @@ def evaluate_bi_cross_pipeline(
             correct_top3 += 1
         if true_code in ranked_codes[:10]:
             correct_top10 += 1
+        if true_code in ranked_codes[:20]:
+            correct_top20 += 1
         if true_code in ranked_codes:
             rank = ranked_codes.index(true_code) + 1
             reciprocal_ranks.append(1 / rank)
@@ -124,6 +148,7 @@ def evaluate_bi_cross_pipeline(
     acc_top1 = correct_top1 / num_samples
     acc_top3 = correct_top3 / num_samples
     acc_top10 = correct_top10 / num_samples
+    acc_top20 = correct_top20 / num_samples
     mrr = np.mean(reciprocal_ranks)
 
     # === Summary ===
@@ -135,22 +160,31 @@ def evaluate_bi_cross_pipeline(
     print(f"Top-1 Accuracy: {acc_top1:.4f}")
     print(f"Top-3 Accuracy: {acc_top3:.4f}")
     print(f"Top-10 Accuracy: {acc_top10:.4f}")
+    print(f"Top-20 Accuracy: {acc_top20:.4f}")
     print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
 
     # === JSON Logging ===
-    result_entry = {
-        "bi_model": bi_model_name,
-        "cross_model": cross_model_name,
-        "subject": subject,
-        "num_standards": num_rows,
-        "max_samples_per_row": int(max_samples_per_row),
-        "total_samples": num_samples,
-        "top_k": top_k,
-        "top1_acc": round(float(acc_top1), 4),
-        "top3_acc": round(float(acc_top3), 4),
-        "top10_acc": round(float(acc_top10), 4),
-        "mrr": round(float(mrr), 4),
-    }
+    result_entry = {}
+
+    if folder_name:
+        result_entry["folder"] = folder_name
+
+    result_entry.update(
+        {
+            "bi_model": bi_model_name,
+            "cross_model": cross_model_name,
+            "subject": subject,
+            "num_standards": num_rows,
+            "max_samples_per_row": int(max_samples_per_row),
+            "total_samples": num_samples,
+            "top_k": top_k,
+            "top1_acc": round(float(acc_top1), 4),
+            "top3_acc": round(float(acc_top3), 4),
+            "top10_acc": round(float(acc_top10), 4),
+            "top20_acc": round(float(acc_top20), 4),
+            "mrr": round(float(mrr), 4),
+        }
+    )
 
     if os.path.exists(json_path):
         try:
@@ -214,7 +248,7 @@ if __name__ == "__main__":
         help="Number of top candidates for reranking (default: 20).",
     )
     parser.add_argument(
-        "--encoding", type=str, default="cp949", help="CSV encoding (default: cp949)."
+        "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
         "--json_path",

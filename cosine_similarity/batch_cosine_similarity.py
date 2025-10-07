@@ -8,11 +8,11 @@ from tqdm import tqdm
 def evaluate_folder(
     folder_path: str,
     model_name: str,
-    encoding: str,
+    encoding: str | None,
     json_path: str,
     max_samples_per_row: int = None,
 ):
-    # --- Find all CSV files in folder ---
+    # Find all CSV files in folder
     csv_files = [
         os.path.join(folder_path, f)
         for f in os.listdir(folder_path)
@@ -25,7 +25,7 @@ def evaluate_folder(
 
     print(f"Found {len(csv_files)} CSV files in {folder_path}")
 
-    # --- Evaluate each CSV ---
+    # Evaluate each CSV
     for csv_path in tqdm(csv_files, desc="Evaluating CSV files", unit="file"):
         try:
             print(f"\n=== Processing file: {os.path.basename(csv_path)} ===")
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         help="SentenceTransformer model name (default: jhgan/ko-sroberta-multitask).",
     )
     parser.add_argument(
-        "--encoding", type=str, default="cp949", help="CSV encoding (default: cp949)."
+        "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
         "--json_path", type=str, default="results.json", help="Path to JSON log file."

@@ -219,4 +219,5 @@ __marimo__/
 
 *.csv
 
-cross_finetuned/
+cross_finetuned*/
+checkpoints/
