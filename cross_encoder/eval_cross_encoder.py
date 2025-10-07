@@ -2,10 +2,11 @@ import argparse
 import json
 import os
 import random
+
 import numpy as np
 import pandas as pd
 import torch
-from sentence_transformers import SentenceTransformer, CrossEncoder, util
+from sentence_transformers import CrossEncoder, SentenceTransformer, util
 from tqdm import tqdm
 
 
@@ -57,7 +58,9 @@ def evaluate_bi_cross_pipeline(
     contents = df["content"].astype(str).tolist()
     codes = df["code"].astype(str).tolist()
     print("\nEncoding achievement standards with Bi-Encoder...")
-    emb_contents = bi_model.encode(contents, convert_to_tensor=True, show_progress_bar=True)
+    emb_contents = bi_model.encode(
+        contents, convert_to_tensor=True, show_progress_bar=True
+    )
 
     # === Collect Samples ===
     sample_texts, true_codes = [], []
@@ -79,7 +82,9 @@ def evaluate_bi_cross_pipeline(
 
     # === Bi-Encoder Stage ===
     print("Encoding sample texts (Bi-Encoder)...")
-    emb_samples = bi_model.encode(sample_texts, convert_to_tensor=True, show_progress_bar=True)
+    emb_samples = bi_model.encode(
+        sample_texts, convert_to_tensor=True, show_progress_bar=True
+    )
     print("Computing cosine similarities for Bi-Encoder top-k retrieval...")
     sims = util.cos_sim(emb_samples, emb_contents)
 
@@ -184,17 +189,45 @@ def evaluate_bi_cross_pipeline(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Evaluate Bi-Encoder + Cross-Encoder reranking pipeline.")
-    parser.add_argument("--input_csv", type=str, required=True, help="Path to input CSV file.")
-    parser.add_argument("--bi_model", type=str, default="jhgan/ko-sroberta-multitask",
-                        help="Bi-Encoder model name (default: jhgan/ko-sroberta-multitask).")
-    parser.add_argument("--cross_model", type=str, default="./cross_finetuned",
-                        help="Cross-Encoder model name (default: bongsoo/albert-small-kor-cross-encoder-v1).")
-    parser.add_argument("--top_k", type=int, default=20, help="Number of top candidates for reranking (default: 20).")
-    parser.add_argument("--encoding", type=str, default="cp949", help="CSV encoding (default: cp949).")
-    parser.add_argument("--json_path", type=str, default="results_rerank.json", help="Path to JSON log file.")
-    parser.add_argument("--max-samples-per-row", type=int, default=None,
-                        help="Max number of text samples to evaluate per row (default: auto-detect).")
+    parser = argparse.ArgumentParser(
+        description="Evaluate Bi-Encoder + Cross-Encoder reranking pipeline."
+    )
+    parser.add_argument(
+        "--input_csv", type=str, required=True, help="Path to input CSV file."
+    )
+    parser.add_argument(
+        "--bi_model",
+        type=str,
+        default="jhgan/ko-sroberta-multitask",
+        help="Bi-Encoder model name (default: jhgan/ko-sroberta-multitask).",
+    )
+    parser.add_argument(
+        "--cross_model",
+        type=str,
+        default="./cross_finetuned",
+        help="Cross-Encoder model name (default: bongsoo/albert-small-kor-cross-encoder-v1).",
+    )
+    parser.add_argument(
+        "--top_k",
+        type=int,
+        default=20,
+        help="Number of top candidates for reranking (default: 20).",
+    )
+    parser.add_argument(
+        "--encoding", type=str, default="cp949", help="CSV encoding (default: cp949)."
+    )
+    parser.add_argument(
+        "--json_path",
+        type=str,
+        default="results_rerank.json",
+        help="Path to JSON log file.",
+    )
+    parser.add_argument(
+        "--max-samples-per-row",
+        type=int,
+        default=None,
+        help="Max number of text samples to evaluate per row (default: auto-detect).",
+    )
     args = parser.parse_args()
 
     set_seed(42)

@@ -1,13 +1,15 @@
 import argparse
 import os
 import random
+
 import numpy as np
 import pandas as pd
 import torch
-from tqdm import tqdm
-from sklearn.model_selection import train_test_split
+from sentence_transformers import CrossEncoder, InputExample, util
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
-from sentence_transformers import InputExample, CrossEncoder, util
+from sklearn.model_selection import train_test_split
+from tqdm import tqdm
+
 
 def set_seed(seed=42):
     random.seed(seed)
@@ -15,6 +17,7 @@ def set_seed(seed=42):
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
 
 def build_pairs_from_csv(df, max_samples_per_row=None, neg_ratio=1.0):
     """
@@ -29,7 +32,11 @@ def build_pairs_from_csv(df, max_samples_per_row=None, neg_ratio=1.0):
     for _, row in df.iterrows():
         content = str(row["content"]).strip()
         code = str(row["code"]).strip()
-        texts = [str(row[c]).strip() for c in sample_cols if pd.notna(row[c]) and str(row[c]).strip() != ""]
+        texts = [
+            str(row[c]).strip()
+            for c in sample_cols
+            if pd.notna(row[c]) and str(row[c]).strip() != ""
+        ]
         if max_samples_per_row:
             texts = texts[:max_samples_per_row]
         for t in texts:
@@ -53,6 +60,7 @@ def build_pairs_from_csv(df, max_samples_per_row=None, neg_ratio=1.0):
     random.shuffle(pairs)
     return pairs
 
+
 def fine_tune_cross_encoder(
     input_csv,
     base_model="bongsoo/albert-small-kor-cross-encoder-v1",
@@ -69,16 +77,22 @@ def fine_tune_cross_encoder(
         raise ValueError("CSV must contain 'code' and 'content' columns.")
 
     print("Building sentence pairs...")
-    pairs = build_pairs_from_csv(df, max_samples_per_row=max_samples_per_row, neg_ratio=1.0)
+    pairs = build_pairs_from_csv(
+        df, max_samples_per_row=max_samples_per_row, neg_ratio=1.0
+    )
     print(f"Total pairs: {len(pairs)}")
 
     # Train/test split
-    train_pairs, test_pairs = train_test_split(pairs, test_size=test_size, random_state=42)
+    train_pairs, test_pairs = train_test_split(
+        pairs, test_size=test_size, random_state=42
+    )
     print(f"Train pairs: {len(train_pairs)} | Test pairs: {len(test_pairs)}")
 
     # Model
     model = CrossEncoder(base_model, num_labels=1)
-    train_dataloader = torch.utils.data.DataLoader(train_pairs, shuffle=True, batch_size=batch_size)
+    train_dataloader = torch.utils.data.DataLoader(
+        train_pairs, shuffle=True, batch_size=batch_size
+    )
     warmup_steps = int(len(train_dataloader) * epochs * 0.1)
 
     # Train
@@ -117,9 +131,18 @@ def fine_tune_cross_encoder(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Fine-tune CrossEncoder on CSV dataset (code-text mapping).")
-    parser.add_argument("--input_csv", type=str, required=True, help="Path to CSV file with code, content, text_.")
-    parser.add_argument("--base_model", type=str, default="bongsoo/albert-small-kor-cross-encoder-v1")
+    parser = argparse.ArgumentParser(
+        description="Fine-tune CrossEncoder on CSV dataset (code-text mapping)."
+    )
+    parser.add_argument(
+        "--input_csv",
+        type=str,
+        required=True,
+        help="Path to CSV file with code, content, text_.",
+    )
+    parser.add_argument(
+        "--base_model", type=str, default="bongsoo/albert-small-kor-cross-encoder-v1"
+    )
     parser.add_argument("--output_dir", type=str, default="cross_finetuned")
     parser.add_argument("--encoding", type=str, default="utf-8")
     parser.add_argument("--test_size", type=float, default=0.4)
