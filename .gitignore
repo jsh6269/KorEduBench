@@ -219,4 +219,7 @@ __marimo__/
 
 *.csv
 
-cross_finetuned/
+trash_bin/
+checkpoints/
+saved_models/
+logs/

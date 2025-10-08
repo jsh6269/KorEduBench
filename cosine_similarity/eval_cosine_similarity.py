@@ -2,7 +2,9 @@ import argparse
 import json
 import os
 import random
+import re
 
+import chardet
 import numpy as np
 import pandas as pd
 import torch
@@ -18,13 +20,28 @@ def set_seed(seed: int = 42):
         torch.cuda.manual_seed_all(seed)
 
 
+def detect_encoding(csv_path: str) -> str:
+    """Detect encoding using chardet (fallback to utf-8)."""
+    try:
+        with open(csv_path, "rb") as f:
+            result = chardet.detect(f.read(50000))
+        enc = result.get("encoding") or "utf-8"
+        conf = result.get("confidence", 0)
+        return enc if conf >= 0.5 else "utf-8"
+    except Exception:
+        return "utf-8"
+
+
 def evaluate_cosine_similarity_baseline(
     input_csv: str,
     model_name: str,
-    encoding: str = "cp949",
+    encoding: str | None,
     json_path: str = "results.json",
     max_samples_per_row: int = None,
 ):
+    if not encoding:
+        encoding = detect_encoding(input_csv)
+
     # Load CSV
     df = pd.read_csv(input_csv, encoding=encoding)
     required_cols = ["code", "content"]
@@ -32,15 +49,21 @@ def evaluate_cosine_similarity_baseline(
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
 
+    # Detect parent folder name (e.g., train / valid / test)
+    parent_folder = os.path.basename(os.path.dirname(os.path.abspath(input_csv)))
+    folder_name = None
+    if re.search(r"(train|valid|val|test)", parent_folder, re.IGNORECASE):
+        folder_name = parent_folder
+
     sample_cols = [c for c in df.columns if c.startswith("text_")]
     if not sample_cols:
         raise ValueError("No text_ columns found for evaluation.")
 
-    # === Extract meta info ===
+    # Extract meta info
     subject = df["subject"].iloc[0] if "subject" in df.columns else "Unknown"
     num_rows = len(df)
 
-    # --- Auto compute max_samples_per_row if None ---
+    # Auto compute max_samples_per_row if None
     if max_samples_per_row is None:
         max_samples_per_row = int(max((df[sample_cols].notna().sum(axis=1)).max(), 0))
         print(f"Auto-detected max_samples_per_row = {max_samples_per_row}")
@@ -89,27 +112,16 @@ def evaluate_cosine_similarity_baseline(
     print("Computing cosine similarity matrix...")
     sims = util.cos_sim(emb_samples, emb_contents)
 
-    # Evaluate metrics
-    preds_top1 = torch.argmax(sims, dim=1).cpu().numpy()
-    predicted_codes = [codes[i] for i in preds_top1]
-    correct_top1 = np.sum([p == t for p, t in zip(predicted_codes, true_codes)])
-    acc_top1 = correct_top1 / len(true_codes)
+    # Top-k accuracy
+    topk_list = [1, 3, 10, 20, 40, 60]
+    acc_dict = {}
 
-    # Top-3 accuracy
-    topk = 3
-    topk_indices = torch.topk(sims, k=topk, dim=1).indices.cpu().numpy()
-    correct_top3 = sum(
-        t in [codes[i] for i in idxs] for t, idxs in zip(true_codes, topk_indices)
-    )
-    acc_top3 = correct_top3 / len(true_codes)
-
-    # Top-10 accuracy
-    topk = 10
-    topk_indices = torch.topk(sims, k=topk, dim=1).indices.cpu().numpy()
-    correct_top10 = sum(
-        t in [codes[i] for i in idxs] for t, idxs in zip(true_codes, topk_indices)
-    )
-    acc_top10 = correct_top10 / len(true_codes)
+    for k in topk_list:
+        topk_indices = torch.topk(sims, k=k, dim=1).indices.cpu().numpy()
+        correct = sum(
+            t in [codes[i] for i in idxs] for t, idxs in zip(true_codes, topk_indices)
+        )
+        acc_dict[f"top{k}_acc"] = correct / len(true_codes)
 
     # Mean Reciprocal Rank (MRR)
     code_to_index = {c: i for i, c in enumerate(codes)}
@@ -129,24 +141,31 @@ def evaluate_cosine_similarity_baseline(
     print(f"Model: {model_name}")
     print(f"Subject: {subject}")
     print(f"Samples evaluated: {num_samples}")
-    print(f"Top-1 Accuracy: {acc_top1:.4f}")
-    print(f"Top-3 Accuracy: {acc_top3:.4f}")
-    print(f"Top-10 Accuracy: {acc_top10:.4f}")
+
+    for k in topk_list:
+        print(f"Top-{k} Accuracy: {acc_dict[f'top{k}_acc']:.4f}")
+
     print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
     print(f"Max Samples per Row: {max_samples_per_row}")
 
-    # === JSON logging ===
-    result_entry = {
-        "model_name": model_name,
-        "subject": subject,
-        "num_standards": num_rows,
-        "max_samples_per_row": int(max_samples_per_row),
-        "total_samples": num_samples,
-        "top1_acc": round(float(acc_top1), 4),
-        "top3_acc": round(float(acc_top3), 4),
-        "top10_acc": round(float(acc_top10), 4),
-        "mrr": round(float(mrr), 4),
-    }
+    result_entry = {}
+
+    # Add folder name if detected
+    if folder_name:
+        result_entry["folder"] = folder_name
+
+    # JSON logging
+    result_entry.update(
+        {
+            "model_name": model_name,
+            "subject": subject,
+            "num_standards": num_rows,
+            "max_samples_per_row": int(max_samples_per_row),
+            "total_samples": num_samples,
+            **{k: round(float(v), 4) for k, v in acc_dict.items()},
+            "mrr": round(float(mrr), 4),
+        }
+    )
 
     # Load existing JSON if exists
     if os.path.exists(json_path):
@@ -182,8 +201,6 @@ def evaluate_cosine_similarity_baseline(
         json.dump(results, f, ensure_ascii=False, indent=4)
     print(f"Results saved to {json_path}")
 
-    return acc_top1, acc_top3, mrr
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -199,7 +216,7 @@ if __name__ == "__main__":
         help="SentenceTransformer model name (default: jhgan/ko-sroberta-multitask).",
     )
     parser.add_argument(
-        "--encoding", type=str, default="cp949", help="CSV encoding (default: cp949)."
+        "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
         "--json_path", type=str, default="results.json", help="Path to JSON log file."

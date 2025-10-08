@@ -6,9 +6,10 @@ import chardet
 import numpy as np
 import pandas as pd
 import torch
-from sentence_transformers import CrossEncoder, InputExample
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
+from sentence_transformers import InputExample, SentenceTransformer, losses, util
+from sentence_transformers.evaluation import EmbeddingSimilarityEvaluator
 from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader
 
 
 def set_seed(seed=42):
@@ -32,7 +33,7 @@ def detect_encoding(csv_path: str) -> str:
 
 
 def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
-    """Build positive and negative pairs within one split (train/test)."""
+    """Build positive and negative pairs for contrastive learning."""
     sample_cols = [c for c in df.columns if c.startswith("text_")]
     pairs = []
 
@@ -50,10 +51,10 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
         for t in texts:
             key = (t, content)
             if key not in pos_keys:
-                pairs.append(InputExample(texts=[t, content], label=1.0))
+                pairs.append(InputExample(texts=[t, content]))
                 pos_keys.add(key)
 
-    # Negative pairs (within this df only)
+    # Negative sampling (within this df)
     contents = df["content"].astype(str).str.strip().tolist()
     all_texts = []
     for _, row in df.iterrows():
@@ -72,7 +73,7 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
             continue
         key = (t, neg_content)
         if key not in neg_keys:
-            pairs.append(InputExample(texts=[t, neg_content], label=0.0))
+            pairs.append(InputExample(texts=[t, neg_content]))
             neg_keys.add(key)
         tries += 1
 
@@ -80,13 +81,13 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
     return pairs
 
 
-def fine_tune_cross_encoder(
+def fine_tune_dual_encoder(
     input_csv,
-    base_model="bongsoo/albert-small-kor-cross-encoder-v1",
-    output_dir="cross_finetuned",
+    base_model="klue/roberta-base",
+    output_dir="biencoder_finetuned",
     encoding=None,
     test_size=0.2,
-    batch_size=8,
+    batch_size=16,
     epochs=2,
     lr=2e-5,
     max_samples_per_row=None,
@@ -98,62 +99,60 @@ def fine_tune_cross_encoder(
     if "content" not in df.columns or "code" not in df.columns:
         raise ValueError("CSV must contain 'code' and 'content' columns.")
 
-    # Split by rows first
+    # Split train/test
     row_train, row_test = train_test_split(df, test_size=test_size, random_state=42)
     print(f"Train rows: {len(row_train)} | Test rows: {len(row_test)}")
 
-    # Build pairs within each split
+    # Build pairs
     print("Building sentence pairs for train/test...")
     train_pairs = build_pairs_from_df(row_train, max_samples_per_row, neg_ratio=1.0)
-    test_pairs = build_pairs_from_df(row_test, max_samples_per_row, neg_ratio=1.0)
+    test_pairs = build_pairs_from_df(row_test, max_samples_per_row, neg_ratio=0.5)
 
     print(f"Train pairs: {len(train_pairs)} | Test pairs: {len(test_pairs)}")
 
     # Model
-    model = CrossEncoder(base_model, num_labels=1)
-    train_dataloader = torch.utils.data.DataLoader(
-        train_pairs, shuffle=True, batch_size=batch_size
-    )
+    model = SentenceTransformer(base_model)
+    train_dataloader = DataLoader(train_pairs, shuffle=True, batch_size=batch_size)
     warmup_steps = int(len(train_dataloader) * epochs * 0.1)
 
-    # Train
-    print("\nFine-tuning Cross-Encoder...")
+    # MultipleNegativesRankingLoss (Contrastive)
+    train_loss = losses.MultipleNegativesRankingLoss(model)
+
+    # Evaluator
+    evaluator = EmbeddingSimilarityEvaluator.from_input_examples(
+        test_pairs, name="biencoder-eval"
+    )
+
+    print("\nFine-tuning Bi-Encoder (Dual Encoder)...")
     model.fit(
-        train_dataloader=train_dataloader,
+        train_objectives=[(train_dataloader, train_loss)],
+        evaluator=evaluator,
         epochs=epochs,
         warmup_steps=warmup_steps,
         output_path=output_dir,
         optimizer_params={"lr": lr},
+        evaluation_steps=max(500, len(train_dataloader) // 2),
         show_progress_bar=True,
     )
 
-    # Evaluate
-    print("\nEvaluating on test set...")
-    test_texts = [ex.texts for ex in test_pairs]
-    y_true = [ex.label for ex in test_pairs]
-    y_pred = model.predict(test_texts)
+    print(f"\nSaved fine-tuned model to: {output_dir}")
 
-    y_pred_bin = [1 if p >= 0.5 else 0 for p in y_pred]
-    acc = accuracy_score(y_true, y_pred_bin)
-    f1 = f1_score(y_true, y_pred_bin)
-    auc = roc_auc_score(y_true, y_pred)
+    # Evaluation (cosine similarity based)
+    test_texts = [ex.texts[0] for ex in test_pairs]
+    test_standards = [ex.texts[1] for ex in test_pairs]
 
-    print("\n=== Cross-Encoder Fine-Tuning Results ===")
-    print(f"Base Model: {base_model}")
-    print(f"Accuracy: {acc:.4f}")
-    print(f"F1 Score: {f1:.4f}")
-    print(f"ROC-AUC: {auc:.4f}")
+    emb_texts = model.encode(test_texts, convert_to_tensor=True)
+    emb_contents = model.encode(test_standards, convert_to_tensor=True)
+    sims = util.cos_sim(emb_texts, emb_contents)
+    diag_scores = sims.diag().cpu().numpy()
+    print(f"\nMean self-similarity (diagonal mean): {np.mean(diag_scores):.4f}")
 
-    os.makedirs(output_dir, exist_ok=True)
-    model.save(output_dir)
-    print(f"Saved fine-tuned model to: {output_dir}")
-
-    return acc, f1, auc
+    return model
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Fine-tune CrossEncoder on CSV dataset (code-text mapping)."
+        description="Fine-tune Dual (Bi) Encoder on CSV dataset (code-text mapping)."
     )
     parser.add_argument(
         "--input_csv",
@@ -161,20 +160,18 @@ if __name__ == "__main__":
         required=True,
         help="Path to CSV file with code, content, and text_ columns.",
     )
-    parser.add_argument(
-        "--base_model", type=str, default="bongsoo/albert-small-kor-cross-encoder-v1"
-    )
-    parser.add_argument("--output_dir", type=str, default="cross_finetuned")
+    parser.add_argument("--base_model", type=str, default="klue/roberta-base")
+    parser.add_argument("--output_dir", type=str, default="biencoder_finetuned")
     parser.add_argument("--encoding", type=str)
     parser.add_argument("--test_size", type=float, default=0.2)
-    parser.add_argument("--batch_size", type=int, default=8)
+    parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--max_samples_per_row", type=int, default=None)
     args = parser.parse_args()
 
     set_seed(42)
-    fine_tune_cross_encoder(
+    fine_tune_dual_encoder(
         args.input_csv,
         base_model=args.base_model,
         output_dir=args.output_dir,
