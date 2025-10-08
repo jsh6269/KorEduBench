@@ -4,6 +4,7 @@ import os
 import random
 import re
 
+import chardet
 import numpy as np
 import pandas as pd
 import torch
@@ -76,7 +77,7 @@ def evaluate_bi_cross_pipeline(
     cross_model = CrossEncoder(cross_model_name)
     cross_model.model.eval()
 
-    # === Encode Standards ===
+    # === Encode Achievement Standards ===
     contents = df["content"].astype(str).tolist()
     codes = df["code"].astype(str).tolist()
     print("\nEncoding achievement standards with Bi-Encoder...")
@@ -109,7 +110,6 @@ def evaluate_bi_cross_pipeline(
     )
     print("Computing cosine similarities for Bi-Encoder top-k retrieval...")
     sims = util.cos_sim(emb_samples, emb_contents)
-
     # For each sample, get top-k candidate indices
     topk_indices = torch.topk(sims, k=top_k, dim=1).indices.cpu().numpy()
 
@@ -118,20 +118,40 @@ def evaluate_bi_cross_pipeline(
     correct_top1, correct_top3, correct_top10, correct_top20 = 0, 0, 0, 0
     reciprocal_ranks = []
 
+    # 잘못 분류된 샘플 저장용 list
+    wrong_samples = []
+
     for i in tqdm(range(num_samples), desc="Reranking"):
         query = sample_texts[i]
         candidates = [contents[j] for j in topk_indices[i]]
         pairs = [(query, c) for c in candidates]
 
-        # Cross-Encoder predicts relevance scores for the top-k candidates
         scores = cross_model.predict(pairs)
-        reranked = np.argsort(scores)[::-1]  # descending order
+        reranked = np.argsort(scores)[::-1]
         ranked_codes = [codes[topk_indices[i][j]] for j in reranked]
 
-        # Evaluate ranking metrics
         true_code = true_codes[i]
-        if ranked_codes[0] == true_code:
+        top1_pred = ranked_codes[0]
+
+        # Evaluate ranking metrics
+        if top1_pred == true_code:
             correct_top1 += 1
+        else:
+            true_content = (
+                contents[codes.index(true_code)] if true_code in codes else "N/A"
+            )
+
+            wrong_samples.append(
+                {
+                    "sample_idx": i,
+                    "input_text": query,
+                    "true_code": true_code,
+                    "pred_code": top1_pred,
+                    "true_content": true_content,
+                    "pred_content": candidates[reranked[0]],
+                }
+            )
+
         if true_code in ranked_codes[:3]:
             correct_top3 += 1
         if true_code in ranked_codes[:10]:
@@ -165,7 +185,6 @@ def evaluate_bi_cross_pipeline(
 
     # === JSON Logging ===
     result_entry = {}
-
     if folder_name:
         result_entry["folder"] = folder_name
 
@@ -195,7 +214,6 @@ def evaluate_bi_cross_pipeline(
     else:
         results = []
 
-    # Update or append
     replaced = False
     for i, r in enumerate(results):
         if (
@@ -216,8 +234,29 @@ def evaluate_bi_cross_pipeline(
 
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
-
     print(f"Results saved to {json_path}")
+
+    # 잘못 분류된 샘플 랜덤 100개 저장
+    if wrong_samples:
+        os.makedirs("logs", exist_ok=True)
+        csv_name = os.path.splitext(os.path.basename(input_csv))[0]
+        wrong_path = os.path.join("logs", f"{csv_name}_wrongs.txt")
+
+        sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
+        with open(wrong_path, "w", encoding="utf-8") as f:
+            f.write(f"Total wrong samples: {len(wrong_samples)}\n\n")
+            for w in sampled_wrongs:
+                f.write(f"[Sample #{w['sample_idx']}]\n")
+                f.write(f"True Code: {w['true_code']}\n")
+                f.write(f"Pred Code: {w['pred_code']}\n")
+                f.write(f"Input Text: {w['input_text']}\n")
+                f.write(f"True Content: {w['true_content']}\n")
+                f.write(f"Pred Content: {w['pred_content']}\n")
+                f.write("-" * 60 + "\n")
+
+        print(
+            f"\nSaved {len(sampled_wrongs)} randomly selected wrong samples to {wrong_path}"
+        )
 
     return acc_top1, acc_top3, acc_top10, mrr
 
@@ -239,7 +278,7 @@ if __name__ == "__main__":
         "--cross_model",
         type=str,
         default="./cross_finetuned",
-        help="Cross-Encoder model name (default: bongsoo/albert-small-kor-cross-encoder-v1).",
+        help="Cross-Encoder model name (default: ./cross_finetuned).",
     )
     parser.add_argument(
         "--top_k",

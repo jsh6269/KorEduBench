@@ -81,11 +81,11 @@
         "max_samples_per_row": 200,
         "total_samples": 18909,
         "top_k": 20,
-        "top1_acc": 0.3405,
-        "top3_acc": 0.5864,
-        "top10_acc": 0.7604,
+        "top1_acc": 0.3626,
+        "top3_acc": 0.5939,
+        "top10_acc": 0.7483,
         "top20_acc": 0.7793,
-        "mrr": 0.4828
+        "mrr": 0.496
     },
     {
         "folder": "subject_text200_valid",

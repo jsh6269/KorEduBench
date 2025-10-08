@@ -201,8 +201,6 @@ def evaluate_cosine_similarity_baseline(
         json.dump(results, f, ensure_ascii=False, indent=4)
     print(f"Results saved to {json_path}")
 
-    return acc_top1, acc_top3, mrr
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
