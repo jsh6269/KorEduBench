@@ -11,16 +11,10 @@ from sentence_transformers import CrossEncoder, InputExample
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
+from utils.random_seed import set_train_random_seed
+
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-
-def set_seed(seed=42):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
 
 def detect_encoding(csv_path: str) -> str:
@@ -181,7 +175,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_samples_per_row", type=int, default=None)
     args = parser.parse_args()
 
-    set_seed(42)
+    set_train_random_seed(42)
     fine_tune_cross_encoder(
         args.input_csv,
         base_model=args.base_model,

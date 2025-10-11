@@ -12,16 +12,10 @@ import torch
 from sentence_transformers import CrossEncoder, SentenceTransformer, util
 from tqdm import tqdm
 
+from utils.random_seed import set_predict_random_seed
+
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-
-def set_seed(seed: int = 42):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
 
 def detect_encoding(csv_path: str) -> str:
@@ -318,7 +312,7 @@ if __name__ == "__main__":
     if cross_model is None:
         cross_model = str(PROJECT_ROOT / "model" / "cross_finetuned")
 
-    set_seed(42)
+    set_predict_random_seed(42)
     evaluate_bi_cross_pipeline(
         args.input_csv,
         args.bi_model,

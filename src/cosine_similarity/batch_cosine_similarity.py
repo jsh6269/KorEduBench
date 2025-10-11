@@ -2,7 +2,8 @@ import argparse
 import os
 from pathlib import Path
 
-from eval_cosine_similarity import evaluate_cosine_similarity_baseline, set_seed
+from eval_cosine_similarity import evaluate_cosine_similarity_baseline
+from utils.random_seed import set_predict_random_seed
 from tqdm import tqdm
 
 # Get project root (3 levels up from this file)
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    set_seed(42)
+    set_predict_random_seed(42)
     evaluate_folder(
         folder_path=args.folder_path,
         model_name=args.model_name,
