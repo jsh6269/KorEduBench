@@ -1,13 +1,15 @@
 import argparse
 import os
+import sys
 from pathlib import Path
-
-from eval_cosine_similarity import evaluate_cosine_similarity_baseline
-from utils.random_seed import set_predict_random_seed
-from tqdm import tqdm
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.utils.random_seed import set_predict_random_seed
+from src.cosine_similarity.eval_cosine_similarity import evaluate_cosine_similarity_baseline
+from tqdm import tqdm
 
 
 def evaluate_folder(

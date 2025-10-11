@@ -1,6 +1,7 @@
 import argparse
 import os
 import random
+import sys
 from pathlib import Path
 
 import chardet
@@ -11,11 +12,12 @@ from sentence_transformers import CrossEncoder, InputExample
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
-from utils.random_seed import set_train_random_seed
-from utils.utils import build_pairs_from_df, detect_encoding
-
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.utils.random_seed import set_train_random_seed
+from src.utils.common import build_pairs_from_df, detect_encoding
 
 
 def fine_tune_cross_encoder(

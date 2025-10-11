@@ -3,6 +3,7 @@ import json
 import os
 import random
 import re
+import sys
 from pathlib import Path
 
 import chardet
@@ -12,11 +13,12 @@ import torch
 from sentence_transformers import SentenceTransformer, util
 from tqdm import tqdm
 
-from utils.random_seed import set_predict_random_seed
-from utils.utils import detect_encoding
-
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.utils.random_seed import set_predict_random_seed
+from src.utils.common import detect_encoding
 
 
 def evaluate_cosine_similarity_baseline(
