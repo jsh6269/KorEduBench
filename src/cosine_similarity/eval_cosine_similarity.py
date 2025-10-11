@@ -13,21 +13,10 @@ from sentence_transformers import SentenceTransformer, util
 from tqdm import tqdm
 
 from utils.random_seed import set_predict_random_seed
+from utils.utils import detect_encoding
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-
-def detect_encoding(csv_path: str) -> str:
-    """Detect encoding using chardet (fallback to utf-8)."""
-    try:
-        with open(csv_path, "rb") as f:
-            result = chardet.detect(f.read(50000))
-        enc = result.get("encoding") or "utf-8"
-        conf = result.get("confidence", 0)
-        return enc if conf >= 0.5 else "utf-8"
-    except Exception:
-        return "utf-8"
 
 
 def evaluate_cosine_similarity_baseline(

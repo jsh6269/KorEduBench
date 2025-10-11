@@ -12,70 +12,10 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
 from utils.random_seed import set_train_random_seed
+from utils.utils import build_pairs_from_df, detect_encoding
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-
-
-def detect_encoding(csv_path: str) -> str:
-    """Detect encoding using chardet (fallback to utf-8)."""
-    try:
-        with open(csv_path, "rb") as f:
-            result = chardet.detect(f.read(50000))
-        enc = result.get("encoding") or "utf-8"
-        conf = result.get("confidence", 0)
-        return enc if conf >= 0.5 else "utf-8"
-    except Exception:
-        return "utf-8"
-
-
-def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
-    """Build positive and negative pairs within one split (train/test)."""
-    sample_cols = [c for c in df.columns if c.startswith("text_")]
-    pairs = []
-
-    # Positive pairs
-    pos_keys = set()
-    for _, row in df.iterrows():
-        content = str(row["content"]).strip()
-        texts = [
-            str(row[c]).strip()
-            for c in sample_cols
-            if pd.notna(row[c]) and str(row[c]).strip() != ""
-        ]
-        if max_samples_per_row:
-            texts = texts[:max_samples_per_row]
-        for t in texts:
-            key = (t, content)
-            if key not in pos_keys:
-                pairs.append(InputExample(texts=[t, content], label=1.0))
-                pos_keys.add(key)
-
-    # Negative pairs (within this df only)
-    contents = df["content"].astype(str).str.strip().tolist()
-    all_texts = []
-    for _, row in df.iterrows():
-        for c in sample_cols:
-            if pd.notna(row[c]) and str(row[c]).strip() != "":
-                all_texts.append(str(row[c]).strip())
-
-    num_neg = int(len(pos_keys) * neg_ratio)
-    neg_keys = set()
-    tries = 0
-    while len(neg_keys) < num_neg and tries < num_neg * 20:
-        t = random.choice(all_texts)
-        neg_content = random.choice(contents)
-        if (t, neg_content) in pos_keys:
-            tries += 1
-            continue
-        key = (t, neg_content)
-        if key not in neg_keys:
-            pairs.append(InputExample(texts=[t, neg_content], label=0.0))
-            neg_keys.add(key)
-        tries += 1
-
-    random.shuffle(pairs)
-    return pairs
 
 
 def fine_tune_cross_encoder(
@@ -106,8 +46,8 @@ def fine_tune_cross_encoder(
 
     # Build pairs within each split
     print("Building sentence pairs for train/test...")
-    train_pairs = build_pairs_from_df(row_train, max_samples_per_row, neg_ratio=1.0)
-    test_pairs = build_pairs_from_df(row_test, max_samples_per_row, neg_ratio=1.0)
+    train_pairs = build_pairs_from_df(row_train, max_samples_per_row, neg_ratio=1.0, use_labels=True)
+    test_pairs = build_pairs_from_df(row_test, max_samples_per_row, neg_ratio=1.0, use_labels=True)
 
     print(f"Train pairs: {len(train_pairs)} | Test pairs: {len(test_pairs)}")
 
