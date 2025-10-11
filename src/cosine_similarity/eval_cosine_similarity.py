@@ -1,14 +1,10 @@
 import argparse
 import json
 import os
-import random
-import re
 import sys
 from pathlib import Path
 
-import chardet
 import numpy as np
-import pandas as pd
 import torch
 from sentence_transformers import SentenceTransformer, util
 from tqdm import tqdm
@@ -18,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.utils.random_seed import set_predict_random_seed
-from src.utils.common import detect_encoding
+from src.utils.data_loader import load_evaluation_data
 
 
 def evaluate_cosine_similarity_baseline(
@@ -31,68 +27,31 @@ def evaluate_cosine_similarity_baseline(
     if json_path is None:
         json_path = PROJECT_ROOT / "output" / "cosine_similarity" / "results.json"
     json_path = str(json_path)
-    if not encoding:
-        encoding = detect_encoding(input_csv)
 
-    # Load CSV
-    df = pd.read_csv(input_csv, encoding=encoding)
-    required_cols = ["code", "content"]
-    for col in required_cols:
-        if col not in df.columns:
-            raise ValueError(f"Missing required column: {col}")
-
-    # Detect parent folder name (e.g., train / valid / test)
-    parent_folder = os.path.basename(os.path.dirname(os.path.abspath(input_csv)))
-    folder_name = None
-    if re.search(r"(train|valid|val|test)", parent_folder, re.IGNORECASE):
-        folder_name = parent_folder
-
-    sample_cols = [c for c in df.columns if c.startswith("text_")]
-    if not sample_cols:
-        raise ValueError("No text_ columns found for evaluation.")
-
-    # Extract meta info
-    subject = df["subject"].iloc[0] if "subject" in df.columns else "Unknown"
-    num_rows = len(df)
-
-    # Auto compute max_samples_per_row if None
-    if max_samples_per_row is None:
-        max_samples_per_row = int(max((df[sample_cols].notna().sum(axis=1)).max(), 0))
-        print(f"Auto-detected max_samples_per_row = {max_samples_per_row}")
+    # Load and preprocess data
+    data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
+    
+    # Extract data for convenience
+    contents = data.contents
+    codes = data.codes
+    sample_texts = data.sample_texts
+    true_codes = data.true_codes
+    subject = data.subject
+    num_rows = data.num_rows
+    num_samples = data.num_samples
+    max_samples_per_row = data.max_samples_per_row
+    folder_name = data.folder_name
 
     # Load embedding model
-    print(f"Loading SentenceTransformer model: {model_name}")
+    print(f"\nLoading SentenceTransformer model: {model_name}")
     model = SentenceTransformer(model_name)
     model.eval()
 
     # Encode achievement standards
     print("Encoding achievement standards...")
-    contents = df["content"].astype(str).tolist()
-    codes = df["code"].astype(str).tolist()
     emb_contents = model.encode(
         contents, convert_to_tensor=True, show_progress_bar=True
     )
-
-    # Flatten sample texts and true codes
-    sample_texts, true_codes = [], []
-    for _, row in df.iterrows():
-        code = str(row["code"])
-        texts = []
-        for col in sample_cols:
-            text = str(row[col]).strip()
-            if text and text.lower() != "nan":
-                texts.append(text)
-
-        # Apply max_samples_per_row
-        if len(texts) > max_samples_per_row:
-            texts = texts[:max_samples_per_row]
-
-        for t in texts:
-            sample_texts.append(t)
-            true_codes.append(code)
-
-    num_samples = len(sample_texts)
-    print(f"Total evaluation samples: {num_samples}")
 
     # Encode all sample texts
     print("Encoding sample texts...")
