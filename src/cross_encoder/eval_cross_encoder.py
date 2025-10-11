@@ -3,6 +3,7 @@ import json
 import os
 import random
 import re
+from pathlib import Path
 
 import chardet
 import numpy as np
@@ -10,6 +11,9 @@ import pandas as pd
 import torch
 from sentence_transformers import CrossEncoder, SentenceTransformer, util
 from tqdm import tqdm
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def set_seed(seed: int = 42):
@@ -38,9 +42,13 @@ def evaluate_bi_cross_pipeline(
     cross_model_name: str,
     top_k: int = 20,
     encoding: str = None,
-    json_path: str = "results_rerank.json",
+    json_path: str = None,
     max_samples_per_row: int = None,
 ):
+    if json_path is None:
+        json_path = PROJECT_ROOT / "output" / "cross_encoder" / "results_rerank.json"
+    json_path = str(json_path)
+    
     if not encoding:
         encoding = detect_encoding(input_csv)
 
@@ -205,6 +213,7 @@ def evaluate_bi_cross_pipeline(
         }
     )
 
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
     if os.path.exists(json_path):
         try:
             with open(json_path, "r", encoding="utf-8") as f:
@@ -238,9 +247,10 @@ def evaluate_bi_cross_pipeline(
 
     # 잘못 분류된 샘플 랜덤 100개 저장
     if wrong_samples:
-        os.makedirs("logs", exist_ok=True)
+        logs_dir = PROJECT_ROOT / "output" / "cross_encoder" / "logs"
+        os.makedirs(logs_dir, exist_ok=True)
         csv_name = os.path.splitext(os.path.basename(input_csv))[0]
-        wrong_path = os.path.join("logs", f"{csv_name}_wrongs.txt")
+        wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
 
         sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
         with open(wrong_path, "w", encoding="utf-8") as f:
@@ -277,8 +287,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--cross_model",
         type=str,
-        default="./cross_finetuned",
-        help="Cross-Encoder model name (default: ./cross_finetuned).",
+        default=None,
+        help="Cross-Encoder model name (default: {PROJECT_ROOT}/model/cross_finetuned).",
     )
     parser.add_argument(
         "--top_k",
@@ -292,8 +302,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--json_path",
         type=str,
-        default="results_rerank.json",
-        help="Path to JSON log file.",
+        default=None,
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/cross_encoder/results_rerank.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",
@@ -303,11 +313,16 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    # Handle default values
+    cross_model = args.cross_model
+    if cross_model is None:
+        cross_model = str(PROJECT_ROOT / "model" / "cross_finetuned")
+
     set_seed(42)
     evaluate_bi_cross_pipeline(
         args.input_csv,
         args.bi_model,
-        args.cross_model,
+        cross_model,
         top_k=args.top_k,
         encoding=args.encoding,
         json_path=args.json_path,

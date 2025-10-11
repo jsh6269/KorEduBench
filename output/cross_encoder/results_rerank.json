@@ -1,0 +1,17 @@
+[
+    {
+        "folder": "validation_subject_text20",
+        "bi_model": "jhgan/ko-sroberta-multitask",
+        "cross_model": "/home/jeongmin/projects/2025_nlp/KorEduBench/model/cross_finetuned",
+        "subject": "과학",
+        "num_standards": 124,
+        "max_samples_per_row": 20,
+        "total_samples": 2394,
+        "top_k": 20,
+        "top1_acc": 0.4403,
+        "top3_acc": 0.7084,
+        "top10_acc": 0.8709,
+        "top20_acc": 0.9014,
+        "mrr": 0.5911
+    }
+]

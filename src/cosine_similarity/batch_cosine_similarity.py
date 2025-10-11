@@ -1,8 +1,12 @@
 import argparse
 import os
+from pathlib import Path
 
 from eval_cosine_similarity import evaluate_cosine_similarity_baseline, set_seed
 from tqdm import tqdm
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def evaluate_folder(
@@ -12,6 +16,9 @@ def evaluate_folder(
     json_path: str,
     max_samples_per_row: int = None,
 ):
+    if json_path is None:
+        json_path = str(PROJECT_ROOT / "output" / "cosine_similarity" / "results.json")
+    
     # Find all CSV files in folder
     csv_files = [
         os.path.join(folder_path, f)
@@ -60,7 +67,7 @@ if __name__ == "__main__":
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
-        "--json_path", type=str, default="results.json", help="Path to JSON log file."
+        "--json_path", type=str, default=None, help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json)."
     )
     parser.add_argument(
         "--max-samples-per-row",

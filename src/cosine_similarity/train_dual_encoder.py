@@ -1,6 +1,7 @@
 import argparse
 import os
 import random
+from pathlib import Path
 
 import chardet
 import numpy as np
@@ -10,6 +11,9 @@ from sentence_transformers import InputExample, SentenceTransformer, losses, uti
 from sentence_transformers.evaluation import EmbeddingSimilarityEvaluator
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def set_seed(seed=42):
@@ -84,7 +88,7 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
 def fine_tune_dual_encoder(
     input_csv,
     base_model="klue/roberta-base",
-    output_dir="biencoder_finetuned",
+    output_dir=None,
     encoding=None,
     test_size=0.2,
     batch_size=16,
@@ -92,6 +96,10 @@ def fine_tune_dual_encoder(
     lr=2e-5,
     max_samples_per_row=None,
 ):
+    if output_dir is None:
+        output_dir = PROJECT_ROOT / "model" / "biencoder_finetuned"
+    output_dir = str(output_dir)
+    
     if not encoding:
         encoding = detect_encoding(input_csv)
 
@@ -161,7 +169,7 @@ if __name__ == "__main__":
         help="Path to CSV file with code, content, and text_ columns.",
     )
     parser.add_argument("--base_model", type=str, default="klue/roberta-base")
-    parser.add_argument("--output_dir", type=str, default="biencoder_finetuned")
+    parser.add_argument("--output_dir", type=str, default=None, help="Output directory (default: {PROJECT_ROOT}/model/biencoder_finetuned)")
     parser.add_argument("--encoding", type=str)
     parser.add_argument("--test_size", type=float, default=0.2)
     parser.add_argument("--batch_size", type=int, default=16)

@@ -3,6 +3,7 @@ import json
 import os
 import random
 import re
+from pathlib import Path
 
 import chardet
 import numpy as np
@@ -10,6 +11,9 @@ import pandas as pd
 import torch
 from sentence_transformers import SentenceTransformer, util
 from tqdm import tqdm
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def set_seed(seed: int = 42):
@@ -36,9 +40,12 @@ def evaluate_cosine_similarity_baseline(
     input_csv: str,
     model_name: str,
     encoding: str | None,
-    json_path: str = "results.json",
+    json_path: str = None,
     max_samples_per_row: int = None,
 ):
+    if json_path is None:
+        json_path = PROJECT_ROOT / "output" / "cosine_similarity" / "results.json"
+    json_path = str(json_path)
     if not encoding:
         encoding = detect_encoding(input_csv)
 
@@ -168,6 +175,7 @@ def evaluate_cosine_similarity_baseline(
     )
 
     # Load existing JSON if exists
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
     if os.path.exists(json_path):
         try:
             with open(json_path, "r", encoding="utf-8") as f:
@@ -219,7 +227,7 @@ if __name__ == "__main__":
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
-        "--json_path", type=str, default="results.json", help="Path to JSON log file."
+        "--json_path", type=str, default=None, help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json)."
     )
     parser.add_argument(
         "--max-samples-per-row",

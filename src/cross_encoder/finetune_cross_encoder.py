@@ -1,6 +1,7 @@
 import argparse
 import os
 import random
+from pathlib import Path
 
 import chardet
 import numpy as np
@@ -9,6 +10,9 @@ import torch
 from sentence_transformers import CrossEncoder, InputExample
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def set_seed(seed=42):
@@ -83,7 +87,7 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0):
 def fine_tune_cross_encoder(
     input_csv,
     base_model="bongsoo/albert-small-kor-cross-encoder-v1",
-    output_dir="cross_finetuned",
+    output_dir=None,
     encoding=None,
     test_size=0.2,
     batch_size=8,
@@ -91,6 +95,10 @@ def fine_tune_cross_encoder(
     lr=2e-5,
     max_samples_per_row=None,
 ):
+    if output_dir is None:
+        output_dir = PROJECT_ROOT / "model" / "cross_finetuned"
+    output_dir = str(output_dir)
+    
     if not encoding:
         encoding = detect_encoding(input_csv)
 
@@ -164,7 +172,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--base_model", type=str, default="bongsoo/albert-small-kor-cross-encoder-v1"
     )
-    parser.add_argument("--output_dir", type=str, default="cross_finetuned")
+    parser.add_argument("--output_dir", type=str, default=None, help="Output directory (default: {PROJECT_ROOT}/model/cross_finetuned)")
     parser.add_argument("--encoding", type=str)
     parser.add_argument("--test_size", type=float, default=0.2)
     parser.add_argument("--batch_size", type=int, default=8)

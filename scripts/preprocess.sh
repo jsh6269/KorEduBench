@@ -53,7 +53,7 @@ process_dataset() {
     
     # Step 1: Extract unique achievement standards
     echo -e "${GREEN}[Step 1/3] Extracting unique achievement standards...${NC}"
-    python extract_standards.py "$LABEL_DIR" "${prefix}_unique_achievement_standards.csv"
+    python ../src/preprocessing/extract_standards.py "$LABEL_DIR" "${DATASET_DIR}/${prefix}_unique_achievement_standards.csv"
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✓ Standards extracted successfully${NC}"
     else
@@ -64,9 +64,9 @@ process_dataset() {
     
     # Step 2: Add text samples to each standard
     echo -e "${GREEN}[Step 2/3] Adding text samples to standards...${NC}"
-    python add_text_to_standards.py "$LABEL_DIR" \
-        --csv_path "${prefix}_unique_achievement_standards.csv" \
-        --output_csv "${prefix}_text_achievement_standards.csv" \
+    python ../src/preprocessing/add_text_to_standards.py "$LABEL_DIR" \
+        --csv_path "${DATASET_DIR}/${prefix}_unique_achievement_standards.csv" \
+        --output_csv "${DATASET_DIR}/${prefix}_text_achievement_standards.csv" \
         --max_texts "$MAX_TEXTS"
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✓ Text samples added successfully${NC}"
@@ -79,16 +79,16 @@ process_dataset() {
     # Step 3: Split CSV by subject
     echo -e "${GREEN}[Step 3/3] Splitting dataset by subject...${NC}"
     # Create output directory with dataset type prefix
-    local OUTPUT_DIR="${prefix}_subject_text${MAX_TEXTS}"
-    python split_subject.py \
-        --input "${prefix}_text_achievement_standards.csv" \
+    local OUTPUT_DIR="${DATASET_DIR}/${prefix}_subject_text${MAX_TEXTS}"
+    python ../src/preprocessing/split_subject.py \
+        --input "${DATASET_DIR}/${prefix}_text_achievement_standards.csv" \
         --max-texts "$MAX_TEXTS" \
         --encoding "utf-8-sig"
     
     # Rename the output directory to include prefix
-    if [ -d "subject_text${MAX_TEXTS}" ]; then
+    if [ -d "${DATASET_DIR}/subject_text${MAX_TEXTS}" ]; then
         rm -rf "$OUTPUT_DIR"  # Remove if exists
-        mv "subject_text${MAX_TEXTS}" "$OUTPUT_DIR"
+        mv "${DATASET_DIR}/subject_text${MAX_TEXTS}" "$OUTPUT_DIR"
     fi
     
     if [ $? -eq 0 ]; then
@@ -130,7 +130,6 @@ echo -e "    - validation_text_achievement_standards.csv"
 echo -e "    - validation_subject_text${MAX_TEXTS}/"
 echo ""
 echo -e "${GREEN}Next steps:${NC}"
-echo -e "  1. Run cosine similarity on training: cd cosine_similarity && python batch_cosine_similarity.py --folder_path ../dataset/training_subject_text${MAX_TEXTS}"
-echo -e "  2. Run cosine similarity on validation: cd cosine_similarity && python batch_cosine_similarity.py --folder_path ../dataset/validation_subject_text${MAX_TEXTS}"
-echo -e "  3. Finetune cross encoder: cd cross_encoder && python finetune_cross_encoder.py --input_csv {csv_path}"
+echo -e "  1. Run cosine similarity on training: cd scripts && bash cosine_similarity.sh"
+echo -e "  2. Finetune and evaluate cross encoder: cd scripts && bash cross_encoder.sh"
 
