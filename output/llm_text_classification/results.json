@@ -1,0 +1,50 @@
+[
+    {
+        "folder": "validation_subject_text20",
+        "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+        "subject": "영어",
+        "num_standards": 63,
+        "max_samples_per_row": 20,
+        "total_samples": 1244,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
+        "exact_match_count": 0,
+        "exact_match_percentage": 0.0,
+        "match_type_distribution": {
+            "invalid": 99.2,
+            "partial": 0.56,
+            "code_pattern": 0.24
+        },
+        "max_new_tokens": 10,
+        "temperature": 0.1,
+        "max_input_length": 4096,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "validation_subject_text20",
+        "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+        "subject": "영어",
+        "num_standards": 63,
+        "max_samples_per_row": 20,
+        "total_samples": 100,
+        "correct": 3,
+        "accuracy": 0.03,
+        "mrr": 0.03,
+        "exact_match_count": 31,
+        "exact_match_percentage": 31.0,
+        "match_type_distribution": {
+            "invalid": 30.0,
+            "exact": 31.0,
+            "partial": 35.0,
+            "index": 3.0,
+            "fuzzy": 1.0
+        },
+        "max_new_tokens": 50,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    }
+]

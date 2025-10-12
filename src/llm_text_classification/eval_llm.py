@@ -19,7 +19,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.utils.data_loader import load_evaluation_data
-from src.utils.prompt import create_classification_prompt, parse_llm_response
+from src.utils.prompt import create_classification_prompt, parse_llm_response, LLMClassificationResponse
 from src.utils.random_seed import set_predict_random_seed
 
 
@@ -57,10 +57,10 @@ def generate_prediction(
     model,
     tokenizer,
     prompt: str,
-    max_new_tokens: int = 10,
+    max_new_tokens: int = 50,
     temperature: float = 0.1,
     device: str = "cuda",
-    max_input_length: int = 8192,
+    max_input_length: int = 2048,
 ) -> str:
     """
     Generate prediction from LLM.
@@ -112,6 +112,7 @@ def evaluate_llm_classification(
     encoding: str = None,
     json_path: str = None,
     max_samples_per_row: int = None,
+    max_total_samples: int = None,
     max_new_tokens: int = 10,
     temperature: float = 0.1,
     device: str = "cuda",
@@ -126,6 +127,7 @@ def evaluate_llm_classification(
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
         max_samples_per_row: Maximum samples per row
+        max_total_samples: Maximum total samples (randomly sampled if specified)
         max_new_tokens: Maximum tokens to generate
         temperature: Sampling temperature
         device: Device to use
@@ -137,7 +139,7 @@ def evaluate_llm_classification(
     
     # === Load and preprocess data ===
     print("Loading evaluation data...")
-    data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
+    data = load_evaluation_data(input_csv, encoding, max_samples_per_row, max_total_samples)
     
     # Extract data for convenience
     contents = data.contents
@@ -178,7 +180,10 @@ def evaluate_llm_classification(
     print(f"\nPredicting classifications for {num_samples} samples...")
     predictions = []
     wrong_samples = []
+    correct_samples = []
     truncated_count = 0
+    exact_match_count = 0
+    match_type_counts = {}
     
     for i in tqdm(range(num_samples), desc="Classifying"):
         text = sample_texts[i]
@@ -197,31 +202,40 @@ def evaluate_llm_classification(
             model, tokenizer, prompt, max_new_tokens, temperature, device, max_input_length
         )
         
-        # Parse response
-        pred_idx = parse_llm_response(response)
+        # Parse response - now returns LLMClassificationResponse object
+        llm_response = parse_llm_response(response, candidates)
+        pred_code = llm_response.predicted_code
         
-        # Convert to code (pred_idx is 1-indexed)
-        if 1 <= pred_idx <= len(codes):
-            pred_code = codes[pred_idx - 1]
-        else:
-            pred_code = "INVALID"
+        # Track match types (exact, partial, fuzzy, code_pattern, index, invalid)
+        match_type_str = llm_response.match_type.value
+        match_type_counts[match_type_str] = match_type_counts.get(match_type_str, 0) + 1
+        
+        if llm_response.is_exact_match:
+            exact_match_count += 1
         
         predictions.append(pred_code)
         
-        # Track wrong predictions
+        # Track wrong and correct predictions
+        true_content = contents[codes.index(true_code)] if true_code in codes else "N/A"
+        pred_content = contents[codes.index(pred_code)] if pred_code in codes else "INVALID"
+        
+        sample_info = {
+            "sample_idx": i,
+            "input_text": text,
+            "true_code": true_code,
+            "pred_code": pred_code,
+            "true_content": true_content,
+            "pred_content": pred_content,
+            "llm_response": response,
+            "match_type": match_type_str,
+            "confidence": llm_response.confidence,
+            "is_exact_match": llm_response.is_exact_match,
+        }
+        
         if pred_code != true_code:
-            true_content = contents[codes.index(true_code)] if true_code in codes else "N/A"
-            pred_content = contents[pred_idx - 1] if 1 <= pred_idx <= len(codes) else "INVALID"
-            
-            wrong_samples.append({
-                "sample_idx": i,
-                "input_text": text,
-                "true_code": true_code,
-                "pred_code": pred_code,
-                "true_content": true_content,
-                "pred_content": pred_content,
-                "llm_response": response,
-            })
+            wrong_samples.append(sample_info)
+        else:
+            correct_samples.append(sample_info)
     
     # === Evaluation Metrics ===
     print("\nCalculating metrics...")
@@ -241,6 +255,10 @@ def evaluate_llm_classification(
     print(f"Samples evaluated: {num_samples}")
     if truncated_count > 0:
         print(f"⚠️  Truncated prompts: {truncated_count}/{num_samples} ({truncated_count/num_samples*100:.1f}%)")
+    print(f"\nMatch Type Distribution:")
+    for match_type, count in sorted(match_type_counts.items()):
+        print(f"  {match_type}: {count}/{num_samples} ({count/num_samples*100:.1f}%)")
+    print(f"\nExact matches: {exact_match_count}/{num_samples} ({exact_match_count/num_samples*100:.1f}%)")
     print(f"Accuracy: {accuracy:.4f} ({correct}/{num_samples})")
     print(f"MRR: {mrr:.4f}")
     
@@ -258,6 +276,9 @@ def evaluate_llm_classification(
         "correct": correct,
         "accuracy": round(float(accuracy), 4),
         "mrr": round(float(mrr), 4),
+        "exact_match_count": exact_match_count,
+        "exact_match_percentage": round(exact_match_count / num_samples * 100, 2) if num_samples > 0 else 0,
+        "match_type_distribution": {k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()},
         "max_new_tokens": max_new_tokens,
         "temperature": temperature,
         "max_input_length": max_input_length,
@@ -297,12 +318,12 @@ def evaluate_llm_classification(
     print(f"Results saved to {json_path}")
     
     # Save wrong samples
+    logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "logs"
+    os.makedirs(logs_dir, exist_ok=True)
+    csv_name = os.path.splitext(os.path.basename(input_csv))[0]
+    
     if wrong_samples:
-        logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "logs"
-        os.makedirs(logs_dir, exist_ok=True)
-        csv_name = os.path.splitext(os.path.basename(input_csv))[0]
         wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
-        
         sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
         with open(wrong_path, "w", encoding="utf-8") as f:
             f.write(f"Total wrong samples: {len(wrong_samples)}\n\n")
@@ -310,13 +331,33 @@ def evaluate_llm_classification(
                 f.write(f"[Sample #{w['sample_idx']}]\n")
                 f.write(f"True Code: {w['true_code']}\n")
                 f.write(f"Pred Code: {w['pred_code']}\n")
+                f.write(f"Match Type: {w['match_type']}\n")
+                f.write(f"Confidence: {w['confidence']:.2f}\n")
+                f.write(f"Exact Match: {'YES' if w['is_exact_match'] else 'NO'}\n")
                 f.write(f"Input Text: {w['input_text']}\n")
                 f.write(f"True Content: {w['true_content']}\n")
                 f.write(f"Pred Content: {w['pred_content']}\n")
                 f.write(f"LLM Response: {w['llm_response']}\n")
                 f.write("-" * 60 + "\n")
-        
         print(f"\nSaved {len(sampled_wrongs)} randomly selected wrong samples to {wrong_path}")
+    
+    # Save correct samples
+    if correct_samples:
+        correct_path = logs_dir / f"{csv_name}_corrects.txt"
+        sampled_corrects = random.sample(correct_samples, min(100, len(correct_samples)))
+        with open(correct_path, "w", encoding="utf-8") as f:
+            f.write(f"Total correct samples: {len(correct_samples)}\n\n")
+            for c in sampled_corrects:
+                f.write(f"[Sample #{c['sample_idx']}]\n")
+                f.write(f"Code: {c['true_code']}\n")
+                f.write(f"Match Type: {c['match_type']}\n")
+                f.write(f"Confidence: {c['confidence']:.2f}\n")
+                f.write(f"Exact Match: {'YES' if c['is_exact_match'] else 'NO'}\n")
+                f.write(f"Input Text: {c['input_text']}\n")
+                f.write(f"Content: {c['true_content']}\n")
+                f.write(f"LLM Response: {c['llm_response']}\n")
+                f.write("-" * 60 + "\n")
+        print(f"Saved {len(sampled_corrects)} randomly selected correct samples to {correct_path}")
     
     return accuracy, mrr
 
@@ -350,10 +391,16 @@ if __name__ == "__main__":
         help="Max number of text samples to evaluate per row (default: auto-detect).",
     )
     parser.add_argument(
+        "--max-total-samples",
+        type=int,
+        default=None,
+        help="Max total number of samples, randomly sampled from all available (default: no limit).",
+    )
+    parser.add_argument(
         "--max-new-tokens",
         type=int,
-        default=10,
-        help="Maximum number of tokens to generate (default: 10).",
+        default=50,
+        help="Maximum number of tokens to generate (default: 50).",
     )
     parser.add_argument(
         "--temperature",
@@ -370,8 +417,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max-input-length",
         type=int,
-        default=8192,
-        help="Maximum input token length. Prompts exceeding this will be truncated (default: 8192).",
+        default=2048,
+        help="Maximum input token length. Prompts exceeding this will be truncated (default: 2048).",
     )
     args = parser.parse_args()
     
@@ -382,6 +429,7 @@ if __name__ == "__main__":
         encoding=args.encoding,
         json_path=args.json_path,
         max_samples_per_row=args.max_samples_per_row,
+        max_total_samples=args.max_total_samples,
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
         device=args.device,

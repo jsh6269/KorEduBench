@@ -4,6 +4,7 @@ Provides functions to load and preprocess CSV data for cosine similarity and cro
 """
 
 import os
+import random
 import re
 from dataclasses import dataclass
 from typing import List, Optional
@@ -33,6 +34,7 @@ def load_evaluation_data(
     input_csv: str,
     encoding: Optional[str] = None,
     max_samples_per_row: Optional[int] = None,
+    max_total_samples: Optional[int] = None,
 ) -> EvaluationData:
     """
     Load and preprocess CSV data for evaluation.
@@ -41,6 +43,8 @@ def load_evaluation_data(
         input_csv: Path to input CSV file
         encoding: CSV encoding (default: auto-detect)
         max_samples_per_row: Maximum number of text samples to use per row (default: auto-detect)
+        max_total_samples: Maximum total number of samples across all rows. 
+                          If specified, randomly samples from all available samples (default: no limit)
     
     Returns:
         EvaluationData object containing all necessary data for evaluation
@@ -103,8 +107,21 @@ def load_evaluation_data(
             sample_texts.append(t)
             true_codes.append(code)
 
+    # Apply max_total_samples limit with random sampling if specified
+    if max_total_samples is not None and len(sample_texts) > max_total_samples:
+        # Random sampling
+        indices = list(range(len(sample_texts)))
+        random.shuffle(indices)
+        selected_indices = sorted(indices[:max_total_samples])
+        
+        sample_texts = [sample_texts[i] for i in selected_indices]
+        true_codes = [true_codes[i] for i in selected_indices]
+        
+        print(f"Total evaluation samples: {len(sample_texts)} (randomly sampled from {len(indices)} by max_total_samples={max_total_samples})")
+    else:
+        print(f"Total evaluation samples: {len(sample_texts)}")
+
     num_samples = len(sample_texts)
-    print(f"Total evaluation samples: {num_samples}")
 
     return EvaluationData(
         df=df,
