@@ -34,7 +34,6 @@ Examples:
 from dataclasses import dataclass
 from enum import Enum
 
-
 # ============================================================================
 # Prompt Templates - Separated into 4 sections for easy modification
 # ============================================================================
@@ -92,6 +91,7 @@ Example output format:
 
 class MatchType(Enum):
     """Type of match found when parsing LLM response."""
+
     EXACT = "exact"  # Exact content match
     PARTIAL = "partial"  # Content partially in response or vice versa
     FUZZY = "fuzzy"  # Similarity-based match
@@ -104,23 +104,24 @@ class MatchType(Enum):
 class LLMClassificationResponse:
     """
     Structured response from LLM classification parsing.
-    
+
     Attributes:
         predicted_code: The predicted achievement standard code (e.g., "10영03-04")
         match_type: Type of matching used to extract the prediction
         confidence: Confidence score for fuzzy matches (0.0-1.0), 1.0 for exact matches
         raw_response: Original LLM output text
     """
+
     predicted_code: str
     match_type: MatchType
     confidence: float
     raw_response: str
-    
+
     @property
     def is_exact_match(self) -> bool:
         """Returns True if the match was exact (not fuzzy or fallback)."""
         return self.match_type == MatchType.EXACT
-    
+
     @property
     def is_valid(self) -> bool:
         """Returns True if a valid prediction was found."""
@@ -128,41 +129,41 @@ class LLMClassificationResponse:
 
 
 def create_classification_prompt(
-    text: str, 
+    text: str,
     candidates: list[tuple[int, str, str]],
     system_prompt: str = None,
     user_intro: str = None,
-    output_instruction: str = None
+    output_instruction: str = None,
 ) -> str:
     """
     Create a zero-shot classification prompt for educational content matching.
-    
+
     The prompt is composed of 4 sections:
     1. System prompt: Establishes the role + provides achievement standards as knowledge
     2. User prompt intro: Optional introduction (can be empty)
     3. Content section: Textbook text only
     4. Output format: Instructions on how to format the answer
-    
+
     Args:
         text: The textbook excerpt to classify
         candidates: List of tuples (index, code, content) representing achievement standards
         system_prompt: Custom system prompt (uses SYSTEM_PROMPT if None)
         user_intro: Custom user intro (uses USER_PROMPT_INTRO if None)
         output_instruction: Custom output instruction (uses OUTPUT_FORMAT_INSTRUCTION if None)
-    
+
     Returns:
         Formatted prompt string for LLM
-    
+
     Examples:
         # Use default template (outputs content text)
         >>> prompt = create_classification_prompt(text, candidates)
-        
+
         # Use code output template
         >>> prompt = create_classification_prompt(
-        ...     text, candidates, 
+        ...     text, candidates,
         ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_CODE
         ... )
-        
+
         # Use index output template
         >>> prompt = create_classification_prompt(
         ...     text, candidates,
@@ -171,65 +172,55 @@ def create_classification_prompt(
     """
     # Use defaults if not specified
     if system_prompt is None:
-        system_prompt = SYSTEM_PROMPT
+        system_prompt = SYSTEM_PROMPT_CODE
     if user_intro is None:
         user_intro = USER_PROMPT_INTRO
     if output_instruction is None:
-        output_instruction = OUTPUT_FORMAT_INSTRUCTION
-    
+        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+
     # Format candidates for system prompt (without code)
-    candidate_text = "\n".join([
-        f"{idx}. {content}"
-        for idx, code, content in candidates
-    ])
-    
+    candidate_text = "\n".join(
+        [f"{idx}. {content}" for idx, code, content in candidates]
+    )
+
     # Section 1: System prompt with achievement standards
     system_section = (
-        f"{system_prompt}\n"
-        "\n"
-        "# Achievement Standards List\n"
-        f"{candidate_text}"
+        f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
-    
+
     # Section 3: Content section (textbook text only)
-    content_section = (
-        "# Textbook Text\n"
-        f"{text}"
-    )
-    
+    content_section = "# Textbook Text\n" f"{text}"
+
     # Combine all sections
-    prompt_parts = [
-        system_section,
-        user_intro,
-        content_section,
-        output_instruction
-    ]
-    
+    prompt_parts = [system_section, user_intro, content_section, output_instruction]
+
     # Filter out empty parts and join with double newlines
     return "\n\n".join(part for part in prompt_parts if part.strip())
 
 
-def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) -> LLMClassificationResponse:
+def parse_llm_response(
+    response: str, candidates: list[tuple[int, str, str]]
+) -> LLMClassificationResponse:
     """
     Parse LLM response to extract the predicted achievement standard code.
-    
+
     Args:
         response: Raw LLM output string
         candidates: List of tuples (index, code, content) representing achievement standards
-    
+
     Returns:
         LLMClassificationResponse object containing prediction details
     """
     import re
     from difflib import SequenceMatcher
-    
+
     # Remove whitespace
     response_clean = response.strip()
-    
+
     # Extract codes and contents from candidates
     codes = [code for _, code, _ in candidates]
     contents = [content for _, _, content in candidates]
-    
+
     # Try to find exact content match
     for idx, content in enumerate(contents):
         if content == response_clean:
@@ -237,9 +228,9 @@ def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) ->
                 predicted_code=codes[idx],
                 match_type=MatchType.EXACT,
                 confidence=1.0,
-                raw_response=response
+                raw_response=response,
             )
-    
+
     # Try to find partial content match
     for idx, content in enumerate(contents):
         if content in response_clean or response_clean in content:
@@ -247,28 +238,28 @@ def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) ->
                 predicted_code=codes[idx],
                 match_type=MatchType.PARTIAL,
                 confidence=0.95,
-                raw_response=response
+                raw_response=response,
             )
-    
+
     # Try fuzzy matching with contents (find best similarity)
     best_match_idx = -1
     best_similarity = 0.0
     similarity_threshold = 0.7  # 70% similarity threshold
-    
+
     for idx, content in enumerate(contents):
         similarity = SequenceMatcher(None, response_clean, content).ratio()
         if similarity > best_similarity:
             best_similarity = similarity
             best_match_idx = idx
-    
+
     if best_similarity >= similarity_threshold:
         return LLMClassificationResponse(
             predicted_code=codes[best_match_idx],
             match_type=MatchType.FUZZY,
             confidence=best_similarity,
-            raw_response=response
+            raw_response=response,
         )
-    
+
     # Fallback: try to find code pattern in response (e.g., "10영03-04")
     for code in codes:
         if code in response_clean:
@@ -276,10 +267,10 @@ def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) ->
                 predicted_code=code,
                 match_type=MatchType.CODE_PATTERN,
                 confidence=0.8,
-                raw_response=response
+                raw_response=response,
             )
-    
-    code_pattern = r'(\d+[가-힣]+\d+-\d+)'
+
+    code_pattern = r"(\d+[가-힣]+\d+-\d+)"
     match = re.search(code_pattern, response_clean)
     if match:
         extracted_code = match.group(1)
@@ -288,11 +279,11 @@ def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) ->
                 predicted_code=extracted_code,
                 match_type=MatchType.CODE_PATTERN,
                 confidence=0.8,
-                raw_response=response
+                raw_response=response,
             )
-    
+
     # Last fallback: try to find a number and map to index
-    match = re.search(r'\b(\d+)\b', response_clean)
+    match = re.search(r"\b(\d+)\b", response_clean)
     if match:
         idx = int(match.group(1))
         if 1 <= idx <= len(codes):
@@ -300,14 +291,13 @@ def parse_llm_response(response: str, candidates: list[tuple[int, str, str]]) ->
                 predicted_code=codes[idx - 1],
                 match_type=MatchType.INDEX,
                 confidence=0.6,
-                raw_response=response
+                raw_response=response,
             )
-    
+
     # No valid match found
     return LLMClassificationResponse(
         predicted_code="INVALID",
         match_type=MatchType.INVALID,
         confidence=0.0,
-        raw_response=response
+        raw_response=response,
     )
-

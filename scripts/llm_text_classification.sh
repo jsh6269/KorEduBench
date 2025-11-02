@@ -3,14 +3,14 @@
 # LLM-based Text Classification Evaluation
 # This script runs LLM-based classification evaluation on subject CSV files
 
-set -e  # Exit on error
+# set -e  # Exit on error (주석 처리: 에러가 나도 다음 파일 계속 처리)
 
 # Get project root directory
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/validation_subject_text20"
-MODEL_NAME="Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
 MAX_NEW_TOKENS=200
 TEMPERATURE=0.1
 DEVICE="cuda"
@@ -41,8 +41,8 @@ echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
 echo ""
 
-# Get list of CSV files
-CSV_FILES=($(find "$DATASET_FOLDER" -name "*.csv" -type f))
+# Get list of CSV files (정렬된 순서로)
+CSV_FILES=($(find "$DATASET_FOLDER" -name "*.csv" -type f | sort))
 
 if [ ${#CSV_FILES[@]} -eq 0 ]; then
     echo -e "${RED}Error: No CSV files found in $DATASET_FOLDER${NC}"
@@ -50,6 +50,10 @@ if [ ${#CSV_FILES[@]} -eq 0 ]; then
 fi
 
 echo -e "${BLUE}Found ${#CSV_FILES[@]} CSV files to process${NC}"
+echo -e "${YELLOW}Files to process:${NC}"
+for file in "${CSV_FILES[@]}"; do
+    echo -e "  - $(basename "$file")"
+done
 echo ""
 
 # Process each CSV file
