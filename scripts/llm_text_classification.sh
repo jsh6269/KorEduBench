@@ -11,11 +11,13 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/validation_subject_text20"
 MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
-MAX_NEW_TOKENS=200
+MAX_NEW_TOKENS=50
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=2048
+MAX_INPUT_LENGTH=6144
+MAX_CANDIDATES=100
 MAX_TOTAL_SAMPLES=100
+FEW_SHOT=False
 
 # Color output
 GREEN='\033[0;32m'
@@ -39,6 +41,7 @@ echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
 
 # Get list of CSV files (정렬된 순서로)
@@ -67,6 +70,11 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
     
     # Run LLM evaluation
+    if [ "$FEW_SHOT" = True ]; then
+        FEW_SHOT_FLAG="--few-shot"
+    else
+        FEW_SHOT_FLAG=""
+    fi
     if python "${PROJECT_ROOT}/src/llm_text_classification/eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
@@ -74,7 +82,9 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --temperature "$TEMPERATURE" \
         --device "$DEVICE" \
         --max-input-length "$MAX_INPUT_LENGTH" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES"; then
+        --max-total-samples "$MAX_TOTAL_SAMPLES" \
+        --max-candidates "$MAX_CANDIDATES" \
+        $FEW_SHOT_FLAG; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
     else

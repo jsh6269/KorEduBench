@@ -31,6 +31,7 @@ Examples:
     )
 """
 
+import json
 from dataclasses import dataclass
 from enum import Enum
 
@@ -40,7 +41,7 @@ from enum import Enum
 
 # Default Template (outputs content text)
 # Section 1: System Prompt - Establishes the role and context
-SYSTEM_PROMPT = """You are an educational curriculum expert. Read the given textbook text and select the most appropriate achievement standard."""
+SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Read the given textbook text and select the most appropriate achievement standard."""
 
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
@@ -49,24 +50,6 @@ USER_PROMPT_INTRO = ""
 # Achievement standards are moved to Section 1 (System Prompt)
 
 # Section 4: Output Format Instructions
-OUTPUT_FORMAT_INSTRUCTION = """# Instructions
-Select ONLY ONE achievement standard that best describes the textbook text above.
-
-IMPORTANT: Output ONLY the selected achievement standard content, EXACTLY as written in the list. Do NOT add any explanations, reasoning, or additional text.
-
-Example output format:
-친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
-
-# Answer"""
-
-
-# ============================================================================
-# Alternative Templates - Can be easily switched for experimentation
-# ============================================================================
-
-# Template variant: Output code instead of content
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Read the given textbook text and select the most appropriate achievement standard."""
-
 OUTPUT_FORMAT_INSTRUCTION_CODE = """# Instructions
 Select ONLY ONE achievement standard that best describes the textbook text above.
 
@@ -77,14 +60,13 @@ Example output format:
 
 # Answer"""
 
-# Template variant: Output index number
-OUTPUT_FORMAT_INSTRUCTION_INDEX = """# Instructions
+OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Instructions
 Select ONLY ONE achievement standard that best describes the textbook text above.
 
-IMPORTANT: Output ONLY the number (index) of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
 
 Example output format:
-5
+10영03-04
 
 # Answer"""
 
@@ -92,11 +74,8 @@ Example output format:
 class MatchType(Enum):
     """Type of match found when parsing LLM response."""
 
-    EXACT = "exact"  # Exact content match
-    PARTIAL = "partial"  # Content partially in response or vice versa
-    FUZZY = "fuzzy"  # Similarity-based match
-    CODE_PATTERN = "code_pattern"  # Found code pattern in response
-    INDEX = "index"  # Found numeric index
+    EXACT = "exact"  # Exact code match
+    PARTIAL = "partial"  # Code partially in response or vice versa
     INVALID = "invalid"  # No valid match found
 
 
@@ -128,21 +107,42 @@ class LLMClassificationResponse:
         return self.match_type != MatchType.INVALID
 
 
+def load_few_shot_examples(
+    subject: str, num_examples: int = 3, file_name: str = "few_shot_examples.json"
+) -> str:
+    """
+    Load few-shot examples from a JSON file.
+    """
+    with open(file_name, "r") as f:
+        data = json.load(f)
+    examples = data[subject][:num_examples]
+    examples_str = "\n".join(
+        [f"{idx}. {example['text']}" for idx, example in enumerate(examples)]
+    )
+    return examples_str
+
+
 def create_classification_prompt(
     text: str,
     candidates: list[tuple[int, str, str]],
     system_prompt: str = None,
     user_intro: str = None,
     output_instruction: str = None,
+    few_shot: bool = False,
+    file_name: str = "few_shot_examples.json",
+    subject: str = None,
+    num_examples: int = 3,
 ) -> str:
     """
-    Create a zero-shot classification prompt for educational content matching.
+    Create a classification prompt for educational content matching.
 
     The prompt is composed of 4 sections:
     1. System prompt: Establishes the role + provides achievement standards as knowledge
     2. User prompt intro: Optional introduction (can be empty)
     3. Content section: Textbook text only
     4. Output format: Instructions on how to format the answer
+
+    If few_shot is True, the prompt will include a few-shot example.
 
     Args:
         text: The textbook excerpt to classify
@@ -170,23 +170,37 @@ def create_classification_prompt(
         ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_INDEX
         ... )
     """
+
     # Use defaults if not specified
-    if system_prompt is None:
-        system_prompt = SYSTEM_PROMPT_CODE
-    if user_intro is None:
-        user_intro = USER_PROMPT_INTRO
-    if output_instruction is None:
-        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+    if few_shot:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT_CODE
+        if user_intro is None:
+            user_intro = USER_PROMPT_INTRO
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE
+    else:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT_CODE
+        if user_intro is None:
+            user_intro = USER_PROMPT_INTRO
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
 
     # Format candidates for system prompt (without code)
     candidate_text = "\n".join(
-        [f"{idx}. {content}" for idx, code, content in candidates]
+        [f"{code}: {content}" for idx, code, content in candidates]
     )
 
     # Section 1: System prompt with achievement standards
     system_section = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
+    if few_shot:
+        few_shot_examples = load_few_shot_examples(subject, num_examples, file_name)
+        system_section = (
+            system_section + "\n" + "# Few-Shot Examples\n" + few_shot_examples
+        )
 
     # Section 3: Content section (textbook text only)
     content_section = "# Textbook Text\n" f"{text}"
@@ -204,93 +218,38 @@ def parse_llm_response(
     """
     Parse LLM response to extract the predicted achievement standard code.
 
+    The LLM now directly outputs the code (e.g., "10영03-04") instead of the content.
+    This simplifies the parsing logic significantly.
+
     Args:
-        response: Raw LLM output string
+        response: Raw LLM output string (expected to be a code like "10영03-04")
         candidates: List of tuples (index, code, content) representing achievement standards
 
     Returns:
         LLMClassificationResponse object containing prediction details
     """
-    import re
-    from difflib import SequenceMatcher
-
     # Remove whitespace
     response_clean = response.strip()
 
-    # Extract codes and contents from candidates
+    # Extract codes from candidates
     codes = [code for _, code, _ in candidates]
-    contents = [content for _, _, content in candidates]
 
-    # Try to find exact content match
-    for idx, content in enumerate(contents):
-        if content == response_clean:
-            return LLMClassificationResponse(
-                predicted_code=codes[idx],
-                match_type=MatchType.EXACT,
-                confidence=1.0,
-                raw_response=response,
-            )
-
-    # Try to find partial content match
-    for idx, content in enumerate(contents):
-        if content in response_clean or response_clean in content:
-            return LLMClassificationResponse(
-                predicted_code=codes[idx],
-                match_type=MatchType.PARTIAL,
-                confidence=0.95,
-                raw_response=response,
-            )
-
-    # Try fuzzy matching with contents (find best similarity)
-    best_match_idx = -1
-    best_similarity = 0.0
-    similarity_threshold = 0.7  # 70% similarity threshold
-
-    for idx, content in enumerate(contents):
-        similarity = SequenceMatcher(None, response_clean, content).ratio()
-        if similarity > best_similarity:
-            best_similarity = similarity
-            best_match_idx = idx
-
-    if best_similarity >= similarity_threshold:
+    # Try to find exact code match
+    if response_clean in codes:
         return LLMClassificationResponse(
-            predicted_code=codes[best_match_idx],
-            match_type=MatchType.FUZZY,
-            confidence=best_similarity,
+            predicted_code=response_clean,
+            match_type=MatchType.EXACT,
+            confidence=1.0,
             raw_response=response,
         )
 
-    # Fallback: try to find code pattern in response (e.g., "10영03-04")
+    # Try to find partial code match (code in response or response in code)
     for code in codes:
-        if code in response_clean:
+        if code in response_clean or response_clean in code:
             return LLMClassificationResponse(
                 predicted_code=code,
-                match_type=MatchType.CODE_PATTERN,
+                match_type=MatchType.PARTIAL,
                 confidence=0.8,
-                raw_response=response,
-            )
-
-    code_pattern = r"(\d+[가-힣]+\d+-\d+)"
-    match = re.search(code_pattern, response_clean)
-    if match:
-        extracted_code = match.group(1)
-        if extracted_code in codes:
-            return LLMClassificationResponse(
-                predicted_code=extracted_code,
-                match_type=MatchType.CODE_PATTERN,
-                confidence=0.8,
-                raw_response=response,
-            )
-
-    # Last fallback: try to find a number and map to index
-    match = re.search(r"\b(\d+)\b", response_clean)
-    if match:
-        idx = int(match.group(1))
-        if 1 <= idx <= len(codes):
-            return LLMClassificationResponse(
-                predicted_code=codes[idx - 1],
-                match_type=MatchType.INDEX,
-                confidence=0.6,
                 raw_response=response,
             )
 
