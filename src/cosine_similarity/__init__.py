@@ -1,2 +1,1 @@
 # Cosine Similarity module
-

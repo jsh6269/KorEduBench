@@ -17,8 +17,8 @@ from torch.utils.data import DataLoader
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.random_seed import set_train_random_seed
 from src.utils.common import build_pairs_from_df, detect_encoding
+from src.utils.random_seed import set_train_random_seed
 
 
 def fine_tune_dual_encoder(
@@ -35,7 +35,7 @@ def fine_tune_dual_encoder(
     if output_dir is None:
         output_dir = PROJECT_ROOT / "model" / "biencoder_finetuned"
     output_dir = str(output_dir)
-    
+
     if not encoding:
         encoding = detect_encoding(input_csv)
 
@@ -49,8 +49,12 @@ def fine_tune_dual_encoder(
 
     # Build pairs
     print("Building sentence pairs for train/test...")
-    train_pairs = build_pairs_from_df(row_train, max_samples_per_row, neg_ratio=1.0, use_labels=False)
-    test_pairs = build_pairs_from_df(row_test, max_samples_per_row, neg_ratio=0.5, use_labels=False)
+    train_pairs = build_pairs_from_df(
+        row_train, max_samples_per_row, neg_ratio=1.0, use_labels=False
+    )
+    test_pairs = build_pairs_from_df(
+        row_test, max_samples_per_row, neg_ratio=0.5, use_labels=False
+    )
 
     print(f"Train pairs: {len(train_pairs)} | Test pairs: {len(test_pairs)}")
 
@@ -105,7 +109,12 @@ if __name__ == "__main__":
         help="Path to CSV file with code, content, and text_ columns.",
     )
     parser.add_argument("--base_model", type=str, default="klue/roberta-base")
-    parser.add_argument("--output_dir", type=str, default=None, help="Output directory (default: {PROJECT_ROOT}/model/biencoder_finetuned)")
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default=None,
+        help="Output directory (default: {PROJECT_ROOT}/model/biencoder_finetuned)",
+    )
     parser.add_argument("--encoding", type=str)
     parser.add_argument("--test_size", type=float, default=0.2)
     parser.add_argument("--batch_size", type=int, default=16)

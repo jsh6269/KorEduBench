@@ -18,28 +18,28 @@ def load_blacklist(blacklist_path):
     if not os.path.exists(blacklist_path):
         print(f"Blacklist file not found: {blacklist_path}")
         return set()
-    
+
     try:
         with open(blacklist_path, "r", encoding="utf-8") as f:
             blacklist_data = json.load(f)
-        
+
         # Create a set of (code, content) tuples for fast lookup
         blacklist_set = set()
         for code, contents in blacklist_data.items():
             for content in contents:
                 # Normalize content (strip whitespace)
                 blacklist_set.add((code, content.strip()))
-        
-        print(f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded")
+
+        print(
+            f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded"
+        )
         return blacklist_set
     except Exception as e:
         print(f"Error loading Blacklist file: {e}")
         return set()
 
 
-def extract_unique_standards(
-    label_dir="label", output_csv=None
-):
+def extract_unique_standards(label_dir="label", output_csv=None):
     """
     Extract 2022 achievement standard (code, content) from zip files in the label directory
     CSV column: subject, school, grade, code, content
@@ -49,15 +49,15 @@ def extract_unique_standards(
     if output_csv is None:
         output_csv = PROJECT_ROOT / "dataset" / "unique_achievement_standards.csv"
     output_csv = str(output_csv)
-    
+
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_csv), exist_ok=True)
-    
+
     # Load blacklist
     script_dir = Path(__file__).resolve().parent
     blacklist_path = script_dir / "2022_blacklist.json"
     blacklist_set = load_blacklist(blacklist_path)
-    
+
     # key: code, value: (content, subject, school, grade)
     unique_standards = {}
 
@@ -102,14 +102,14 @@ def extract_unique_standards(
                             code = s[s.find("[") + 1 : s.find("]")]
                             content = s[s.find("]") + 1 :].strip()
                             trimmed_content = content.replace("\n", " ").strip()
-                            
+
                             # Check blacklist: skip if (code, content) combination is in blacklist
                             if (code, content) in blacklist_set:
                                 continue
 
                             if (code, trimmed_content) in blacklist_set:
                                 continue
-                            
+
                             if code not in unique_standards:
                                 unique_standards[code] = (
                                     trimmed_content,

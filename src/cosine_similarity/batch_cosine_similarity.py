@@ -7,9 +7,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.random_seed import set_predict_random_seed
-from src.cosine_similarity.eval_cosine_similarity import evaluate_cosine_similarity_baseline
 from tqdm import tqdm
+
+from src.cosine_similarity.eval_cosine_similarity import (
+    evaluate_cosine_similarity_baseline,
+)
+from src.utils.random_seed import set_predict_random_seed
 
 
 def evaluate_folder(
@@ -21,7 +24,7 @@ def evaluate_folder(
 ):
     if json_path is None:
         json_path = str(PROJECT_ROOT / "output" / "cosine_similarity" / "results.json")
-    
+
     # Find all CSV files in folder
     csv_files = [
         os.path.join(folder_path, f)
@@ -70,7 +73,10 @@ if __name__ == "__main__":
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
-        "--json_path", type=str, default=None, help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json)."
+        "--json_path",
+        type=str,
+        default=None,
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",
