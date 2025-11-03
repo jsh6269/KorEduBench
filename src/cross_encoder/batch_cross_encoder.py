@@ -9,21 +9,23 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from tqdm import tqdm
 
-from src.cosine_similarity.eval_cosine_similarity import (
-    evaluate_cosine_similarity_baseline,
-)
+from src.cross_encoder.eval_cross_encoder import evaluate_bi_cross_pipeline
 from src.utils.random_seed import set_predict_random_seed
 
 
 def evaluate_folder(
     folder_path: str,
-    model_name: str,
-    encoding: str | None,
-    json_path: str,
+    bi_model_name: str,
+    cross_model_name: str,
+    top_k: int = 20,
+    encoding: str | None = None,
+    json_path: str = None,
     max_samples_per_row: int = None,
 ):
     if json_path is None:
-        json_path = str(PROJECT_ROOT / "output" / "cosine_similarity" / "results.json")
+        json_path = str(
+            PROJECT_ROOT / "output" / "cross_encoder" / "results_rerank.json"
+        )
 
     # Find all CSV files in folder
     csv_files = [
@@ -42,9 +44,11 @@ def evaluate_folder(
     for csv_path in tqdm(csv_files, desc="Evaluating CSV files", unit="file"):
         try:
             print(f"\n=== Processing file: {os.path.basename(csv_path)} ===")
-            evaluate_cosine_similarity_baseline(
+            evaluate_bi_cross_pipeline(
                 input_csv=csv_path,
-                model_name=model_name,
+                bi_model_name=bi_model_name,
+                cross_model_name=cross_model_name,
+                top_k=top_k,
                 encoding=encoding,
                 json_path=json_path,
                 max_samples_per_row=max_samples_per_row,
@@ -59,7 +63,7 @@ def evaluate_folder(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Batch evaluation of cosine-similarity-based curriculum mapping for all CSV files in a folder."
+        description="Batch evaluation of Bi-Encoder + Cross-Encoder reranking for all CSV files in a folder."
     )
     parser.add_argument(
         "--folder_path",
@@ -68,10 +72,22 @@ if __name__ == "__main__":
         help="Path to folder containing CSV files.",
     )
     parser.add_argument(
-        "--model_name",
+        "--bi_model",
         type=str,
         default="jhgan/ko-sroberta-multitask",
-        help="SentenceTransformer model name (default: jhgan/ko-sroberta-multitask).",
+        help="Bi-Encoder model name (default: jhgan/ko-sroberta-multitask).",
+    )
+    parser.add_argument(
+        "--cross_model",
+        type=str,
+        default=None,
+        help="Cross-Encoder model name (default: {PROJECT_ROOT}/model/cross_finetuned).",
+    )
+    parser.add_argument(
+        "--top_k",
+        type=int,
+        default=20,
+        help="Number of top candidates for reranking (default: 20).",
     )
     parser.add_argument(
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
@@ -80,7 +96,7 @@ if __name__ == "__main__":
         "--json_path",
         type=str,
         default=None,
-        help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json).",
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/cross_encoder/results_rerank.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",
@@ -90,10 +106,17 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    # Handle default values
+    cross_model = args.cross_model
+    if cross_model is None:
+        cross_model = str(PROJECT_ROOT / "model" / "cross_finetuned")
+
     set_predict_random_seed(42)
     evaluate_folder(
         folder_path=args.folder_path,
-        model_name=args.model_name,
+        bi_model_name=args.bi_model,
+        cross_model_name=cross_model,
+        top_k=args.top_k,
         encoding=args.encoding,
         json_path=args.json_path,
         max_samples_per_row=args.max_samples_per_row,

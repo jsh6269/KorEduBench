@@ -45,6 +45,14 @@ def evaluate_bi_cross_pipeline(
     max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
+    # Validate that we have samples to evaluate
+    if num_samples == 0 or len(sample_texts) == 0:
+        print(f"\nWARNING: No samples found for subject '{subject}' in {input_csv}")
+        print(
+            f"   Skipping evaluation. Please check if the CSV file has valid text data."
+        )
+        return 0.0, 0.0, 0.0, 0.0
+
     # === Load Models ===
     print(f"\nLoading Bi-Encoder: {bi_model_name}")
     bi_model = SentenceTransformer(bi_model_name)
@@ -67,12 +75,38 @@ def evaluate_bi_cross_pipeline(
     )
     print("Computing cosine similarities for Bi-Encoder top-k retrieval...")
     sims = util.cos_sim(emb_samples, emb_contents)
+
+    # Limit top_k to num_standards to avoid out of range
+    actual_top_k = min(top_k, num_rows)
+    if top_k > num_rows:
+        print(
+            f"Note: top_k={top_k} exceeds num_standards={num_rows}, using top_k={actual_top_k}"
+        )
+
     # For each sample, get top-k candidate indices
-    topk_indices = torch.topk(sims, k=top_k, dim=1).indices.cpu().numpy()
+    topk_indices = torch.topk(sims, k=actual_top_k, dim=1).indices.cpu().numpy()
 
     # === Cross-Encoder Stage ===
-    print(f"\nRe-ranking top-{top_k} candidates using Cross-Encoder...")
-    correct_top1, correct_top3, correct_top10, correct_top20 = 0, 0, 0, 0
+    print(f"\nRe-ranking top-{actual_top_k} candidates using Cross-Encoder...")
+
+    # Define top-k metrics to calculate (filter out those exceeding num_standards)
+    topk_metrics = [1, 3, 10, 20]
+    valid_topk_metrics = [k for k in topk_metrics if k <= num_rows]
+    skipped_metrics = [k for k in topk_metrics if k > num_rows]
+
+    if skipped_metrics:
+        print(
+            f"Note: Skipping top-k accuracy for k={skipped_metrics} as num_standards={num_rows} is less than k"
+        )
+
+    # Initialize counters only for valid metrics
+    correct_top1 = 0
+    if 3 in valid_topk_metrics:
+        correct_top3 = 0
+    if 10 in valid_topk_metrics:
+        correct_top10 = 0
+    if 20 in valid_topk_metrics:
+        correct_top20 = 0
     reciprocal_ranks = []
 
     # 잘못 분류된 샘플 저장용 list
@@ -109,11 +143,11 @@ def evaluate_bi_cross_pipeline(
                 }
             )
 
-        if true_code in ranked_codes[:3]:
+        if 3 in valid_topk_metrics and true_code in ranked_codes[:3]:
             correct_top3 += 1
-        if true_code in ranked_codes[:10]:
+        if 10 in valid_topk_metrics and true_code in ranked_codes[:10]:
             correct_top10 += 1
-        if true_code in ranked_codes[:20]:
+        if 20 in valid_topk_metrics and true_code in ranked_codes[:20]:
             correct_top20 += 1
         if true_code in ranked_codes:
             rank = ranked_codes.index(true_code) + 1
@@ -123,9 +157,18 @@ def evaluate_bi_cross_pipeline(
 
     # === Metrics ===
     acc_top1 = correct_top1 / num_samples
-    acc_top3 = correct_top3 / num_samples
-    acc_top10 = correct_top10 / num_samples
-    acc_top20 = correct_top20 / num_samples
+    acc_dict = {"top1_acc": acc_top1}
+
+    if 3 in valid_topk_metrics:
+        acc_top3 = correct_top3 / num_samples
+        acc_dict["top3_acc"] = acc_top3
+    if 10 in valid_topk_metrics:
+        acc_top10 = correct_top10 / num_samples
+        acc_dict["top10_acc"] = acc_top10
+    if 20 in valid_topk_metrics:
+        acc_top20 = correct_top20 / num_samples
+        acc_dict["top20_acc"] = acc_top20
+
     mrr = np.mean(reciprocal_ranks)
 
     # === Summary ===
@@ -135,9 +178,12 @@ def evaluate_bi_cross_pipeline(
     print(f"Subject: {subject}")
     print(f"Samples evaluated: {num_samples}")
     print(f"Top-1 Accuracy: {acc_top1:.4f}")
-    print(f"Top-3 Accuracy: {acc_top3:.4f}")
-    print(f"Top-10 Accuracy: {acc_top10:.4f}")
-    print(f"Top-20 Accuracy: {acc_top20:.4f}")
+    if 3 in valid_topk_metrics:
+        print(f"Top-3 Accuracy: {acc_dict['top3_acc']:.4f}")
+    if 10 in valid_topk_metrics:
+        print(f"Top-10 Accuracy: {acc_dict['top10_acc']:.4f}")
+    if 20 in valid_topk_metrics:
+        print(f"Top-20 Accuracy: {acc_dict['top20_acc']:.4f}")
     print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
 
     # === JSON Logging ===
@@ -153,11 +199,8 @@ def evaluate_bi_cross_pipeline(
             "num_standards": num_rows,
             "max_samples_per_row": int(max_samples_per_row),
             "total_samples": num_samples,
-            "top_k": top_k,
-            "top1_acc": round(float(acc_top1), 4),
-            "top3_acc": round(float(acc_top3), 4),
-            "top10_acc": round(float(acc_top10), 4),
-            "top20_acc": round(float(acc_top20), 4),
+            "top_k": actual_top_k,
+            **{k: round(float(v), 4) for k, v in acc_dict.items()},
             "mrr": round(float(mrr), 4),
         }
     )
@@ -217,7 +260,13 @@ def evaluate_bi_cross_pipeline(
             f"\nSaved {len(sampled_wrongs)} randomly selected wrong samples to {wrong_path}"
         )
 
-    return acc_top1, acc_top3, acc_top10, mrr
+    # Return values - use acc_dict for consistency
+    return (
+        acc_dict["top1_acc"],
+        acc_dict.get("top3_acc", 0.0),
+        acc_dict.get("top10_acc", 0.0),
+        mrr,
+    )
 
 
 if __name__ == "__main__":
