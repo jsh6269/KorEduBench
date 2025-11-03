@@ -1,12 +1,61 @@
 import argparse
 import chardet
 import random
+import re
 from pathlib import Path
 
 import pandas as pd
 
 # Get project root (3 levels up from this file: src/preprocessing/script.py -> src -> project_root)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+
+
+def preprocess_text(text):
+    """
+    Preprocess text: if it contains <tbody>, extract only <td> contents and join with space.
+    Then replace \n with space.
+    
+    Args:
+        text: Input text string
+        
+    Returns:
+        str: Preprocessed text
+    """
+    if pd.isna(text):
+        return ""
+    
+    text = str(text).strip()
+    
+    # Check if text contains <tbody>
+    if "<tbody>" in text.lower() or "<table>" in text.lower():
+        # Extract all <td>...</td> contents
+        td_pattern = r'<td[^>]*>(.*?)</td>'
+        td_contents = re.findall(td_pattern, text, re.DOTALL | re.IGNORECASE)
+        
+        # Clean each td content (remove HTML tags, strip whitespace)
+        cleaned_contents = []
+        for content in td_contents:
+            # Remove nested HTML tags if any
+            cleaned = re.sub(r'<[^>]+>', '', content)
+            cleaned = cleaned.strip()
+            if cleaned:
+                cleaned_contents.append(cleaned)
+        
+        # Join with space
+        text = " ".join(cleaned_contents)
+    
+    # Delete "-" at the beginning of the text
+    if text[0] == "-":
+        text = text[1:]
+
+    # Replace \n with space
+    text = text.replace("\n", " ")
+    
+    # Replace multiple spaces with single space
+    text = re.sub(r'\s+', ' ', text)
+    text = text.strip()
+    
+    return text
 
 
 def split_texts_to_train_valid(input_csv, train_csv, valid_csv, num_texts, seed=42):
@@ -88,8 +137,8 @@ def split_texts_to_train_valid(input_csv, train_csv, valid_csv, num_texts, seed=
         # Randomly select num_texts texts from non-empty texts in target range
         selected_text_cols = random.sample(non_empty_texts, num_texts)
         
-        # Get the actual values from selected columns
-        selected_values = [row[col] for col in selected_text_cols]
+        # Get the actual values from selected columns and preprocess them
+        selected_values = [preprocess_text(row[col]) for col in selected_text_cols]
         
         # Split into train and valid (no overlap)
         train_values = selected_values[:texts_per_split]
