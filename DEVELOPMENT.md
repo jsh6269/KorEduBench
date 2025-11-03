@@ -16,16 +16,24 @@ Note that we only use texts (not the images) which means **label directory** of 
 ## Preprocess Dataset
 
 ```bash
-cd dataset
+cd src/preprocessing
 
 # extract unique standards from dataset
-python extract_standards.py {label_path}
+python extract_standards.py {Train_label_path}
+python add_text_to_standards.py {Train_label_path} --max_texts 160
+
+# 빈 데이터가 중간에 삽입되어 있는지 확인하는 코드 (not necessary to run)
+python verify_not_empty.py {text_achievement_standards.csv_path}
 
 # add text samples to each standards
-python add_text_to_standards.py {label_path} --max_texts 20
+python check_insufficient_text.py --min_texts 160
+python add_additional_text_to_standards.py {Val_label_path} --max_texts 160
+python check_insufficient_text.py --min_texts 160
 
 # split csv by subject
-python split_subject.py --input {csv_path} --max-texts 20
+python filter_standards.py --num_texts 160
+python split_subject.py --input {train.csv_path} --output "train_80"
+python split_subject.py --input {val.csv_path} --output "val_80"
 ```
 
 ## Naive Cosine Similarity

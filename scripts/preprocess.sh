@@ -7,7 +7,9 @@ set -e  # Exit on error
 
 # Configuration
 BASE_DIR="/mnt/e/2025_2_KorEduBench"
-MAX_TEXTS=20
+MAX_TEXTS=160
+MIN_TEXTS=160
+NUM_TEXTS=160
 DATASET_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/dataset"
 
 # Color output
@@ -20,6 +22,7 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}=== KorEduBench Preprocessing Script ===${NC}"
 echo -e "Base Directory: ${YELLOW}${BASE_DIR}${NC}"
 echo -e "Max Texts per Standard: ${YELLOW}${MAX_TEXTS}${NC}"
+echo -e "Min Texts per Standard: ${YELLOW}${MIN_TEXTS}${NC}"
 echo ""
 
 # Check if base directory exists
@@ -33,84 +36,157 @@ cd "$DATASET_DIR"
 echo -e "${GREEN}Working directory: ${PWD}${NC}"
 echo ""
 
-# Process function for each dataset type
-process_dataset() {
-    local DATASET_TYPE=$1
-    local LABEL_DIR="${BASE_DIR}/${DATASET_TYPE}/label"
-    local prefix=$(echo "$DATASET_TYPE" | tr '[:upper:]' '[:lower:]')
-    
-    echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║  Processing ${DATASET_TYPE} Dataset${NC}"
-    echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
-    echo -e "Label Directory: ${YELLOW}${LABEL_DIR}${NC}"
-    echo ""
-    
-    # Check if label directory exists
-    if [ ! -d "$LABEL_DIR" ]; then
-        echo -e "${RED}Error: Label directory not found at ${LABEL_DIR}${NC}"
-        return 1
-    fi
-    
-    # Step 1: Extract unique achievement standards
-    echo -e "${GREEN}[Step 1/3] Extracting unique achievement standards...${NC}"
-    python ../src/preprocessing/extract_standards.py "$LABEL_DIR" "${DATASET_DIR}/${prefix}_unique_achievement_standards.csv"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Standards extracted successfully${NC}"
-    else
-        echo -e "${RED}✗ Failed to extract standards${NC}"
-        return 1
-    fi
-    echo ""
-    
-    # Step 2: Add text samples to each standard
-    echo -e "${GREEN}[Step 2/3] Adding text samples to standards...${NC}"
-    python ../src/preprocessing/add_text_to_standards.py "$LABEL_DIR" \
-        --csv_path "${DATASET_DIR}/${prefix}_unique_achievement_standards.csv" \
-        --output_csv "${DATASET_DIR}/${prefix}_text_achievement_standards.csv" \
-        --max_texts "$MAX_TEXTS"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Text samples added successfully${NC}"
-    else
-        echo -e "${RED}✗ Failed to add text samples${NC}"
-        return 1
-    fi
-    echo ""
-    
-    # Step 3: Split CSV by subject
-    echo -e "${GREEN}[Step 3/3] Splitting dataset by subject...${NC}"
-    # Create output directory with dataset type prefix
-    local OUTPUT_DIR="${DATASET_DIR}/${prefix}_subject_text${MAX_TEXTS}"
-    python ../src/preprocessing/split_subject.py \
-        --input "${DATASET_DIR}/${prefix}_text_achievement_standards.csv" \
-        --max-texts "$MAX_TEXTS" \
-        --encoding "utf-8-sig"
-    
-    # Rename the output directory to include prefix
-    if [ -d "${DATASET_DIR}/subject_text${MAX_TEXTS}" ]; then
-        rm -rf "$OUTPUT_DIR"  # Remove if exists
-        mv "${DATASET_DIR}/subject_text${MAX_TEXTS}" "$OUTPUT_DIR"
-    fi
-    
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Dataset split by subject successfully${NC}"
-    else
-        echo -e "${RED}✗ Failed to split dataset${NC}"
-        return 1
-    fi
-    echo ""
-    
-    echo -e "${GREEN}✓ ${DATASET_TYPE} dataset preprocessing complete!${NC}"
-    echo -e "${GREEN}Generated files:${NC}"
-    echo -e "  - ${prefix}_unique_achievement_standards.csv"
-    echo -e "  - ${prefix}_text_achievement_standards.csv"
-    echo -e "  - ${OUTPUT_DIR}/ (directory with subject-specific CSV files)"
-    echo ""
-}
+# Step 1: Extract unique standards from Training dataset
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 1: Extract Unique Standards from Training${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+TRAIN_LABEL_DIR="${BASE_DIR}/Training/label"
+echo -e "Label Directory: ${YELLOW}${TRAIN_LABEL_DIR}${NC}"
 
-# Process both Training and Validation datasets
-process_dataset "Training"
+if [ ! -d "$TRAIN_LABEL_DIR" ]; then
+    echo -e "${RED}Error: Training label directory not found at ${TRAIN_LABEL_DIR}${NC}"
+    exit 1
+fi
+
+python ../src/preprocessing/extract_standards.py "$TRAIN_LABEL_DIR" "${DATASET_DIR}/unique_achievement_standards.csv"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Standards extracted successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to extract standards${NC}"
+    exit 1
+fi
 echo ""
-process_dataset "Validation"
+
+# Step 2: Add text samples to each standard
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 2: Add Text Samples from Training${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/add_text_to_standards.py "$TRAIN_LABEL_DIR" \
+    --csv_path "${DATASET_DIR}/unique_achievement_standards.csv" \
+    --output_csv "${DATASET_DIR}/text_achievement_standards.csv" \
+    --max_texts "$MAX_TEXTS"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Text samples added successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to add text samples${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 3: Verify not empty (optional)
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 3: Verify No Empty Data (Optional)${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/verify_not_empty.py "${DATASET_DIR}/text_achievement_standards.csv"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Verification passed${NC}"
+else
+    echo -e "${YELLOW}⚠ Verification warning (not critical)${NC}"
+fi
+echo ""
+
+# Step 4: Check insufficient text
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 4: Check Insufficient Text${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/check_insufficient_text.py --min_texts "$MIN_TEXTS"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Insufficient text check completed${NC}"
+else
+    echo -e "${RED}✗ Failed to check insufficient text${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 5: Add additional text samples from Validation dataset
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 5: Add Additional Text from Validation${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+VAL_LABEL_DIR="${BASE_DIR}/Validation/label"
+echo -e "Label Directory: ${YELLOW}${VAL_LABEL_DIR}${NC}"
+
+if [ ! -d "$VAL_LABEL_DIR" ]; then
+    echo -e "${RED}Error: Validation label directory not found at ${VAL_LABEL_DIR}${NC}"
+    exit 1
+fi
+
+python ../src/preprocessing/add_additional_text_to_standards.py "$VAL_LABEL_DIR" \
+    --insufficient_csv "${DATASET_DIR}/insufficient_text.csv" \
+    --text_standards_csv "${DATASET_DIR}/text_achievement_standards.csv" \
+    --output_csv "${DATASET_DIR}/text_achievement_standards.csv" \
+    --max_texts "$MAX_TEXTS"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Additional text samples added successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to add additional text samples${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 6: Check insufficient text again
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 6: Check Insufficient Text Again${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/check_insufficient_text.py --min_texts "$MIN_TEXTS"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Insufficient text check completed${NC}"
+else
+    echo -e "${RED}✗ Failed to check insufficient text${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 7: Filter standards and split into train/valid
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 7: Filter Standards and Split into Train/Valid${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/filter_standards.py \
+    --num_texts "$NUM_TEXTS" \
+    --input_csv "${DATASET_DIR}/text_achievement_standards.csv" \
+    --train_csv "${DATASET_DIR}/train.csv" \
+    --valid_csv "${DATASET_DIR}/valid.csv"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Standards filtered and split successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to filter standards${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 8: Split train CSV by subject
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 8: Split Train Dataset by Subject${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/split_subject.py \
+    --input "${DATASET_DIR}/train.csv" \
+    --output "train_${NUM_TEXTS}" \
+    --max-texts "$NUM_TEXTS" \
+    --encoding "utf-8-sig"
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Train dataset split by subject successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to split train dataset${NC}"
+    exit 1
+fi
+echo ""
+
+# Step 9: Split valid CSV by subject
+echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  Step 9: Split Valid Dataset by Subject${NC}"
+echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+python ../src/preprocessing/split_subject.py \
+    --input "${DATASET_DIR}/valid.csv" \
+    --output "valid_${NUM_TEXTS}" \
+    --max-texts "$NUM_TEXTS" \
+    --encoding "utf-8-sig"
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Valid dataset split by subject successfully${NC}"
+else
+    echo -e "${RED}✗ Failed to split valid dataset${NC}"
+    exit 1
+fi
 echo ""
 
 # Final Summary
@@ -119,15 +195,13 @@ echo -e "${GREEN}║  All Preprocessing Complete!${NC}"
 echo -e "${GREEN}╚═══════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${GREEN}Generated datasets:${NC}"
-echo -e "  ${YELLOW}Training:${NC}"
-echo -e "    - training_unique_achievement_standards.csv"
-echo -e "    - training_text_achievement_standards.csv"
-echo -e "    - training_subject_text${MAX_TEXTS}/"
-echo ""
-echo -e "  ${YELLOW}Validation:${NC}"
-echo -e "    - validation_unique_achievement_standards.csv"
-echo -e "    - validation_text_achievement_standards.csv"
-echo -e "    - validation_subject_text${MAX_TEXTS}/"
+echo -e "  - unique_achievement_standards.csv"
+echo -e "  - text_achievement_standards.csv"
+echo -e "  - insufficient_text.csv"
+echo -e "  - train.csv"
+echo -e "  - valid.csv"
+echo -e "  - train_${NUM_TEXTS}/ (directory with subject-specific train CSV files)"
+echo -e "  - valid_${NUM_TEXTS}/ (directory with subject-specific valid CSV files)"
 echo ""
 echo -e "${GREEN}Next steps:${NC}"
 echo -e "  1. Run cosine similarity on training: cd scripts && bash cosine_similarity.sh"
