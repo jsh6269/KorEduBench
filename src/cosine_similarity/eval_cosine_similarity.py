@@ -42,6 +42,14 @@ def evaluate_cosine_similarity_baseline(
     max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
+    # Validate that we have samples to evaluate
+    if num_samples == 0 or len(sample_texts) == 0:
+        print(f"\nWARNING: No samples found for subject '{subject}' in {input_csv}")
+        print(
+            f"   Skipping evaluation. Please check if the CSV file has valid text data."
+        )
+        return
+
     # Load embedding model
     print(f"\nLoading SentenceTransformer model: {model_name}")
     model = SentenceTransformer(model_name)
@@ -64,11 +72,23 @@ def evaluate_cosine_similarity_baseline(
     sims = util.cos_sim(emb_samples, emb_contents)
 
     # Top-k accuracy
-    topk_list = [1, 3, 10, 20, 40, 60]
+    # Filter topk_list to only include k values that don't exceed num_standards
+    original_topk_list = [1, 3, 10, 20, 40]
+    topk_list = [k for k in original_topk_list if k <= num_rows]
+
+    # Warn if any k values were filtered out
+    skipped_k = [k for k in original_topk_list if k > num_rows]
+    if skipped_k:
+        print(
+            f"Note: Skipping top-k accuracy for k={skipped_k} as num_standards={num_rows} is less than k"
+        )
+
     acc_dict = {}
 
     for k in topk_list:
-        topk_indices = torch.topk(sims, k=k, dim=1).indices.cpu().numpy()
+        # Additional safety check (should not be needed after filtering, but just in case)
+        actual_k = min(k, num_rows)
+        topk_indices = torch.topk(sims, k=actual_k, dim=1).indices.cpu().numpy()
         correct = sum(
             t in [codes[i] for i in idxs] for t, idxs in zip(true_codes, topk_indices)
         )

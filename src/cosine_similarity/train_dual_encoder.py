@@ -28,7 +28,7 @@ def fine_tune_dual_encoder(
     encoding=None,
     test_size=0.2,
     batch_size=16,
-    epochs=2,
+    epochs=6,
     lr=2e-5,
     max_samples_per_row=None,
 ):
@@ -49,11 +49,13 @@ def fine_tune_dual_encoder(
 
     # Build pairs
     print("Building sentence pairs for train/test...")
+    # Train pairs: no labels needed for MultipleNegativesRankingLoss
     train_pairs = build_pairs_from_df(
         row_train, max_samples_per_row, neg_ratio=1.0, use_labels=False
     )
+    # Test pairs: labels needed for EmbeddingSimilarityEvaluator
     test_pairs = build_pairs_from_df(
-        row_test, max_samples_per_row, neg_ratio=0.5, use_labels=False
+        row_test, max_samples_per_row, neg_ratio=0.5, use_labels=True
     )
 
     print(f"Train pairs: {len(train_pairs)} | Test pairs: {len(test_pairs)}")
@@ -118,7 +120,9 @@ if __name__ == "__main__":
     parser.add_argument("--encoding", type=str)
     parser.add_argument("--test_size", type=float, default=0.2)
     parser.add_argument("--batch_size", type=int, default=16)
-    parser.add_argument("--epochs", type=int, default=2)
+    parser.add_argument(
+        "--epochs", type=int, default=6, help="Maximum number of epochs (default: 6)"
+    )
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--max_samples_per_row", type=int, default=None)
     args = parser.parse_args()
