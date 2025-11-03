@@ -11,6 +11,32 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+def load_blacklist(blacklist_path):
+    """
+    Load blacklist JSON file and return a set of (code, content) tuples for fast lookup.
+    """
+    if not os.path.exists(blacklist_path):
+        print(f"Blacklist file not found: {blacklist_path}")
+        return set()
+    
+    try:
+        with open(blacklist_path, "r", encoding="utf-8") as f:
+            blacklist_data = json.load(f)
+        
+        # Create a set of (code, content) tuples for fast lookup
+        blacklist_set = set()
+        for code, contents in blacklist_data.items():
+            for content in contents:
+                # Normalize content (strip whitespace)
+                blacklist_set.add((code, content.strip()))
+        
+        print(f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded")
+        return blacklist_set
+    except Exception as e:
+        print(f"Error loading Blacklist file: {e}")
+        return set()
+
+
 def extract_unique_standards(
     label_dir="label", output_csv=None
 ):
@@ -18,6 +44,7 @@ def extract_unique_standards(
     Extract 2022 achievement standard (code, content) from zip files in the label directory
     CSV column: subject, school, grade, code, content
     Order: subject → code
+    Excluded: (code, content) combinations in Blacklist.
     """
     if output_csv is None:
         output_csv = PROJECT_ROOT / "dataset" / "unique_achievement_standards.csv"
@@ -25,6 +52,12 @@ def extract_unique_standards(
     
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    
+    # Load blacklist
+    script_dir = Path(__file__).resolve().parent
+    blacklist_path = script_dir / "2022_blacklist.json"
+    blacklist_set = load_blacklist(blacklist_path)
+    
     # key: code, value: (content, subject, school, grade)
     unique_standards = {}
 
@@ -35,10 +68,10 @@ def extract_unique_standards(
             if file.endswith(".zip"):
                 zip_files.append(os.path.join(root, file))
 
-    print(f"총 {len(zip_files)}개의 zip 파일이 발견되었습니다.\n")
+    print(f"Total {len(zip_files)} zip files found.\n")
 
     # iterate zip files
-    for zip_path in tqdm(zip_files, desc="ZIP 파일 처리 중", unit="zip"):
+    for zip_path in tqdm(zip_files, desc="Processing zip files", unit="zip"):
         try:
             with zipfile.ZipFile(zip_path, "r") as zf:
                 json_files = [n for n in zf.namelist() if n.endswith(".json")]
@@ -46,7 +79,7 @@ def extract_unique_standards(
                 # iterate json files
                 for name in tqdm(
                     json_files,
-                    desc=f"{os.path.basename(zip_path)} 내부",
+                    desc=f"Processing {os.path.basename(zip_path)}",
                     leave=False,
                     unit="json",
                 ):
@@ -68,9 +101,18 @@ def extract_unique_standards(
                                 continue
                             code = s[s.find("[") + 1 : s.find("]")]
                             content = s[s.find("]") + 1 :].strip()
+                            trimmed_content = content.replace("\n", " ").strip()
+                            
+                            # Check blacklist: skip if (code, content) combination is in blacklist
+                            if (code, content) in blacklist_set:
+                                continue
+
+                            if (code, trimmed_content) in blacklist_set:
+                                continue
+                            
                             if code not in unique_standards:
                                 unique_standards[code] = (
-                                    content,
+                                    trimmed_content,
                                     subject,
                                     school,
                                     grade,

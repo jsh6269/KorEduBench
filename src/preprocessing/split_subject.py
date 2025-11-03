@@ -8,11 +8,22 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
-def split_csv_by_subject(input_path: str, max_texts: int, encoding: str):
+def split_csv_by_subject(input_path: str, max_texts: int, encoding: str, output_dir_name: str = None):
     """
-    Split input csv file into subjects, parse contents and save them into subject_text{num} directory
+    Split input csv file into subjects, parse contents and save them into specified directory
+    
+    Args:
+        input_path: Input CSV file path
+        max_texts: Number of text columns to include
+        encoding: Encoding of CSV file
+        output_dir_name: Output directory name (default: subject_text{max_texts})
+                         Will be created at PROJECT_ROOT/dataset/{output_dir_name}
     """
-    output_dir = PROJECT_ROOT / "dataset" / f"subject_text{max_texts}"
+    if output_dir_name is None:
+        output_dir = PROJECT_ROOT / "dataset" / f"subject_text{max_texts}"
+    else:
+        output_dir = PROJECT_ROOT / "dataset" / output_dir_name
+    
     os.makedirs(output_dir, exist_ok=True)
     df = pd.read_csv(input_path, encoding=encoding)
 
@@ -48,12 +59,19 @@ if __name__ == "__main__":
         "--max-texts",
         "-n",
         type=int,
-        default=10,
+        default=80,
         help="Number of text columns to include (default: 10)",
     )
     parser.add_argument(
         "--encoding", "-e", default="utf-8", help="Encoding of CSV file"
     )
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=str,
+        default=None,
+        help="Output directory name (default: subject_text{max_texts}). Will be created at PROJECT_ROOT/dataset/{output_dir_name}",
+    )
     args = parser.parse_args()
 
-    split_csv_by_subject(args.input, args.max_texts, args.encoding)
+    split_csv_by_subject(args.input, args.max_texts, args.encoding, args.output)

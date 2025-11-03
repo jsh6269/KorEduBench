@@ -13,6 +13,32 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+def load_blacklist(blacklist_path):
+    """
+    Load blacklist JSON file and return a set of (code, content) tuples for fast lookup.
+    """
+    if not os.path.exists(blacklist_path):
+        print(f"Blacklist file not found: {blacklist_path}")
+        return set()
+    
+    try:
+        with open(blacklist_path, "r", encoding="utf-8") as f:
+            blacklist_data = json.load(f)
+        
+        # Create a set of (code, content) tuples for fast lookup
+        blacklist_set = set()
+        for code, contents in blacklist_data.items():
+            for content in contents:
+                # Normalize content (strip whitespace)
+                blacklist_set.add((code, content.strip()))
+        
+        print(f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded")
+        return blacklist_set
+    except Exception as e:
+        print(f"Error loading Blacklist file: {e}")
+        return set()
+
+
 def append_texts_to_csv(
     label_dir="label",
     csv_path=None,
@@ -49,6 +75,11 @@ def append_texts_to_csv(
     # Map code to row index
     code_to_idx = {row["code"]: idx for idx, row in df.iterrows()}
 
+    # Load blacklist
+    script_dir = Path(__file__).resolve().parent
+    blacklist_path = script_dir / "2022_blacklist.json"
+    blacklist_set = load_blacklist(blacklist_path)
+
     # Collect all ZIP files
     zip_files = [
         os.path.join(root, f)
@@ -75,13 +106,12 @@ def append_texts_to_csv(
 
                         src_info = data.get("source_data_info", {})
                         learning = data.get("learning_data_info", {})
+                        try:
+                            text = learning.get("text_description", "").strip()
+                        except:
+                            continue
 
-                        combined_text = " ".join(
-                            str(learning.get(k, "")).strip()
-                            for k in ("text_description", "text_qa", "text_an")
-                            if str(learning.get(k, "")).strip()
-                        ).strip()
-                        if not combined_text:
+                        if not text:
                             continue
 
                         standards = src_info.get("2022_achievement_standard", [])
@@ -89,13 +119,23 @@ def append_texts_to_csv(
                             if "[" not in s or "]" not in s:
                                 continue
                             code = s[s.find("[") + 1 : s.find("]")]
+                            content = s[s.find("]") + 1 :].strip()
+                            trimmed_content = content.replace("\n", " ").strip()
+                            
+                            # Check blacklist: skip if (code, content) combination is in blacklist
+                            if (code, content) in blacklist_set:
+                                continue
+                            
+                            if (code, trimmed_content) in blacklist_set:
+                                continue
+                            
                             if code in code_to_idx:
                                 idx = code_to_idx[code]
                                 for col in [
                                     c for c in df.columns if c.startswith("text_")
                                 ]:
                                     if not str(df.at[idx, col]).strip():
-                                        df.at[idx, col] = combined_text
+                                        df.at[idx, col] = text
                                         break
 
                     except json.JSONDecodeError:
