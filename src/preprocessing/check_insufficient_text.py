@@ -34,10 +34,12 @@ def check_insufficient_text(input_csv, output_csv, min_texts=None):
         print("Warning: No text_ columns found in the CSV file.")
         return
     
-    # Set default min_texts to total number of text columns (find rows that are not fully filled)
+    # Set default min_texts to specified value or total number of text columns
     if min_texts is None:
         min_texts = len(text_cols)
-        print(f"Auto-detected: Looking for rows with < {min_texts} texts (i.e., not fully filled)")
+        print(f"Using total text column count: Looking for rows with < {min_texts} texts (i.e., not fully filled)")
+    else:
+        print(f"Using specified min_texts: Looking for rows with < {min_texts} texts")
     
     # Count non-empty texts per row
     def count_non_empty_texts(row):
@@ -55,13 +57,34 @@ def check_insufficient_text(input_csv, output_csv, min_texts=None):
     # Print statistics
     print(f"\n=== Text Count Statistics ===")
     print(f"Total text columns available: {len(text_cols)}")
-    print(f"Rows with 0 texts: {(df['_text_count'] == 0).sum()}")
-    print(f"Rows with 1-10 texts: {((df['_text_count'] >= 1) & (df['_text_count'] <= 10)).sum()}")
-    print(f"Rows with 11-50 texts: {((df['_text_count'] >= 11) & (df['_text_count'] <= 50)).sum()}")
-    print(f"Rows with 51-100 texts: {((df['_text_count'] >= 51) & (df['_text_count'] <= 100)).sum()}")
-    print(f"Rows with 101-150 texts: {((df['_text_count'] >= 101) & (df['_text_count'] <= 150)).sum()}")
-    print(f"Rows with 151-199 texts: {((df['_text_count'] >= 151) & (df['_text_count'] <= 199)).sum()}")
-    print(f"Rows with {len(text_cols)} texts (fully filled): {(df['_text_count'] == len(text_cols)).sum()}")
+    
+    # Dynamically generate intervals with step size 20
+    interval_size = 20
+    intervals = []
+    
+    # Add 0 texts
+    intervals.append((0, 0))
+    
+    # Generate intervals with step 20 up to min_texts
+    start = 1
+    while start < min_texts:
+        end = min(start + interval_size - 1, min_texts - 1)
+        intervals.append((start, end))
+        start += interval_size
+    
+    # Print interval statistics
+    for start_val, end_val in intervals:
+        if start_val == end_val:
+            count = (df['_text_count'] == start_val).sum()
+            print(f"Rows with {start_val} texts: {count}")
+        else:
+            count = ((df['_text_count'] >= start_val) & (df['_text_count'] <= end_val)).sum()
+            print(f"Rows with {start_val}-{end_val} texts: {count}")
+    
+    # Print fully filled (>= min_texts)
+    fully_filled_count = (df['_text_count'] >= min_texts).sum()
+    print(f"Rows with >= {min_texts} texts (fully filled): {fully_filled_count}")
+    
     print(f"Average texts per row: {df['_text_count'].mean():.2f}")
     print(f"Median texts per row: {df['_text_count'].median():.1f}")
     print(f"Min texts: {df['_text_count'].min()}, Max texts: {df['_text_count'].max()}")
@@ -80,18 +103,35 @@ def check_insufficient_text(input_csv, output_csv, min_texts=None):
     print(f"Saved to: {output_csv}")
     
     # Print statistics by subject
+    print("\n=== Statistics by Subject ===")
+    # Get sufficient rows (rows with >= min_texts)
+    sufficient_rows = df[df['_text_count'] >= min_texts]
+    
+    # Get all subjects from original dataframe
+    all_subjects = df['subject'].unique()
+    
+    for subject in sorted(all_subjects):
+        subject_insufficient = result_df[result_df['subject'] == subject]
+        subject_sufficient = sufficient_rows[sufficient_rows['subject'] == subject]
+        insufficient_count = len(subject_insufficient)
+        sufficient_count = len(subject_sufficient)
+        total_count = insufficient_count + sufficient_count
+        print(f"  - {subject}: {insufficient_count} insufficient, {sufficient_count} sufficient (total: {total_count})")
+    
+    print("\n=== Statistics by School ===")
+    # Get all schools from original dataframe
+    all_schools = df['school'].unique()
+    
+    for school in sorted(all_schools):
+        school_insufficient = result_df[result_df['school'] == school]
+        school_sufficient = sufficient_rows[sufficient_rows['school'] == school]
+        insufficient_count = len(school_insufficient)
+        sufficient_count = len(school_sufficient)
+        total_count = insufficient_count + sufficient_count
+        print(f"  - {school}: {insufficient_count} insufficient, {sufficient_count} sufficient (total: {total_count})")
+    
+    # Show first 10 rows as sample
     if len(result_df) > 0:
-        print("\n=== Statistics by Subject ===")
-        subject_counts = result_df['subject'].value_counts()
-        for subject, count in subject_counts.items():
-            print(f"  - {subject}: {count} rows")
-        
-        print("\n=== Statistics by School ===")
-        school_counts = result_df['school'].value_counts()
-        for school, count in school_counts.items():
-            print(f"  - {school}: {count} rows")
-        
-        # Show first 10 rows as sample
         print("\n=== Sample rows (first 10) ===")
         for idx, row in result_df.head(10).iterrows():
             print(f"  - Code: {row['code']}, Subject: {row['subject']}, School: {row['school']}, Grade: {row['grade']}, Texts: {row['text_count']}")
@@ -113,8 +153,8 @@ if __name__ == "__main__":
     import argparse
     
     parser = argparse.ArgumentParser(description="Check for rows with insufficient text in achievement standards CSV")
-    parser.add_argument("--min_texts", type=int, default=None, 
-                      help="Minimum number of texts required (default: None, auto-detects total text columns to find unfilled rows)")
+    parser.add_argument("--min_texts", type=int, default=200, 
+                      help="Minimum number of texts required to be considered sufficient (default: 200)")
     args = parser.parse_args()
     
     # Get project root (assuming this script is in project root)
@@ -127,10 +167,7 @@ if __name__ == "__main__":
     print("=" * 70)
     print(f"Input CSV: {input_csv}")
     print(f"Output CSV: {output_csv}")
-    if args.min_texts is None:
-        print(f"Minimum texts required: Auto-detect (will find all rows that are not fully filled)")
-    else:
-        print(f"Minimum texts required: {args.min_texts}")
+    print(f"Minimum texts required (sufficient threshold): {args.min_texts}")
     print("=" * 70)
     
     if not input_csv.exists():
