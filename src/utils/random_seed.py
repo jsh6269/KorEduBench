@@ -39,7 +39,7 @@ def set_basic_random_seed(seed: int):
     np.random.seed(seed)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # without this line, x would be different in every execution.
     set_train_random_seed(0)
 

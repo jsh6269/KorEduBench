@@ -8,10 +8,12 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
-def split_csv_by_subject(input_path: str, max_texts: int, encoding: str, output_dir_name: str = None):
+def split_csv_by_subject(
+    input_path: str, max_texts: int, encoding: str, output_dir_name: str = None
+):
     """
     Split input csv file into subjects, parse contents and save them into specified directory
-    
+
     Args:
         input_path: Input CSV file path
         max_texts: Number of text columns to include
@@ -23,7 +25,7 @@ def split_csv_by_subject(input_path: str, max_texts: int, encoding: str, output_
         output_dir = PROJECT_ROOT / "dataset" / f"subject_text{max_texts}"
     else:
         output_dir = PROJECT_ROOT / "dataset" / output_dir_name
-    
+
     os.makedirs(output_dir, exist_ok=True)
     df = pd.read_csv(input_path, encoding=encoding)
 

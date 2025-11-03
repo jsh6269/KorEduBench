@@ -17,7 +17,7 @@ from src.utils.common import detect_encoding
 @dataclass
 class EvaluationData:
     """Container for evaluation data loaded from CSV."""
-    
+
     df: pd.DataFrame
     contents: List[str]  # Achievement standard contents
     codes: List[str]  # Achievement standard codes
@@ -38,17 +38,17 @@ def load_evaluation_data(
 ) -> EvaluationData:
     """
     Load and preprocess CSV data for evaluation.
-    
+
     Args:
         input_csv: Path to input CSV file
         encoding: CSV encoding (default: auto-detect)
         max_samples_per_row: Maximum number of text samples to use per row (default: auto-detect)
-        max_total_samples: Maximum total number of samples across all rows. 
+        max_total_samples: Maximum total number of samples across all rows.
                           If specified, randomly samples from all available samples (default: no limit)
-    
+
     Returns:
         EvaluationData object containing all necessary data for evaluation
-    
+
     Raises:
         ValueError: If required columns are missing or no text_ columns are found
     """
@@ -58,7 +58,7 @@ def load_evaluation_data(
 
     # Load CSV
     df = pd.read_csv(input_csv, encoding=encoding)
-    
+
     # Validate required columns
     required_cols = ["code", "content"]
     for col in required_cols:
@@ -113,11 +113,13 @@ def load_evaluation_data(
         indices = list(range(len(sample_texts)))
         random.shuffle(indices)
         selected_indices = sorted(indices[:max_total_samples])
-        
+
         sample_texts = [sample_texts[i] for i in selected_indices]
         true_codes = [true_codes[i] for i in selected_indices]
-        
-        print(f"Total evaluation samples: {len(sample_texts)} (randomly sampled from {len(indices)} by max_total_samples={max_total_samples})")
+
+        print(
+            f"Total evaluation samples: {len(sample_texts)} (randomly sampled from {len(indices)} by max_total_samples={max_total_samples})"
+        )
     else:
         print(f"Total evaluation samples: {len(sample_texts)}")
 
@@ -135,4 +137,3 @@ def load_evaluation_data(
         max_samples_per_row=max_samples_per_row,
         folder_name=folder_name,
     )
-

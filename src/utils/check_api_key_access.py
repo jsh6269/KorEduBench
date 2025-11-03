@@ -21,13 +21,16 @@ def openai_entry(key_lst: List[str], model: str = "text-davinci-003"):
                 max_tokens=256,
                 frequency_penalty=0.0,
                 presence_penalty=0.0,
-                logprobs=0
+                logprobs=0,
             )
             access_key_lst.append(key_item)
             print(response_lst)
         except openai.error.RateLimitError as limiterror:
             limiterror_info = str(limiterror)
-            if limiterror_info == "You exceeded your current quota, please check your plan and billing details.":
+            if (
+                limiterror_info
+                == "You exceeded your current quota, please check your plan and billing details."
+            ):
                 unaccess_key_lst.append(key_item)
             print(model, "openai.error.RateLimitError", limiterror)
         except openai.error.InvalidRequestError as e:
@@ -47,20 +50,19 @@ def openai_entry(key_lst: List[str], model: str = "text-davinci-003"):
         print(f'"{key}",')
 
 
-
 if __name__ == "__main__":
     # Example usage:
     # key_lst = [
     #     "sk-YOUR_OPENAI_API_KEY_HERE",
     # ]
     # openai_entry(key_lst, model="text-davinci-003")
-    
+
     # Load API key from environment variable
     import os
+
     api_key = os.getenv("OPENAI_API_KEY")
     if api_key:
         key_lst = [api_key]
         openai_entry(key_lst, model="text-davinci-003")
     else:
         print("Warning: OPENAI_API_KEY environment variable not set")
-

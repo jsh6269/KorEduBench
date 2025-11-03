@@ -20,19 +20,21 @@ def load_blacklist(blacklist_path):
     if not os.path.exists(blacklist_path):
         print(f"Blacklist file not found: {blacklist_path}")
         return set()
-    
+
     try:
         with open(blacklist_path, "r", encoding="utf-8") as f:
             blacklist_data = json.load(f)
-        
+
         # Create a set of (code, content) tuples for fast lookup
         blacklist_set = set()
         for code, contents in blacklist_data.items():
             for content in contents:
                 # Normalize content (strip whitespace)
                 blacklist_set.add((code, content.strip()))
-        
-        print(f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded")
+
+        print(
+            f"Blacklist file loaded: {len(blacklist_set)} (code, content) combinations excluded"
+        )
         return blacklist_set
     except Exception as e:
         print(f"Error loading Blacklist file: {e}")
@@ -50,7 +52,7 @@ def append_texts_to_csv(
         csv_path = PROJECT_ROOT / "dataset" / "unique_achievement_standards.csv"
     if output_csv is None:
         output_csv = PROJECT_ROOT / "dataset" / "text_achievement_standards.csv"
-    
+
     csv_path = str(csv_path)
     output_csv = str(output_csv)
 
@@ -121,14 +123,14 @@ def append_texts_to_csv(
                             code = s[s.find("[") + 1 : s.find("]")]
                             content = s[s.find("]") + 1 :].strip()
                             trimmed_content = content.replace("\n", " ").strip()
-                            
+
                             # Check blacklist: skip if (code, content) combination is in blacklist
                             if (code, content) in blacklist_set:
                                 continue
-                            
+
                             if (code, trimmed_content) in blacklist_set:
                                 continue
-                            
+
                             if code in code_to_idx:
                                 idx = code_to_idx[code]
                                 for col in [

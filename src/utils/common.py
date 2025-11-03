@@ -19,14 +19,14 @@ def detect_encoding(csv_path: str) -> str:
 
 def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0, use_labels=True):
     """Build positive and negative pairs for training.
-    
+
     Args:
         df: DataFrame with 'content' column and 'text_' columns
         max_samples_per_row: Maximum number of text samples to use per row
         neg_ratio: Ratio of negative to positive samples
         use_labels: If True, add labels (1.0/0.0) to InputExample for cross-encoder
                    If False, no labels for dual-encoder
-    
+
     Returns:
         List of InputExample objects
     """
@@ -81,4 +81,3 @@ def build_pairs_from_df(df, max_samples_per_row=None, neg_ratio=1.0, use_labels=
 
     random.shuffle(pairs)
     return pairs
-

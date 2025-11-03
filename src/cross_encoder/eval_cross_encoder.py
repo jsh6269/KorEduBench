@@ -14,8 +14,8 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.random_seed import set_predict_random_seed
 from src.utils.data_loader import load_evaluation_data
+from src.utils.random_seed import set_predict_random_seed
 
 
 def evaluate_bi_cross_pipeline(
@@ -33,7 +33,7 @@ def evaluate_bi_cross_pipeline(
 
     # === Load and preprocess data ===
     data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
-    
+
     # Extract data for convenience
     contents = data.contents
     codes = data.codes

@@ -13,8 +13,8 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.random_seed import set_predict_random_seed
 from src.utils.data_loader import load_evaluation_data
+from src.utils.random_seed import set_predict_random_seed
 
 
 def evaluate_cosine_similarity_baseline(
@@ -30,7 +30,7 @@ def evaluate_cosine_similarity_baseline(
 
     # Load and preprocess data
     data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
-    
+
     # Extract data for convenience
     contents = data.contents
     codes = data.codes
@@ -171,7 +171,10 @@ if __name__ == "__main__":
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
     parser.add_argument(
-        "--json_path", type=str, default=None, help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json)."
+        "--json_path",
+        type=str,
+        default=None,
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",

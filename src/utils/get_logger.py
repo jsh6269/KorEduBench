@@ -2,8 +2,12 @@ import logging
 import os
 
 
-def get_info_logger(name: str, save_log_file: str = None, print_to_console=True,
-                    log_format: str = '%(asctime)s - %(name)s : - %(message)s', ):
+def get_info_logger(
+    name: str,
+    save_log_file: str = None,
+    print_to_console=True,
+    log_format: str = "%(asctime)s - %(name)s : - %(message)s",
+):
     """get information logger"""
     logging.basicConfig(format=log_format, level=logging.INFO)
     logger = logging.getLogger(name)
@@ -11,7 +15,7 @@ def get_info_logger(name: str, save_log_file: str = None, print_to_console=True,
     # logger.propagate = False
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter(log_format, datefmt='%Y-%m-%d %H:%M:%S')
+    formatter = logging.Formatter(log_format, datefmt="%Y-%m-%d %H:%M:%S")
 
     if save_log_file is not None:
         output_dir = os.path.dirname(save_log_file)
