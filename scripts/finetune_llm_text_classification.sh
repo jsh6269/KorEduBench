@@ -9,13 +9,13 @@
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
-DATASET_FOLDER="${PROJECT_ROOT}/dataset/validation_subject_text20"
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_PATH="${PROJECT_ROOT}/model/finetuned_llm"  # Path to fine-tuned model
 MAX_NEW_TOKENS=50
 TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=6144
-MAX_CANDIDATES=150
+MAX_CANDIDATES=120
 MAX_TOTAL_SAMPLES=100
 USE_LORA=False  # Set to True to use LoRA adapters instead of merged model
 

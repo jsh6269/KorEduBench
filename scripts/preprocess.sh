@@ -7,6 +7,12 @@ set -e  # Exit on error
 
 # Configuration
 BASE_DIR="/mnt/e/2025_2_KorEduBench"
+# folder sturcture of 2025_2_KorEduBench is like this:
+# 2025_2_KorEduBench
+# ├── Training
+# │   └── label
+# └── Validation
+#     └── label
 MAX_TEXTS=160
 MIN_TEXTS=160
 NUM_TEXTS=160
@@ -160,7 +166,7 @@ echo -e "${BLUE}╚════════════════════�
 HALF_NUM_TEXTS=$((NUM_TEXTS / 2))
 python ../src/preprocessing/split_subject.py \
     --input "${DATASET_DIR}/train.csv" \
-    --output "train_text${HALF_NUM_TEXTS}" \
+    --output "train_${HALF_NUM_TEXTS}" \
     --max-texts "$HALF_NUM_TEXTS" \
     --encoding "utf-8-sig"
 
@@ -178,7 +184,7 @@ echo -e "${BLUE}║  Step 9: Split Valid Dataset by Subject${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
 python ../src/preprocessing/split_subject.py \
     --input "${DATASET_DIR}/valid.csv" \
-    --output "valid_text${HALF_NUM_TEXTS}" \
+    --output "valid_${HALF_NUM_TEXTS}" \
     --max-texts "$HALF_NUM_TEXTS" \
     --encoding "utf-8-sig"
 
@@ -201,8 +207,8 @@ echo -e "  - text_achievement_standards.csv"
 echo -e "  - insufficient_text.csv"
 echo -e "  - train.csv"
 echo -e "  - valid.csv"
-echo -e "  - train_text${HALF_NUM_TEXTS}/ (directory with subject-specific train CSV files)"
-echo -e "  - valid_text${HALF_NUM_TEXTS}/ (directory with subject-specific valid CSV files)"
+echo -e "  - train_${HALF_NUM_TEXTS}/ (directory with subject-specific train CSV files)"
+echo -e "  - valid_${HALF_NUM_TEXTS}/ (directory with subject-specific valid CSV files)"
 echo ""
 echo -e "${GREEN}Next steps:${NC}"
 echo -e "  1. Run cosine similarity on training: cd scripts && bash cosine_similarity.sh"

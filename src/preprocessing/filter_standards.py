@@ -184,11 +184,17 @@ def split_texts_to_train_valid(input_csv, train_csv, valid_csv, num_texts, seed=
     valid_df = pd.DataFrame(valid_rows)
 
     # Ensure all text columns exist in output (fill with empty string if missing)
-    for col in text_cols:
-        if col not in train_df.columns:
-            train_df[col] = ""
-        if col not in valid_df.columns:
-            valid_df[col] = ""
+    train_new_cols = {col: "" for col in text_cols if col not in train_df.columns}
+    valid_new_cols = {col: "" for col in text_cols if col not in valid_df.columns}
+
+    if train_new_cols:
+        # Use pd.concat instead of assign for better performance with many columns
+        new_train_df = pd.DataFrame(train_new_cols, index=train_df.index)
+        train_df = pd.concat([train_df, new_train_df], axis=1)
+    if valid_new_cols:
+        # Use pd.concat instead of assign for better performance with many columns
+        new_valid_df = pd.DataFrame(valid_new_cols, index=valid_df.index)
+        valid_df = pd.concat([valid_df, new_valid_df], axis=1)
 
     # Reorder columns: meta columns first, then text columns in numeric order
     # Sort text columns by their numeric suffix (text_1, text_2, ..., text_200)

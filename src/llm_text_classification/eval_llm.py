@@ -167,9 +167,16 @@ def evaluate_llm_classification(
         print(
             f"⚠️  Warning: Number of achievement standards ({num_rows}) exceeds max_candidates ({max_candidates})"
         )
-        print(f"⚠️  Using only the first {max_candidates} standards as candidates")
+        print(f"⚠️  Randomly sampling {max_candidates} standards as candidates")
+        # Randomly sample indices and sort them
+        selected_indices = sorted(random.sample(range(num_rows), max_candidates))
+    else:
+        selected_indices = list(range(num_candidates))
 
-    candidates = [(i + 1, codes[i], contents[i]) for i in range(num_candidates)]
+    candidates = [
+        (i + 1, codes[selected_indices[i]], contents[selected_indices[i]])
+        for i in range(num_candidates)
+    ]
 
     # === Load LLM Model ===
     model, tokenizer = load_llm_model(model_name, device)
