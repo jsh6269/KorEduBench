@@ -55,8 +55,14 @@ Select ONLY ONE achievement standard that best describes the textbook text above
 
 IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
 
-Example output format:
+Example output format1:
 10영03-04
+
+Example output format2:
+9수04-11
+
+Example output format3:
+12정보02-01
 
 # Answer"""
 
@@ -65,8 +71,14 @@ Select ONLY ONE achievement standard that best describes the textbook text above
 
 IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
 
-Example output format:
+Example output format1:
 10영03-04
+
+Example output format2:
+9수04-11
+
+Example output format3:
+12정보02-01
 
 # Answer"""
 

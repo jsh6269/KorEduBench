@@ -217,7 +217,8 @@ def finetune_llm(
         formatted_examples.append({"text": format_prompt_for_training(example)})
 
     train_dataset = Dataset.from_list(formatted_examples)
-    print(f"Dataset size: {len(train_dataset)}")
+    train_dataset = train_dataset.shuffle(seed=seed)
+    print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
     # === Set up training arguments ===
     training_args = TrainingArguments(
