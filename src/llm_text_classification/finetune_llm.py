@@ -79,15 +79,11 @@ def prepare_training_examples(
         # Create prompt using the same format as evaluation
         prompt = create_classification_prompt(text, candidates)
 
-        # The completion is just the code
-        completion = code
-
         training_examples.append(
             {
                 "prompt": prompt,
-                "completion": completion,
+                "completion": code,
                 "text": text,
-                "code": code,
             }
         )
 
@@ -182,7 +178,7 @@ def finetune_llm(
 
     # === Load model with Unsloth ===
     print(f"\nLoading model with Unsloth: {model_name}")
-    model, tokenizer = FastLanguageModel.from_pretrained(
+    base_model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=model_name,
         max_seq_length=max_seq_length,
         dtype=None,  # Auto-detect
@@ -192,7 +188,7 @@ def finetune_llm(
     # === Add LoRA adapters ===
     print("\nAdding LoRA adapters...")
     model = FastLanguageModel.get_peft_model(
-        model,
+        base_model,
         r=lora_r,
         target_modules=[
             "q_proj",
