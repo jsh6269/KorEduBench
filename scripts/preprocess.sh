@@ -157,10 +157,11 @@ echo ""
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║  Step 8: Split Train Dataset by Subject${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
+HALF_NUM_TEXTS=$((NUM_TEXTS / 2))
 python ../src/preprocessing/split_subject.py \
     --input "${DATASET_DIR}/train.csv" \
-    --output "train_${NUM_TEXTS}" \
-    --max-texts "$NUM_TEXTS" \
+    --output "train_text${HALF_NUM_TEXTS}" \
+    --max-texts "$HALF_NUM_TEXTS" \
     --encoding "utf-8-sig"
 
 if [ $? -eq 0 ]; then
@@ -177,8 +178,8 @@ echo -e "${BLUE}║  Step 9: Split Valid Dataset by Subject${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
 python ../src/preprocessing/split_subject.py \
     --input "${DATASET_DIR}/valid.csv" \
-    --output "valid_${NUM_TEXTS}" \
-    --max-texts "$NUM_TEXTS" \
+    --output "valid_text${HALF_NUM_TEXTS}" \
+    --max-texts "$HALF_NUM_TEXTS" \
     --encoding "utf-8-sig"
 
 if [ $? -eq 0 ]; then
@@ -200,8 +201,8 @@ echo -e "  - text_achievement_standards.csv"
 echo -e "  - insufficient_text.csv"
 echo -e "  - train.csv"
 echo -e "  - valid.csv"
-echo -e "  - train_${NUM_TEXTS}/ (directory with subject-specific train CSV files)"
-echo -e "  - valid_${NUM_TEXTS}/ (directory with subject-specific valid CSV files)"
+echo -e "  - train_text${HALF_NUM_TEXTS}/ (directory with subject-specific train CSV files)"
+echo -e "  - valid_text${HALF_NUM_TEXTS}/ (directory with subject-specific valid CSV files)"
 echo ""
 echo -e "${GREEN}Next steps:${NC}"
 echo -e "  1. Run cosine similarity on training: cd scripts && bash cosine_similarity.sh"
