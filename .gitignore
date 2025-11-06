@@ -224,3 +224,4 @@ trash_bin/
 checkpoints/
 saved_models/
 logs/
+model/

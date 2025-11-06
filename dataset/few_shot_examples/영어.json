@@ -1,0 +1,37 @@
+[
+  {
+    "school": "초등학교",
+    "grade": "3학년",
+    "code": "4영01-02",
+    "content": "알파벳 대소문자를 식별하여 읽는다.",
+    "text": "I, i, ink"
+  },
+  {
+    "school": "초등학교",
+    "grade": "3학년",
+    "code": "4영01-07",
+    "content": "일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.",
+    "text": "What does B like to eat for dinner?"
+  },
+  {
+    "school": "초등학교",
+    "grade": "4학년",
+    "code": "4영04-03",
+    "content": "실물이나 그림을 보고 쉽고 간단한 낱말이나 어구를 쓸 수 있다.",
+    "text": "Water A liquid that puts out fires."
+  },
+  {
+    "school": "초등학교",
+    "grade": "5학년",
+    "code": "6영01-04",
+    "content": "일상생활 주제에 관한 담화나 글의 세부 정보를 파악한다.",
+    "text": "Sujeonggwa is a Korean drink."
+  },
+  {
+    "school": "중학교",
+    "grade": "1학년",
+    "code": "9영01-04",
+    "content": "친숙한 주제에 관한 담화나 글에서 일이나 사건의 논리적 관계를 파악한다.",
+    "text": "Minho Hello. May I speak to Kelly, please? Minho Hello. May I speak to Kelly, please?"
+  }
+]
