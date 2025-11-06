@@ -1,0 +1,452 @@
+"""
+Inference script for trained multi-class achievement standard classifier.
+"""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+import numpy as np
+import pandas as pd
+import torch
+import torch.nn.functional as F
+from tqdm import tqdm
+from transformers import AutoTokenizer
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.classification.train_multiclass_classifier import AchievementClassifier
+
+
+def load_model(model_dir: str, device: torch.device):
+    """Load trained model and mappings"""
+
+    model_dir = Path(model_dir)
+
+    # Try to load config, use defaults if not found
+    config_path = model_dir / "config.json"
+    if not config_path.exists():
+        # Try parent directory
+        config_path = model_dir.parent / "config.json"
+
+    if config_path.exists():
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = json.load(f)
+    else:
+        # Use defaults if config not found
+        print("Warning: config.json not found. Using default values.")
+        config = {
+            "base_model": "klue/roberta-large",
+            "max_length": 256,
+            "dropout": 0.1,
+            "pooling": "cls",
+        }
+
+    # Load mappings (required)
+    mappings_path = model_dir.parent / "label_mappings.json"
+    if not mappings_path.exists():
+        mappings_path = model_dir / "label_mappings.json"
+
+    if not mappings_path.exists():
+        raise FileNotFoundError(
+            f"label_mappings.json not found in {model_dir} or {model_dir.parent}"
+        )
+
+    with open(mappings_path, "r", encoding="utf-8") as f:
+        mappings = json.load(f)
+
+    # Get num_classes from mappings if not in config
+    if "num_classes" not in config:
+        config["num_classes"] = mappings.get(
+            "num_classes", len(mappings.get("code_to_idx", {}))
+        )
+
+    # Load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(model_dir)
+
+    # Try to infer base_model from tokenizer config if not in config
+    if "base_model" not in config or not config["base_model"]:
+        # Try to read from tokenizer_config.json
+        tokenizer_config_path = model_dir / "tokenizer_config.json"
+        if tokenizer_config_path.exists():
+            with open(tokenizer_config_path, "r", encoding="utf-8") as f:
+                tokenizer_config = json.load(f)
+                # Try common fields
+                if "model_type" in tokenizer_config:
+                    model_type = tokenizer_config["model_type"]
+                    if model_type == "roberta":
+                        config["base_model"] = "klue/roberta-large"
+                    elif model_type == "bert":
+                        config["base_model"] = "klue/bert-base"
+                    else:
+                        config["base_model"] = f"klue/{model_type}-base"
+                else:
+                    config["base_model"] = "klue/roberta-large"  # Default
+        else:
+            config["base_model"] = "klue/roberta-large"  # Default
+
+    # Load model
+    model = AchievementClassifier(
+        model_name=config["base_model"],
+        num_classes=config["num_classes"],
+        dropout=config.get("dropout", 0.1),
+        pooling=config.get("pooling", "cls"),
+    )
+
+    model.load_state_dict(torch.load(model_dir / "model.pt", map_location=device))
+    model.to(device)
+    model.eval()
+
+    return model, tokenizer, config, mappings
+
+
+def predict_batch(
+    model: AchievementClassifier,
+    tokenizer,
+    texts: List[str],
+    device: torch.device,
+    max_length: int = 256,
+    batch_size: int = 32,
+    top_k: int = 5,
+) -> List[Dict]:
+    """
+    Predict achievement standards for a batch of texts.
+
+    Returns:
+        List of predictions, each containing top-k results with codes, contents, and probabilities.
+    """
+
+    all_results = []
+
+    for i in range(0, len(texts), batch_size):
+        batch_texts = texts[i : i + batch_size]
+
+        # Tokenize
+        encodings = tokenizer(
+            batch_texts,
+            max_length=max_length,
+            padding=True,
+            truncation=True,
+            return_tensors="pt",
+        )
+
+        input_ids = encodings["input_ids"].to(device)
+        attention_mask = encodings["attention_mask"].to(device)
+
+        # Predict
+        with torch.no_grad():
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+            logits = outputs["logits"]
+            probs = F.softmax(logits, dim=-1)
+
+        # Get top-k predictions for each sample
+        topk_probs, topk_indices = torch.topk(
+            probs, k=min(top_k, probs.size(1)), dim=-1
+        )
+
+        for prob_row, idx_row in zip(topk_probs, topk_indices):
+            result = {"top_k": []}
+
+            for prob, idx in zip(prob_row.cpu().numpy(), idx_row.cpu().numpy()):
+                result["top_k"].append(
+                    {
+                        "rank": len(result["top_k"]) + 1,
+                        "class_idx": int(idx),
+                        "probability": float(prob),
+                    }
+                )
+
+            all_results.append(result)
+
+    return all_results
+
+
+def predict_texts(
+    model_dir: str,
+    texts: List[str],
+    device: str = "cuda",
+    top_k: int = 5,
+    batch_size: int = 32,
+) -> List[Dict]:
+    """Main prediction function"""
+
+    device = torch.device(device if torch.cuda.is_available() else "cpu")
+
+    # Load model
+    print(f"Loading model from: {model_dir}")
+    model, tokenizer, config, mappings = load_model(model_dir, device)
+
+    idx_to_code = {int(k): v for k, v in mappings["idx_to_code"].items()}
+    code_to_content = mappings["code_to_content"]
+
+    print(f"Model loaded. {config['num_classes']} classes.")
+    print(f"Predicting for {len(texts)} texts...")
+
+    # Predict
+    results = predict_batch(
+        model,
+        tokenizer,
+        texts,
+        device,
+        max_length=config["max_length"],
+        batch_size=batch_size,
+        top_k=top_k,
+    )
+
+    # Add code and content to results
+    for result in results:
+        for item in result["top_k"]:
+            class_idx = item["class_idx"]
+            code = idx_to_code[class_idx]
+            item["code"] = code
+            item["content"] = code_to_content[code]
+
+    return results
+
+
+def evaluate_predictions(
+    predictions: List[Dict],
+    ground_truth_codes: List[str],
+    top_k_values: List[int] = [1, 3, 5, 10, 20],
+) -> Dict[str, float]:
+    """
+    Evaluate predictions against ground truth.
+
+    Args:
+        predictions: List of prediction results (each with 'top_k' list)
+        ground_truth_codes: List of ground truth codes
+        top_k_values: List of k values for top-k accuracy
+
+    Returns:
+        Dictionary with accuracy metrics for each top-k
+    """
+
+    if len(predictions) != len(ground_truth_codes):
+        raise ValueError(
+            f"Predictions ({len(predictions)}) and ground truth ({len(ground_truth_codes)}) length mismatch"
+        )
+
+    # Calculate top-k accuracies
+    top_k_accs = {k: 0.0 for k in top_k_values}
+    correct_counts = {k: 0 for k in top_k_values}
+
+    for pred, gt_code in zip(predictions, ground_truth_codes):
+        # Get predicted codes from top-k
+        pred_codes = [item["code"] for item in pred["top_k"]]
+
+        # Check if ground truth is in top-k
+        for k in top_k_values:
+            if k <= len(pred_codes):
+                if gt_code in pred_codes[:k]:
+                    correct_counts[k] += 1
+
+    # Calculate accuracies
+    total = len(predictions)
+    for k in top_k_values:
+        top_k_accs[k] = correct_counts[k] / total if total > 0 else 0.0
+
+    return top_k_accs, correct_counts
+
+
+def predict_from_csv(
+    model_dir: str,
+    input_csv: str,
+    output_csv: str,
+    text_column: str = None,
+    encoding: str = "utf-8",
+    top_k: int = 5,
+    batch_size: int = 32,
+    evaluate: bool = True,
+):
+    """
+    Predict from CSV file.
+
+    If text_column is not specified, automatically finds all text_* columns
+    and processes all texts from those columns.
+
+    If 'code' column exists in CSV, evaluates predictions and prints accuracy metrics.
+    """
+
+    # Read CSV
+    df = pd.read_csv(input_csv, encoding=encoding)
+
+    # Find text columns
+    if text_column:
+        # Use specified column
+        if text_column not in df.columns:
+            raise ValueError(f"Column '{text_column}' not found in CSV")
+        text_columns = [text_column]
+    else:
+        # Auto-detect text_* columns
+        text_columns = [c for c in df.columns if c.startswith("text_")]
+        if not text_columns:
+            raise ValueError("No text_* columns found. Please specify --text_column")
+        print(
+            f"Found {len(text_columns)} text columns: {text_columns[:5]}{'...' if len(text_columns) > 5 else ''}"
+        )
+
+    # Check if evaluation is possible (has 'code' column)
+    has_ground_truth = "code" in df.columns
+    if has_ground_truth and evaluate:
+        print("✓ Ground truth 'code' column found. Evaluation will be performed.")
+    elif evaluate:
+        print("⚠ No 'code' column found. Skipping evaluation.")
+
+    # Collect all texts from all text columns
+    texts = []
+    text_to_row_idx = []  # Map each text to its original row index
+    ground_truth_codes = []  # Ground truth codes for evaluation
+
+    for idx, row in df.iterrows():
+        # Get ground truth code for this row
+        gt_code = str(row["code"]).strip() if has_ground_truth else None
+
+        for col in text_columns:
+            text = str(row[col]).strip()
+            if pd.notna(row[col]) and text != "" and text != "nan":
+                texts.append(text)
+                text_to_row_idx.append(idx)
+                if has_ground_truth:
+                    ground_truth_codes.append(gt_code)
+
+    print(f"Total texts to predict: {len(texts)}")
+
+    if len(texts) == 0:
+        raise ValueError("No valid texts found in CSV")
+
+    # Predict
+    results = predict_texts(model_dir, texts, top_k=top_k, batch_size=batch_size)
+
+    # Evaluate if ground truth is available
+    if has_ground_truth and evaluate and len(ground_truth_codes) > 0:
+        print("\n" + "=" * 80)
+        print("📊 EVALUATION RESULTS")
+        print("=" * 80)
+
+        # Calculate top-k accuracies
+        top_k_values = [k for k in [1, 3, 5, 10, 20, 50] if k <= top_k]
+        top_k_accs, correct_counts = evaluate_predictions(
+            results, ground_truth_codes, top_k_values
+        )
+
+        print(f"\nTotal samples: {len(results)}")
+        print(f"\n🎯 Top-K Accuracy:")
+        print("-" * 50)
+        for k in top_k_values:
+            acc = top_k_accs[k]
+            correct = correct_counts[k]
+            print(f"  Top-{k:2d}: {acc*100:6.2f}% ({correct:5d}/{len(results)})")
+        print("-" * 50)
+        print("=" * 80)
+
+    # Create a new dataframe for predictions
+    # Each row corresponds to one text prediction
+    pred_df = pd.DataFrame(
+        {
+            "row_idx": text_to_row_idx,
+            "text": texts,
+        }
+    )
+
+    # Add ground truth if available
+    if has_ground_truth:
+        pred_df["ground_truth_code"] = ground_truth_codes
+
+    # Add predictions
+    for i in range(min(top_k, 20)):  # Support up to top-20
+        pred_df[f"pred_code_{i+1}"] = [
+            r["top_k"][i]["code"] if i < len(r["top_k"]) else "" for r in results
+        ]
+        pred_df[f"pred_content_{i+1}"] = [
+            r["top_k"][i]["content"] if i < len(r["top_k"]) else "" for r in results
+        ]
+        pred_df[f"pred_prob_{i+1}"] = [
+            r["top_k"][i]["probability"] if i < len(r["top_k"]) else 0.0
+            for r in results
+        ]
+
+    # Add correct flag for top-1 if ground truth available
+    if has_ground_truth:
+        pred_df["top1_correct"] = pred_df["pred_code_1"] == pred_df["ground_truth_code"]
+
+    # Save predictions
+    pred_df.to_csv(output_csv, index=False, encoding="utf-8")
+    print(f"\nResults saved to: {output_csv}")
+    print(f"Total predictions: {len(pred_df)}")
+
+    return pred_df
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Predict achievement standards using trained classifier"
+    )
+
+    parser.add_argument(
+        "--model_dir", type=str, required=True, help="Path to trained model directory"
+    )
+    parser.add_argument("--input_csv", type=str, help="Input CSV file")
+    parser.add_argument(
+        "--output_csv",
+        type=str,
+        default=None,
+        help="Output CSV file (auto-generated if not provided)",
+    )
+    parser.add_argument(
+        "--text_column",
+        type=str,
+        default=None,
+        help="Column name containing text (auto-detect text_* columns if not specified)",
+    )
+    parser.add_argument("--text", type=str, help="Single text to predict")
+    parser.add_argument("--encoding", type=str, default="utf-8")
+    parser.add_argument(
+        "--top_k", type=int, default=5, help="Number of top predictions to return"
+    )
+    parser.add_argument("--batch_size", type=int, default=32)
+
+    args = parser.parse_args()
+
+    if args.text:
+        # Single text prediction
+        results = predict_texts(
+            args.model_dir, [args.text], top_k=args.top_k, batch_size=1
+        )
+
+        print("\n" + "=" * 80)
+        print("PREDICTION RESULTS")
+        print("=" * 80)
+        print(f"\nInput text: {args.text}\n")
+
+        for item in results[0]["top_k"]:
+            print(f"Rank {item['rank']}:")
+            print(f"  Code: {item['code']}")
+            print(f"  Probability: {item['probability']:.4f}")
+            print(f"  Content: {item['content']}")
+            print()
+
+    elif args.input_csv:
+        # Batch prediction from CSV
+        # Auto-generate output path if not provided
+        if not args.output_csv:
+            input_path = Path(args.input_csv)
+            args.output_csv = str(
+                input_path.parent / f"{input_path.stem}_predictions.csv"
+            )
+            print(f"Output will be saved to: {args.output_csv}")
+
+        predict_from_csv(
+            args.model_dir,
+            args.input_csv,
+            args.output_csv,
+            args.text_column,
+            args.encoding,
+            args.top_k,
+            args.batch_size,
+            evaluate=True,  # Always evaluate if ground truth is available
+        )
+    else:
+        parser.print_help()
