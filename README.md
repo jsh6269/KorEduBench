@@ -4,10 +4,11 @@ Korean Education Benchmark - Educational achievement standard classification sys
 
 ## Description
 
-This project provides tools for classifying Korean educational textbook excerpts into achievement standards using various methods including:
-- Cosine similarity with embeddings
-- Cross-encoder models
-- LLM-based classification (with Unsloth fine-tuning support)
+KorEduBench is a benchmark project for Korean educational achievement standard classification. It provides various methods for automatically mapping textbook texts to achievement standards:
+
+- **Embedding-based**: Cosine similarity, Cross-encoder
+- **Classification-based**: Multi-class classifiers (Focal loss, advanced techniques)
+- **LLM-based**: Zero-shot, Few-shot, Fine-tuned LLM (with Unsloth support)
 
 ## Requirements
 
@@ -66,44 +67,66 @@ This project requires specific package versions for compatibility with Unsloth:
 
 All version conflicts are managed by `uv.lock` file.
 
-## Usage
+## Quick Start
 
-### LLM Fine-tuning
-
+### 1. Data Preprocessing
 ```bash
-python src/llm_text_classification/finetune_llm.py \
-    --train_csv dataset/train.csv \
-    --model_name unsloth/Qwen2.5-1.5B-Instruct \
-    --num-train-epochs 3
+cd scripts && bash preprocess.sh
 ```
 
-### LLM Evaluation
-
+### 2. Run Evaluation
 ```bash
-python src/llm_text_classification/eval_llm.py \
-    --input_csv dataset/valid.csv \
-    --model_name Qwen/Qwen2.5-1.5B-Instruct
+# Cosine similarity baseline
+bash cosine_similarity.sh
+
+# Cross-encoder
+bash cross_encoder.sh
+
+# LLM evaluation
+bash llm_text_classification.sh
+
+# LLM fine-tuning
+bash finetuning_llm.sh
+bash finetune_llm_text_classification.sh
 ```
+
+### Detailed Usage
+For detailed script usage, see [`doc/SCRIPTS.md`](doc/SCRIPTS.md).
 
 ## Project Structure
 
 ```
 KorEduBench/
-├── src/
-│   ├── llm_text_classification/
-│   │   ├── finetune_llm.py
-│   │   └── eval_llm.py
-│   └── utils/
-│       ├── data_loader.py
-│       ├── prompt.py
-│       └── random_seed.py
-├── dataset/
-│   ├── train.csv
-│   ├── valid.csv
-│   └── test.csv
-└── output/
-    └── llm_text_classification/
+├── src/                         # Source code
+│   ├── preprocessing/           # Data preprocessing
+│   ├── cosine_similarity/       # Embedding-based evaluation
+│   ├── cross_encoder/           # Cross-encoder
+│   ├── classification/          # Classifier training
+│   └── llm_text_classification/ # LLM-based classification
+├── dataset/                     # Datasets
+│   ├── train_80/               # Train data by subject (80 texts)
+│   ├── valid_80/               # Validation data by subject
+│   └── few_shot_examples/      # Few-shot examples
+├── model/                       # Trained models
+├── output/                      # Evaluation results
+├── scripts/                     # Execution scripts (11 scripts)
+└── doc/                         # Documentation
+    ├── PROJECT_STRUCTURE.md    # Detailed project structure
+    └── SCRIPTS.md              # Script usage guide
 ```
+
+## Dataset
+
+- **Source**: [AI Hub - Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=71855)
+- **Subjects**: Science, Korean, Math, English, Social Studies, Sociology, Ethics, Technology-Home Economics, Information (9 subjects)
+- **Split**: Train 80% / Validation 20%
+- **Samples**: Up to 80 texts per achievement standard
+
+## Documentation
+
+- **[PROJECT_STRUCTURE.md](doc/PROJECT_STRUCTURE.md)**: Project structure and data flow
+- **[SCRIPTS.md](doc/SCRIPTS.md)**: Detailed usage guide for 11 scripts
+- **[CODE_ANALYSIS.md](doc/CODE_ANALYSIS.md)**: Code analysis and technical documentation
 
 ## License
 
