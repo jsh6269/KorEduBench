@@ -343,26 +343,6 @@ def finetune_llm(
     tokenizer.save_pretrained(output_dir)
     print(f"LoRA adapters saved to: {output_dir}")
 
-    # Save merged model (16-bit)
-    print("\nSaving merged 16-bit model...")
-    merged_output_dir = os.path.join(output_dir, "merged_16bit")
-    model.save_pretrained_merged(
-        merged_output_dir,
-        tokenizer,
-        save_method="merged_16bit",
-    )
-    print(f"Merged 16-bit model saved to: {merged_output_dir}")
-
-    # Optionally save merged model (4-bit quantized)
-    print("\nSaving merged 4-bit model...")
-    merged_4bit_output_dir = os.path.join(output_dir, "merged_4bit")
-    model.save_pretrained_merged(
-        merged_4bit_output_dir,
-        tokenizer,
-        save_method="merged_4bit",
-    )
-    print(f"Merged 4-bit model saved to: {merged_4bit_output_dir}")
-
     # === Save training info ===
     training_info = {
         "model_name": model_name,

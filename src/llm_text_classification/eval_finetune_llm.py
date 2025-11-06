@@ -31,45 +31,29 @@ from src.utils.random_seed import set_predict_random_seed
 def load_finetuned_model(
     model_path: str,
     device: str = "cuda",
-    use_merged: bool = True,
     max_seq_length: int = 2048,
 ):
     """
     Load fine-tuned LLM model and tokenizer using Unsloth.
 
     Args:
-        model_path: Path to fine-tuned model directory
+        model_path: Path to fine-tuned model directory (LoRA adapters)
         device: Device to load model on
-        use_merged: Whether to use merged model (default: True, uses merged_16bit)
         max_seq_length: Maximum sequence length
 
     Returns:
         Tuple of (model, tokenizer)
     """
     print(f"\nLoading fine-tuned model from: {model_path}")
+    print("Loading LoRA adapters...")
 
-    # Determine which model to load
-    if use_merged:
-        # Try to load merged 16-bit model first
-        merged_16bit_path = os.path.join(model_path, "merged_16bit")
-        if os.path.exists(merged_16bit_path):
-            print(f"Loading merged 16-bit model from: {merged_16bit_path}")
-            load_path = merged_16bit_path
-        else:
-            print("Merged 16-bit model not found, loading LoRA adapters...")
-            load_path = model_path
-    else:
-        print("Loading LoRA adapters...")
-        load_path = model_path
-
-    # Use Unsloth's FastLanguageModel for loading
-    # This handles both merged models and LoRA adapters seamlessly
+    # Use Unsloth's FastLanguageModel for loading LoRA adapters
     print(f"Loading model with Unsloth...")
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=load_path,
+        model_name=model_path,
         max_seq_length=max_seq_length,
         dtype=None,  # Auto-detect
-        load_in_4bit=False,  # Use 16-bit for inference
+        load_in_4bit=True,  # Use 4-bit to match training configuration
     )
 
     # Enable native 2x faster inference
@@ -143,14 +127,13 @@ def evaluate_finetuned_llm(
     device: str = "cuda",
     max_input_length: int = 6144,
     max_candidates: int = 200,
-    use_merged: bool = True,
 ):
     """
     Evaluate fine-tuned LLM classification on educational content.
 
     Args:
         input_csv: Path to input CSV file
-        model_path: Path to fine-tuned model directory
+        model_path: Path to fine-tuned model directory (LoRA adapters)
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
         max_samples_per_row: Maximum samples per row
@@ -160,7 +143,6 @@ def evaluate_finetuned_llm(
         device: Device to use
         max_input_length: Maximum input length (will truncate if exceeded)
         max_candidates: Maximum number of candidate achievement standards to use (default: 200)
-        use_merged: Whether to use merged model (default: True)
     """
     if json_path is None:
         json_path = (
@@ -206,9 +188,7 @@ def evaluate_finetuned_llm(
     ]
 
     # === Load Fine-tuned Model ===
-    model, tokenizer = load_finetuned_model(
-        model_path, device, use_merged, max_input_length
-    )
+    model, tokenizer = load_finetuned_model(model_path, device, max_input_length)
 
     # Load training info if available
     training_info = {}
@@ -481,7 +461,7 @@ if __name__ == "__main__":
         "--model_path",
         type=str,
         required=True,
-        help="Path to fine-tuned model directory (containing LoRA adapters or merged model).",
+        help="Path to fine-tuned model directory (containing LoRA adapters).",
     )
     parser.add_argument(
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
@@ -534,11 +514,6 @@ if __name__ == "__main__":
         default=200,
         help="Maximum number of candidate achievement standards to use (default: 200).",
     )
-    parser.add_argument(
-        "--use-lora",
-        action="store_true",
-        help="Use LoRA adapters instead of merged model (default: False, uses merged model).",
-    )
     args = parser.parse_args()
 
     set_predict_random_seed(42)
@@ -554,5 +529,4 @@ if __name__ == "__main__":
         device=args.device,
         max_input_length=args.max_input_length,
         max_candidates=args.max_candidates,
-        use_merged=not args.use_lora,
     )

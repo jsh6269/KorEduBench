@@ -17,7 +17,6 @@ DEVICE="cuda"
 MAX_INPUT_LENGTH=6144
 MAX_CANDIDATES=120
 MAX_TOTAL_SAMPLES=100
-USE_LORA=False  # Set to True to use LoRA adapters instead of merged model
 
 # Color output
 GREEN='\033[0;32m'
@@ -49,7 +48,6 @@ echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
-echo -e "Use LoRA adapters: ${YELLOW}${USE_LORA}${NC}"
 echo ""
 
 # Get list of CSV files (정렬된 순서로)
@@ -88,11 +86,6 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --max-total-samples "$MAX_TOTAL_SAMPLES"
         --max-candidates "$MAX_CANDIDATES"
     )
-    
-    # Add --use-lora flag if enabled
-    if [ "$USE_LORA" = True ]; then
-        CMD_ARGS+=(--use-lora)
-    fi
     
     # Run fine-tuned LLM evaluation
     if python "${PROJECT_ROOT}/src/llm_text_classification/eval_finetune_llm.py" "${CMD_ARGS[@]}"; then

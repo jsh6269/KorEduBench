@@ -124,8 +124,6 @@ if python "${PROJECT_ROOT}/src/llm_text_classification/finetune_llm.py" "${CMD_A
     echo ""
     echo -e "Model saved to: ${YELLOW}${OUTPUT_DIR}${NC}"
     echo -e "  - LoRA adapters: ${YELLOW}${OUTPUT_DIR}/${NC}"
-    echo -e "  - Merged 16-bit model: ${YELLOW}${OUTPUT_DIR}/merged_16bit/${NC}"
-    echo -e "  - Merged 4-bit model: ${YELLOW}${OUTPUT_DIR}/merged_4bit/${NC}"
     echo -e "  - Training info: ${YELLOW}${OUTPUT_DIR}/training_info.json${NC}"
     echo ""
 else
