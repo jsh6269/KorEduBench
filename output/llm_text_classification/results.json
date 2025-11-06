@@ -888,5 +888,51 @@
         "max_input_length": 1024,
         "truncated_count": 14,
         "truncated_percentage": 18.67
+    },
+    {
+        "folder": "valid_80",
+        "model_name": "openrouter/qwen/qwen3-14b:free",
+        "subject": "과학",
+        "num_standards": 190,
+        "num_candidates": 15,
+        "max_candidates": 15,
+        "max_samples_per_row": 5,
+        "total_samples": 75,
+        "correct": 5,
+        "accuracy": 0.0667,
+        "mrr": 0.0667,
+        "exact_match_count": 0,
+        "exact_match_percentage": 0.0,
+        "match_type_distribution": {
+            "partial": 100.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "model_name": "openrouter/qwen/qwen3-30b-a3b:free",
+        "subject": "과학",
+        "num_standards": 190,
+        "num_candidates": 15,
+        "max_candidates": 15,
+        "max_samples_per_row": 5,
+        "total_samples": 75,
+        "correct": 5,
+        "accuracy": 0.0667,
+        "mrr": 0.0667,
+        "exact_match_count": 0,
+        "exact_match_percentage": 0.0,
+        "match_type_distribution": {
+            "partial": 100.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
     }
 ]
