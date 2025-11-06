@@ -1,7 +1,7 @@
 """
-LLM-based text classification evaluation script.
-Uses a generative LLM (Qwen-1.5B) to classify textbook excerpts into educational achievement standards.
-The LLM directly outputs achievement standard codes (e.g., "10영03-04") instead of content text.
+Fine-tuned LLM evaluation script.
+Evaluates a fine-tuned language model for educational achievement standard classification.
+Loads models trained with finetune_llm.py and evaluates them using the same structure as eval_llm.py.
 """
 
 import argparse
@@ -13,7 +13,7 @@ from pathlib import Path
 
 import torch
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from unsloth import FastLanguageModel
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -28,33 +28,38 @@ from src.utils.prompt import (
 from src.utils.random_seed import set_predict_random_seed
 
 
-def load_llm_model(model_name: str, device: str = "cuda"):
+def load_finetuned_model(
+    model_path: str,
+    device: str = "cuda",
+    max_seq_length: int = 2048,
+):
     """
-    Load LLM model and tokenizer.
+    Load fine-tuned LLM model and tokenizer using Unsloth.
 
     Args:
-        model_name: Hugging Face model name
+        model_path: Path to fine-tuned model directory (LoRA adapters)
         device: Device to load model on
+        max_seq_length: Maximum sequence length
 
     Returns:
         Tuple of (model, tokenizer)
     """
-    print(f"\nLoading LLM model: {model_name}")
+    print(f"\nLoading fine-tuned model from: {model_path}")
+    print("Loading LoRA adapters...")
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map=device if device == "cuda" else None,
-        trust_remote_code=True,
+    # Use Unsloth's FastLanguageModel for loading LoRA adapters
+    print(f"Loading model with Unsloth...")
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name=model_path,
+        max_seq_length=max_seq_length,
+        dtype=None,  # Auto-detect
+        load_in_4bit=True,  # Use 4-bit to match training configuration
     )
 
-    if device != "cuda":
-        model = model.to(device)
+    # Enable native 2x faster inference
+    FastLanguageModel.for_inference(model)
 
-    model.eval()
-
-    print(f"Model loaded successfully on {device}")
+    print(f"Model loaded successfully")
     return model, tokenizer
 
 
@@ -65,7 +70,7 @@ def generate_prediction(
     max_new_tokens: int = 50,
     temperature: float = 0.1,
     device: str = "cuda",
-    max_input_length: int = 2048,
+    max_input_length: int = 6144,
 ) -> str:
     """
     Generate prediction from LLM.
@@ -110,10 +115,9 @@ def generate_prediction(
     return generated_text.strip()
 
 
-def evaluate_llm_classification(
+def evaluate_finetuned_llm(
     input_csv: str,
-    model_name: str,
-    few_shot: bool = False,
+    model_path: str,
     encoding: str = None,
     json_path: str = None,
     max_samples_per_row: int = None,
@@ -121,15 +125,15 @@ def evaluate_llm_classification(
     max_new_tokens: int = 10,
     temperature: float = 0.1,
     device: str = "cuda",
-    max_input_length: int = 8192,
+    max_input_length: int = 6144,
     max_candidates: int = 200,
 ):
     """
-    Evaluate LLM-based classification on educational content.
+    Evaluate fine-tuned LLM classification on educational content.
 
     Args:
         input_csv: Path to input CSV file
-        model_name: Hugging Face model name
+        model_path: Path to fine-tuned model directory (LoRA adapters)
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
         max_samples_per_row: Maximum samples per row
@@ -138,10 +142,15 @@ def evaluate_llm_classification(
         temperature: Sampling temperature
         device: Device to use
         max_input_length: Maximum input length (will truncate if exceeded)
-        max_candidates: Maximum number of candidate achievement standards to use (default: 60)
+        max_candidates: Maximum number of candidate achievement standards to use (default: 200)
     """
     if json_path is None:
-        json_path = PROJECT_ROOT / "output" / "llm_text_classification" / "results.json"
+        json_path = (
+            PROJECT_ROOT
+            / "output"
+            / "llm_text_classification"
+            / "finetuned_results.json"
+        )
     json_path = str(json_path)
 
     # === Load and preprocess data ===
@@ -178,8 +187,20 @@ def evaluate_llm_classification(
         for i in range(num_candidates)
     ]
 
-    # === Load LLM Model ===
-    model, tokenizer = load_llm_model(model_name, device)
+    # === Load Fine-tuned Model ===
+    model, tokenizer = load_finetuned_model(model_path, device, max_input_length)
+
+    # Load training info if available
+    training_info = {}
+    info_path = os.path.join(model_path, "training_info.json")
+    if os.path.exists(info_path):
+        with open(info_path, "r", encoding="utf-8") as f:
+            training_info = json.load(f)
+        print(f"\nTraining info loaded:")
+        print(f"  Base model: {training_info.get('model_name', 'N/A')}")
+        print(f"  Training examples: {training_info.get('num_examples', 'N/A')}")
+        print(f"  Epochs: {training_info.get('num_train_epochs', 'N/A')}")
+        print(f"  Learning rate: {training_info.get('learning_rate', 'N/A')}")
 
     # === Check prompt length ===
     # Create a sample prompt to check length
@@ -286,8 +307,8 @@ def evaluate_llm_classification(
     mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
 
     # === Summary ===
-    print("\n=== LLM Text Classification Evaluation ===")
-    print(f"Model: {model_name}")
+    print("\n=== Fine-tuned LLM Evaluation ===")
+    print(f"Model path: {model_path}")
     print(f"Subject: {subject}")
     print(f"Total achievement standards: {num_rows}")
     print(f"Number of candidates used: {num_candidates} (max: {max_candidates})")
@@ -312,7 +333,8 @@ def evaluate_llm_classification(
 
     result_entry.update(
         {
-            "model_name": model_name,
+            "model_path": model_path,
+            "base_model": training_info.get("model_name", "N/A"),
             "subject": subject,
             "num_standards": num_rows,
             "num_candidates": num_candidates,
@@ -338,6 +360,7 @@ def evaluate_llm_classification(
             "truncated_percentage": (
                 round(truncated_count / num_samples * 100, 2) if num_samples > 0 else 0
             ),
+            "training_info": training_info,
         }
     )
 
@@ -354,7 +377,7 @@ def evaluate_llm_classification(
     replaced = False
     for i, r in enumerate(results):
         if (
-            r["model_name"] == result_entry["model_name"]
+            r["model_path"] == result_entry["model_path"]
             and r["subject"] == result_entry["subject"]
             and r["num_standards"] == result_entry["num_standards"]
             and r.get("max_candidates", result_entry["max_candidates"])
@@ -375,12 +398,13 @@ def evaluate_llm_classification(
     print(f"Results saved to {json_path}")
 
     # Save wrong samples
-    logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "logs"
+    logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "finetuned_logs"
     os.makedirs(logs_dir, exist_ok=True)
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
+    model_name = os.path.basename(model_path)
 
     if wrong_samples:
-        wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
+        wrong_path = logs_dir / f"{model_name}_{csv_name}_wrongs.txt"
         sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
         with open(wrong_path, "w", encoding="utf-8") as f:
             f.write(f"Total wrong samples: {len(wrong_samples)}\n\n")
@@ -394,7 +418,6 @@ def evaluate_llm_classification(
                 f.write(f"Input Text: {w['input_text']}\n")
                 f.write(f"True Content: {w['true_content']}\n")
                 f.write(f"Pred Content: {w['pred_content']}\n")
-                f.write(f"True Code: {w['true_code']}\n")
                 f.write(f"LLM Response: {w['llm_response']}\n")
                 f.write("-" * 60 + "\n")
         print(
@@ -403,7 +426,7 @@ def evaluate_llm_classification(
 
     # Save correct samples
     if correct_samples:
-        correct_path = logs_dir / f"{csv_name}_corrects.txt"
+        correct_path = logs_dir / f"{model_name}_{csv_name}_corrects.txt"
         sampled_corrects = random.sample(
             correct_samples, min(100, len(correct_samples))
         )
@@ -417,7 +440,6 @@ def evaluate_llm_classification(
                 f.write(f"Exact Match: {'YES' if c['is_exact_match'] else 'NO'}\n")
                 f.write(f"Input Text: {c['input_text']}\n")
                 f.write(f"Content: {c['true_content']}\n")
-                f.write(f"True Content: {c['true_content']}\n")
                 f.write(f"Pred Content: {c['pred_content']}\n")
                 f.write(f"LLM Response: {c['llm_response']}\n")
                 f.write("-" * 60 + "\n")
@@ -430,16 +452,16 @@ def evaluate_llm_classification(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Evaluate LLM-based text classification for educational content."
+        description="Evaluate fine-tuned LLM for educational content classification."
     )
     parser.add_argument(
         "--input_csv", type=str, required=True, help="Path to input CSV file."
     )
     parser.add_argument(
-        "--model_name",
+        "--model_path",
         type=str,
-        default="Qwen/Qwen2.5-1.5B-Instruct",
-        help="Hugging Face model name (default: Qwen/Qwen2.5-1.5B-Instruct).",
+        required=True,
+        help="Path to fine-tuned model directory (containing LoRA adapters).",
     )
     parser.add_argument(
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
@@ -448,7 +470,7 @@ if __name__ == "__main__":
         "--json_path",
         type=str,
         default=None,
-        help="Path to JSON log file (default: {PROJECT_ROOT}/output/llm_text_classification/results.json).",
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/llm_text_classification/finetuned_results.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",
@@ -487,11 +509,6 @@ if __name__ == "__main__":
         help="Maximum input token length. Prompts exceeding this will be truncated (default: 2048).",
     )
     parser.add_argument(
-        "--few-shot",
-        action="store_true",
-        help="Use few-shot examples (default: False).",
-    )
-    parser.add_argument(
         "--max-candidates",
         type=int,
         default=200,
@@ -500,9 +517,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     set_predict_random_seed(42)
-    evaluate_llm_classification(
+    evaluate_finetuned_llm(
         args.input_csv,
-        args.model_name,
+        args.model_path,
         encoding=args.encoding,
         json_path=args.json_path,
         max_samples_per_row=args.max_samples_per_row,
@@ -511,6 +528,5 @@ if __name__ == "__main__":
         temperature=args.temperature,
         device=args.device,
         max_input_length=args.max_input_length,
-        few_shot=args.few_shot,
         max_candidates=args.max_candidates,
     )
