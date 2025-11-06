@@ -92,27 +92,30 @@ def evaluate_llm_classification(
     print(f"\nPrompt statistics:")
     print(f"  Number of candidates: {len(candidates)}")
 
-    if check_token_length and tokenizer is not None:
-        # Create a sample prompt to check length
+    if tokenizer is not None:
+        # Use tokenizer for token count estimation
         sample_prompt = create_classification_prompt(sample_texts[0], candidates)
         sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
         prompt_length = sample_tokens["input_ids"].shape[1]
 
         print(f"  Sample prompt token length: {prompt_length}")
-        print(f"  Max input length: {max_input_length}")
 
-        if prompt_length > max_input_length:
-            print(
-                f"  ⚠️  WARNING: Prompt length ({prompt_length}) exceeds max_input_length ({max_input_length})"
-            )
-            print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
-            print(
-                f"  ⚠️  Consider increasing --max-input-length or reducing the number of candidates."
-            )
-        else:
-            print(f"  ✓ Prompt length is within limits")
+        if check_token_length:
+            # Local model: check against max_input_length
+            print(f"  Max input length: {max_input_length}")
+
+            if prompt_length > max_input_length:
+                print(
+                    f"  ⚠️  WARNING: Prompt length ({prompt_length}) exceeds max_input_length ({max_input_length})"
+                )
+                print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
+                print(
+                    f"  ⚠️  Consider increasing --max-input-length or reducing the number of candidates."
+                )
+            else:
+                print(f"  ✓ Prompt length is within limits")
     else:
-        print(f"  Token length check: Skipped (API mode or no tokenizer)")
+        print(f"  Token length check: Skipped (no tokenizer provided)")
 
     # === Prediction ===
     print(f"\nPredicting classifications for {num_samples} samples...")
@@ -461,8 +464,10 @@ if __name__ == "__main__":
         print(f"API delay: {args.api_delay}s between requests")
         print(f"API retry: automatic retry up to 10 times on rate limit errors")
 
+        # Load a tokenizer for approximate token counting
+        tokenizer = AutoTokenizer.from_pretrained("gpt2")
+
         model_identifier = f"{args.api_provider}/{args.api_model}"
-        tokenizer = None
         check_token_length = False
 
     else:

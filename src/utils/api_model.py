@@ -88,7 +88,7 @@ def create_api_generate_function(
     """
 
     MAX_RETRIES = 10  # Fixed retry count
-    RETRY_DELAY = 1.5  # Initial retry delay in seconds
+    retry_delay = 2 * delay_seconds
 
     def generate_prediction(prompt: str) -> str:
         """
@@ -123,8 +123,8 @@ def create_api_generate_function(
             except RateLimitError as e:
                 last_error = e
                 if attempt < MAX_RETRIES:
-                    # Exponential backoff: wait longer each retry
-                    wait_time = RETRY_DELAY * (2**attempt)
+                    # Linear backoff: wait longer each retry
+                    wait_time = retry_delay * (attempt + 1)
                     time.sleep(wait_time)
                 else:
                     # All retries exhausted
