@@ -156,7 +156,7 @@ def evaluate_finetuned_llm(
     # === Load and preprocess data ===
     print("Loading evaluation data...")
     data = load_evaluation_data(
-        input_csv, encoding, max_samples_per_row, max_total_samples
+        input_csv, encoding, max_samples_per_row, max_total_samples, max_candidates
     )
 
     # Extract data for convenience
@@ -166,26 +166,11 @@ def evaluate_finetuned_llm(
     true_codes = data.true_codes
     subject = data.subject
     num_rows = data.num_rows
+    num_candidates = data.num_candidates
     num_samples = data.num_samples
     max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
-
-    # Prepare candidates list (limit to max_candidates)
-    num_candidates = min(num_rows, max_candidates)
-    if num_rows > max_candidates:
-        print(
-            f"⚠️  Warning: Number of achievement standards ({num_rows}) exceeds max_candidates ({max_candidates})"
-        )
-        print(f"⚠️  Randomly sampling {max_candidates} standards as candidates")
-        # Randomly sample indices and sort them
-        selected_indices = sorted(random.sample(range(num_rows), max_candidates))
-    else:
-        selected_indices = list(range(num_candidates))
-
-    candidates = [
-        (i + 1, codes[selected_indices[i]], contents[selected_indices[i]])
-        for i in range(num_candidates)
-    ]
+    candidates = [(i + 1, codes[i], contents[i]) for i in range(num_candidates)]
 
     # === Load Fine-tuned Model ===
     model, tokenizer = load_finetuned_model(model_path, device, max_input_length)
