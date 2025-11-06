@@ -13,7 +13,8 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 
 # API Configuration
 API_PROVIDER="openrouter"  # Options: openai, anthropic, google, openrouter
-API_MODEL="google/gemini-2.0-flash-exp:free"  # Provider-specific model name
+API_MODEL="qwen/qwen3-14b:free"  # Provider-specific model name
+API_DELAY=1.0  # Delay in seconds between API calls (to avoid rate limits)
 # API_KEY will be loaded from .env automatically
 
 # Evaluation Configuration
@@ -42,6 +43,7 @@ fi
 echo -e "Dataset folder: ${YELLOW}${DATASET_FOLDER}${NC}"
 echo -e "API Provider: ${YELLOW}${API_PROVIDER}${NC}"
 echo -e "API Model: ${YELLOW}${API_MODEL}${NC}"
+echo -e "API Delay: ${YELLOW}${API_DELAY}s${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
@@ -85,6 +87,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --input_csv "$CSV_FILE" \
         --api-provider "$API_PROVIDER" \
         --api-model "$API_MODEL" \
+        --api-delay "$API_DELAY" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
         --temperature "$TEMPERATURE" \
         --max-total-samples "$MAX_TOTAL_SAMPLES" \

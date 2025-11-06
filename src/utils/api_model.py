@@ -3,9 +3,10 @@ API Model utility for LLM inference using various API providers.
 Provides unified interface for OpenAI, Anthropic, Google AI Studio, and OpenRouter.
 """
 
+import time
 from typing import Callable, Optional
 
-from openai import OpenAI
+from openai import OpenAI, RateLimitError
 
 from src.utils.env_loader import get_api_key
 
@@ -70,6 +71,7 @@ def create_api_generate_function(
     model: str,
     max_new_tokens: int = 50,
     temperature: float = 0.1,
+    delay_seconds: float = 0.0,
 ) -> Callable[[str], str]:
     """
     Create a generate_prediction function for API calls.
@@ -79,27 +81,58 @@ def create_api_generate_function(
         model: Model name/identifier
         max_new_tokens: Maximum tokens to generate
         temperature: Sampling temperature
+        delay_seconds: Delay in seconds after each API call (to avoid rate limits)
 
     Returns:
         Function that generates predictions using the API (takes only prompt)
     """
 
+    MAX_RETRIES = 10  # Fixed retry count
+    RETRY_DELAY = 1.5  # Initial retry delay in seconds
+
     def generate_prediction(prompt: str) -> str:
         """
-        Generate prediction using API.
+        Generate prediction using API with automatic retry on rate limits.
 
         Args:
             prompt: Input prompt text
 
         Returns:
             Generated text response
+
+        Raises:
+            RateLimitError: If rate limit persists after all retries
         """
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_new_tokens,
-            temperature=temperature,
-        )
-        return response.choices[0].message.content.strip()
+        last_error = None
+
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_new_tokens,
+                    temperature=temperature,
+                )
+
+                # Add delay to avoid rate limits
+                if delay_seconds > 0:
+                    time.sleep(delay_seconds)
+
+                return response.choices[0].message.content.strip()
+
+            except RateLimitError as e:
+                last_error = e
+                if attempt < MAX_RETRIES:
+                    # Exponential backoff: wait longer each retry
+                    wait_time = RETRY_DELAY * (2**attempt)
+                    time.sleep(wait_time)
+                else:
+                    # All retries exhausted
+                    raise
+
+        # This should never be reached, but just in case
+        if last_error:
+            raise last_error
+        raise RuntimeError("Unexpected error in API call")
 
     return generate_prediction

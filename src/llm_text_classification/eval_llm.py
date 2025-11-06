@@ -366,6 +366,12 @@ if __name__ == "__main__":
         default=None,
         help="API key (optional, will use .env if not provided).",
     )
+    parser.add_argument(
+        "--api-delay",
+        type=float,
+        default=0.5,
+        help="Delay in seconds between API calls to avoid rate limits (default: 0.5).",
+    )
 
     # Common arguments
     parser.add_argument(
@@ -446,8 +452,14 @@ if __name__ == "__main__":
 
         api_client = create_api_client(args.api_provider, args.api_key)
         generate_fn = create_api_generate_function(
-            api_client, args.api_model, args.max_new_tokens, args.temperature
+            api_client,
+            args.api_model,
+            args.max_new_tokens,
+            args.temperature,
+            args.api_delay,
         )
+        print(f"API delay: {args.api_delay}s between requests")
+        print(f"API retry: automatic retry up to 10 times on rate limit errors")
 
         model_identifier = f"{args.api_provider}/{args.api_model}"
         tokenizer = None
