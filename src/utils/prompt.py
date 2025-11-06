@@ -40,9 +40,28 @@ from enum import Enum
 # ============================================================================
 
 # Default Template (outputs content text)
-# Section 1: System Prompt - Establishes the role and context
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Read the given textbook text and select the most appropriate achievement standard."""
+# Section 1: System Prompt
+SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook content with achievement standards.
 
+WHAT ARE ACHIEVEMENT STANDARDS:
+Achievement standards are specific learning objectives that define what students should know and be able to do at a particular grade level. Each standard describes:
+- The specific knowledge or skills students need to acquire
+- The level of understanding or performance expected
+- The context or situation where learning should be applied
+
+HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
+1. Read the textbook text carefully and identify its primary educational purpose
+2. Ask yourself: "What is this content trying to teach students?"
+3. Look for key indicators:
+   - What subject knowledge is being presented?
+   - What skills or abilities are students expected to develop?
+   - What cognitive processes are involved (understanding, applying, analyzing)?
+4. Select the standard that most directly aligns with the main learning goal
+
+IMPORTANT PRINCIPLES:
+- Focus on the PRIMARY learning objective, not secondary or supporting content
+- Consider what students should be able to DO after studying this content
+- Match based on educational intent, not just topic similarity"""
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
 
@@ -50,35 +69,31 @@ USER_PROMPT_INTRO = ""
 # Achievement standards are moved to Section 1 (System Prompt)
 
 # Section 4: Output Format Instructions
-OUTPUT_FORMAT_INSTRUCTION_CODE = """# Instructions
-Select ONLY ONE achievement standard that best describes the textbook text above.
+OUTPUT_FORMAT_INSTRUCTION_CODE = """# Task
+Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
-IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+# Output Format
+Output ONLY the achievement standard code. No explanations, no additional text.
 
-Example output format1:
+Correct format:
 10영03-04
 
-Example output format2:
-9수04-11
-
-Example output format3:
-12정보02-01
+Wrong formats:
+❌ "10영03-04 because..."
+❌ Code: 10영03-04
 
 # Answer"""
 
-OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Instructions
-Select ONLY ONE achievement standard that best describes the textbook text above.
+OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Task
+Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was matched to its corresponding achievement standard.
 
-IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+Apply the same analysis process to classify the "Textbook Text" provided above.
 
-Example output format1:
+# Output Format
+Output ONLY the achievement standard code. No explanations, no additional text.
+
+Correct format:
 10영03-04
-
-Example output format2:
-9수04-11
-
-Example output format3:
-12정보02-01
 
 # Answer"""
 
