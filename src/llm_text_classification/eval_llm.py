@@ -19,7 +19,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.utils.api_model import create_api_client, create_api_generate_function
 from src.utils.data_loader import load_evaluation_data
+from src.utils.model import create_generate_function, load_llm_model
 from src.utils.prompt import (
     LLMClassificationResponse,
     create_classification_prompt,
@@ -28,91 +30,11 @@ from src.utils.prompt import (
 from src.utils.random_seed import set_predict_random_seed
 
 
-def load_llm_model(model_name: str, device: str = "cuda"):
-    """
-    Load LLM model and tokenizer.
-
-    Args:
-        model_name: Hugging Face model name
-        device: Device to load model on
-
-    Returns:
-        Tuple of (model, tokenizer)
-    """
-    print(f"\nLoading LLM model: {model_name}")
-
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map=device if device == "cuda" else None,
-        trust_remote_code=True,
-    )
-
-    if device != "cuda":
-        model = model.to(device)
-
-    model.eval()
-
-    print(f"Model loaded successfully on {device}")
-    return model, tokenizer
-
-
-def generate_prediction(
-    model,
-    tokenizer,
-    prompt: str,
-    max_new_tokens: int = 50,
-    temperature: float = 0.1,
-    device: str = "cuda",
-    max_input_length: int = 2048,
-) -> str:
-    """
-    Generate prediction from LLM.
-
-    Args:
-        model: LLM model
-        tokenizer: Tokenizer
-        prompt: Input prompt
-        max_new_tokens: Maximum number of tokens to generate
-        temperature: Sampling temperature
-        device: Device
-        max_input_length: Maximum input length (will truncate if exceeded)
-
-    Returns:
-        Generated text
-    """
-    # Tokenize with truncation to prevent exceeding max length
-    inputs = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        max_length=max_input_length,
-    )
-
-    if device == "cuda":
-        inputs = {k: v.cuda() for k, v in inputs.items()}
-
-    with torch.inference_mode():
-        outputs = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            do_sample=temperature > 0,
-            pad_token_id=tokenizer.eos_token_id,
-        )
-
-    # Decode only the generated part (exclude input prompt)
-    generated_text = tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True
-    )
-
-    return generated_text.strip()
-
-
 def evaluate_llm_classification(
     input_csv: str,
-    model_name: str,
+    generate_fn: callable,
+    model_identifier: str,
+    tokenizer=None,
     few_shot: bool = False,
     encoding: str = None,
     json_path: str = None,
@@ -120,25 +42,28 @@ def evaluate_llm_classification(
     max_total_samples: int = None,
     max_new_tokens: int = 10,
     temperature: float = 0.1,
-    device: str = "cuda",
     max_input_length: int = 8192,
     max_candidates: int = 200,
+    check_token_length: bool = True,
 ):
     """
     Evaluate LLM-based classification on educational content.
 
     Args:
         input_csv: Path to input CSV file
-        model_name: Hugging Face model name
+        generate_fn: Function to generate predictions (callable that takes prompt str and returns str)
+        model_identifier: Model name or API identifier
+        tokenizer: Tokenizer for token length checking (optional, None for API mode)
+        few_shot: Use few-shot examples (not yet implemented)
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
         max_samples_per_row: Maximum samples per row
         max_total_samples: Maximum total samples (randomly sampled if specified)
-        max_new_tokens: Maximum tokens to generate
-        temperature: Sampling temperature
-        device: Device to use
-        max_input_length: Maximum input length (will truncate if exceeded)
-        max_candidates: Maximum number of candidate achievement standards to use (default: 60)
+        max_new_tokens: Maximum tokens to generate (passed to generate_fn)
+        temperature: Sampling temperature (passed to generate_fn)
+        max_input_length: Maximum input length (will truncate if exceeded, for local models)
+        max_candidates: Maximum number of candidate achievement standards to use (default: 200)
+        check_token_length: Whether to check token length (False for API mode)
     """
     if json_path is None:
         json_path = PROJECT_ROOT / "output" / "llm_text_classification" / "results.json"
@@ -163,30 +88,31 @@ def evaluate_llm_classification(
     folder_name = data.folder_name
     candidates = [(i + 1, codes[i], contents[i]) for i in range(num_candidates)]
 
-    # === Load LLM Model ===
-    model, tokenizer = load_llm_model(model_name, device)
-
     # === Check prompt length ===
-    # Create a sample prompt to check length
-    sample_prompt = create_classification_prompt(sample_texts[0], candidates)
-    sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
-    prompt_length = sample_tokens["input_ids"].shape[1]
-
     print(f"\nPrompt statistics:")
     print(f"  Number of candidates: {len(candidates)}")
-    print(f"  Sample prompt token length: {prompt_length}")
-    print(f"  Max input length: {max_input_length}")
 
-    if prompt_length > max_input_length:
-        print(
-            f"  ⚠️  WARNING: Prompt length ({prompt_length}) exceeds max_input_length ({max_input_length})"
-        )
-        print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
-        print(
-            f"  ⚠️  Consider increasing --max-input-length or reducing the number of candidates."
-        )
+    if check_token_length and tokenizer is not None:
+        # Create a sample prompt to check length
+        sample_prompt = create_classification_prompt(sample_texts[0], candidates)
+        sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
+        prompt_length = sample_tokens["input_ids"].shape[1]
+
+        print(f"  Sample prompt token length: {prompt_length}")
+        print(f"  Max input length: {max_input_length}")
+
+        if prompt_length > max_input_length:
+            print(
+                f"  ⚠️  WARNING: Prompt length ({prompt_length}) exceeds max_input_length ({max_input_length})"
+            )
+            print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
+            print(
+                f"  ⚠️  Consider increasing --max-input-length or reducing the number of candidates."
+            )
+        else:
+            print(f"  ✓ Prompt length is within limits")
     else:
-        print(f"  ✓ Prompt length is within limits")
+        print(f"  Token length check: Skipped (API mode or no tokenizer)")
 
     # === Prediction ===
     print(f"\nPredicting classifications for {num_samples} samples...")
@@ -204,21 +130,14 @@ def evaluate_llm_classification(
         # Create prompt
         prompt = create_classification_prompt(text, candidates)
 
-        # Check if this specific prompt will be truncated
-        prompt_tokens = tokenizer(prompt, return_tensors="pt")
-        if prompt_tokens["input_ids"].shape[1] > max_input_length:
-            truncated_count += 1
+        # Check if this specific prompt will be truncated (only for local models)
+        if check_token_length and tokenizer is not None:
+            prompt_tokens = tokenizer(prompt, return_tensors="pt")
+            if prompt_tokens["input_ids"].shape[1] > max_input_length:
+                truncated_count += 1
 
         # Generate prediction
-        response = generate_prediction(
-            model,
-            tokenizer,
-            prompt,
-            max_new_tokens,
-            temperature,
-            device,
-            max_input_length,
-        )
+        response = generate_fn(prompt)
 
         # Parse response - now returns LLMClassificationResponse object
         llm_response = parse_llm_response(response, candidates)
@@ -272,7 +191,7 @@ def evaluate_llm_classification(
 
     # === Summary ===
     print("\n=== LLM Text Classification Evaluation ===")
-    print(f"Model: {model_name}")
+    print(f"Model: {model_identifier}")
     print(f"Subject: {subject}")
     print(f"Total achievement standards: {num_rows}")
     print(f"Number of candidates used: {num_candidates} (max: {max_candidates})")
@@ -297,7 +216,7 @@ def evaluate_llm_classification(
 
     result_entry.update(
         {
-            "model_name": model_name,
+            "model_name": model_identifier,
             "subject": subject,
             "num_standards": num_rows,
             "num_candidates": num_candidates,
@@ -420,12 +339,35 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input_csv", type=str, required=True, help="Path to input CSV file."
     )
-    parser.add_argument(
+
+    # Model selection: mutually exclusive group for API vs Local
+    model_group = parser.add_mutually_exclusive_group(required=True)
+    model_group.add_argument(
         "--model_name",
         type=str,
-        default="Qwen/Qwen2.5-1.5B-Instruct",
-        help="Hugging Face model name (default: Qwen/Qwen2.5-1.5B-Instruct).",
+        help="Local Hugging Face model name (e.g., Qwen/Qwen2.5-1.5B-Instruct).",
     )
+    model_group.add_argument(
+        "--api-provider",
+        type=str,
+        choices=["openai", "anthropic", "google", "openrouter"],
+        help="API provider (openai, anthropic, google, openrouter).",
+    )
+
+    # API-specific arguments
+    parser.add_argument(
+        "--api-model",
+        type=str,
+        help="API model name (required with --api-provider, e.g., gpt-4, claude-3-5-sonnet-20241022, gemini-pro).",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="API key (optional, will use .env if not provided).",
+    )
+
+    # Common arguments
     parser.add_argument(
         "--encoding", type=str, help="CSV encoding (default: auto-detect)."
     )
@@ -459,18 +401,21 @@ if __name__ == "__main__":
         default=0.1,
         help="Sampling temperature (default: 0.1).",
     )
+
+    # Local model arguments
     parser.add_argument(
         "--device",
         type=str,
         default="cuda",
-        help="Device to use (cuda or cpu, default: cuda).",
+        help="Device for local model (cuda or cpu, ignored for API, default: cuda).",
     )
     parser.add_argument(
         "--max-input-length",
         type=int,
         default=2048,
-        help="Maximum input token length. Prompts exceeding this will be truncated (default: 2048).",
+        help="Maximum input token length for local model (ignored for API, default: 2048).",
     )
+
     parser.add_argument(
         "--few-shot",
         action="store_true",
@@ -482,20 +427,66 @@ if __name__ == "__main__":
         default=200,
         help="Maximum number of candidate achievement standards to use (default: 200).",
     )
+
     args = parser.parse_args()
 
+    # Validation
+    if args.api_provider and not args.api_model:
+        parser.error("--api-model is required when using --api-provider")
+
     set_predict_random_seed(42)
+
+    # === Create generate_prediction function based on mode ===
+    if args.api_provider:
+        # API mode
+        print(f"=" * 80)
+        print(f"Using API provider: {args.api_provider}")
+        print(f"API model: {args.api_model}")
+        print(f"=" * 80)
+
+        api_client = create_api_client(args.api_provider, args.api_key)
+        generate_fn = create_api_generate_function(
+            api_client, args.api_model, args.max_new_tokens, args.temperature
+        )
+
+        model_identifier = f"{args.api_provider}/{args.api_model}"
+        tokenizer = None
+        check_token_length = False
+
+    else:
+        # Local model mode
+        print(f"=" * 80)
+        print(f"Using local model: {args.model_name}")
+        print(f"Device: {args.device}")
+        print(f"=" * 80)
+
+        model, tokenizer = load_llm_model(args.model_name, args.device)
+        generate_fn = create_generate_function(
+            model=model,
+            tokenizer=tokenizer,
+            device=args.device,
+            max_input_length=args.max_input_length,
+            max_new_tokens=args.max_new_tokens,
+            temperature=args.temperature,
+        )
+
+        model_identifier = args.model_name
+        check_token_length = True
+
+    # === Call evaluation function ===
     evaluate_llm_classification(
-        args.input_csv,
-        args.model_name,
+        input_csv=args.input_csv,
+        generate_fn=generate_fn,
+        model_identifier=model_identifier,
+        tokenizer=tokenizer,
+        few_shot=args.few_shot,
         encoding=args.encoding,
         json_path=args.json_path,
         max_samples_per_row=args.max_samples_per_row,
         max_total_samples=args.max_total_samples,
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
-        device=args.device,
         max_input_length=args.max_input_length,
-        few_shot=args.few_shot,
         max_candidates=args.max_candidates,
+        check_token_length=check_token_length,
     )

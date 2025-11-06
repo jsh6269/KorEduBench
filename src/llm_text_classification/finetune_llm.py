@@ -33,12 +33,13 @@ from src.utils.prompt import create_classification_prompt
 from src.utils.random_seed import set_train_random_seed
 
 
-def prepare_training_examples(
+def prepare_training_dataset(
     train_dir: str,
     encoding: str = None,
     max_samples_per_row: int = None,
     max_total_samples: int = None,
     max_candidates: int = None,
+    seed: int = 42,
 ):
     """
     Prepare training examples from CSV data in a directory.
@@ -49,9 +50,10 @@ def prepare_training_examples(
         max_samples_per_row: Maximum samples per row (default: None, use all)
         max_total_samples: Maximum total samples (default: None, use all)
         max_candidates: Maximum candidates per prompt (default: None, use all)
+        seed: Random seed for shuffling dataset
 
     Returns:
-        List of training examples with prompts and completions
+        Dataset ready for SFTTrainer
     """
     # Load all CSV files from directory
     csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
@@ -141,7 +143,19 @@ def prepare_training_examples(
         )
         all_training_examples = random.sample(all_training_examples, max_total_samples)
 
-    return all_training_examples
+    # === Prepare dataset ===
+    print("\nPreparing dataset...")
+
+    # Format training data for SFTTrainer
+    formatted_examples = []
+    for example in all_training_examples:
+        formatted_examples.append({"text": format_prompt_for_training(example)})
+
+    train_dataset = Dataset.from_list(formatted_examples)
+    train_dataset = train_dataset.shuffle(seed=seed)
+    print(f"Dataset size: {len(train_dataset)} (shuffled)")
+
+    return train_dataset
 
 
 def format_prompt_for_training(example):
@@ -226,8 +240,13 @@ def finetune_llm(
     print()
 
     # === Load training data ===
-    training_examples = prepare_training_examples(
-        train_dir, encoding, max_samples_per_row, max_total_samples, max_candidates
+    train_dataset = prepare_training_dataset(
+        train_dir,
+        encoding,
+        max_samples_per_row,
+        max_total_samples,
+        max_candidates,
+        seed,
     )
 
     # === Load model with Unsloth ===
@@ -273,18 +292,6 @@ def finetune_llm(
         use_rslora=False,
         loftq_config=None,
     )
-
-    # === Prepare dataset ===
-    print("\nPreparing dataset...")
-
-    # Format training data for SFTTrainer
-    formatted_examples = []
-    for example in training_examples:
-        formatted_examples.append({"text": format_prompt_for_training(example)})
-
-    train_dataset = Dataset.from_list(formatted_examples)
-    train_dataset = train_dataset.shuffle(seed=seed)
-    print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
     # === Create trainer with SFTConfig ===
     print("\nInitializing trainer...")
@@ -347,7 +354,7 @@ def finetune_llm(
     training_info = {
         "model_name": model_name,
         "train_dir": train_dir,
-        "num_examples": len(training_examples),
+        "num_examples": len(train_dataset),
         "num_train_epochs": num_train_epochs,
         "per_device_train_batch_size": per_device_train_batch_size,
         "gradient_accumulation_steps": gradient_accumulation_steps,

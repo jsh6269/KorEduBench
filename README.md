@@ -17,6 +17,18 @@ KorEduBench is a benchmark project for Korean educational achievement standard c
 
 ## Installation
 
+### Install uv (Recommended Package Manager)
+
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Or using pip
+pip install uv
+```
+
+For more installation options, see [uv documentation](https://docs.astral.sh/uv/getting-started/installation/).
+
 ### Local Environment
 
 ```bash
@@ -26,6 +38,34 @@ uv sync
 # Or using pip
 pip install -e .
 ```
+
+### API Key Configuration (Optional)
+
+If you plan to use API-based models (OpenAI, Anthropic, Google AI Studio, OpenRouter, etc.):
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env and add your API keys
+# OPENAI_API_KEY=sk-your-actual-key-here
+# GOOGLE_API_KEY=your-google-api-key-here
+# OPENROUTER_API_KEY=your-openrouter-key-here
+```
+
+**Usage in code:**
+
+```python
+from src.utils.env_loader import get_api_key
+
+# Get API key (returns None if not found)
+openai_key = get_api_key("OPENAI_API_KEY")
+
+# Or require the key (raises error if not found)
+openai_key = get_api_key("OPENAI_API_KEY", required=True)
+```
+
+The `.env` file is automatically ignored by git to keep your keys secure.
 
 ### Google Colab
 
