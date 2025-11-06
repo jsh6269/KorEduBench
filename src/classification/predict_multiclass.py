@@ -111,6 +111,7 @@ def predict_batch(
     max_length: int = 256,
     batch_size: int = 32,
     top_k: int = 5,
+    num_classes: int = None,
 ) -> List[Dict]:
     """
     Predict achievement standards for a batch of texts.
@@ -143,9 +144,11 @@ def predict_batch(
             probs = F.softmax(logits, dim=-1)
 
         # Get top-k predictions for each sample
-        topk_probs, topk_indices = torch.topk(
-            probs, k=min(top_k, probs.size(1)), dim=-1
-        )
+        # Limit top_k to number of classes to avoid errors
+        num_classes_actual = num_classes if num_classes is not None else probs.size(1)
+        effective_top_k = min(top_k, num_classes_actual)
+
+        topk_probs, topk_indices = torch.topk(probs, k=effective_top_k, dim=-1)
 
         for prob_row, idx_row in zip(topk_probs, topk_indices):
             result = {"top_k": []}
@@ -194,6 +197,7 @@ def predict_texts(
         max_length=config["max_length"],
         batch_size=batch_size,
         top_k=top_k,
+        num_classes=config["num_classes"],
     )
 
     # Add code and content to results
@@ -291,9 +295,9 @@ def predict_from_csv(
     # Check if evaluation is possible (has 'code' column)
     has_ground_truth = "code" in df.columns
     if has_ground_truth and evaluate:
-        print("✓ Ground truth 'code' column found. Evaluation will be performed.")
+        print("Ground truth 'code' column found. Evaluation will be performed.")
     elif evaluate:
-        print("⚠ No 'code' column found. Skipping evaluation.")
+        print("No 'code' column found. Skipping evaluation.")
 
     # Collect all texts from all text columns
     texts = []
@@ -317,17 +321,26 @@ def predict_from_csv(
     if len(texts) == 0:
         raise ValueError("No valid texts found in CSV")
 
+    # Load model to get config for num_classes
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    _, _, config, _ = load_model(model_dir, device)
+
     # Predict
     results = predict_texts(model_dir, texts, top_k=top_k, batch_size=batch_size)
 
     # Evaluate if ground truth is available
+    evaluation_results = None
     if has_ground_truth and evaluate and len(ground_truth_codes) > 0:
         print("\n" + "=" * 80)
         print("📊 EVALUATION RESULTS")
         print("=" * 80)
 
         # Calculate top-k accuracies
-        top_k_values = [k for k in [1, 3, 5, 10, 20, 50] if k <= top_k]
+        # Limit top_k_values to available classes and requested top_k
+        num_classes = config.get("num_classes", len(set(ground_truth_codes)))
+        max_available_k = min(top_k, num_classes)
+
+        top_k_values = [k for k in [1, 3, 5, 10, 20, 50] if k <= max_available_k]
         top_k_accs, correct_counts = evaluate_predictions(
             results, ground_truth_codes, top_k_values
         )
@@ -341,6 +354,90 @@ def predict_from_csv(
             print(f"  Top-{k:2d}: {acc*100:6.2f}% ({correct:5d}/{len(results)})")
         print("-" * 50)
         print("=" * 80)
+
+        # Calculate MRR (Mean Reciprocal Rank)
+        mrr = 0.0
+        for pred, gt_code in zip(results, ground_truth_codes):
+            pred_codes = [item["code"] for item in pred["top_k"]]
+            if gt_code in pred_codes:
+                rank = pred_codes.index(gt_code) + 1
+                mrr += 1.0 / rank
+            else:
+                mrr += 0.0  # Not found in top-k
+        mrr = mrr / len(results) if len(results) > 0 else 0.0
+
+        # Prepare evaluation results for JSON
+        input_path = Path(input_csv)
+
+        # Extract folder name (e.g., "valid_80" from "dataset/valid_80/과학.csv")
+        folder_parts = input_path.parts
+        folder = None
+        for i, part in enumerate(folder_parts):
+            if "valid" in part or "train" in part:
+                folder = part
+                break
+        if folder is None:
+            folder = input_path.parent.name
+
+        # Extract subject from filename (e.g., "과학.csv" -> "과학")
+        subject = input_path.stem
+
+        # Count unique codes (standards)
+        unique_codes = (
+            df["code"].nunique()
+            if "code" in df.columns
+            else len(set(ground_truth_codes))
+        )
+
+        # Count max samples per row (number of text_* columns)
+        max_samples_per_row = len(text_columns)
+
+        # Build evaluation results in the same format as results.json
+        # Round to 4 decimal places for all float values
+        evaluation_results = {
+            "folder": folder,
+            "model_name": str(model_dir),
+            "subject": subject,
+            "num_standards": unique_codes,
+            "max_samples_per_row": max_samples_per_row,
+            "total_samples": len(results),
+            "top1_acc": round(float(top_k_accs.get(1, 0.0)), 4),
+            "top3_acc": round(float(top_k_accs.get(3, 0.0)), 4),
+            "top10_acc": round(float(top_k_accs.get(10, 0.0)), 4),
+            "top20_acc": round(float(top_k_accs.get(20, 0.0)), 4),
+            "mrr": round(float(mrr), 4),
+        }
+
+        # Add top40_acc if available
+        if 40 in top_k_accs:
+            evaluation_results["top40_acc"] = round(float(top_k_accs[40]), 4)
+
+        # Save to JSON file
+        output_dir = PROJECT_ROOT / "output" / "classification"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        results_json_path = output_dir / "results.json"
+
+        # Load existing results if file exists
+        existing_results = []
+        if results_json_path.exists():
+            try:
+                with open(results_json_path, "r", encoding="utf-8") as f:
+                    content = f.read().strip()
+                    if content:  # Only parse if file is not empty
+                        existing_results = json.loads(content)
+            except (json.JSONDecodeError, ValueError) as e:
+                print(f"  Warning: Could not parse existing results.json: {e}")
+                print("   Starting with empty results list.")
+                existing_results = []
+
+        # Append new result
+        existing_results.append(evaluation_results)
+
+        # Save updated results
+        with open(results_json_path, "w", encoding="utf-8") as f:
+            json.dump(existing_results, f, indent=2, ensure_ascii=False)
+
+        print(f"\n📄 Evaluation results saved to: {results_json_path}")
 
     # Create a new dataframe for predictions
     # Each row corresponds to one text prediction
@@ -356,7 +453,10 @@ def predict_from_csv(
         pred_df["ground_truth_code"] = ground_truth_codes
 
     # Add predictions
-    for i in range(min(top_k, 20)):  # Support up to top-20
+    # Limit to actual number of predictions available (may be less than top_k if top_k > num_classes)
+    num_classes = config.get("num_classes", 1000)
+    max_predictions = min(top_k, num_classes, 20)  # Support up to top-20 for CSV
+    for i in range(max_predictions):
         pred_df[f"pred_code_{i+1}"] = [
             r["top_k"][i]["code"] if i < len(r["top_k"]) else "" for r in results
         ]
@@ -372,10 +472,13 @@ def predict_from_csv(
     if has_ground_truth:
         pred_df["top1_correct"] = pred_df["pred_code_1"] == pred_df["ground_truth_code"]
 
-    # Save predictions
-    pred_df.to_csv(output_csv, index=False, encoding="utf-8")
-    print(f"\nResults saved to: {output_csv}")
-    print(f"Total predictions: {len(pred_df)}")
+    # Save predictions only if output_csv is provided
+    if output_csv:
+        pred_df.to_csv(output_csv, index=False, encoding="utf-8")
+        print(f"\n📄 Predictions saved to: {output_csv}")
+        print(f"Total predictions: {len(pred_df)}")
+    else:
+        print("\n⚠ Output CSV not specified. Predictions not saved to file.")
 
     return pred_df
 
@@ -404,7 +507,7 @@ if __name__ == "__main__":
     parser.add_argument("--text", type=str, help="Single text to predict")
     parser.add_argument("--encoding", type=str, default="utf-8")
     parser.add_argument(
-        "--top_k", type=int, default=5, help="Number of top predictions to return"
+        "--top_k", type=int, default=40, help="Number of top predictions to return"
     )
     parser.add_argument("--batch_size", type=int, default=32)
 
@@ -430,18 +533,11 @@ if __name__ == "__main__":
 
     elif args.input_csv:
         # Batch prediction from CSV
-        # Auto-generate output path if not provided
-        if not args.output_csv:
-            input_path = Path(args.input_csv)
-            args.output_csv = str(
-                input_path.parent / f"{input_path.stem}_predictions.csv"
-            )
-            print(f"Output will be saved to: {args.output_csv}")
-
+        # Don't auto-generate output path - only save if explicitly provided
         predict_from_csv(
             args.model_dir,
             args.input_csv,
-            args.output_csv,
+            args.output_csv,  # Can be None - will skip CSV saving
             args.text_column,
             args.encoding,
             args.top_k,

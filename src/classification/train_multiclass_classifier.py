@@ -297,11 +297,13 @@ def evaluate_model(
     accuracy = accuracy_score(all_labels, all_preds)
 
     # Top-k accuracies
+    # Only calculate top-k accuracy if k <= number of classes to avoid errors
     top_k_accs = {}
+    num_classes = len(idx_to_code)
     for k in [1, 3, 5, 10, 20]:
-        if k <= len(idx_to_code):
+        if k <= num_classes:
             top_k_acc = top_k_accuracy_score(
-                all_labels, all_probs, k=k, labels=list(range(len(idx_to_code)))
+                all_labels, all_probs, k=k, labels=list(range(num_classes))
             )
             top_k_accs[f"top_{k}_acc"] = top_k_acc
 
@@ -365,7 +367,7 @@ def train_classifier(
     print("=" * 80)
 
     # Prepare data
-    print(f"\n📊 Loading data from: {input_csv}")
+    print(f"\nLoading data from: {input_csv}")
     texts, labels, code_to_idx, idx_to_code, code_to_content = prepare_data(
         input_csv, encoding, max_samples_per_class
     )
@@ -395,7 +397,7 @@ def train_classifier(
         json.dump(mappings, f, indent=2, ensure_ascii=False)
 
     # Load tokenizer and create datasets
-    print(f"\n🤖 Loading model: {base_model}")
+    print(f"\nLoading model: {base_model}")
     tokenizer = AutoTokenizer.from_pretrained(base_model)
 
     train_dataset = AchievementDataset(train_texts, train_labels, tokenizer, max_length)
@@ -431,7 +433,7 @@ def train_classifier(
         )
 
     # Setup loss function
-    print(f"\n🔥 Loss function: {loss_type}")
+    print(f"\nLoss function: {loss_type}")
     if loss_type == "focal":
         criterion = FocalLoss(alpha=focal_alpha, gamma=focal_gamma)
         print(f"   Focal Loss - alpha={focal_alpha}, gamma={focal_gamma}")
@@ -455,7 +457,7 @@ def train_classifier(
     # Mixed precision
     scaler = torch.cuda.amp.GradScaler() if mixed_precision else None
 
-    print(f"\n⚙️  Training Configuration:")
+    print(f"\n   Training Configuration:")
     print(f"   Epochs: {epochs}")
     print(f"   Batch size: {batch_size}")
     print(f"   Gradient accumulation: {gradient_accumulation_steps}")
@@ -474,12 +476,12 @@ def train_classifier(
     training_history = []
 
     print("\n" + "=" * 80)
-    print("🚀 STARTING TRAINING")
+    print("STARTING TRAINING")
     print("=" * 80)
 
     for epoch in range(epochs):
         print(f"\n{'='*80}")
-        print(f"📅 Epoch {epoch + 1}/{epochs}")
+        print(f"Epoch {epoch + 1}/{epochs}")
         print(f"{'='*80}")
 
         # Training
@@ -542,20 +544,20 @@ def train_classifier(
         print(f"   Train Accuracy: {train_acc:.4f}")
 
         # Evaluation
-        print("\n📊 Evaluating...")
+        print("\nEvaluating...")
         metrics = evaluate_model(model, test_loader, device, idx_to_code)
 
         print("\n" + "=" * 80)
-        print("📈 EVALUATION RESULTS")
+        print("EVALUATION RESULTS")
         print("=" * 80)
-        print(f"\n🎯 Main Metrics:")
+        print(f"\n   Main Metrics:")
         print(f"   Accuracy:        {metrics['accuracy']:.4f}")
         print(f"   F1 (weighted):   {metrics['f1_weighted']:.4f}")
         print(f"   F1 (macro):      {metrics['f1_macro']:.4f}")
         print(f"   Precision:       {metrics['precision']:.4f}")
         print(f"   Recall:          {metrics['recall']:.4f}")
 
-        print(f"\n🏆 Top-K Accuracies:")
+        print(f"\n   Top-K Accuracies:")
         for k in [1, 3, 5, 10, 20]:
             key = f"top_{k}_acc"
             if key in metrics:
@@ -592,13 +594,13 @@ def train_classifier(
             torch.save(model.state_dict(), best_model_path / "model.pt")
             tokenizer.save_pretrained(best_model_path)
 
-            print(f"\n✅ NEW BEST MODEL!")
+            print(f"\nNEW BEST MODEL!")
             print(f"   F1: {best_f1:.4f} | Accuracy: {best_accuracy:.4f}")
             print(f"   Saved to: {best_model_path}")
         else:
             patience_counter += 1
             print(
-                f"\n⏸️  No improvement. Patience: {patience_counter}/{early_stopping_patience}"
+                f"\nNo improvement. Patience: {patience_counter}/{early_stopping_patience}"
             )
 
         # Save checkpoint
@@ -609,7 +611,7 @@ def train_classifier(
         # Early stopping
         if patience_counter >= early_stopping_patience:
             print(f"\n{'='*80}")
-            print(f"⛔ Early stopping triggered at epoch {epoch + 1}")
+            print(f"Early stopping triggered at epoch {epoch + 1}")
             print(f"   Best F1: {best_f1:.4f}")
             print(f"   Best Accuracy: {best_accuracy:.4f}")
             print(f"{'='*80}")
@@ -637,7 +639,7 @@ def train_classifier(
         json.dump(config, f, indent=2, ensure_ascii=False)
 
     print("\n" + "=" * 80)
-    print("✅ TRAINING COMPLETE!")
+    print("TRAINING COMPLETE!")
     print("=" * 80)
     print(f"   Best F1 Score: {best_f1:.4f}")
     print(f"   Best Accuracy: {best_accuracy:.4f}")
