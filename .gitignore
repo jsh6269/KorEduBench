@@ -224,3 +224,6 @@ trash_bin/
 checkpoints/
 saved_models/
 logs/
+
+# Unsloth compiled cache
+unsloth_compiled_cache/

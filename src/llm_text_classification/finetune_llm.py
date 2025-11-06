@@ -15,14 +15,14 @@ import argparse
 import json
 import os
 import sys
+from glob import glob
 from pathlib import Path
 
 import torch
 from datasets import Dataset
 from tqdm import tqdm
-from transformers import TrainingArguments
-from trl import SFTTrainer
-from unsloth import FastLanguageModel
+from trl import SFTConfig, SFTTrainer
+from unsloth import FastLanguageModel  # import unsloth before trl to avoid conflicts
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -34,61 +34,114 @@ from src.utils.random_seed import set_train_random_seed
 
 
 def prepare_training_examples(
-    train_csv: str,
+    train_dir: str,
     encoding: str = None,
     max_samples_per_row: int = None,
     max_total_samples: int = None,
+    max_candidates: int = None,
 ):
     """
-    Prepare training examples from CSV data.
+    Prepare training examples from CSV data in a directory.
 
     Args:
-        train_csv: Path to training CSV file
+        train_dir: Directory containing training CSV files
         encoding: CSV encoding (default: auto-detect)
         max_samples_per_row: Maximum samples per row (default: None, use all)
         max_total_samples: Maximum total samples (default: None, use all)
+        max_candidates: Maximum candidates per prompt (default: None, use all)
 
     Returns:
         List of training examples with prompts and completions
     """
-    # Load data using existing utility function
-    print("Loading training data...")
-    data = load_evaluation_data(
-        train_csv, encoding, max_samples_per_row, max_total_samples
-    )
+    # Load all CSV files from directory
+    csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
+    if not csv_files:
+        raise ValueError(f"No CSV files found in directory: {train_dir}")
 
-    # Extract data
-    contents = data.contents
-    codes = data.codes
-    sample_texts = data.sample_texts
-    true_codes = data.true_codes
-    num_rows = data.num_rows
+    print(f"Found {len(csv_files)} CSV files in directory: {train_dir}")
+    for csv_file in csv_files:
+        print(f"  - {os.path.basename(csv_file)}")
 
-    print(f"Total achievement standards: {num_rows}")
-    print(f"Total training samples: {len(sample_texts)}")
+    # Collect all training examples from all CSV files
+    all_training_examples = []
 
-    # Prepare candidates list (for prompt generation)
-    candidates = [(i + 1, codes[i], contents[i]) for i in range(num_rows)]
+    for csv_file in csv_files:
+        print(f"\nLoading: {os.path.basename(csv_file)}")
 
-    # Create training examples
-    training_examples = []
-    print("Preparing training examples...")
-    for text, code in tqdm(
-        zip(sample_texts, true_codes), desc="Creating prompts", total=len(sample_texts)
-    ):
-        # Create prompt using the same format as evaluation
-        prompt = create_classification_prompt(text, candidates)
-
-        training_examples.append(
-            {
-                "prompt": prompt,
-                "completion": code,
-                "text": text,
-            }
+        # Load data using existing utility function
+        data = load_evaluation_data(
+            csv_file,
+            encoding,
+            max_samples_per_row,
+            None,  # Don't apply max_total_samples per file
         )
 
-    print(f"Total training examples prepared: {len(training_examples)}")
-    return training_examples
+        # Extract data
+        contents = data.contents
+        codes = data.codes
+        sample_texts = data.sample_texts
+        true_codes = data.true_codes
+        num_rows = data.num_rows
+
+        print(f"  Achievement standards: {num_rows}")
+        print(f"  Training samples: {len(sample_texts)}")
+
+        # Prepare full candidates list
+        full_candidates = [(i + 1, codes[i], contents[i]) for i in range(num_rows)]
+
+        # Create training examples for this file
+        for text, code in tqdm(
+            zip(sample_texts, true_codes),
+            desc=f"Creating prompts for {os.path.basename(csv_file)}",
+            total=len(sample_texts),
+        ):
+            # Limit candidates if specified (include correct answer + random sample)
+            if max_candidates is not None and len(full_candidates) > max_candidates:
+                import random
+
+                # Find the correct candidate
+                correct_idx = codes.index(code)
+                correct_candidate = full_candidates[correct_idx]
+
+                # Get other candidates (excluding the correct one)
+                other_candidates = [
+                    c for i, c in enumerate(full_candidates) if i != correct_idx
+                ]
+
+                # Randomly sample max_candidates - 1 other candidates
+                sampled_others = random.sample(
+                    other_candidates, min(max_candidates - 1, len(other_candidates))
+                )
+
+                # Combine correct + sampled candidates and shuffle
+                candidates = [correct_candidate] + sampled_others
+                random.shuffle(candidates)
+            else:
+                candidates = full_candidates
+
+            # Create prompt using the same format as evaluation
+            prompt = create_classification_prompt(text, candidates)
+
+            all_training_examples.append(
+                {
+                    "prompt": prompt,
+                    "completion": code,
+                    "text": text,
+                }
+            )
+
+    print(f"\nTotal training examples from all files: {len(all_training_examples)}")
+
+    # Apply max_total_samples if specified
+    if max_total_samples is not None and len(all_training_examples) > max_total_samples:
+        import random
+
+        print(
+            f"Randomly sampling {max_total_samples} examples from {len(all_training_examples)}"
+        )
+        all_training_examples = random.sample(all_training_examples, max_total_samples)
+
+    return all_training_examples
 
 
 def format_prompt_for_training(example):
@@ -105,12 +158,13 @@ def format_prompt_for_training(example):
 
 
 def finetune_llm(
-    train_csv: str,
+    train_dir: str,
     model_name: str = "unsloth/Qwen2.5-1.5B-Instruct",
     output_dir: str = None,
     max_seq_length: int = 2048,
     max_samples_per_row: int = None,
     max_total_samples: int = None,
+    max_candidates: int = None,
     encoding: str = None,
     # Training hyperparameters
     num_train_epochs: int = 3,
@@ -126,19 +180,19 @@ def finetune_llm(
     lora_dropout: float = 0.0,
     # Other options
     load_in_4bit: bool = True,
-    use_gradient_checkpointing: bool = True,
     seed: int = 42,
 ):
     """
     Fine-tune an LLM for educational achievement standard classification.
 
     Args:
-        train_csv: Path to training CSV file
+        train_dir: Directory containing training CSV files
         model_name: Hugging Face model name (unsloth optimized)
         output_dir: Directory to save the fine-tuned model
         max_seq_length: Maximum sequence length
         max_samples_per_row: Maximum samples per row
         max_total_samples: Maximum total samples (random sample if exceeded)
+        max_candidates: Maximum candidates per prompt (random sample if exceeded)
         encoding: CSV encoding
         num_train_epochs: Number of training epochs
         per_device_train_batch_size: Batch size per device
@@ -167,13 +221,13 @@ def finetune_llm(
     os.makedirs(output_dir, exist_ok=True)
 
     print(f"Model: {model_name}")
-    print(f"Training data: {train_csv}")
+    print(f"Training data directory: {train_dir}")
     print(f"Output directory: {output_dir}")
     print()
 
     # === Load training data ===
     training_examples = prepare_training_examples(
-        train_csv, encoding, max_samples_per_row, max_total_samples
+        train_dir, encoding, max_samples_per_row, max_total_samples, max_candidates
     )
 
     # === Load model with Unsloth ===
@@ -184,6 +238,18 @@ def finetune_llm(
         dtype=None,  # Auto-detect
         load_in_4bit=load_in_4bit,
     )
+
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    eos_id = tokenizer.eos_token_id
+    pad_id = tokenizer.pad_token_id
+
+    for cfg in (base_model.generation_config, base_model.config):
+        cfg.eos_token_id = eos_id
+        cfg.pad_token_id = pad_id
+        if hasattr(cfg, "eos_token"):
+            cfg.eos_token = tokenizer.eos_token
 
     # === Add LoRA adapters ===
     print("\nAdding LoRA adapters...")
@@ -202,7 +268,7 @@ def finetune_llm(
         lora_alpha=lora_alpha,
         lora_dropout=lora_dropout,
         bias="none",
-        use_gradient_checkpointing=use_gradient_checkpointing,
+        use_gradient_checkpointing="unsloth",
         random_state=42,
         use_rslora=False,
         loftq_config=None,
@@ -220,9 +286,17 @@ def finetune_llm(
     train_dataset = train_dataset.shuffle(seed=seed)
     print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
-    # === Set up training arguments ===
-    training_args = TrainingArguments(
+    # === Create trainer with SFTConfig ===
+    print("\nInitializing trainer...")
+    # Try using processing_class instead of tokenizer for newer TRL versions
+
+    sft_config = SFTConfig(
         output_dir=output_dir,
+        overwrite_output_dir=True,
+        dataset_text_field="text",
+        max_length=max_seq_length,
+        dataset_num_proc=2,
+        packing=False,
         num_train_epochs=num_train_epochs,
         per_device_train_batch_size=per_device_train_batch_size,
         gradient_accumulation_steps=gradient_accumulation_steps,
@@ -231,27 +305,27 @@ def finetune_llm(
         bf16=torch.cuda.is_bf16_supported(),
         logging_steps=logging_steps,
         save_steps=save_steps,
-        save_total_limit=3,
+        save_total_limit=1,
         warmup_steps=warmup_steps,
         optim="adamw_8bit",
         weight_decay=0.01,
         lr_scheduler_type="linear",
         seed=seed,
-        report_to="none",  # Disable wandb/tensorboard
+        report_to="none",
     )
 
-    # === Create trainer ===
-    print("\nInitializing trainer...")
     trainer = SFTTrainer(
         model=model,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         train_dataset=train_dataset,
-        dataset_text_field="text",
-        max_seq_length=max_seq_length,
-        dataset_num_proc=2,
-        packing=False,
-        args=training_args,
+        args=sft_config,
     )
+
+    # trainer = train_on_responses_only(
+    #     trainer,
+    #     instruction_part="<|im_start|>system\n",
+    #     response_part="<|im_start|>assistant\n",
+    # )
 
     # === Train ===
     print("\n" + "=" * 80)
@@ -292,7 +366,7 @@ def finetune_llm(
     # === Save training info ===
     training_info = {
         "model_name": model_name,
-        "train_csv": train_csv,
+        "train_dir": train_dir,
         "num_examples": len(training_examples),
         "num_train_epochs": num_train_epochs,
         "per_device_train_batch_size": per_device_train_batch_size,
@@ -304,7 +378,7 @@ def finetune_llm(
         "lora_dropout": lora_dropout,
         "seed": seed,
         "load_in_4bit": load_in_4bit,
-        "use_gradient_checkpointing": use_gradient_checkpointing,
+        "use_gradient_checkpointing": "unsloth",
     }
 
     info_path = os.path.join(output_dir, "training_info.json")
@@ -322,10 +396,10 @@ if __name__ == "__main__":
         description="Fine-tune LLM for educational achievement standard classification using Unsloth."
     )
     parser.add_argument(
-        "--train_csv",
+        "--train_dir",
         type=str,
         required=True,
-        help="Path to training CSV file.",
+        help="Directory containing training CSV files.",
     )
     parser.add_argument(
         "--model_name",
@@ -356,6 +430,12 @@ if __name__ == "__main__":
         type=int,
         default=None,
         help="Maximum total samples, randomly sampled if exceeded (default: use all).",
+    )
+    parser.add_argument(
+        "--max-candidates",
+        type=int,
+        default=None,
+        help="Maximum candidates per prompt, randomly sampled if exceeded (default: use all).",
     )
     parser.add_argument(
         "--encoding",
@@ -429,11 +509,6 @@ if __name__ == "__main__":
         help="Disable 4-bit quantization (default: enabled).",
     )
     parser.add_argument(
-        "--no-gradient-checkpointing",
-        action="store_true",
-        help="Disable gradient checkpointing (default: enabled).",
-    )
-    parser.add_argument(
         "--seed",
         type=int,
         default=42,
@@ -443,12 +518,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     finetune_llm(
-        train_csv=args.train_csv,
+        train_dir=args.train_dir,
         model_name=args.model_name,
         output_dir=args.output_dir,
         max_seq_length=args.max_seq_length,
         max_samples_per_row=args.max_samples_per_row,
         max_total_samples=args.max_total_samples,
+        max_candidates=args.max_candidates,
         encoding=args.encoding,
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.per_device_train_batch_size,
@@ -461,6 +537,5 @@ if __name__ == "__main__":
         lora_alpha=args.lora_alpha,
         lora_dropout=args.lora_dropout,
         load_in_4bit=not args.no_4bit,
-        use_gradient_checkpointing=not args.no_gradient_checkpointing,
         seed=args.seed,
     )

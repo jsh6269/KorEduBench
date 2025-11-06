@@ -9,22 +9,23 @@ set -e  # Exit on error
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Training configuration
-TRAIN_CSV="${PROJECT_ROOT}/dataset/training/train_data.csv"  # Update with your training data path
+TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"  # Directory containing training CSV files
 MODEL_NAME="unsloth/Qwen2.5-3B-Instruct"
 OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"
 MAX_SEQ_LENGTH=6144
 MAX_SAMPLES_PER_ROW=1     # Train with 1 sample per achievement standard
 MAX_TOTAL_SAMPLES=None    # No limit on total samples (after per-row filtering)
+MAX_CANDIDATES=120         # Limit candidates per prompt to avoid overly long prompts
 ENCODING="utf-8"
 
 # Training hyperparameters
-NUM_TRAIN_EPOCHS=3
-PER_DEVICE_TRAIN_BATCH_SIZE=2
+NUM_TRAIN_EPOCHS=1
+PER_DEVICE_TRAIN_BATCH_SIZE=4
 GRADIENT_ACCUMULATION_STEPS=4
 LEARNING_RATE=2e-4
 WARMUP_STEPS=5
-LOGGING_STEPS=10
-SAVE_STEPS=100
+LOGGING_STEPS=20
+SAVE_STEPS=50
 
 # LoRA parameters
 LORA_R=16
@@ -33,7 +34,6 @@ LORA_DROPOUT=0.0
 
 # Other options
 LOAD_IN_4BIT=True
-USE_GRADIENT_CHECKPOINTING=True
 SEED=42
 
 # Color output
@@ -46,16 +46,16 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}=== LLM Fine-tuning ===${NC}"
 echo ""
 
-# Check if training CSV exists
-if [ ! -f "$TRAIN_CSV" ]; then
-    echo -e "${RED}Error: Training CSV file not found: $TRAIN_CSV${NC}"
-    echo -e "${YELLOW}Please update TRAIN_CSV in this script to point to your training data.${NC}"
+# Check if training directory exists
+if [ ! -d "$TRAIN_DIR" ]; then
+    echo -e "${RED}Error: Training directory not found: $TRAIN_DIR${NC}"
+    echo -e "${YELLOW}Please update TRAIN_DIR in this script to point to your training data.${NC}"
     exit 1
 fi
 
 # Print configuration
 echo -e "${BLUE}Configuration:${NC}"
-echo -e "  Training CSV: ${YELLOW}${TRAIN_CSV}${NC}"
+echo -e "  Training Directory: ${YELLOW}${TRAIN_DIR}${NC}"
 echo -e "  Base Model: ${YELLOW}${MODEL_NAME}${NC}"
 echo -e "  Output Directory: ${YELLOW}${OUTPUT_DIR}${NC}"
 echo -e "  Max Sequence Length: ${YELLOW}${MAX_SEQ_LENGTH}${NC}"
@@ -71,7 +71,7 @@ echo ""
 
 # Prepare command arguments
 CMD_ARGS=(
-    --train_csv "$TRAIN_CSV"
+    --train_dir "$TRAIN_DIR"
     --model_name "$MODEL_NAME"
     --output_dir "$OUTPUT_DIR"
     --max_seq_length "$MAX_SEQ_LENGTH"
@@ -96,6 +96,10 @@ fi
 
 if [ "$MAX_TOTAL_SAMPLES" != "None" ]; then
     CMD_ARGS+=(--max-total-samples "$MAX_TOTAL_SAMPLES")
+fi
+
+if [ "$MAX_CANDIDATES" != "None" ]; then
+    CMD_ARGS+=(--max-candidates "$MAX_CANDIDATES")
 fi
 
 if [ "$LOAD_IN_4BIT" = False ]; then
