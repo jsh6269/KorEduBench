@@ -216,8 +216,8 @@ def create_classification_prompt(
     # Format candidates for system prompt (without code)
     candidate_text = "\n".join(
         [f"{code}: {content}" for idx, code, content in candidates]
-    )
-
+    ) #code 대신 index 사용으로 수정
+    
     # Section 1: System prompt with achievement standards
     system_section = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
