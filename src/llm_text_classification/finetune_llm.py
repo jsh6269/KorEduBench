@@ -18,11 +18,15 @@ import sys
 from glob import glob
 from pathlib import Path
 
+# isort: off
+from unsloth import FastLanguageModel  # import unsloth before trl to avoid conflicts
+
+# isort: on
+
 import torch
 from datasets import Dataset
 from tqdm import tqdm
 from trl import SFTConfig, SFTTrainer
-from unsloth import FastLanguageModel  # import unsloth before trl to avoid conflicts
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
