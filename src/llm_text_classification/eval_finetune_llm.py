@@ -23,6 +23,7 @@ from src.utils.data_loader import load_evaluation_data
 from src.utils.model import generate_prediction
 from src.utils.prompt import (
     LLMClassificationResponse,
+    create_chat_classification_prompt,
     create_classification_prompt,
     parse_llm_response,
 )
@@ -104,7 +105,12 @@ def evaluate_finetuned_llm(
 
     # === Check prompt length ===
     # Create a sample prompt to check length
-    sample_prompt = create_classification_prompt(sample_texts[0], candidates)
+    chat_messages = create_chat_classification_prompt(
+        sample_texts[0], candidates, completion="", for_inference=True
+    )
+    sample_prompt = tokenizer.apply_chat_template(
+        chat_messages["messages"], tokenize=False, add_generation_prompt=True
+    )
     sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
     prompt_length = sample_tokens["input_ids"].shape[1]
 
@@ -137,8 +143,13 @@ def evaluate_finetuned_llm(
         text = sample_texts[i]
         true_code = true_codes[i]
 
-        # Create prompt
-        prompt = create_classification_prompt(text, candidates)
+        # Create chat prompt for inference
+        chat_messages = create_chat_classification_prompt(
+            text, candidates, completion="", for_inference=True
+        )
+        prompt = tokenizer.apply_chat_template(
+            chat_messages["messages"], tokenize=False, add_generation_prompt=True
+        )
 
         # Check if this specific prompt will be truncated
         prompt_tokens = tokenizer(prompt, return_tensors="pt")

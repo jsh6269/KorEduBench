@@ -72,7 +72,7 @@ def create_api_generate_function(
     max_new_tokens: int = 50,
     temperature: float = 0.1,
     delay_seconds: float = 0.0,
-) -> Callable[[str], str]:
+) -> Callable:
     """
     Create a generate_prediction function for API calls.
 
@@ -84,18 +84,18 @@ def create_api_generate_function(
         delay_seconds: Delay in seconds after each API call (to avoid rate limits)
 
     Returns:
-        Function that generates predictions using the API (takes only prompt)
+        Function that generates predictions using the API (takes messages list or string prompt)
     """
 
     MAX_RETRIES = 10  # Fixed retry count
     retry_delay = 2 * delay_seconds
 
-    def generate_prediction(prompt: str) -> str:
+    def generate_prediction(prompt) -> str:
         """
         Generate prediction using API with automatic retry on rate limits.
 
         Args:
-            prompt: Input prompt text
+            prompt: Input prompt - either a string (wrapped as user message) or list of message dicts
 
         Returns:
             Generated text response
@@ -103,13 +103,23 @@ def create_api_generate_function(
         Raises:
             RateLimitError: If rate limit persists after all retries
         """
+        # Convert prompt to messages format
+        if isinstance(prompt, str):
+            # String prompt: wrap as user message for backward compatibility
+            messages = [{"role": "user", "content": prompt}]
+        elif isinstance(prompt, list):
+            # Already in messages format
+            messages = prompt
+        else:
+            raise ValueError(f"Prompt must be str or list, got {type(prompt)}")
+
         last_error = None
 
         for attempt in range(MAX_RETRIES + 1):
             try:
                 response = client.chat.completions.create(
                     model=model,
-                    messages=[{"role": "user", "content": prompt}],
+                    messages=messages,
                     max_tokens=max_new_tokens,
                     temperature=temperature,
                 )

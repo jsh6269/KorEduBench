@@ -10,19 +10,19 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Training configuration
 TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"  # Directory containing training CSV files
-MODEL_NAME="unsloth/Qwen2.5-3B-Instruct"
+MODEL_NAME="unsloth/Qwen2.5-7B-Instruct"
 OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"
-MAX_SEQ_LENGTH=6144
-MAX_SAMPLES_PER_ROW=1     # Train with 1 sample per achievement standard
+MAX_SEQ_LENGTH=3000
+MAX_SAMPLES_PER_ROW=20     # Train with n sample per achievement standard
 MAX_TOTAL_SAMPLES=None    # No limit on total samples (after per-row filtering)
-MAX_CANDIDATES=120         # Limit candidates per prompt to avoid overly long prompts
+MAX_CANDIDATES=30         # Limit candidates per prompt to avoid overly long prompts
 ENCODING="utf-8"
 
 # Training hyperparameters
 NUM_TRAIN_EPOCHS=1
 PER_DEVICE_TRAIN_BATCH_SIZE=4
 GRADIENT_ACCUMULATION_STEPS=4
-LEARNING_RATE=2e-4
+LEARNING_RATE=1e-4
 WARMUP_STEPS=5
 LOGGING_STEPS=20
 SAVE_STEPS=50
