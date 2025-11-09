@@ -48,7 +48,6 @@ def prepare_training_dataset(
     max_total_samples: int = None,
     max_candidates: int = None,
     seed: int = 42,
-    return_codes: bool = False,
 ):
     """
     Prepare training examples from CSV data in a directory.
@@ -61,11 +60,9 @@ def prepare_training_dataset(
         max_total_samples: Maximum total samples (default: None, use all)
         max_candidates: Maximum candidates per prompt (default: None, use all)
         seed: Random seed for shuffling dataset
-        return_codes: If True, also return list of unique achievement standard codes
 
     Returns:
-        If return_codes=False: Dataset ready for SFTTrainer (with "text" field)
-        If return_codes=True: Tuple of (Dataset, list of unique codes)
+        Dataset ready for SFTTrainer (with "text" field)
     """
     # Load all CSV files from directory
     csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
@@ -78,7 +75,6 @@ def prepare_training_dataset(
 
     # Collect all training examples from all CSV files
     all_training_examples = []
-    all_codes = []  # Collect codes if needed
 
     for csv_file in csv_files:
         print(f"\nLoading: {os.path.basename(csv_file)}")
@@ -100,9 +96,6 @@ def prepare_training_dataset(
 
         print(f"  Achievement standards: {num_rows}")
         print(f"  Training samples: {len(sample_texts)}")
-
-        # Collect codes for tokenizer
-        all_codes.extend(codes)
 
         # Prepare full candidates list
         full_candidates = [(i + 1, codes[i], contents[i]) for i in range(num_rows)]
@@ -170,12 +163,6 @@ def prepare_training_dataset(
     train_dataset = Dataset.from_list(text_examples)
     train_dataset = train_dataset.shuffle(seed=seed)
     print(f"Dataset size: {len(train_dataset)} (shuffled)")
-
-    # Return unique codes if requested
-    if return_codes:
-        unique_codes_list = sorted(list(set(all_codes)))
-        print(f"Unique achievement standard codes: {len(unique_codes_list)}")
-        return train_dataset, unique_codes_list
 
     return train_dataset
 
@@ -270,7 +257,7 @@ def finetune_llm(
             cfg.eos_token = tokenizer.eos_token
 
     # === Load training data ===
-    train_dataset, unique_codes = prepare_training_dataset(
+    train_dataset = prepare_training_dataset(
         train_dir,
         tokenizer,
         encoding,
@@ -278,23 +265,7 @@ def finetune_llm(
         max_total_samples,
         max_candidates,
         seed,
-        return_codes=True,
     )
-
-    # === Add achievement standard codes as special tokens ===
-    print(
-        f"\nAdding {len(unique_codes)} achievement standard codes as special tokens..."
-    )
-    num_added_tokens = tokenizer.add_tokens(unique_codes)
-    print(f"  Added {num_added_tokens} new tokens to tokenizer")
-    print(f"  New vocabulary size: {len(tokenizer)}")
-
-    # Resize model embeddings to accommodate new tokens
-    # Only resize if needed, use mean_resizing=False to save memory
-    current_embed_size = base_model.get_input_embeddings().num_embeddings
-    new_size = len(tokenizer)
-    if new_size > current_embed_size:
-        base_model.resize_token_embeddings(new_size, mean_resizing=False)
 
     # === Add LoRA adapters ===
     print("\nAdding LoRA adapters...")
