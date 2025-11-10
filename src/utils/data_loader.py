@@ -25,8 +25,10 @@ class EvaluationData:
     true_codes: List[str]  # True code for each sample text
     subject: str
     num_rows: int
+    num_candidates: int
     num_samples: int
     max_samples_per_row: int
+    max_candidates: int
     folder_name: Optional[str] = None  # train/valid/test folder name if detected
 
 
@@ -35,6 +37,7 @@ def load_evaluation_data(
     encoding: Optional[str] = None,
     max_samples_per_row: Optional[int] = None,
     max_total_samples: Optional[int] = None,
+    max_candidates: Optional[int] = None,
 ) -> EvaluationData:
     """
     Load and preprocess CSV data for evaluation.
@@ -79,6 +82,7 @@ def load_evaluation_data(
     # Extract meta info
     subject = df["subject"].iloc[0] if "subject" in df.columns else "Unknown"
     num_rows = len(df)
+    num_candidates = num_rows
 
     # Auto compute max_samples_per_row if None
     if max_samples_per_row is None:
@@ -89,10 +93,24 @@ def load_evaluation_data(
     contents = df["content"].astype(str).tolist()
     codes = df["code"].astype(str).tolist()
 
+    # Prepare candidates list (limit to max_candidates)
+    if max_candidates is not None and num_rows > max_candidates:
+        print(
+            f"⚠️  Warning: Number of achievement standards ({num_rows}) exceeds max_candidates ({max_candidates})"
+        )
+        print(f"⚠️  Randomly sampling {max_candidates} standards as candidates")
+        # Randomly sample indices and sort them
+        selected_indices = sorted(random.sample(range(num_rows), max_candidates))
+        codes = [codes[i] for i in selected_indices]
+        contents = [contents[i] for i in selected_indices]
+        num_candidates = max_candidates
+
     # Flatten sample texts and true codes
     sample_texts, true_codes = [], []
     for _, row in df.iterrows():
         code = str(row["code"])
+        if code not in codes:
+            continue
         texts = []
         for col in sample_cols:
             text = str(row[col]).strip()
@@ -133,7 +151,9 @@ def load_evaluation_data(
         true_codes=true_codes,
         subject=subject,
         num_rows=num_rows,
+        num_candidates=num_candidates,
         num_samples=num_samples,
         max_samples_per_row=max_samples_per_row,
+        max_candidates=max_candidates,
         folder_name=folder_name,
     )

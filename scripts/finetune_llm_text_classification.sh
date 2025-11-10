@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# LLM-based Text Classification Evaluation
-# This script runs LLM-based classification evaluation on subject CSV files
+# Fine-tuned LLM Evaluation Script
+# This script evaluates a fine-tuned LLM on multiple subject CSV files
 
 # set -e  # Exit on error (주석 처리: 에러가 나도 다음 파일 계속 처리)
 
@@ -10,15 +10,14 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
-MODEL_NAME="qwen/qwen2.5-3b-instruct"
-MAX_NEW_TOKENS=10
+MODEL_PATH="${PROJECT_ROOT}/model/finetuned_llm"  # Path to fine-tuned model
+MAX_NEW_TOKENS=20
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=1400
-MAX_CANDIDATES=15
-MAX_TOTAL_SAMPLES=100
-MAX_SAMPLES_PER_ROW=5
-FEW_SHOT=False
+MAX_INPUT_LENGTH=4096
+MAX_CANDIDATES=50
+MAX_SAMPLES_PER_ROW=3
+MAX_TOTAL_SAMPLES=200
 
 # Color output
 GREEN='\033[0;32m'
@@ -27,7 +26,14 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== LLM Text Classification Evaluation ===${NC}"
+echo -e "${GREEN}=== Fine-tuned LLM Evaluation ===${NC}"
+
+# Check if model exists
+if [ ! -d "$MODEL_PATH" ]; then
+    echo -e "${RED}Error: Model directory not found: $MODEL_PATH${NC}"
+    echo -e "${YELLOW}Please run finetuning_llm.sh first to train the model.${NC}"
+    exit 1
+fi
 
 # Check if folder exists
 if [ ! -d "$DATASET_FOLDER" ]; then
@@ -36,11 +42,12 @@ if [ ! -d "$DATASET_FOLDER" ]; then
 fi
 
 echo -e "Dataset folder: ${YELLOW}${DATASET_FOLDER}${NC}"
-echo -e "Model: ${YELLOW}${MODEL_NAME}${NC}"
+echo -e "Model path: ${YELLOW}${MODEL_PATH}${NC}"
 echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
+echo -e "Max samples per row: ${YELLOW}${MAX_SAMPLES_PER_ROW}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
@@ -70,23 +77,21 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     echo -e "${BLUE}║  Processing: ${BASENAME}${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
     
-    # Run LLM evaluation
-    if [ "$FEW_SHOT" = True ]; then
-        FEW_SHOT_FLAG="--few-shot"
-    else
-        FEW_SHOT_FLAG=""
-    fi
-    if python "${PROJECT_ROOT}/src/llm_text_classification/eval_llm.py" \
-        --input_csv "$CSV_FILE" \
-        --model_name "$MODEL_NAME" \
-        --max-new-tokens "$MAX_NEW_TOKENS" \
-        --temperature "$TEMPERATURE" \
-        --device "$DEVICE" \
-        --max-input-length "$MAX_INPUT_LENGTH" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
-        --max-candidates "$MAX_CANDIDATES" \
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
-        $FEW_SHOT_FLAG; then
+    # Prepare command arguments
+    CMD_ARGS=(
+        --input_csv "$CSV_FILE"
+        --model_path "$MODEL_PATH"
+        --max-new-tokens "$MAX_NEW_TOKENS"
+        --temperature "$TEMPERATURE"
+        --device "$DEVICE"
+        --max-input-length "$MAX_INPUT_LENGTH"
+        --max-samples-per-row "$MAX_SAMPLES_PER_ROW"
+        --max-total-samples "$MAX_TOTAL_SAMPLES"
+        --max-candidates "$MAX_CANDIDATES"
+    )
+    
+    # Run fine-tuned LLM evaluation
+    if python "${PROJECT_ROOT}/src/llm_text_classification/eval_finetune_llm.py" "${CMD_ARGS[@]}"; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
     else
@@ -98,13 +103,13 @@ done
 
 # Summary
 echo -e "${GREEN}╔═══════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║  LLM Classification Evaluation Complete!${NC}"
+echo -e "${GREEN}║  Fine-tuned LLM Evaluation Complete!${NC}"
 echo -e "${GREEN}╚═══════════════════════════════════════════════════════╝${NC}"
 echo -e "Processed: ${GREEN}${PROCESSED}${NC} / Total: ${BLUE}${#CSV_FILES[@]}${NC}"
 if [ $FAILED -gt 0 ]; then
     echo -e "Failed: ${RED}${FAILED}${NC}"
 fi
 echo ""
-echo -e "Results saved to: ${YELLOW}${PROJECT_ROOT}/output/llm_text_classification/results.json${NC}"
-echo -e "Logs saved to: ${YELLOW}${PROJECT_ROOT}/output/llm_text_classification/logs/${NC}"
+echo -e "Results saved to: ${YELLOW}${PROJECT_ROOT}/output/llm_text_classification/finetuned_results.json${NC}"
+echo -e "Logs saved to: ${YELLOW}${PROJECT_ROOT}/output/llm_text_classification/finetuned_logs/${NC}"
 

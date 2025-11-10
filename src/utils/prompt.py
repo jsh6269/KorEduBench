@@ -40,9 +40,28 @@ from enum import Enum
 # ============================================================================
 
 # Default Template (outputs content text)
-# Section 1: System Prompt - Establishes the role and context
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Read the given textbook text and select the most appropriate achievement standard."""
+# Section 1: System Prompt
+SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook content with achievement standards.
 
+WHAT ARE ACHIEVEMENT STANDARDS:
+Achievement standards are specific learning objectives that define what students should know and be able to do at a particular grade level. Each standard describes:
+- The specific knowledge or skills students need to acquire
+- The level of understanding or performance expected
+- The context or situation where learning should be applied
+
+HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
+1. Read the textbook text carefully and identify its primary educational purpose
+2. Ask yourself: "What is this content trying to teach students?"
+3. Look for key indicators:
+   - What subject knowledge is being presented?
+   - What skills or abilities are students expected to develop?
+   - What cognitive processes are involved (understanding, applying, analyzing)?
+4. Select the standard that most directly aligns with the main learning goal
+
+IMPORTANT PRINCIPLES:
+- Focus on the PRIMARY learning objective, not secondary or supporting content
+- Consider what students should be able to DO after studying this content
+- Match based on educational intent, not just topic similarity"""
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
 
@@ -50,22 +69,30 @@ USER_PROMPT_INTRO = ""
 # Achievement standards are moved to Section 1 (System Prompt)
 
 # Section 4: Output Format Instructions
-OUTPUT_FORMAT_INSTRUCTION_CODE = """# Instructions
-Select ONLY ONE achievement standard that best describes the textbook text above.
+OUTPUT_FORMAT_INSTRUCTION_CODE = """# Task
+Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
-IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+# Output Format
+Output ONLY the achievement standard code. No explanations, no additional text.
 
-Example output format:
+Correct format:
 10영03-04
+
+Wrong formats:
+❌ "10영03-04 because..."
+❌ Code: 10영03-04
 
 # Answer"""
 
-OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Instructions
-Select ONLY ONE achievement standard that best describes the textbook text above.
+OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Task
+Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was matched to its corresponding achievement standard.
 
-IMPORTANT: Output ONLY the code of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+Apply the same analysis process to classify the "Textbook Text" provided above.
 
-Example output format:
+# Output Format
+Output ONLY the achievement standard code. No explanations, no additional text.
+
+Correct format:
 10영03-04
 
 # Answer"""
@@ -153,22 +180,6 @@ def create_classification_prompt(
 
     Returns:
         Formatted prompt string for LLM
-
-    Examples:
-        # Use default template (outputs content text)
-        >>> prompt = create_classification_prompt(text, candidates)
-
-        # Use code output template
-        >>> prompt = create_classification_prompt(
-        ...     text, candidates,
-        ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_CODE
-        ... )
-
-        # Use index output template
-        >>> prompt = create_classification_prompt(
-        ...     text, candidates,
-        ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_INDEX
-        ... )
     """
 
     # Use defaults if not specified
@@ -190,7 +201,7 @@ def create_classification_prompt(
     # Format candidates for system prompt (without code)
     candidate_text = "\n".join(
         [f"{code}: {content}" for idx, code, content in candidates]
-    )
+    )  # code 대신 index 사용으로 수정
 
     # Section 1: System prompt with achievement standards
     system_section = (
@@ -210,6 +221,70 @@ def create_classification_prompt(
 
     # Filter out empty parts and join with double newlines
     return "\n\n".join(part for part in prompt_parts if part.strip())
+
+
+def create_chat_classification_prompt(
+    text: str,
+    candidates: list[tuple[int, str, str]],
+    completion: str,
+    system_prompt: str = None,
+    output_instruction: str = None,
+    for_inference: bool = False,
+) -> dict:
+    """
+    Create a chat-based classification prompt for training or inference with message roles.
+
+    Returns a dictionary in the format expected by SFTTrainer with a 'messages' field.
+
+    Args:
+        text: The textbook excerpt to classify
+        candidates: List of tuples (index, code, content) representing achievement standards
+        completion: The achievement standard code (answer) for the assistant role
+        system_prompt: Custom system prompt (uses SYSTEM_PROMPT_CODE if None)
+        output_instruction: Custom output instruction (uses OUTPUT_FORMAT_INSTRUCTION_CODE if None)
+        for_inference: If True, exclude assistant message (for inference mode)
+
+    Returns:
+        Dictionary with 'messages' field containing list of role-based messages
+
+    Example:
+        >>> # Training mode
+        >>> result = create_chat_classification_prompt(text, candidates, "10영03-04")
+        >>> result.keys()
+        dict_keys(['messages'])
+        >>> # Inference mode
+        >>> result = create_chat_classification_prompt(text, candidates, "", for_inference=True)
+    """
+    # Use defaults if not specified
+    if system_prompt is None:
+        system_prompt = SYSTEM_PROMPT_CODE
+    if output_instruction is None:
+        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+
+    # Format candidates for system prompt
+    candidate_text = "\n".join(
+        [f"{code}: {content}" for idx, code, content in candidates]
+    )
+
+    # System message: Role definition + Achievement Standards
+    system_content = (
+        f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
+    )
+
+    # User message: Textbook text + Output instructions
+    user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
+
+    # Build messages list
+    messages = [
+        {"role": "system", "content": system_content},
+        {"role": "user", "content": user_content},
+    ]
+
+    # Add assistant message only for training (not inference)
+    if not for_inference:
+        messages.append({"role": "assistant", "content": completion})
+
+    return {"messages": messages}
 
 
 def parse_llm_response(

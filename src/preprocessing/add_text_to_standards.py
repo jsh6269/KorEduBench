@@ -69,10 +69,18 @@ def append_texts_to_csv(
     # Ensure enough text columns exist
     existing_texts = [c for c in df.columns if c.startswith("text_")]
     next_idx = len(existing_texts)
+
+    # Create all new columns at once to avoid fragmentation
+    new_cols = {}
     for i in range(next_idx + 1, max_texts + 1):
         col = f"text_{i}"
         if col not in df.columns:
-            df[col] = ""
+            new_cols[col] = ""
+
+    if new_cols:
+        # Use pd.concat instead of repeated column assignment for better performance
+        new_df = pd.DataFrame(new_cols, index=df.index)
+        df = pd.concat([df, new_df], axis=1)
 
     # Map code to row index
     code_to_idx = {row["code"]: idx for idx, row in df.iterrows()}

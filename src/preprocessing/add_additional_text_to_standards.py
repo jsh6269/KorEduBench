@@ -117,11 +117,19 @@ def add_additional_texts_to_csv(
             int(c.split("_")[1]) for c in text_cols if c.split("_")[1].isdigit()
         ]
         max_idx = max(existing_indices) if existing_indices else 0
+
+        # Create all new columns at once to avoid fragmentation
+        new_cols = {}
         for i in range(max_idx + 1, max_texts + 1):
             col = f"text_{i}"
             if col not in df.columns:
-                df[col] = ""
+                new_cols[col] = ""
                 text_cols.append(col)
+
+        if new_cols:
+            # Use pd.concat instead of assign for better performance with many columns
+            new_df = pd.DataFrame(new_cols, index=df.index)
+            df = pd.concat([df, new_df], axis=1)
 
     # Create code to row index mapping
     code_to_idx = {str(row["code"]).strip(): idx for idx, row in df.iterrows()}

@@ -4,11 +4,6 @@ import numpy as np
 import torch
 from transformers import set_seed
 
-try:
-    from pytorch_lightning import seed_everything
-except:
-    pass
-
 
 def set_train_random_seed(seed: int):
     """set seeds for reproducibility"""
@@ -16,7 +11,6 @@ def set_train_random_seed(seed: int):
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    seed_everything(seed=seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     set_seed(seed)

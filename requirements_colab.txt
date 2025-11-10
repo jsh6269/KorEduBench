@@ -95,8 +95,6 @@ typeguard==4.4.4
 typing-extensions==4.15.0
 tyro==0.9.35
 tzdata==2025.2
-unsloth==2025.11.1
-unsloth-zoo==2025.11.1
 urllib3==2.5.0
 virtualenv==20.34.0
 wheel==0.45.1
@@ -104,3 +102,4 @@ xformers==0.0.32.post2
 xxhash==3.6.0
 yarl==1.22.0
 zipp==3.23.0
+
