@@ -11,12 +11,13 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_PATH="${PROJECT_ROOT}/model/finetuned_llm"  # Path to fine-tuned model
-MAX_NEW_TOKENS=50
+MAX_NEW_TOKENS=20
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=6144
-MAX_CANDIDATES=120
-MAX_TOTAL_SAMPLES=100
+MAX_INPUT_LENGTH=4096
+MAX_CANDIDATES=50
+MAX_SAMPLES_PER_ROW=3
+MAX_TOTAL_SAMPLES=200
 
 # Color output
 GREEN='\033[0;32m'
@@ -46,6 +47,7 @@ echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
+echo -e "Max samples per row: ${YELLOW}${MAX_SAMPLES_PER_ROW}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
@@ -83,6 +85,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --temperature "$TEMPERATURE"
         --device "$DEVICE"
         --max-input-length "$MAX_INPUT_LENGTH"
+        --max-samples-per-row "$MAX_SAMPLES_PER_ROW"
         --max-total-samples "$MAX_TOTAL_SAMPLES"
         --max-candidates "$MAX_CANDIDATES"
     )

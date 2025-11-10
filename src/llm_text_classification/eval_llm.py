@@ -24,6 +24,7 @@ from src.utils.data_loader import load_evaluation_data
 from src.utils.model import create_generate_function, load_llm_model
 from src.utils.prompt import (
     LLMClassificationResponse,
+    create_chat_classification_prompt,
     create_classification_prompt,
     parse_llm_response,
 )
@@ -94,7 +95,12 @@ def evaluate_llm_classification(
 
     if tokenizer is not None:
         # Use tokenizer for token count estimation
-        sample_prompt = create_classification_prompt(sample_texts[0], candidates)
+        chat_messages = create_chat_classification_prompt(
+            sample_texts[0], candidates, completion="", for_inference=True
+        )
+        sample_prompt = tokenizer.apply_chat_template(
+            chat_messages["messages"], tokenize=False, add_generation_prompt=True
+        )
         sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
         prompt_length = sample_tokens["input_ids"].shape[1]
 
@@ -131,7 +137,18 @@ def evaluate_llm_classification(
         true_code = true_codes[i]
 
         # Create prompt
-        prompt = create_classification_prompt(text, candidates)
+        chat_messages = create_chat_classification_prompt(
+            text, candidates, completion="", for_inference=True
+        )
+
+        if tokenizer is not None:
+            # Local models: convert chat messages to string using tokenizer's chat template
+            prompt = tokenizer.apply_chat_template(
+                chat_messages["messages"], tokenize=False, add_generation_prompt=True
+            )
+        else:
+            # API models: pass messages list directly (API natively supports chat format)
+            prompt = chat_messages["messages"]
 
         # Check if this specific prompt will be truncated (only for local models)
         if check_token_length and tokenizer is not None:
