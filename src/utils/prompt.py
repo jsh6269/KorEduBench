@@ -253,38 +253,48 @@ def parse_llm_response(
     # Remove whitespace
     response_clean = response.strip()
 
-    # Extract codes from candidates
-    indices = [idx for idx, _, _ in candidates]
-
-    # Try to find exact code match
+    # Strategy 1: Exact match
     try:
         predicted_idx = int(response_clean)
         
-        # EXACT MATCH
-        if predicted_idx in indices:
-            # index is in candidates
-            for idx, code, _ in candidates:
-                if idx == predicted_idx:
-                    return LLMClassificationResponse(
-                        predicted_code=code,
-                        match_type=MatchType.EXACT,
-                        confidence=1.0,
-                        raw_response=response,
-                    )
-        
-        # index is not in candidates
-        return LLMClassificationResponse(
-            predicted_code=code,
-            match_type=MatchType.INVALID,
-            confidence=0.0,
-            raw_response=response,
-        )
-    
+        # IndexError check
+        if 0 <= predicted_idx < len(candidates):
+            _, code, _ = candidates[predicted_idx]
+            
+            return LLMClassificationResponse(
+                predicted_code=code,
+                match_type=MatchType.EXACT,
+                confidence=1.0,
+                raw_response=response,
+            )
     except ValueError:
-        # response is not a number
-        return LLMClassificationResponse(
-            predicted_code=code,
-            match_type=MatchType.INVALID,
-            confidence=0.0,
-            raw_response=response,
-        )
+        pass  # Out of range → Strategy 2
+    
+    # Strategy 2: Find numbers in the response
+    import re
+    numbers = re.findall(r'\b\d+\b', response_clean)
+    
+    for num_str in numbers:
+        try:
+            idx = int(num_str)
+            
+            # IndexError check
+            if 0 <= idx < len(candidates):
+                _, code, _ = candidates[idx]
+                
+                return LLMClassificationResponse(
+                    predicted_code=code,
+                    match_type=MatchType.PARTIAL,
+                    confidence=0.8,
+                    raw_response=response,
+                )
+        except ValueError:
+            continue
+    
+    # Strategy 3: Not found
+    return LLMClassificationResponse(
+        predicted_code="",
+        match_type=MatchType.INVALID,
+        confidence=0.0,
+        raw_response=response,
+    )
