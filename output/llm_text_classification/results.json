@@ -358,14 +358,13 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 6,
-        "accuracy": 0.06,
-        "mrr": 0.06,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
         "exact_match_count": 0,
         "exact_match_percentage": 0.0,
         "match_type_distribution": {
-            "partial": 55.0,
-            "invalid": 45.0
+            "invalid": 100.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -382,14 +381,14 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 4,
-        "accuracy": 0.04,
-        "mrr": 0.04,
-        "exact_match_count": 0,
-        "exact_match_percentage": 0.0,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
+        "exact_match_count": 21,
+        "exact_match_percentage": 21.0,
         "match_type_distribution": {
-            "invalid": 32.0,
-            "partial": 68.0
+            "invalid": 79.0,
+            "exact": 21.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -406,14 +405,14 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 3,
-        "accuracy": 0.03,
-        "mrr": 0.03,
-        "exact_match_count": 0,
-        "exact_match_percentage": 0.0,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
+        "exact_match_count": 1,
+        "exact_match_percentage": 1.0,
         "match_type_distribution": {
-            "partial": 59.0,
-            "invalid": 41.0
+            "invalid": 99.0,
+            "exact": 1.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -430,14 +429,13 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 1,
-        "accuracy": 0.01,
-        "mrr": 0.01,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
         "exact_match_count": 0,
         "exact_match_percentage": 0.0,
         "match_type_distribution": {
-            "partial": 16.0,
-            "invalid": 84.0
+            "invalid": 100.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -454,20 +452,20 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 6,
-        "accuracy": 0.06,
-        "mrr": 0.06,
-        "exact_match_count": 0,
-        "exact_match_percentage": 0.0,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
+        "exact_match_count": 6,
+        "exact_match_percentage": 6.0,
         "match_type_distribution": {
-            "invalid": 42.0,
-            "partial": 58.0
+            "invalid": 94.0,
+            "exact": 6.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
         "max_input_length": 6144,
-        "truncated_count": 26,
-        "truncated_percentage": 26.0
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
     },
     {
         "folder": "valid_80",
@@ -478,14 +476,13 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 27,
-        "accuracy": 0.27,
-        "mrr": 0.27,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
         "exact_match_count": 0,
         "exact_match_percentage": 0.0,
         "match_type_distribution": {
-            "partial": 99.0,
-            "invalid": 1.0
+            "invalid": 100.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -502,14 +499,13 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 6,
-        "accuracy": 0.06,
-        "mrr": 0.06,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
         "exact_match_count": 0,
         "exact_match_percentage": 0.0,
         "match_type_distribution": {
-            "partial": 67.0,
-            "invalid": 33.0
+            "invalid": 100.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -526,14 +522,14 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 0,
-        "accuracy": 0.0,
-        "mrr": 0.0,
-        "exact_match_count": 0,
-        "exact_match_percentage": 0.0,
+        "correct": 1,
+        "accuracy": 0.01,
+        "mrr": 0.01,
+        "exact_match_count": 5,
+        "exact_match_percentage": 5.0,
         "match_type_distribution": {
-            "partial": 98.0,
-            "invalid": 2.0
+            "invalid": 95.0,
+            "exact": 5.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,
@@ -550,14 +546,13 @@
         "max_candidates": 120,
         "max_samples_per_row": 80,
         "total_samples": 100,
-        "correct": 11,
-        "accuracy": 0.11,
-        "mrr": 0.11,
+        "correct": 0,
+        "accuracy": 0.0,
+        "mrr": 0.0,
         "exact_match_count": 0,
         "exact_match_percentage": 0.0,
         "match_type_distribution": {
-            "partial": 76.0,
-            "invalid": 24.0
+            "invalid": 100.0
         },
         "max_new_tokens": 50,
         "temperature": 0.1,

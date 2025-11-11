@@ -41,27 +41,17 @@ from enum import Enum
 
 # Default Template (outputs content text)
 # Section 1: System Prompt
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook content with achievement standards.
+SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriat achievement standards.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
-Achievement standards are specific learning objectives that define what students should know and be able to do at a particular grade level. Each standard describes:
+Achievement standards are specific learning objectives that each standard describes:
 - The specific knowledge or skills students need to acquire
 - The level of understanding or performance expected
 - The context or situation where learning should be applied
 
 HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
 1. Read the textbook text carefully and identify its primary educational purpose
-2. Ask yourself: "What is this content trying to teach students?"
-3. Look for key indicators:
-   - What subject knowledge is being presented?
-   - What skills or abilities are students expected to develop?
-   - What cognitive processes are involved (understanding, applying, analyzing)?
-4. Select the standard that most directly aligns with the main learning goal
-
-IMPORTANT PRINCIPLES:
-- Focus on the PRIMARY learning objective, not secondary or supporting content
-- Consider what students should be able to DO after studying this content
-- Match based on educational intent, not just topic similarity"""
+2. Select the standard that most directly aligns with the main learning goal"""
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
 
@@ -72,15 +62,13 @@ USER_PROMPT_INTRO = ""
 OUTPUT_FORMAT_INSTRUCTION_CODE = """# Task
 Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
-# Output Format
-Output ONLY the achievement standard code. No explanations, no additional text.
+# Instructions
+Select ONLY ONE achievement standard that best describes the textbook text above.
 
-Correct format:
-10영03-04
+IMPORTANT: Output ONLY the index number of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
 
-Wrong formats:
-❌ "10영03-04 because..."
-❌ Code: 10영03-04
+Correct output format:
+15
 
 # Answer"""
 
@@ -89,11 +77,13 @@ Review the example patterns shown in the "Few-Shot Examples" section above. Each
 
 Apply the same analysis process to classify the "Textbook Text" provided above.
 
-# Output Format
-Output ONLY the achievement standard code. No explanations, no additional text.
+# Instructions
+Select ONLY ONE achievement standard that best describes the textbook text above.
 
-Correct format:
-10영03-04
+IMPORTANT: Output ONLY the index number of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+
+Correct output format:
+5
 
 # Answer"""
 
@@ -134,18 +124,25 @@ class LLMClassificationResponse:
 
 
 def load_few_shot_examples(
-    subject: str, num_examples: int = 3, file_name: str = "few_shot_examples.json"
+    subject: str, num_examples: int = 5
 ) -> str:
     """
     Load few-shot examples from a JSON file.
     """
-    with open(file_name, "r") as f:
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+    few_shot_file = PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
+    
+    with open(few_shot_file, "r") as f:
         data = json.load(f)
-    examples = data[subject][:num_examples]
-    examples_str = "\n".join(
-        [f"{idx}. {example['text']}" for idx, example in enumerate(examples)]
-    )
-    return examples_str
+    examples = data[:num_examples]
+    examples_list = []
+    for idx, example in enumerate(examples, 1):
+        examples_list.append(
+            f"Example {idx}:\n"
+            f"Text: {example['text']}\n"
+            f"Achievement Standard: {example['content']}" 
+        )    
+    return "\n\n".join(examples_list)
 
 
 def create_classification_prompt(
@@ -155,9 +152,8 @@ def create_classification_prompt(
     user_intro: str = None,
     output_instruction: str = None,
     few_shot: bool = False,
-    file_name: str = "few_shot_examples.json",
     subject: str = None,
-    num_examples: int = 3,
+    num_examples: int = 5,
 ) -> str:
     """
     Create a classification prompt for educational content matching.
@@ -215,15 +211,15 @@ def create_classification_prompt(
 
     # Format candidates for system prompt (without code)
     candidate_text = "\n".join(
-        [f"{code}: {content}" for idx, code, content in candidates]
-    ) #code 대신 index 사용으로 수정
+        [f"{idx}: {content}" for idx, code, content in candidates]
+    ) 
     
     # Section 1: System prompt with achievement standards
     system_section = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
     if few_shot:
-        few_shot_examples = load_few_shot_examples(subject, num_examples, file_name)
+        few_shot_examples = load_few_shot_examples(subject, num_examples)
         system_section = (
             system_section + "\n" + "# Few-Shot Examples\n" + few_shot_examples
         )
@@ -258,31 +254,37 @@ def parse_llm_response(
     response_clean = response.strip()
 
     # Extract codes from candidates
-    codes = [code for _, code, _ in candidates]
+    indices = [idx for idx, _, _ in candidates]
 
     # Try to find exact code match
-    if response_clean in codes:
+    try:
+        predicted_idx = int(response_clean)
+        
+        # EXACT MATCH
+        if predicted_idx in indices:
+            # index is in candidates
+            for idx, code, _ in candidates:
+                if idx == predicted_idx:
+                    return LLMClassificationResponse(
+                        predicted_code=code,
+                        match_type=MatchType.EXACT,
+                        confidence=1.0,
+                        raw_response=response,
+                    )
+        
+        # index is not in candidates
         return LLMClassificationResponse(
-            predicted_code=response_clean,
-            match_type=MatchType.EXACT,
-            confidence=1.0,
+            predicted_code=code,
+            match_type=MatchType.INVALID,
+            confidence=0.0,
             raw_response=response,
         )
-
-    # Try to find partial code match (code in response or response in code)
-    for code in codes:
-        if code in response_clean or response_clean in code:
-            return LLMClassificationResponse(
-                predicted_code=code,
-                match_type=MatchType.PARTIAL,
-                confidence=0.8,
-                raw_response=response,
-            )
-
-    # No valid match found
-    return LLMClassificationResponse(
-        predicted_code="INVALID",
-        match_type=MatchType.INVALID,
-        confidence=0.0,
-        raw_response=response,
-    )
+    
+    except ValueError:
+        # response is not a number
+        return LLMClassificationResponse(
+            predicted_code=code,
+            match_type=MatchType.INVALID,
+            confidence=0.0,
+            raw_response=response,
+        )
