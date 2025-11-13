@@ -334,7 +334,7 @@ def train_advanced_biencoder(
     print("=" * 80)
     print("ADVANCED BI-ENCODER TRAINING")
     print("=" * 80)
-    print(f"\n📊 Loading data from: {input_csv}")
+    print(f"\n Loading data from: {input_csv}")
     df = pd.read_csv(input_csv, encoding=encoding)
     if "content" not in df.columns or "code" not in df.columns:
         raise ValueError("CSV must contain 'code' and 'content' columns.")
@@ -360,7 +360,7 @@ def train_advanced_biencoder(
     print(f"   Unique test contents: {len(test_contents)}")
 
     # Load model
-    print(f"\n🤖 Loading model: {base_model}")
+    print(f"\nLoading model: {base_model}")
     model = SentenceTransformer(base_model)
 
     # Customize pooling if needed
@@ -387,19 +387,19 @@ def train_advanced_biencoder(
         )
 
     # Setup loss with temperature scaling
-    print(f"\n🔥 Loss: Temperature-Scaled Contrastive (T={temperature})")
+    print(f"\nLoss: Temperature-Scaled Contrastive (T={temperature})")
     train_loss = TemperatureScaledLoss(model, temperature=temperature)
 
     # Effective batch size
     effective_batch_size = batch_size * gradient_accumulation_steps
-    print(f"\n📦 Batch Configuration:")
+    print(f"\nBatch Configuration:")
     print(f"   Per-device batch size: {batch_size}")
     print(f"   Gradient accumulation: {gradient_accumulation_steps}")
     print(f"   Effective batch size: {effective_batch_size}")
     print(f"   Mixed precision (FP16): {mixed_precision}")
 
     # Training hyperparameters
-    print(f"\n⚙️  Hyperparameters:")
+    print(f"\nHyperparameters:")
     print(f"   Epochs: {epochs}")
     print(f"   Learning rate: {lr}")
     print(f"   Early stopping patience: {early_stopping_patience}")
@@ -418,18 +418,18 @@ def train_advanced_biencoder(
     training_history = []
 
     print("\n" + "=" * 80)
-    print("🚀 STARTING TRAINING")
+    print("STARTING TRAINING")
     print("=" * 80)
 
     for epoch in range(epochs):
         print(f"\n{'='*80}")
-        print(f"📅 Epoch {epoch + 1}/{epochs}")
+        print(f"Epoch {epoch + 1}/{epochs}")
         print(f"{'='*80}")
 
         # Hard negative mining at specific epochs
         current_train_pairs = train_pairs.copy()
         if hard_negative_mining and epoch in hard_negative_epochs:
-            print(f"\n⛏️  [Epoch {epoch + 1}] Performing smart hard negative mining...")
+            print(f"\n [Epoch {epoch + 1}] Performing smart hard negative mining...")
             miner = SmartHardNegativeMiner(
                 model, top_k=hard_negative_top_k, use_bm25=True
             )
@@ -451,7 +451,7 @@ def train_advanced_biencoder(
         warmup_steps = int(len(train_dataloader) * 0.1) if epoch == 0 else 0
 
         # Train for one epoch
-        print(f"\n🏋️  Training...")
+        print(f"\n Training...")
         model.fit(
             train_objectives=[(train_dataloader, train_loss)],
             epochs=1,
@@ -463,7 +463,7 @@ def train_advanced_biencoder(
         )
 
         # Evaluate
-        print("\n📊 Evaluating...")
+        print("\n Evaluating...")
         metrics = evaluator.evaluate(
             test_queries,
             test_gt_contents,
@@ -473,7 +473,7 @@ def train_advanced_biencoder(
         )
 
         print("\n" + "=" * 80)
-        print("📈 EVALUATION RESULTS")
+        print(" EVALUATION RESULTS")
         print("=" * 80)
 
         # Group metrics by type
@@ -485,15 +485,15 @@ def train_advanced_biencoder(
             if not (k.startswith("recall") or k.startswith("ndcg"))
         }
 
-        print("\n🎯 Recall Metrics:")
+        print("\n Recall Metrics:")
         for metric_name, value in recall_metrics.items():
             print(f"   {metric_name:15s}: {value:.4f}")
 
-        print("\n🏆 Ranking Metrics:")
+        print("\n Ranking Metrics:")
         for metric_name, value in other_metrics.items():
             print(f"   {metric_name:15s}: {value:.4f}")
 
-        print("\n📊 nDCG Metrics:")
+        print("\n nDCG Metrics:")
         for metric_name, value in ndcg_metrics.items():
             print(f"   {metric_name:15s}: {value:.4f}")
 
@@ -520,13 +520,13 @@ def train_advanced_biencoder(
             patience_counter = 0
             best_model_path = output_dir / "best_model"
             model.save(str(best_model_path))
-            print(f"\n✅ NEW BEST MODEL!")
+            print(f"\n NEW BEST MODEL!")
             print(f"   MRR: {best_mrr:.4f} | Recall@1: {best_recall_at_1:.4f}")
             print(f"   Saved to: {best_model_path}")
         else:
             patience_counter += 1
             print(
-                f"\n⏸️  No improvement. Patience: {patience_counter}/{early_stopping_patience}"
+                f"\n No improvement. Patience: {patience_counter}/{early_stopping_patience}"
             )
 
         # Save checkpoint every epoch
@@ -536,7 +536,7 @@ def train_advanced_biencoder(
         # Early stopping
         if patience_counter >= early_stopping_patience:
             print(f"\n{'='*80}")
-            print(f"⛔ Early stopping triggered at epoch {epoch + 1}")
+            print(f" Early stopping triggered at epoch {epoch + 1}")
             print(f"   Best MRR: {best_mrr:.4f}")
             print(f"   Best Recall@1: {best_recall_at_1:.4f}")
             print(f"{'='*80}")
