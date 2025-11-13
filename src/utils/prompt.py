@@ -260,7 +260,7 @@ def create_chat_classification_prompt(
 
     # Format candidates for system prompt
     candidate_text = "\n".join(
-        [f"{code}: {content}" for idx, code, content in candidates]
+    [f"{idx}: {content}" for idx, code, content in candidates]
     )
 
     # System message: Role definition + Achievement Standards
