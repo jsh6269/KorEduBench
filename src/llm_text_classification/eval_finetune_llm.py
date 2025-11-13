@@ -20,99 +20,15 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.utils.data_loader import load_evaluation_data
+from src.utils.model import generate_prediction
 from src.utils.prompt import (
     LLMClassificationResponse,
+    create_chat_classification_prompt,
     create_classification_prompt,
     parse_llm_response,
 )
 from src.utils.random_seed import set_predict_random_seed
-
-
-def load_finetuned_model(
-    model_path: str,
-    device: str = "cuda",
-    max_seq_length: int = 2048,
-):
-    """
-    Load fine-tuned LLM model and tokenizer using Unsloth.
-
-    Args:
-        model_path: Path to fine-tuned model directory (LoRA adapters)
-        device: Device to load model on
-        max_seq_length: Maximum sequence length
-
-    Returns:
-        Tuple of (model, tokenizer)
-    """
-    print(f"\nLoading fine-tuned model from: {model_path}")
-    print("Loading LoRA adapters...")
-
-    # Use Unsloth's FastLanguageModel for loading LoRA adapters
-    print(f"Loading model with Unsloth...")
-    model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=model_path,
-        max_seq_length=max_seq_length,
-        dtype=None,  # Auto-detect
-        load_in_4bit=True,  # Use 4-bit to match training configuration
-    )
-
-    # Enable native 2x faster inference
-    FastLanguageModel.for_inference(model)
-
-    print(f"Model loaded successfully")
-    return model, tokenizer
-
-
-def generate_prediction(
-    model,
-    tokenizer,
-    prompt: str,
-    max_new_tokens: int = 50,
-    temperature: float = 0.1,
-    device: str = "cuda",
-    max_input_length: int = 6144,
-) -> str:
-    """
-    Generate prediction from LLM.
-
-    Args:
-        model: LLM model
-        tokenizer: Tokenizer
-        prompt: Input prompt
-        max_new_tokens: Maximum number of tokens to generate
-        temperature: Sampling temperature
-        device: Device
-        max_input_length: Maximum input length (will truncate if exceeded)
-
-    Returns:
-        Generated text
-    """
-    # Tokenize with truncation to prevent exceeding max length
-    inputs = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        max_length=max_input_length,
-    )
-
-    if device == "cuda":
-        inputs = {k: v.cuda() for k, v in inputs.items()}
-
-    with torch.inference_mode():
-        outputs = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            do_sample=temperature > 0,
-            pad_token_id=tokenizer.eos_token_id,
-        )
-
-    # Decode only the generated part (exclude input prompt)
-    generated_text = tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True
-    )
-
-    return generated_text.strip()
+from src.utils.unsloth_model import load_finetuned_model
 
 
 def evaluate_finetuned_llm(
@@ -189,7 +105,12 @@ def evaluate_finetuned_llm(
 
     # === Check prompt length ===
     # Create a sample prompt to check length
-    sample_prompt = create_classification_prompt(sample_texts[0], candidates)
+    chat_messages = create_chat_classification_prompt(
+        sample_texts[0], candidates, completion="", for_inference=True
+    )
+    sample_prompt = tokenizer.apply_chat_template(
+        chat_messages["messages"], tokenize=False, add_generation_prompt=True
+    )
     sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
     prompt_length = sample_tokens["input_ids"].shape[1]
 
@@ -222,8 +143,13 @@ def evaluate_finetuned_llm(
         text = sample_texts[i]
         true_code = true_codes[i]
 
-        # Create prompt
-        prompt = create_classification_prompt(text, candidates)
+        # Create chat prompt for inference
+        chat_messages = create_chat_classification_prompt(
+            text, candidates, completion="", for_inference=True
+        )
+        prompt = tokenizer.apply_chat_template(
+            chat_messages["messages"], tokenize=False, add_generation_prompt=True
+        )
 
         # Check if this specific prompt will be truncated
         prompt_tokens = tokenizer(prompt, return_tensors="pt")

@@ -18,40 +18,51 @@ import sys
 from glob import glob
 from pathlib import Path
 
+# isort: off
+from unsloth import FastLanguageModel  # import unsloth before trl to avoid conflicts
+
+# isort: on
+
 import torch
 from datasets import Dataset
 from tqdm import tqdm
 from trl import SFTConfig, SFTTrainer
-from unsloth import FastLanguageModel  # import unsloth before trl to avoid conflicts
 
 # Get project root (3 levels up from this file)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.utils.data_loader import load_evaluation_data
-from src.utils.prompt import create_classification_prompt
+from src.utils.prompt import (
+    create_chat_classification_prompt,
+    create_classification_prompt,
+)
 from src.utils.random_seed import set_train_random_seed
 
 
-def prepare_training_examples(
+def prepare_training_dataset(
     train_dir: str,
+    tokenizer,
     encoding: str = None,
     max_samples_per_row: int = None,
     max_total_samples: int = None,
     max_candidates: int = None,
+    seed: int = 42,
 ):
     """
     Prepare training examples from CSV data in a directory.
 
     Args:
         train_dir: Directory containing training CSV files
+        tokenizer: Tokenizer for applying chat template
         encoding: CSV encoding (default: auto-detect)
         max_samples_per_row: Maximum samples per row (default: None, use all)
         max_total_samples: Maximum total samples (default: None, use all)
         max_candidates: Maximum candidates per prompt (default: None, use all)
+        seed: Random seed for shuffling dataset
 
     Returns:
-        List of training examples with prompts and completions
+        Dataset ready for SFTTrainer (with "text" field)
     """
     # Load all CSV files from directory
     csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
@@ -119,16 +130,10 @@ def prepare_training_examples(
             else:
                 candidates = full_candidates
 
-            # Create prompt using the same format as evaluation
-            prompt = create_classification_prompt(text, candidates)
+            # Create chat prompt for training with completion
+            chat_prompt = create_chat_classification_prompt(text, candidates, code)
 
-            all_training_examples.append(
-                {
-                    "prompt": prompt,
-                    "completion": code,
-                    "text": text,
-                }
-            )
+            all_training_examples.append(chat_prompt)
 
     print(f"\nTotal training examples from all files: {len(all_training_examples)}")
 
@@ -141,20 +146,25 @@ def prepare_training_examples(
         )
         all_training_examples = random.sample(all_training_examples, max_total_samples)
 
-    return all_training_examples
+    # === Prepare dataset ===
+    print("\nPreparing dataset...")
 
+    # Convert messages to text using chat template
+    print("Converting messages to text format...")
+    text_examples = []
+    for example in tqdm(all_training_examples, desc="Applying chat template"):
+        text = tokenizer.apply_chat_template(
+            example["messages"],
+            tokenize=False,
+            add_generation_prompt=False,
+        )
+        text_examples.append({"text": text})
 
-def format_prompt_for_training(example):
-    """
-    Format prompt and completion for training.
+    train_dataset = Dataset.from_list(text_examples)
+    train_dataset = train_dataset.shuffle(seed=seed)
+    print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
-    Args:
-        example: Dictionary with 'prompt' and 'completion' keys
-
-    Returns:
-        Formatted text for training
-    """
-    return f"{example['prompt']}\n{example['completion']}"
+    return train_dataset
 
 
 def finetune_llm(
@@ -225,11 +235,6 @@ def finetune_llm(
     print(f"Output directory: {output_dir}")
     print()
 
-    # === Load training data ===
-    training_examples = prepare_training_examples(
-        train_dir, encoding, max_samples_per_row, max_total_samples, max_candidates
-    )
-
     # === Load model with Unsloth ===
     print(f"\nLoading model with Unsloth: {model_name}")
     base_model, tokenizer = FastLanguageModel.from_pretrained(
@@ -250,6 +255,17 @@ def finetune_llm(
         cfg.pad_token_id = pad_id
         if hasattr(cfg, "eos_token"):
             cfg.eos_token = tokenizer.eos_token
+
+    # === Load training data ===
+    train_dataset = prepare_training_dataset(
+        train_dir,
+        tokenizer,
+        encoding,
+        max_samples_per_row,
+        max_total_samples,
+        max_candidates,
+        seed,
+    )
 
     # === Add LoRA adapters ===
     print("\nAdding LoRA adapters...")
@@ -274,18 +290,6 @@ def finetune_llm(
         loftq_config=None,
     )
 
-    # === Prepare dataset ===
-    print("\nPreparing dataset...")
-
-    # Format training data for SFTTrainer
-    formatted_examples = []
-    for example in training_examples:
-        formatted_examples.append({"text": format_prompt_for_training(example)})
-
-    train_dataset = Dataset.from_list(formatted_examples)
-    train_dataset = train_dataset.shuffle(seed=seed)
-    print(f"Dataset size: {len(train_dataset)} (shuffled)")
-
     # === Create trainer with SFTConfig ===
     print("\nInitializing trainer...")
     # Try using processing_class instead of tokenizer for newer TRL versions
@@ -293,7 +297,7 @@ def finetune_llm(
     sft_config = SFTConfig(
         output_dir=output_dir,
         overwrite_output_dir=True,
-        dataset_text_field="text",
+        # dataset_text_field removed - SFTTrainer auto-detects "messages" field for chat format
         max_length=max_seq_length,
         dataset_num_proc=2,
         packing=False,
@@ -312,6 +316,7 @@ def finetune_llm(
         lr_scheduler_type="linear",
         seed=seed,
         report_to="none",
+        # completion_only_loss="<|im_start|>assistant\n",
     )
 
     trainer = SFTTrainer(
@@ -320,12 +325,6 @@ def finetune_llm(
         train_dataset=train_dataset,
         args=sft_config,
     )
-
-    # trainer = train_on_responses_only(
-    #     trainer,
-    #     instruction_part="<|im_start|>system\n",
-    #     response_part="<|im_start|>assistant\n",
-    # )
 
     # === Train ===
     print("\n" + "=" * 80)
@@ -347,7 +346,7 @@ def finetune_llm(
     training_info = {
         "model_name": model_name,
         "train_dir": train_dir,
-        "num_examples": len(training_examples),
+        "num_examples": len(train_dataset),
         "num_train_epochs": num_train_epochs,
         "per_device_train_batch_size": per_device_train_batch_size,
         "gradient_accumulation_steps": gradient_accumulation_steps,

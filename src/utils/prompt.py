@@ -41,7 +41,7 @@ from pathlib import Path
 # ============================================================================
 
 # Default Template (outputs content text)
-# Section 1: System Prompt
+# Section 1: System Prompt - Establishes the role and context
 SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriat achievement standards.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
@@ -53,6 +53,7 @@ Achievement standards are specific learning objectives that each standard descri
 HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
 1. Read the textbook text carefully and identify its primary educational purpose
 2. Select the standard that most directly aligns with the main learning goal"""
+
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
 
@@ -176,22 +177,6 @@ def create_classification_prompt(
 
     Returns:
         Formatted prompt string for LLM
-
-    Examples:
-        # Use default template (outputs content text)
-        >>> prompt = create_classification_prompt(text, candidates)
-
-        # Use code output template
-        >>> prompt = create_classification_prompt(
-        ...     text, candidates,
-        ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_CODE
-        ... )
-
-        # Use index output template
-        >>> prompt = create_classification_prompt(
-        ...     text, candidates,
-        ...     output_instruction=OUTPUT_FORMAT_INSTRUCTION_INDEX
-        ... )
     """
 
     # Use defaults if not specified
@@ -214,7 +199,7 @@ def create_classification_prompt(
     candidate_text = "\n".join(
         [f"{idx}: {content}" for idx, code, content in candidates]
     ) 
-    
+
     # Section 1: System prompt with achievement standards
     system_section = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
@@ -233,6 +218,70 @@ def create_classification_prompt(
 
     # Filter out empty parts and join with double newlines
     return "\n\n".join(part for part in prompt_parts if part.strip())
+
+
+def create_chat_classification_prompt(
+    text: str,
+    candidates: list[tuple[int, str, str]],
+    completion: str,
+    system_prompt: str = None,
+    output_instruction: str = None,
+    for_inference: bool = False,
+) -> dict:
+    """
+    Create a chat-based classification prompt for training or inference with message roles.
+
+    Returns a dictionary in the format expected by SFTTrainer with a 'messages' field.
+
+    Args:
+        text: The textbook excerpt to classify
+        candidates: List of tuples (index, code, content) representing achievement standards
+        completion: The achievement standard code (answer) for the assistant role
+        system_prompt: Custom system prompt (uses SYSTEM_PROMPT_CODE if None)
+        output_instruction: Custom output instruction (uses OUTPUT_FORMAT_INSTRUCTION_CODE if None)
+        for_inference: If True, exclude assistant message (for inference mode)
+
+    Returns:
+        Dictionary with 'messages' field containing list of role-based messages
+
+    Example:
+        >>> # Training mode
+        >>> result = create_chat_classification_prompt(text, candidates, "10영03-04")
+        >>> result.keys()
+        dict_keys(['messages'])
+        >>> # Inference mode
+        >>> result = create_chat_classification_prompt(text, candidates, "", for_inference=True)
+    """
+    # Use defaults if not specified
+    if system_prompt is None:
+        system_prompt = SYSTEM_PROMPT_CODE
+    if output_instruction is None:
+        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+
+    # Format candidates for system prompt
+    candidate_text = "\n".join(
+        [f"{code}: {content}" for idx, code, content in candidates]
+    )
+
+    # System message: Role definition + Achievement Standards
+    system_content = (
+        f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
+    )
+
+    # User message: Textbook text + Output instructions
+    user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
+
+    # Build messages list
+    messages = [
+        {"role": "system", "content": system_content},
+        {"role": "user", "content": user_content},
+    ]
+
+    # Add assistant message only for training (not inference)
+    if not for_inference:
+        messages.append({"role": "assistant", "content": completion})
+
+    return {"messages": messages}
 
 
 def parse_llm_response(

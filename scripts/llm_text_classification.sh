@@ -10,14 +10,15 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
-MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
-MAX_NEW_TOKENS=50
+MODEL_NAME="qwen/qwen2.5-3b-instruct"
+MAX_NEW_TOKENS=10
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=6144
-MAX_CANDIDATES=100
+MAX_INPUT_LENGTH=1400
+MAX_CANDIDATES=15
 MAX_TOTAL_SAMPLES=100
-FEW_SHOT=True
+MAX_SAMPLES_PER_ROW=5
+FEW_SHOT=False
 
 # Color output
 GREEN='\033[0;32m'
@@ -84,6 +85,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --max-input-length "$MAX_INPUT_LENGTH" \
         --max-total-samples "$MAX_TOTAL_SAMPLES" \
         --max-candidates "$MAX_CANDIDATES" \
+        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
         $FEW_SHOT_FLAG; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
