@@ -42,7 +42,7 @@ from pathlib import Path
 
 # Default Template (outputs content text)
 # Section 1: System Prompt - Establishes the role and context
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriat achievement standards.
+SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriate achievement standards.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
 Achievement standards are specific learning objectives that each standard describes:
@@ -51,8 +51,9 @@ Achievement standards are specific learning objectives that each standard descri
 - The context or situation where learning should be applied
 
 HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
-1. Read the textbook text carefully and identify its primary educational purpose
-2. Select the standard that most directly aligns with the main learning goal"""
+1. Read the textbook text carefully and determine the subject area
+2. Identify the primary educational purpose of the text
+3. Select the standard that most directly aligns with the main learning goal"""
 
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
@@ -67,10 +68,10 @@ Analyze the textbook text and select the ONE achievement standard that best matc
 # Instructions
 Select ONLY ONE achievement standard that best describes the textbook text above.
 
-IMPORTANT: Output ONLY the index number of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+IMPORTANT: Output ONLY the achievement standard code. Do NOT add any explanations, reasoning, or additional text.
 
-Correct output format:
-15
+Correct format:
+10영03-04
 
 # Answer"""
 
@@ -82,10 +83,10 @@ Apply the same analysis process to classify the "Textbook Text" provided above.
 # Instructions
 Select ONLY ONE achievement standard that best describes the textbook text above.
 
-IMPORTANT: Output ONLY the index number of the selected achievement standard. Do NOT add any explanations, reasoning, or additional text.
+IMPORTANT: Output ONLY the achievement standard code. Do NOT add any explanations, reasoning, or additional text.
 
-Correct output format:
-5
+Correct format:
+10영03-04
 
 # Answer"""
 
@@ -126,13 +127,18 @@ class LLMClassificationResponse:
 
 
 def load_few_shot_examples(
-    subject: str, num_examples: int = 5
+    subject: str,
+    num_examples: int = 5,
+    file_path: str | Path | None = None,
 ) -> str:
     """
     Load few-shot examples from a JSON file.
     """
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-    few_shot_file = PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
+    if file_path is None:
+        PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+        few_shot_file = PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
+    else:
+        few_shot_file = Path(file_path/f"{subject}.json")
     
     with open(few_shot_file, "r") as f:
         data = json.load(f)
@@ -142,7 +148,8 @@ def load_few_shot_examples(
         examples_list.append(
             f"Example {idx}:\n"
             f"Text: {example['text']}\n"
-            f"Achievement Standard: {example['content']}" 
+            f"Achievement Standard: {example['content']}\n"
+            f"Answer code: {example['code']}" 
         )    
     return "\n\n".join(examples_list)
 
@@ -156,6 +163,7 @@ def create_classification_prompt(
     few_shot: bool = False,
     subject: str = None,
     num_examples: int = 5,
+    few_shot_file: str | Path | None = None,
 ) -> str:
     """
     Create a classification prompt for educational content matching.
@@ -197,7 +205,7 @@ def create_classification_prompt(
 
     # Format candidates for system prompt (without code)
     candidate_text = "\n".join(
-        [f"{idx}: {content}" for idx, code, content in candidates]
+        [f"{code}: {content}" for idx, code, content in candidates]
     ) 
 
     # Section 1: System prompt with achievement standards
@@ -205,7 +213,11 @@ def create_classification_prompt(
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
     if few_shot:
-        few_shot_examples = load_few_shot_examples(subject, num_examples)
+        few_shot_examples = load_few_shot_examples(
+            subject=subject,
+            num_examples=num_examples,
+            file_path=few_shot_file,
+        )
         system_section = (
             system_section + "\n" + "# Few-Shot Examples\n" + few_shot_examples
         )
@@ -260,7 +272,7 @@ def create_chat_classification_prompt(
 
     # Format candidates for system prompt
     candidate_text = "\n".join(
-    [f"{idx}: {content}" for idx, code, content in candidates]
+    [f"{code}: {content}" for idx, code, content in candidates]
     )
 
     # System message: Role definition + Achievement Standards
@@ -303,47 +315,31 @@ def parse_llm_response(
     # Remove whitespace
     response_clean = response.strip()
 
-    # Strategy 1: Exact match
-    try:
-        predicted_idx = int(response_clean)
-        
-        # IndexError check
-        if 0 <= predicted_idx < len(candidates):
-            _, code, _ = candidates[predicted_idx]
-            
+    # Extract codes from candidates
+    codes = [code for _, code, _ in candidates]
+
+    # Strategy 1: Exact code match
+    if response_clean in codes:
+        return LLMClassificationResponse(
+            predicted_code=response_clean,
+            match_type=MatchType.EXACT,
+            confidence=1.0,
+            raw_response=response,
+        )
+
+    # Strategy 2: Partial code match (code in response or response in code)
+    for code in codes:
+        if code in response_clean or response_clean in code:
             return LLMClassificationResponse(
                 predicted_code=code,
-                match_type=MatchType.EXACT,
-                confidence=1.0,
+                match_type=MatchType.PARTIAL,
+                confidence=0.8,
                 raw_response=response,
             )
-    except ValueError:
-        pass  # Out of range → Strategy 2
-    
-    # Strategy 2: Find numbers in the response
-    import re
-    numbers = re.findall(r'\b\d+\b', response_clean)
-    
-    for num_str in numbers:
-        try:
-            idx = int(num_str)
-            
-            # IndexError check
-            if 0 <= idx < len(candidates):
-                _, code, _ = candidates[idx]
-                
-                return LLMClassificationResponse(
-                    predicted_code=code,
-                    match_type=MatchType.PARTIAL,
-                    confidence=0.8,
-                    raw_response=response,
-                )
-        except ValueError:
-            continue
-    
-    # Strategy 3: Not found
+
+    # Strategy 3: No valid match found
     return LLMClassificationResponse(
-        predicted_code="",
+        predicted_code="INVALID",
         match_type=MatchType.INVALID,
         confidence=0.0,
         raw_response=response,
