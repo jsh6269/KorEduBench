@@ -25,7 +25,6 @@ from src.utils.model import create_generate_function, load_llm_model
 from src.utils.prompt import (
     LLMClassificationResponse,
     create_chat_classification_prompt,
-    create_classification_prompt,
     parse_llm_response,
 )
 from src.utils.random_seed import set_predict_random_seed

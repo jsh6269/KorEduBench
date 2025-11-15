@@ -53,10 +53,15 @@ def check_prompt_length(
     print(f"  Subject: {subject}")
     print(f"  CSV: {Path(input_csv).name}")
     print(f"  Number of candidates: {len(candidates)}")
+    print(f"  Max samples per row: {max_samples_per_row}")
 
     # Build a sample prompt (first sample)
     chat_messages = create_chat_classification_prompt(
-        sample_texts[0], candidates, completion="", for_inference=True
+        sample_texts[0],
+        candidates,
+        completion="",
+        for_inference=True,
+        few_shot=few_shot,
     )
 
     if hasattr(tokenizer, "apply_chat_template"):
