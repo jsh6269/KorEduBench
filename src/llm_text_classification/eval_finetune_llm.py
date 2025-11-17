@@ -73,21 +73,25 @@ def evaluate_finetuned_llm(
     # === Load and preprocess data ===
     print("Loading evaluation data...")
     data = load_evaluation_data(
-        input_csv, encoding, max_samples_per_row, max_total_samples, max_candidates
+        input_csv=input_csv,
+        encoding=encoding,
+        max_samples_per_row=max_samples_per_row,
+        max_total_samples=max_total_samples,
+        max_candidates=max_candidates,
     )
 
     # Extract data for convenience
     contents = data.contents
     codes = data.codes
     sample_texts = data.sample_texts
-    true_codes = data.true_codes
+    samples_true_codes = data.samples_true_codes
+    samples_candidates = data.samples_candidates
     subject = data.subject
     num_rows = data.num_rows
     num_candidates = data.num_candidates
     num_samples = data.num_samples
     max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
-    candidates = [(i + 1, codes[i], contents[i]) for i in range(num_candidates)]
 
     # === Load Fine-tuned Model ===
     model, tokenizer = load_finetuned_model(model_path, device, max_input_length)
@@ -116,7 +120,7 @@ def evaluate_finetuned_llm(
     prompt_length = sample_tokens["input_ids"].shape[1]
 
     print(f"\nPrompt statistics:")
-    print(f"  Number of candidates: {len(candidates)}")
+    print(f"  Number of candidates: {len(samples_candidates[0])}")
     print(f"  Sample prompt token length: {prompt_length}")
     print(f"  Max input length: {max_input_length}")
 
@@ -142,7 +146,8 @@ def evaluate_finetuned_llm(
 
     for i in tqdm(range(num_samples), desc="Classifying"):
         text = sample_texts[i]
-        true_code = true_codes[i]
+        true_code = samples_true_codes[i]
+        candidates = samples_candidates[i]
 
         # Create chat prompt for inference
         chat_messages = create_chat_classification_prompt(
@@ -209,12 +214,15 @@ def evaluate_finetuned_llm(
     print("\nCalculating metrics...")
 
     # LLM only produces top-1 predictions
-    correct = sum(1 for pred, true in zip(predictions, true_codes) if pred == true)
+    correct = sum(
+        1 for pred, true in zip(predictions, samples_true_codes) if pred == true
+    )
     accuracy = correct / num_samples
 
     # Calculate MRR (for single predictions, MRR = accuracy)
     reciprocal_ranks = [
-        1.0 if pred == true else 0.0 for pred, true in zip(predictions, true_codes)
+        1.0 if pred == true else 0.0
+        for pred, true in zip(predictions, samples_true_codes)
     ]
     mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
 

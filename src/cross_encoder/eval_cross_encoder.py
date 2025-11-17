@@ -38,7 +38,7 @@ def evaluate_bi_cross_pipeline(
     contents = data.contents
     codes = data.codes
     sample_texts = data.sample_texts
-    true_codes = data.true_codes
+    true_codes = data.samples_true_codes
     subject = data.subject
     num_rows = data.num_rows
     num_samples = data.num_samples
