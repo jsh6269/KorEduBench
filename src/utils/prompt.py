@@ -239,6 +239,10 @@ def create_chat_classification_prompt(
     system_prompt: str = None,
     output_instruction: str = None,
     for_inference: bool = False,
+    few_shot: bool = False,
+    subject: str = None,
+    num_examples: int = 5,
+    few_shot_file: str | Path | None = None,
 ) -> dict:
     """
     Create a chat-based classification prompt for training or inference with message roles.
@@ -265,10 +269,16 @@ def create_chat_classification_prompt(
         >>> result = create_chat_classification_prompt(text, candidates, "", for_inference=True)
     """
     # Use defaults if not specified
-    if system_prompt is None:
-        system_prompt = SYSTEM_PROMPT_CODE
-    if output_instruction is None:
-        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+    if few_shot:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT_CODE
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE
+    else:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT_CODE
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
 
     # Format candidates for system prompt
     candidate_text = "\n".join(
@@ -279,7 +289,17 @@ def create_chat_classification_prompt(
     system_content = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
-
+    
+    if few_shot:
+        few_shot_examples = load_few_shot_examples(
+            subject=subject,
+            num_examples=num_examples,
+            file_path=few_shot_file,
+        )
+        system_content = (
+            system_content + "\n" + "# Few-Shot Examples\n" + few_shot_examples
+        )
+    
     # User message: Textbook text + Output instructions
     user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
 
