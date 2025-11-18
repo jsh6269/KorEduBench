@@ -14,7 +14,7 @@ import pandas as pd
 from datasets import Dataset
 from tqdm import tqdm
 
-from src.test.check_prompt_length import subject
+#from src.test.check_prompt_length import subject
 from src.utils.common import detect_encoding
 from src.utils.prompt import create_chat_classification_prompt
 
