@@ -10,9 +10,10 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
 MAX_CANDIDATES=30
-MAX_TOTAL_SAMPLES=999
+MAX_TOTAL_SAMPLES=200
 MAX_SAMPLES_PER_ROW=5
-FEW_SHOT=False
+FEW_SHOT=True
+PRINT_SAMPLE_PROMPT=True
 
 OUTPUT_PATH="${PROJECT_ROOT}/output/check_prompt_length/results_${MAX_CANDIDATES}_${MAX_TOTAL_SAMPLES}_${MAX_SAMPLES_PER_ROW}.csv"
 
@@ -43,13 +44,6 @@ echo ""
 echo -e "${BLUE}Running prompt length checker...${NC}"
 echo ""
 
-# Build few-shot flag
-if [ "$FEW_SHOT" = True ]; then
-    FEW_SHOT_FLAG="--few-shot"
-else
-    FEW_SHOT_FLAG=""
-fi
-
 if python "${PROJECT_ROOT}/src/test/check_prompt_length.py" \
     --input_dir "$DATASET_FOLDER" \
     --model_name "$MODEL_NAME" \
@@ -57,7 +51,8 @@ if python "${PROJECT_ROOT}/src/test/check_prompt_length.py" \
     --max-total-samples "$MAX_TOTAL_SAMPLES" \
     --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
     --output_path "$OUTPUT_PATH" \
-    $FEW_SHOT_FLAG; then
+    --print-sample-prompt "$PRINT_SAMPLE_PROMPT" \
+    --few-shot "$FEW_SHOT"; then
     echo ""
     echo -e "${GREEN}╔═══════════════════════════════════════════════════════╗${NC}"
     echo -e "${GREEN}║  Prompt Length Check Complete!${NC}"
