@@ -376,9 +376,22 @@ def create_agentic_step2_chat_prompt(
         if output_instruction is None:
             output_instruction = AGENTIC_OUTPUT_FORMAT_STEP2
 
+    # Format candidates for system prompt
+    # different from prompt.py
+    # because we use rank instead of index
+    candidate_text_with_rank = format_candidates_for_step2(candidates)
+
+    # System message: Role definition + Achievement Standards
+    system_content = (
+        f"{system_prompt}\n"
+        "\n"
+        "# Achievement Standards List\n"
+        "The infer_top_k tool has returned the following candidates (ranked by similarity):\n"
+        f"{candidate_text_with_rank}"
+    )
+
     # Add few-shot examples if requested
-    system_content = system_prompt
-    if few_shot and subject:
+    if few_shot:
         few_shot_examples = load_few_shot_examples(
             subject=subject,
             num_examples=num_examples,
@@ -388,18 +401,10 @@ def create_agentic_step2_chat_prompt(
             f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
         )
 
-    # Format candidates
-    candidates_text = format_candidates_for_step2(candidates)
+    # User message: Textbook text + Output instructions
+    user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
 
-    # Add textbook text, candidates, and output instruction
-    user_content = (
-        f"# Textbook Text\n{text}\n\n"
-        f"# Candidate Achievement Standards\n"
-        f"The infer_top_k tool has returned the following candidates (ranked by similarity):\n"
-        f"{candidates_text}\n\n"
-        f"{output_instruction}"
-    )
-
+    # Build messages list
     messages = [
         {"role": "system", "content": system_content},
         {"role": "user", "content": user_content},
