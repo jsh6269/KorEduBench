@@ -42,6 +42,7 @@ def evaluate_finetuned_llm(
     device: str = "cuda",
     max_input_length: int = 6144,
     max_candidates: int = 200,
+    few_shot: bool = True,
 ):
     """
     Evaluate fine-tuned LLM classification on educational content.
@@ -109,7 +110,12 @@ def evaluate_finetuned_llm(
     # === Check prompt length ===
     # Create a sample prompt to check length
     chat_messages = create_chat_classification_prompt(
-        sample_texts[0], samples_candidates[0], completion="", for_inference=True
+        sample_texts[0],
+        samples_candidates[0],
+        completion="",
+        for_inference=True,
+        few_shot=few_shot,
+        subject=subject,
     )
     sample_prompt = tokenizer.apply_chat_template(
         chat_messages["messages"], tokenize=False, add_generation_prompt=True
@@ -149,7 +155,12 @@ def evaluate_finetuned_llm(
 
         # Create chat prompt for inference
         chat_messages = create_chat_classification_prompt(
-            text, candidates, completion="", for_inference=True
+            text,
+            candidates,
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
         )
         prompt = tokenizer.apply_chat_template(
             chat_messages["messages"], tokenize=False, add_generation_prompt=True

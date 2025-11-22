@@ -62,6 +62,7 @@ def check_prompt_length(
         completion="",
         for_inference=True,
         few_shot=few_shot,
+        subject=subject,
     )
 
     if hasattr(tokenizer, "apply_chat_template"):
@@ -84,7 +85,12 @@ def check_prompt_length(
     total_tokens = 0
     for text in sample_texts:
         chat_messages = create_chat_classification_prompt(
-            text, candidates, completion="", for_inference=True
+            text,
+            candidates,
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
         )
         if hasattr(tokenizer, "apply_chat_template"):
             prompt = tokenizer.apply_chat_template(

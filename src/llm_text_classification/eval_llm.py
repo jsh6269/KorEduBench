@@ -99,7 +99,12 @@ def evaluate_llm_classification(
     if tokenizer is not None:
         # Use tokenizer for token count estimation
         chat_messages = create_chat_classification_prompt(
-            sample_texts[0], samples_candidates[0], completion="", for_inference=True
+            sample_texts[0],
+            samples_candidates[0],
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
         )
         sample_prompt = tokenizer.apply_chat_template(
             chat_messages["messages"], tokenize=False, add_generation_prompt=True
@@ -142,7 +147,12 @@ def evaluate_llm_classification(
 
         # Create prompt
         chat_messages = create_chat_classification_prompt(
-            text, candidates, completion="", for_inference=True
+            text,
+            candidates,
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
         )
 
         if tokenizer is not None:

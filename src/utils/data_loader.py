@@ -14,6 +14,7 @@ import pandas as pd
 from datasets import Dataset
 from tqdm import tqdm
 
+#from src.test.check_prompt_length import subject
 from src.utils.common import detect_encoding
 from src.utils.prompt import create_chat_classification_prompt
 
@@ -197,6 +198,7 @@ def prepare_training_dataset(
     max_total_samples: int = None,
     max_candidates: int = None,
     seed: int = 42,
+    few_shot: bool = True
 ):
     """
     Prepare training examples from CSV data in a directory.
@@ -256,7 +258,7 @@ def prepare_training_dataset(
             # (already includes correct answer and random sampling if max_candidates was specified)
 
             # Create chat prompt for training with completion
-            chat_prompt = create_chat_classification_prompt(text, candidates, code)
+            chat_prompt = create_chat_classification_prompt(text, candidates, code, few_shot=few_shot, subject=data.subject)
 
             all_training_examples.append(chat_prompt)
 
@@ -288,3 +290,4 @@ def prepare_training_dataset(
     print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
     return train_dataset
+ 

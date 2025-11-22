@@ -332,7 +332,7 @@ def predict_from_csv(
     evaluation_results = None
     if has_ground_truth and evaluate and len(ground_truth_codes) > 0:
         print("\n" + "=" * 80)
-        print("📊 EVALUATION RESULTS")
+        print("EVALUATION RESULTS")
         print("=" * 80)
 
         # Calculate top-k accuracies
@@ -340,13 +340,15 @@ def predict_from_csv(
         num_classes = config.get("num_classes", len(set(ground_truth_codes)))
         max_available_k = min(top_k, num_classes)
 
-        top_k_values = [k for k in [1, 3, 5, 10, 20, 50] if k <= max_available_k]
+        top_k_values = [
+            k for k in [1, 3, 5, 10, 20, 30, 40, 50] if k <= max_available_k
+        ]
         top_k_accs, correct_counts = evaluate_predictions(
             results, ground_truth_codes, top_k_values
         )
 
         print(f"\nTotal samples: {len(results)}")
-        print(f"\n🎯 Top-K Accuracy:")
+        print(f"\nTop-K Accuracy:")
         print("-" * 50)
         for k in top_k_values:
             acc = top_k_accs[k]
@@ -405,12 +407,17 @@ def predict_from_csv(
             "top3_acc": round(float(top_k_accs.get(3, 0.0)), 4),
             "top10_acc": round(float(top_k_accs.get(10, 0.0)), 4),
             "top20_acc": round(float(top_k_accs.get(20, 0.0)), 4),
-            "mrr": round(float(mrr), 4),
         }
 
-        # Add top40_acc if available
+        # Add top30~50_acc if available
+        if 30 in top_k_accs:
+            evaluation_results["top30_acc"] = round(float(top_k_accs[30]), 4)
         if 40 in top_k_accs:
             evaluation_results["top40_acc"] = round(float(top_k_accs[40]), 4)
+        if 50 in top_k_accs:
+            evaluation_results["top50_acc"] = round(float(top_k_accs[50]), 4)
+
+        evaluation_results["mrr"] = round(float(mrr), 4)
 
         # Save to JSON file
         output_dir = PROJECT_ROOT / "output" / "classification"
@@ -426,8 +433,8 @@ def predict_from_csv(
                     if content:  # Only parse if file is not empty
                         existing_results = json.loads(content)
             except (json.JSONDecodeError, ValueError) as e:
-                print(f"  Warning: Could not parse existing results.json: {e}")
-                print("   Starting with empty results list.")
+                print(f"Warning: Could not parse existing results.json: {e}")
+                print("Starting with empty results list.")
                 existing_results = []
 
         # Append new result
@@ -437,7 +444,7 @@ def predict_from_csv(
         with open(results_json_path, "w", encoding="utf-8") as f:
             json.dump(existing_results, f, indent=2, ensure_ascii=False)
 
-        print(f"\n📄 Evaluation results saved to: {results_json_path}")
+        print(f"\nEvaluation results saved to: {results_json_path}")
 
     # Create a new dataframe for predictions
     # Each row corresponds to one text prediction
@@ -475,10 +482,10 @@ def predict_from_csv(
     # Save predictions only if output_csv is provided
     if output_csv:
         pred_df.to_csv(output_csv, index=False, encoding="utf-8")
-        print(f"\n📄 Predictions saved to: {output_csv}")
+        print(f"\nPredictions saved to: {output_csv}")
         print(f"Total predictions: {len(pred_df)}")
     else:
-        print("\n⚠ Output CSV not specified. Predictions not saved to file.")
+        print("\nOutput CSV not specified. Predictions not saved to file.")
 
     return pred_df
 
@@ -496,7 +503,7 @@ if __name__ == "__main__":
         "--output_csv",
         type=str,
         default=None,
-        help="Output CSV file (auto-generated if not provided)",
+        help="Output CSV file (does not save as csv format if not provided)",
     )
     parser.add_argument(
         "--text_column",
