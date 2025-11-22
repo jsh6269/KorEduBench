@@ -349,6 +349,7 @@ def train_classifier(
     early_stopping_patience: int = 3,
     mixed_precision: bool = True,
     gradient_accumulation_steps: int = 1,
+    resume_from: str = None,
 ):
     """
     Train multi-class classifier for achievement standard prediction.
@@ -457,6 +458,62 @@ def train_classifier(
     # Mixed precision
     scaler = torch.cuda.amp.GradScaler() if mixed_precision else None
 
+    # Resume from checkpoint
+    start_epoch = 0
+    if resume_from:
+        checkpoint_path = Path(resume_from)
+        checkpoint_file = checkpoint_path / "checkpoint.pt"
+
+        if not checkpoint_file.exists():
+            raise FileNotFoundError(
+                f"Checkpoint not found: {checkpoint_file}. "
+                f"Please provide a valid checkpoint directory path."
+            )
+
+        print(f"\n{'='*80}")
+        print(f"RESUMING FROM CHECKPOINT: {resume_from}")
+        print(f"{'='*80}")
+
+        checkpoint = torch.load(checkpoint_file, map_location=device)
+
+        # Load model state
+        model.load_state_dict(checkpoint["model_state_dict"])
+
+        # Load optimizer state
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+        # Load scheduler state
+        scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+
+        # Load scaler state (if exists and using mixed precision)
+        if mixed_precision and scaler is not None:
+            if "scaler_state_dict" in checkpoint:
+                scaler.load_state_dict(checkpoint["scaler_state_dict"])
+            else:
+                print(
+                    "   Warning: Scaler state not found in checkpoint, using new scaler"
+                )
+
+        # Load training state
+        start_epoch = checkpoint["epoch"]
+        best_f1 = checkpoint.get("best_f1", 0.0)
+        best_accuracy = checkpoint.get("best_accuracy", 0.0)
+        patience_counter = checkpoint.get("patience_counter", 0)
+        training_history = checkpoint.get("training_history", [])
+
+        print(f"   Resumed from epoch: {start_epoch}")
+        print(f"   Best F1: {best_f1:.4f}")
+        print(f"   Best Accuracy: {best_accuracy:.4f}")
+        print(f"   Patience counter: {patience_counter}")
+        print(f"   Training history entries: {len(training_history)}")
+        print(f"{'='*80}\n")
+    else:
+        # Initialize training state for new training
+        best_f1 = 0.0
+        best_accuracy = 0.0
+        patience_counter = 0
+        training_history = []
+
     print(f"\n   Training Configuration:")
     print(f"   Epochs: {epochs}")
     print(f"   Batch size: {batch_size}")
@@ -469,17 +526,11 @@ def train_classifier(
     print(f"   Pooling: {pooling}")
     print(f"   Mixed precision: {mixed_precision}")
 
-    # Training loop
-    best_f1 = 0.0
-    best_accuracy = 0.0
-    patience_counter = 0
-    training_history = []
-
     print("\n" + "=" * 80)
     print("STARTING TRAINING")
     print("=" * 80)
 
-    for epoch in range(epochs):
+    for epoch in range(start_epoch, epochs):
         print(f"\n{'='*80}")
         print(f"Epoch {epoch + 1}/{epochs}")
         print(f"{'='*80}")
@@ -606,6 +657,26 @@ def train_classifier(
         # Save checkpoint
         checkpoint_path = output_dir / f"checkpoint_epoch_{epoch + 1}"
         checkpoint_path.mkdir(exist_ok=True)
+
+        # Save comprehensive checkpoint with all training states
+        checkpoint_data = {
+            "epoch": epoch + 1,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict(),
+            "best_f1": best_f1,
+            "best_accuracy": best_accuracy,
+            "patience_counter": patience_counter,
+            "training_history": training_history,
+        }
+
+        # Save scaler state if using mixed precision
+        if mixed_precision and scaler is not None:
+            checkpoint_data["scaler_state_dict"] = scaler.state_dict()
+
+        torch.save(checkpoint_data, checkpoint_path / "checkpoint.pt")
+
+        # Also save model.pt for backward compatibility
         torch.save(model.state_dict(), checkpoint_path / "model.pt")
 
         # Early stopping
@@ -680,6 +751,7 @@ if __name__ == "__main__":
     parser.add_argument("--early_stopping_patience", type=int, default=3)
     parser.add_argument("--mixed_precision", action="store_true", default=True)
     parser.add_argument("--no_mixed_precision", action="store_true")
+    parser.add_argument("--resume_from", type=str, default=None)
 
     # Loss arguments
     parser.add_argument(
@@ -723,4 +795,5 @@ if __name__ == "__main__":
         early_stopping_patience=args.early_stopping_patience,
         mixed_precision=args.mixed_precision,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
+        resume_from=args.resume_from,
     )
