@@ -25,6 +25,7 @@ def check_prompt_length(
     max_samples_per_row: int,
     max_total_samples: int,
     max_candidates: int,
+    print_sample_prompt: bool = False,
 ):
     # Prepare tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -80,6 +81,12 @@ def check_prompt_length(
 
     print(f"  Sample prompt token length: {sample_prompt_length}")
     print(f"  Total samples: {num_samples}")
+    if print_sample_prompt:
+        print("\nSample prompt:")
+        print("-" * 100)
+        print(sample_prompt)
+        print("-" * 100)
+        print("\n")
 
     # Compute total and average token counts across all samples
     total_tokens = 0
@@ -169,7 +176,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--few-shot",
-        action="store_true",
+        type=bool,
+        default=False,
         help="Use few-shot examples (default: False).",
     )
     parser.add_argument(
@@ -177,6 +185,12 @@ if __name__ == "__main__":
         type=int,
         default=200,
         help="Maximum number of candidate achievement standards to use (default: 200).",
+    )
+    parser.add_argument(
+        "--print-sample-prompt",
+        type=bool,
+        default=False,
+        help="Print sample prompt (default: False).",
     )
 
     args = parser.parse_args()
@@ -203,6 +217,7 @@ if __name__ == "__main__":
             max_samples_per_row=args.max_samples_per_row,
             max_total_samples=args.max_total_samples,
             max_candidates=args.max_candidates,
+            print_sample_prompt=args.print_sample_prompt,
         )
         results.append(r)
 

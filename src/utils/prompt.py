@@ -42,7 +42,7 @@ from pathlib import Path
 
 # Default Template (outputs content text)
 # Section 1: System Prompt - Establishes the role and context
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriate achievement standards.
+SYSTEM_PROMPT = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriate achievement standards.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
 Achievement standards are specific learning objectives that each standard describes:
@@ -62,7 +62,7 @@ USER_PROMPT_INTRO = ""
 # Achievement standards are moved to Section 1 (System Prompt)
 
 # Section 4: Output Format Instructions
-OUTPUT_FORMAT_INSTRUCTION_CODE = """# Task
+OUTPUT_FORMAT_INSTRUCTION = """# Task
 Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
 # Instructions
@@ -75,7 +75,7 @@ Correct format:
 
 # Answer"""
 
-OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Task
+OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT = """# Task
 Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was matched to its corresponding achievement standard.
 
 Apply the same analysis process to classify the "Textbook Text" provided above.
@@ -89,6 +89,7 @@ Correct format:
 10영03-04
 
 # Answer"""
+
 
 class MatchType(Enum):
     """Type of match found when parsing LLM response."""
@@ -136,10 +137,12 @@ def load_few_shot_examples(
     """
     if file_path is None:
         PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-        few_shot_file = PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
+        few_shot_file = (
+            PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
+        )
     else:
-        few_shot_file = Path(file_path/f"{subject}.json")
-    
+        few_shot_file = Path(file_path / f"{subject}.json")
+
     with open(few_shot_file, "r") as f:
         data = json.load(f)
     examples = data[:num_examples]
@@ -149,87 +152,9 @@ def load_few_shot_examples(
             f"Example {idx}:\n"
             f"Text: {example['text']}\n"
             f"Achievement Standard: {example['content']}\n"
-            f"Answer code: {example['code']}" 
-        )    
+            f"Answer code: {example['code']}"
+        )
     return "\n\n".join(examples_list)
-
-
-def create_classification_prompt(
-    text: str,
-    candidates: list[tuple[int, str, str]],
-    system_prompt: str = None,
-    user_intro: str = None,
-    output_instruction: str = None,
-    few_shot: bool = False,
-    subject: str = None,
-    num_examples: int = 5,
-    few_shot_file: str | Path | None = None,
-) -> str:
-    """
-    Create a classification prompt for educational content matching.
-
-    The prompt is composed of 4 sections:
-    1. System prompt: Establishes the role + provides achievement standards as knowledge
-    2. User prompt intro: Optional introduction (can be empty)
-    3. Content section: Textbook text only
-    4. Output format: Instructions on how to format the answer
-
-    If few_shot is True, the prompt will include a few-shot example.
-
-    Args:
-        text: The textbook excerpt to classify
-        candidates: List of tuples (index, code, content) representing achievement standards
-        system_prompt: Custom system prompt (uses SYSTEM_PROMPT if None)
-        user_intro: Custom user intro (uses USER_PROMPT_INTRO if None)
-        output_instruction: Custom output instruction (uses OUTPUT_FORMAT_INSTRUCTION if None)
-
-    Returns:
-        Formatted prompt string for LLM
-    """
-
-    # Use defaults if not specified
-    if few_shot:
-        if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
-        if user_intro is None:
-            user_intro = USER_PROMPT_INTRO
-        if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE
-    else:
-        if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
-        if user_intro is None:
-            user_intro = USER_PROMPT_INTRO
-        if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
-
-    # Format candidates for system prompt (without code)
-    candidate_text = "\n".join(
-        [f"{code}: {content}" for idx, code, content in candidates]
-    ) 
-
-    # Section 1: System prompt with achievement standards
-    system_section = (
-        f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
-    )
-    if few_shot:
-        few_shot_examples = load_few_shot_examples(
-            subject=subject,
-            num_examples=num_examples,
-            file_path=few_shot_file,
-        )
-        system_section = (
-            system_section + "\n" + "# Few-Shot Examples\n" + few_shot_examples
-        )
-
-    # Section 3: Content section (textbook text only)
-    content_section = "# Textbook Text\n" f"{text}"
-
-    # Combine all sections
-    prompt_parts = [system_section, user_intro, content_section, output_instruction]
-
-    # Filter out empty parts and join with double newlines
-    return "\n\n".join(part for part in prompt_parts if part.strip())
 
 
 def create_chat_classification_prompt(
@@ -271,25 +196,26 @@ def create_chat_classification_prompt(
     # Use defaults if not specified
     if few_shot:
         if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
+            system_prompt = SYSTEM_PROMPT
         if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT
     else:
         if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
+            system_prompt = SYSTEM_PROMPT
         if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION
 
     # Format candidates for system prompt
     candidate_text = "\n".join(
-    [f"{code}: {content}" for idx, code, content in candidates]
+        [f"{code}: {content}" for idx, code, content in candidates]
     )
 
     # System message: Role definition + Achievement Standards
     system_content = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
-    
+
+    # Add few-shot examples if requested
     if few_shot:
         few_shot_examples = load_few_shot_examples(
             subject=subject,
@@ -297,9 +223,9 @@ def create_chat_classification_prompt(
             file_path=few_shot_file,
         )
         system_content = (
-            system_content + "\n" + "# Few-Shot Examples\n" + few_shot_examples
+            f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
         )
-    
+
     # User message: Textbook text + Output instructions
     user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
 

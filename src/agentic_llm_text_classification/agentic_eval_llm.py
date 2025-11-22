@@ -1,0 +1,545 @@
+"""
+LLM-based text classification evaluation script.
+Uses a generative LLM (Qwen-1.5B) to classify textbook excerpts into educational achievement standards.
+The LLM directly outputs achievement standard codes (e.g., "10영03-04") instead of content text.
+"""
+
+import argparse
+import json
+import os
+import random
+import sys
+from pathlib import Path
+
+import torch
+from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Get project root (3 levels up from this file)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.classification.inference import infer_top_k
+from src.utils.api_model import create_api_client, create_api_generate_function
+from src.utils.data_loader import load_evaluation_data
+from src.utils.model import create_generate_function, load_llm_model
+from src.utils.prompt import (
+    LLMClassificationResponse,
+    create_chat_classification_prompt,
+    parse_llm_response,
+)
+from src.utils.random_seed import set_predict_random_seed
+
+
+def evaluate_llm_classification(
+    input_csv: str,
+    generate_fn: callable,
+    model_identifier: str,
+    tokenizer=None,
+    few_shot: bool = False,
+    encoding: str = None,
+    json_path: str = None,
+    max_samples_per_row: int = None,
+    max_total_samples: int = None,
+    max_new_tokens: int = 10,
+    temperature: float = 0.1,
+    max_input_length: int = 8192,
+    max_candidates: int = 200,
+    check_token_length: bool = True,
+):
+    """
+    Evaluate LLM-based classification on educational content.
+
+    Args:
+        input_csv: Path to input CSV file
+        generate_fn: Function to generate predictions (callable that takes prompt str and returns str)
+        model_identifier: Model name or API identifier
+        tokenizer: Tokenizer for token length checking (optional, None for API mode)
+        few_shot: Use few-shot examples (not yet implemented)
+        encoding: CSV encoding (default: auto-detect)
+        json_path: Path to save results JSON
+        max_samples_per_row: Maximum samples per row
+        max_total_samples: Maximum total samples (randomly sampled if specified)
+        max_new_tokens: Maximum tokens to generate (passed to generate_fn)
+        temperature: Sampling temperature (passed to generate_fn)
+        max_input_length: Maximum input length (will truncate if exceeded, for local models)
+        max_candidates: Maximum number of candidate achievement standards to use (default: 200)
+        check_token_length: Whether to check token length (False for API mode)
+    """
+    if json_path is None:
+        json_path = PROJECT_ROOT / "output" / "llm_text_classification" / "results.json"
+    json_path = str(json_path)
+
+    # === Load and preprocess data ===
+    print("Loading evaluation data...")
+    data = load_evaluation_data(
+        input_csv=input_csv,
+        encoding=encoding,
+        max_samples_per_row=max_samples_per_row,
+        max_total_samples=max_total_samples,
+        max_candidates=max_candidates,
+    )
+
+    # Extract data for convenience
+    contents = data.contents
+    codes = data.codes
+    sample_texts = data.sample_texts
+    samples_true_codes = data.samples_true_codes
+    samples_candidates = data.samples_candidates
+    subject = data.subject
+    num_rows = data.num_rows
+    num_candidates = data.num_candidates
+    num_samples = data.num_samples
+    max_samples_per_row = data.max_samples_per_row
+    folder_name = data.folder_name
+
+    # === Check prompt length ===
+    print(f"\nPrompt statistics:")
+    print(f"  Number of candidates: {len(samples_candidates[0])}")
+
+    if tokenizer is not None:
+        # Use tokenizer for token count estimation
+        chat_messages = create_chat_classification_prompt(
+            sample_texts[0],
+            samples_candidates[0],
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
+        )
+        sample_prompt = tokenizer.apply_chat_template(
+            chat_messages["messages"], tokenize=False, add_generation_prompt=True
+        )
+        sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
+        prompt_length = sample_tokens["input_ids"].shape[1]
+
+        print(f"  Sample prompt token length: {prompt_length}")
+
+        if check_token_length:
+            # Local model: check against max_input_length
+            print(f"  Max input length: {max_input_length}")
+
+            if prompt_length > max_input_length:
+                print(
+                    f"  ⚠️  WARNING: Prompt length ({prompt_length}) exceeds max_input_length ({max_input_length})"
+                )
+                print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
+                print(
+                    f"  ⚠️  Consider increasing --max-input-length or reducing the number of candidates."
+                )
+            else:
+                print(f"  ✓ Prompt length is within limits")
+    else:
+        print(f"  Token length check: Skipped (no tokenizer provided)")
+
+    # === Prediction ===
+    print(f"\nPredicting classifications for {num_samples} samples...")
+    predictions = []
+    wrong_samples = []
+    correct_samples = []
+    truncated_count = 0
+    exact_match_count = 0
+    match_type_counts = {}
+
+    for i in tqdm(range(num_samples), desc="Classifying"):
+        text = sample_texts[i]
+        true_code = samples_true_codes[i]
+        candidates = samples_candidates[i]
+
+        # Create prompt
+        chat_messages = create_chat_classification_prompt(
+            text,
+            candidates,
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
+        )
+
+        if tokenizer is not None:
+            # Local models: convert chat messages to string using tokenizer's chat template
+            prompt = tokenizer.apply_chat_template(
+                chat_messages["messages"], tokenize=False, add_generation_prompt=True
+            )
+        else:
+            # API models: pass messages list directly (API natively supports chat format)
+            prompt = chat_messages["messages"]
+
+        # Check if this specific prompt will be truncated (only for local models)
+        if check_token_length and tokenizer is not None:
+            prompt_tokens = tokenizer(prompt, return_tensors="pt")
+            if prompt_tokens["input_ids"].shape[1] > max_input_length:
+                truncated_count += 1
+
+        # Generate prediction
+        response = generate_fn(prompt)
+
+        # Parse response - now returns LLMClassificationResponse object
+        llm_response = parse_llm_response(response, candidates)
+        pred_code = llm_response.predicted_code
+
+        # Track match types (exact, partial, invalid)
+        match_type_str = llm_response.match_type.value
+        match_type_counts[match_type_str] = match_type_counts.get(match_type_str, 0) + 1
+
+        if llm_response.is_exact_match:
+            exact_match_count += 1
+
+        predictions.append(pred_code)
+
+        # Track wrong and correct predictions
+        true_content = contents[codes.index(true_code)] if true_code in codes else "N/A"
+        pred_content = (
+            contents[codes.index(pred_code)] if pred_code in codes else "INVALID"
+        )
+
+        sample_info = {
+            "sample_idx": i,
+            "input_text": text,
+            "true_code": true_code,
+            "pred_code": pred_code,
+            "true_content": true_content,
+            "pred_content": pred_content,
+            "llm_response": response,
+            "match_type": match_type_str,
+            "confidence": llm_response.confidence,
+            "is_exact_match": llm_response.is_exact_match,
+        }
+
+        if pred_code != true_code:
+            wrong_samples.append(sample_info)
+        else:
+            correct_samples.append(sample_info)
+
+    # === Evaluation Metrics ===
+    print("\nCalculating metrics...")
+
+    # LLM only produces top-1 predictions
+    correct = sum(
+        1 for pred, true in zip(predictions, samples_true_codes) if pred == true
+    )
+    accuracy = correct / num_samples
+
+    # Calculate MRR (for single predictions, MRR = accuracy)
+    reciprocal_ranks = [
+        1.0 if pred == true else 0.0
+        for pred, true in zip(predictions, samples_true_codes)
+    ]
+    mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
+
+    # === Summary ===
+    print("\n=== LLM Text Classification Evaluation ===")
+    print(f"Model: {model_identifier}")
+    print(f"Subject: {subject}")
+    print(f"Total achievement standards: {num_rows}")
+    print(f"Number of candidates used: {num_candidates} (max: {max_candidates})")
+    print(f"Samples evaluated: {num_samples}")
+    if truncated_count > 0:
+        print(
+            f"⚠️  Truncated prompts: {truncated_count}/{num_samples} ({truncated_count/num_samples*100:.1f}%)"
+        )
+    print(f"\nMatch Type Distribution:")
+    for match_type, count in sorted(match_type_counts.items()):
+        print(f"  {match_type}: {count}/{num_samples} ({count/num_samples*100:.1f}%)")
+    print(
+        f"\nExact matches: {exact_match_count}/{num_samples} ({exact_match_count/num_samples*100:.1f}%)"
+    )
+    print(f"Accuracy: {accuracy:.4f} ({correct}/{num_samples})")
+    print(f"MRR: {mrr:.4f}")
+
+    # === JSON Logging ===
+    result_entry = {}
+    if folder_name:
+        result_entry["folder"] = folder_name
+
+    result_entry.update(
+        {
+            "model_name": model_identifier,
+            "subject": subject,
+            "num_standards": num_rows,
+            "num_candidates": num_candidates,
+            "max_candidates": max_candidates,
+            "max_samples_per_row": int(max_samples_per_row),
+            "total_samples": num_samples,
+            "correct": correct,
+            "accuracy": round(float(accuracy), 4),
+            "mrr": round(float(mrr), 4),
+            "exact_match_count": exact_match_count,
+            "exact_match_percentage": (
+                round(exact_match_count / num_samples * 100, 2)
+                if num_samples > 0
+                else 0
+            ),
+            "match_type_distribution": {
+                k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
+            },
+            "max_new_tokens": max_new_tokens,
+            "temperature": temperature,
+            "max_input_length": max_input_length,
+            "truncated_count": truncated_count,
+            "truncated_percentage": (
+                round(truncated_count / num_samples * 100, 2) if num_samples > 0 else 0
+            ),
+        }
+    )
+
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                results = json.load(f)
+        except json.JSONDecodeError:
+            results = []
+    else:
+        results = []
+
+    replaced = False
+    for i, r in enumerate(results):
+        if (
+            r["model_name"] == result_entry["model_name"]
+            and r["subject"] == result_entry["subject"]
+            and r["num_standards"] == result_entry["num_standards"]
+            and r.get("max_candidates", result_entry["max_candidates"])
+            == result_entry["max_candidates"]
+            and r["total_samples"] == result_entry["total_samples"]
+        ):
+            results[i] = result_entry
+            replaced = True
+            print(f"Updated existing entry for subject '{subject}'")
+            break
+
+    if not replaced:
+        results.append(result_entry)
+        print(f"Appended new entry for subject '{subject}'")
+
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=4)
+    print(f"Results saved to {json_path}")
+
+    # Save wrong samples
+    logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "logs"
+    os.makedirs(logs_dir, exist_ok=True)
+    csv_name = os.path.splitext(os.path.basename(input_csv))[0]
+
+    if wrong_samples:
+        wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
+        sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
+        with open(wrong_path, "w", encoding="utf-8") as f:
+            f.write(f"Total wrong samples: {len(wrong_samples)}\n\n")
+            for w in sampled_wrongs:
+                f.write(f"[Sample #{w['sample_idx']}]\n")
+                f.write(f"True Code: {w['true_code']}\n")
+                f.write(f"Pred Code: {w['pred_code']}\n")
+                f.write(f"Match Type: {w['match_type']}\n")
+                f.write(f"Confidence: {w['confidence']:.2f}\n")
+                f.write(f"Exact Match: {'YES' if w['is_exact_match'] else 'NO'}\n")
+                f.write(f"Input Text: {w['input_text']}\n")
+                f.write(f"True Content: {w['true_content']}\n")
+                f.write(f"Pred Content: {w['pred_content']}\n")
+                f.write(f"True Code: {w['true_code']}\n")
+                f.write(f"LLM Response: {w['llm_response']}\n")
+                f.write("-" * 60 + "\n")
+        print(
+            f"\nSaved {len(sampled_wrongs)} randomly selected wrong samples to {wrong_path}"
+        )
+
+    # Save correct samples
+    if correct_samples:
+        correct_path = logs_dir / f"{csv_name}_corrects.txt"
+        sampled_corrects = random.sample(
+            correct_samples, min(100, len(correct_samples))
+        )
+        with open(correct_path, "w", encoding="utf-8") as f:
+            f.write(f"Total correct samples: {len(correct_samples)}\n\n")
+            for c in sampled_corrects:
+                f.write(f"[Sample #{c['sample_idx']}]\n")
+                f.write(f"Code: {c['true_code']}\n")
+                f.write(f"Match Type: {c['match_type']}\n")
+                f.write(f"Confidence: {c['confidence']:.2f}\n")
+                f.write(f"Exact Match: {'YES' if c['is_exact_match'] else 'NO'}\n")
+                f.write(f"Input Text: {c['input_text']}\n")
+                f.write(f"Content: {c['true_content']}\n")
+                f.write(f"True Content: {c['true_content']}\n")
+                f.write(f"Pred Content: {c['pred_content']}\n")
+                f.write(f"LLM Response: {c['llm_response']}\n")
+                f.write("-" * 60 + "\n")
+        print(
+            f"Saved {len(sampled_corrects)} randomly selected correct samples to {correct_path}"
+        )
+
+    return accuracy, mrr
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Evaluate LLM-based text classification for educational content."
+    )
+    parser.add_argument(
+        "--input_csv", type=str, required=True, help="Path to input CSV file."
+    )
+
+    # Model selection: mutually exclusive group for API vs Local
+    model_group = parser.add_mutually_exclusive_group(required=True)
+    model_group.add_argument(
+        "--model_name",
+        type=str,
+        help="Local Hugging Face model name (e.g., Qwen/Qwen2.5-1.5B-Instruct).",
+    )
+    model_group.add_argument(
+        "--api-provider",
+        type=str,
+        choices=["openai", "anthropic", "google", "openrouter"],
+        help="API provider (openai, anthropic, google, openrouter).",
+    )
+
+    # API-specific arguments
+    parser.add_argument(
+        "--api-model",
+        type=str,
+        help="API model name (required with --api-provider, e.g., gpt-4, claude-3-5-sonnet-20241022, gemini-pro).",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="API key (optional, will use .env if not provided).",
+    )
+    parser.add_argument(
+        "--api-delay",
+        type=float,
+        default=0.5,
+        help="Delay in seconds between API calls to avoid rate limits (default: 0.5).",
+    )
+
+    # Common arguments
+    parser.add_argument(
+        "--encoding", type=str, help="CSV encoding (default: auto-detect)."
+    )
+    parser.add_argument(
+        "--json_path",
+        type=str,
+        default=None,
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/llm_text_classification/results.json).",
+    )
+    parser.add_argument(
+        "--max-samples-per-row",
+        type=int,
+        default=None,
+        help="Max number of text samples to evaluate per row (default: auto-detect).",
+    )
+    parser.add_argument(
+        "--max-total-samples",
+        type=int,
+        default=None,
+        help="Max total number of samples, randomly sampled from all available (default: no limit).",
+    )
+    parser.add_argument(
+        "--max-new-tokens",
+        type=int,
+        default=50,
+        help="Maximum number of tokens to generate (default: 50).",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.1,
+        help="Sampling temperature (default: 0.1).",
+    )
+    # Agentic LLM arguments
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=15,
+        help="Number of top predictions to return (default: 15).",
+    )
+
+    # Local model arguments
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="cuda",
+        help="Device for local model (cuda or cpu, ignored for API, default: cuda).",
+    )
+    parser.add_argument(
+        "--max-input-length",
+        type=int,
+        default=2048,
+        help="Maximum input token length for local model (ignored for API, default: 2048).",
+    )
+
+    parser.add_argument(
+        "--few-shot",
+        action="store_true",
+        help="Use few-shot examples (default: False).",
+    )
+
+    args = parser.parse_args()
+
+    # Validation
+    if args.api_provider and not args.api_model:
+        parser.error("--api-model is required when using --api-provider")
+
+    set_predict_random_seed(42)
+
+    # === Create generate_prediction function based on mode ===
+    if args.api_provider:
+        # API mode
+        print(f"=" * 80)
+        print(f"Using API provider: {args.api_provider}")
+        print(f"API model: {args.api_model}")
+        print(f"=" * 80)
+
+        api_client = create_api_client(args.api_provider, args.api_key)
+        generate_fn = create_api_generate_function(
+            api_client,
+            args.api_model,
+            args.max_new_tokens,
+            args.temperature,
+            args.api_delay,
+        )
+        print(f"API delay: {args.api_delay}s between requests")
+        print(f"API retry: automatic retry up to 10 times on rate limit errors")
+
+        # Load a tokenizer for approximate token counting
+        tokenizer = AutoTokenizer.from_pretrained("gpt2")
+
+        model_identifier = f"{args.api_provider}/{args.api_model}"
+        check_token_length = False
+
+    else:
+        # Local model mode
+        print(f"=" * 80)
+        print(f"Using local model: {args.model_name}")
+        print(f"Device: {args.device}")
+        print(f"=" * 80)
+
+        model, tokenizer = load_llm_model(args.model_name, args.device)
+        generate_fn = create_generate_function(
+            model=model,
+            tokenizer=tokenizer,
+            device=args.device,
+            max_input_length=args.max_input_length,
+            max_new_tokens=args.max_new_tokens,
+            temperature=args.temperature,
+        )
+
+        model_identifier = args.model_name
+        check_token_length = True
+
+    # === Call evaluation function ===
+    evaluate_llm_classification(
+        input_csv=args.input_csv,
+        generate_fn=generate_fn,
+        model_identifier=model_identifier,
+        tokenizer=tokenizer,
+        few_shot=args.few_shot,
+        encoding=args.encoding,
+        json_path=args.json_path,
+        max_samples_per_row=args.max_samples_per_row,
+        max_total_samples=args.max_total_samples,
+        max_new_tokens=args.max_new_tokens,
+        temperature=args.temperature,
+        top_k=args.top_k,
+        max_input_length=args.max_input_length,
+        check_token_length=check_token_length,
+    )
