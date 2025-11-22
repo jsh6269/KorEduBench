@@ -9,6 +9,7 @@ import json
 import os
 import random
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import torch
@@ -61,11 +62,19 @@ def evaluate_finetuned_llm(
         max_candidates: Maximum number of candidate achievement standards to use (default: 200)
     """
     if json_path is None:
+        # Generate filename with date and model_name
+        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        # Use base_model from training_info, or model_path basename as fallback
+        model_name = training_info.get("model_name", os.path.basename(model_path))
+        # Sanitize model_name for filename (replace / and other invalid chars with _)
+        safe_model_name = (
+            model_name.replace("/", "_").replace("\\", "_").replace(":", "_")
+        )
         json_path = (
             PROJECT_ROOT
             / "output"
             / "llm_text_classification"
-            / "finetuned_results.json"
+            / f"finetuned_results_{safe_model_name}_{current_date}.json"
         )
     json_path = str(json_path)
 
@@ -228,13 +237,6 @@ def evaluate_finetuned_llm(
     )
     accuracy = correct / num_samples
 
-    # Calculate MRR (for single predictions, MRR = accuracy)
-    reciprocal_ranks = [
-        1.0 if pred == true else 0.0
-        for pred, true in zip(predictions, samples_true_codes)
-    ]
-    mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
-
     # === Summary ===
     print("\n=== Fine-tuned LLM Evaluation ===")
     print(f"Model path: {model_path}")
@@ -253,7 +255,6 @@ def evaluate_finetuned_llm(
         f"\nExact matches: {exact_match_count}/{num_samples} ({exact_match_count/num_samples*100:.1f}%)"
     )
     print(f"Accuracy: {accuracy:.4f} ({correct}/{num_samples})")
-    print(f"MRR: {mrr:.4f}")
 
     # === JSON Logging ===
     result_entry = {}
@@ -272,13 +273,6 @@ def evaluate_finetuned_llm(
             "total_samples": num_samples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
-            "mrr": round(float(mrr), 4),
-            "exact_match_count": exact_match_count,
-            "exact_match_percentage": (
-                round(exact_match_count / num_samples * 100, 2)
-                if num_samples > 0
-                else 0
-            ),
             "match_type_distribution": {
                 k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
             },
@@ -286,9 +280,6 @@ def evaluate_finetuned_llm(
             "temperature": temperature,
             "max_input_length": max_input_length,
             "truncated_count": truncated_count,
-            "truncated_percentage": (
-                round(truncated_count / num_samples * 100, 2) if num_samples > 0 else 0
-            ),
             "training_info": training_info,
         }
     )
@@ -376,7 +367,7 @@ def evaluate_finetuned_llm(
             f"Saved {len(sampled_corrects)} randomly selected correct samples to {correct_path}"
         )
 
-    return accuracy, mrr
+    return accuracy
 
 
 if __name__ == "__main__":

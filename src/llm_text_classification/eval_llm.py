@@ -9,6 +9,7 @@ import json
 import os
 import random
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import torch
@@ -66,7 +67,18 @@ def evaluate_llm_classification(
         check_token_length: Whether to check token length (False for API mode)
     """
     if json_path is None:
-        json_path = PROJECT_ROOT / "output" / "llm_text_classification" / "results.json"
+        # Generate filename with date and model_name
+        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        # Sanitize model_name for filename (replace / and other invalid chars with _)
+        safe_model_name = (
+            model_identifier.replace("/", "_").replace("\\", "_").replace(":", "_")
+        )
+        json_path = (
+            PROJECT_ROOT
+            / "output"
+            / "llm_text_classification"
+            / f"results_{safe_model_name}_{current_date}.json"
+        )
     json_path = str(json_path)
 
     # === Load and preprocess data ===
@@ -219,13 +231,6 @@ def evaluate_llm_classification(
     )
     accuracy = correct / num_samples
 
-    # Calculate MRR (for single predictions, MRR = accuracy)
-    reciprocal_ranks = [
-        1.0 if pred == true else 0.0
-        for pred, true in zip(predictions, samples_true_codes)
-    ]
-    mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
-
     # === Summary ===
     print("\n=== LLM Text Classification Evaluation ===")
     print(f"Model: {model_identifier}")
@@ -244,7 +249,6 @@ def evaluate_llm_classification(
         f"\nExact matches: {exact_match_count}/{num_samples} ({exact_match_count/num_samples*100:.1f}%)"
     )
     print(f"Accuracy: {accuracy:.4f} ({correct}/{num_samples})")
-    print(f"MRR: {mrr:.4f}")
 
     # === JSON Logging ===
     result_entry = {}
@@ -253,7 +257,6 @@ def evaluate_llm_classification(
 
     result_entry.update(
         {
-            "model_name": model_identifier,
             "subject": subject,
             "num_standards": num_rows,
             "num_candidates": num_candidates,
@@ -262,13 +265,6 @@ def evaluate_llm_classification(
             "total_samples": num_samples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
-            "mrr": round(float(mrr), 4),
-            "exact_match_count": exact_match_count,
-            "exact_match_percentage": (
-                round(exact_match_count / num_samples * 100, 2)
-                if num_samples > 0
-                else 0
-            ),
             "match_type_distribution": {
                 k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
             },
@@ -276,9 +272,6 @@ def evaluate_llm_classification(
             "temperature": temperature,
             "max_input_length": max_input_length,
             "truncated_count": truncated_count,
-            "truncated_percentage": (
-                round(truncated_count / num_samples * 100, 2) if num_samples > 0 else 0
-            ),
         }
     )
 
@@ -295,8 +288,7 @@ def evaluate_llm_classification(
     replaced = False
     for i, r in enumerate(results):
         if (
-            r["model_name"] == result_entry["model_name"]
-            and r["subject"] == result_entry["subject"]
+            r["subject"] == result_entry["subject"]
             and r["num_standards"] == result_entry["num_standards"]
             and r.get("max_candidates", result_entry["max_candidates"])
             == result_entry["max_candidates"]
@@ -366,7 +358,7 @@ def evaluate_llm_classification(
             f"Saved {len(sampled_corrects)} randomly selected correct samples to {correct_path}"
         )
 
-    return accuracy, mrr
+    return accuracy
 
 
 if __name__ == "__main__":
