@@ -85,7 +85,7 @@ def evaluate_llm_classification(
         json_path = (
             PROJECT_ROOT
             / "output"
-            / "llm_text_classification"
+            / "agentic_llm_text_classification"
             / f"results_{safe_model_name}_{current_date}.json"
         )
     json_path = str(json_path)
@@ -397,7 +397,7 @@ def evaluate_llm_classification(
     print(f"Results saved to {json_path}")
 
     # Save wrong samples
-    logs_dir = PROJECT_ROOT / "output" / "llm_text_classification" / "logs"
+    logs_dir = PROJECT_ROOT / "output" / "agentic_llm_text_classification" / "logs"
     os.makedirs(logs_dir, exist_ok=True)
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
 
@@ -501,7 +501,7 @@ if __name__ == "__main__":
         "--json_path",
         type=str,
         default=None,
-        help="Path to JSON log file (default: {PROJECT_ROOT}/output/llm_text_classification/results.json).",
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/agentic_llm_text_classification/results.json).",
     )
     parser.add_argument(
         "--max-samples-per-row",
