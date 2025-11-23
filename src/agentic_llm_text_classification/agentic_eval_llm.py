@@ -21,6 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.classification.inference import infer_top_k
+from src.classification.predict_multiclass import load_model
 from src.utils.agentic_prompt import (
     LLMClassificationResponse,
     create_agentic_step1_chat_prompt,
@@ -184,6 +185,10 @@ def evaluate_llm_classification(
     exact_match_count = 0
     match_type_counts = {}
 
+    top_k_model, top_k_tokenizer, top_k_config, top_k_mappings = load_model(
+        model_dir, infer_device
+    )
+
     for i in tqdm(range(num_samples), desc="Classifying"):
         text = sample_texts[i]
         true_code = samples_true_codes[i]
@@ -220,7 +225,10 @@ def evaluate_llm_classification(
             text=step1_query,
             top_k=top_k,
             train_csv=train_csv,
-            model_dir=model_dir,
+            model=top_k_model,
+            tokenizer=top_k_tokenizer,
+            config=top_k_config,
+            mappings=top_k_mappings,
             device=infer_device,
             random=False,  # Keep probability order
         )

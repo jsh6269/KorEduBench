@@ -16,7 +16,6 @@ Optimized for L40S GPU.
 import argparse
 import json
 import sys
-import warnings
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -106,19 +105,9 @@ class AchievementClassifier(nn.Module):
         super().__init__()
 
         self.config = AutoConfig.from_pretrained(model_name)
-        # Suppress warnings about uninitialized weights (normal when loading base model)
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                message="Some weights of.*were not initialized.*",
-                category=UserWarning,
-            )
-            warnings.filterwarnings(
-                "ignore",
-                message="You should probably TRAIN this model.*",
-                category=UserWarning,
-            )
-            self.encoder = AutoModel.from_pretrained(model_name)
+        self.encoder = AutoModel.from_pretrained(
+            model_name, ignore_mismatched_sizes=True
+        )
         self.pooling = pooling
 
         hidden_dim = self.config.hidden_size

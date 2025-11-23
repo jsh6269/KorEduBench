@@ -138,7 +138,7 @@ def predict_batch(
         attention_mask = encodings["attention_mask"].to(device)
 
         # Predict
-        with torch.no_grad():
+        with torch.inference_mode():
             outputs = model(input_ids=input_ids, attention_mask=attention_mask)
             logits = outputs["logits"]
             probs = F.softmax(logits, dim=-1)

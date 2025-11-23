@@ -15,7 +15,10 @@ import torch
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from transformers import AutoTokenizer
+
 from src.classification.predict_multiclass import load_model, predict_batch
+from src.classification.train_multiclass_classifier import AchievementClassifier
 from src.utils.common import detect_encoding
 
 # Set random seed for shuffle
@@ -27,7 +30,11 @@ def infer_top_k(
     text: str,
     top_k: int,
     train_csv: str,
-    model_dir: str,
+    model_dir: str = None,
+    model: AchievementClassifier = None,
+    tokenizer: AutoTokenizer = None,
+    config: Dict = None,
+    mappings: Dict = None,
     device: str = "cuda",
     random: bool = True,
 ) -> Dict:
@@ -38,7 +45,10 @@ def infer_top_k(
         text: Input text string
         top_k: Number of top predictions to return
         train_csv: Path to training CSV file (for code-content mapping, used as fallback)
-        model_dir: Path to trained model directory
+        model: AchievementClassifier model
+        tokenizer: AutoTokenizer tokenizer
+        config: Dictionary with model configuration
+        mappings: Dictionary with code-content mapping
         device: Device to use (default: "cuda")
         random: If True, shuffle results. If False, keep probability order (highest first)
 
@@ -48,8 +58,8 @@ def infer_top_k(
     # Set device
     device = torch.device(device if torch.cuda.is_available() else "cpu")
 
-    # Load model
-    model, tokenizer, config, mappings = load_model(model_dir, device)
+    if model_dir is not None:
+        model, tokenizer, config, mappings = load_model(model_dir, device)
 
     # Load train_csv to get available achievement standards
     encoding = detect_encoding(train_csv)
