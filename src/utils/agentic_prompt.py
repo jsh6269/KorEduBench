@@ -254,86 +254,11 @@ def format_candidates_for_step2(candidates: list[tuple[int, str, str]]) -> str:
 
 
 # ============================================================================
-# Agentic Step 1: Query Generation
-# ============================================================================
-
-
-def create_agentic_step1_chat_prompt(
-    text: str,
-    completion: str = "",
-    system_prompt: str = None,
-    output_instruction: str = None,
-    for_inference: bool = False,
-    few_shot: bool = False,
-    subject: str = None,
-    num_examples: int = 5,
-    few_shot_file: str | Path | None = None,
-) -> dict:
-    """
-    Create a chat-based prompt for Step 1: Query generation.
-
-    Returns a dictionary with 'messages' field for chat-based models.
-
-    Args:
-        text: The textbook excerpt to analyze
-        completion: The search query (standard context) for training
-        system_prompt: Custom system prompt (uses AGENTIC_SYSTEM_PROMPT_STEP1 if None)
-        output_instruction: Custom output instruction (uses AGENTIC_OUTPUT_FORMAT_STEP1 if None)
-        for_inference: If True, exclude assistant message (for inference mode)
-        few_shot: Whether to include few-shot examples
-        subject: Subject name for few-shot examples
-        num_examples: Number of few-shot examples
-        few_shot_file: Custom few-shot file path
-
-    Returns:
-        Dictionary with 'messages' field containing role-based messages
-    """
-    if few_shot:
-        if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP1
-        if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP1_FEW_SHOT
-    else:
-        if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP1
-        if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP1
-
-    # System message: Role definition + Achievement Standards
-    system_content = system_prompt
-    # Add few-shot examples if requested
-    if few_shot and subject:
-        few_shot_examples = load_few_shot_examples(
-            subject=subject,
-            num_examples=num_examples,
-            file_path=few_shot_file,
-        )
-        system_content = (
-            f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
-        )
-
-    # User message: Textbook text + Output instructions
-    user_content = "# Textbook Text\n" + f"{text}\n" + "\n" + f"{output_instruction}"
-
-    # Build messages list
-    messages = [
-        {"role": "system", "content": system_content},
-        {"role": "user", "content": user_content},
-    ]
-
-    # Add assistant message only for training (not inference)
-    if not for_inference:
-        messages.append({"role": "assistant", "content": completion})
-
-    return {"messages": messages}
-
-
-# ============================================================================
 # Agentic Step 2: Final Selection
 # ============================================================================
 
 
-def create_agentic_step2_chat_prompt(
+def create_rag_chat_prompt(
     text: str,
     candidates: list[tuple[int, str, str]],
     completion: str = "",

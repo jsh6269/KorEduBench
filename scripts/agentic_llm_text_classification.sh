@@ -8,16 +8,25 @@
 # Get project root directory
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+# Determine Python command (python3 if python is not available)
+if command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+elif command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+else
+    echo -e "${RED}Error: Neither python nor python3 found${NC}"
+    exit 1
+fi
+
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
 MAX_NEW_TOKENS=10
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=2000
-TOP_K=15
-MAX_TOTAL_SAMPLES=200
-MAX_SAMPLES_PER_ROW=2
+MAX_INPUT_LENGTH=4000
+TOP_K=20
+NUM_SAMPLES=200
 FEW_SHOT=True
 #TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
@@ -57,7 +66,7 @@ echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Top-k: ${YELLOW}${TOP_K}${NC}"
 echo -e "Train CSV: ${YELLOW}${TRAIN_CSV}${NC}"
 echo -e "Tool model dir: ${YELLOW}${MODEL_DIR}${NC}"
@@ -102,16 +111,15 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     else
         FEW_SHOT_FLAG=""
     fi
-    if python "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
+    if $PYTHON_CMD "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
         --temperature "$TEMPERATURE" \
         --device "$DEVICE" \
         --max-input-length "$MAX_INPUT_LENGTH" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
         --top-k "$TOP_K" \
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
+        --num-samples "$NUM_SAMPLES" \
         --train-csv "$SUBJECT_TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \
         --infer-device "$INFER_DEVICE" \

@@ -14,7 +14,7 @@ import pandas as pd
 from datasets import Dataset
 from tqdm import tqdm
 
-#from src.test.check_prompt_length import subject
+# from src.test.check_prompt_length import subject
 from src.utils.common import detect_encoding
 from src.utils.prompt import create_chat_classification_prompt
 
@@ -35,7 +35,6 @@ class EvaluationData:
     num_rows: int
     num_candidates: int
     num_samples: int
-    max_samples_per_row: int
     max_candidates: int
     folder_name: Optional[str] = None  # train/valid/test folder name if detected
 
@@ -43,7 +42,7 @@ class EvaluationData:
 def load_evaluation_data(
     input_csv: str,
     encoding: Optional[str] = None,
-    max_samples_per_row: Optional[int] = None,
+    num_samples: Optional[int] = None,
     max_total_samples: Optional[int] = None,
     max_candidates: Optional[int] = None,
 ) -> EvaluationData:
@@ -53,7 +52,10 @@ def load_evaluation_data(
     Args:
         input_csv: Path to input CSV file
         encoding: CSV encoding (default: auto-detect)
-        max_samples_per_row: Maximum number of text samples to use per row (default: auto-detect)
+        num_samples: Target number of samples to generate.
+                     If None, use all available samples.
+                     If num_samples <= num_rows: randomly sample num_samples rows, then 1 sample per row.
+                     If num_samples > num_rows: distribute samples across all rows (e.g., 10/3 = 3,3,4).
         max_total_samples: Maximum total number of samples across all rows.
                           If specified, randomly samples from all available samples (default: no limit)
 
@@ -92,11 +94,6 @@ def load_evaluation_data(
     num_rows = len(df)
     num_candidates = num_rows
 
-    # Auto compute max_samples_per_row if None
-    if max_samples_per_row is None:
-        max_samples_per_row = int(max((df[sample_cols].notna().sum(axis=1)).max(), 0))
-        print(f"Auto-detected max_samples_per_row = {max_samples_per_row}")
-
     # Extract achievement standards
     contents = df["content"].astype(str).tolist()
     codes = df["code"].astype(str).tolist()
@@ -104,48 +101,119 @@ def load_evaluation_data(
     # Prepare full candidates list (with all standards for dynamic sampling)
     full_candidates = [(i + 1, codes[i], contents[i]) for i in range(num_rows)]
 
-    # Flatten sample texts, true codes, and generate candidates per sample
-    sample_texts, samples_true_codes, samples_candidates = [], [], []
-    for _, row in df.iterrows():
+    # Collect all available texts per row
+    # Use positional index (0-based) instead of DataFrame index
+    row_texts_map = {}  # row_idx (0-based) -> list of texts
+    for pos_idx, (_, row) in enumerate(df.iterrows()):
         code = str(row["code"])
         texts = []
         for col in sample_cols:
             text = str(row[col]).strip()
             if text and text.lower() != "nan":
                 texts.append(text)
+        row_texts_map[pos_idx] = texts
 
-        # Apply max_samples_per_row limit
-        if len(texts) > max_samples_per_row:
-            texts = texts[:max_samples_per_row]
+    # Apply num_samples sampling logic
+    sample_texts, samples_true_codes, samples_candidates = [], [], []
 
-        for t in texts:
-            sample_texts.append(t)
+    if num_samples is None:
+        # Use all available samples
+        for pos_idx, texts in row_texts_map.items():
+            code = codes[pos_idx]
+            for text in texts:
+                sample_texts.append(text)
+                samples_true_codes.append(code)
+
+                # Generate candidates for this sample
+                if max_candidates is not None and len(full_candidates) > max_candidates:
+                    correct_idx = codes.index(code)
+                    correct_candidate = full_candidates[correct_idx]
+                    other_candidates = [
+                        c for i, c in enumerate(full_candidates) if i != correct_idx
+                    ]
+                    sampled_others = random.sample(
+                        other_candidates, min(max_candidates - 1, len(other_candidates))
+                    )
+                    candidates = [correct_candidate] + sampled_others
+                    random.shuffle(candidates)
+                else:
+                    candidates = full_candidates.copy()
+                samples_candidates.append(candidates)
+    elif num_samples <= num_rows:
+        # Randomly sample num_samples rows, then 1 sample per row
+        # Only consider rows that have at least one text
+        available_row_indices = [
+            idx for idx in range(num_rows) if row_texts_map.get(idx)
+        ]
+        if len(available_row_indices) < num_samples:
+            # If not enough rows with texts, use all available rows
+            selected_row_indices = available_row_indices
+        else:
+            selected_row_indices = random.sample(available_row_indices, num_samples)
+
+        for row_idx in selected_row_indices:
+            texts = row_texts_map[row_idx]
+            if not texts:
+                continue  # Skip rows with no texts (shouldn't happen, but safety check)
+            code = codes[row_idx]
+            # Randomly sample 1 text from this row
+            selected_text = random.choice(texts)
+            sample_texts.append(selected_text)
             samples_true_codes.append(code)
 
-            # Generate candidates for this sample (same logic as prepare_training_dataset)
-            # Limit candidates if specified (include correct answer + random sample)
+            # Generate candidates for this sample
             if max_candidates is not None and len(full_candidates) > max_candidates:
-                # Find the correct candidate
                 correct_idx = codes.index(code)
                 correct_candidate = full_candidates[correct_idx]
-
-                # Get other candidates (excluding the correct one)
                 other_candidates = [
                     c for i, c in enumerate(full_candidates) if i != correct_idx
                 ]
-
-                # Randomly sample max_candidates - 1 other candidates
                 sampled_others = random.sample(
                     other_candidates, min(max_candidates - 1, len(other_candidates))
                 )
-
-                # Combine correct + sampled candidates and shuffle
                 candidates = [correct_candidate] + sampled_others
                 random.shuffle(candidates)
             else:
                 candidates = full_candidates.copy()
-
             samples_candidates.append(candidates)
+    else:
+        # num_samples > num_rows: distribute samples across all rows
+        samples_per_row_base = num_samples // num_rows
+        remainder = num_samples % num_rows
+
+        # Distribute remainder samples (e.g., 10/3 = 3,3,4)
+        samples_per_row = [samples_per_row_base] * num_rows
+        for i in range(remainder):
+            samples_per_row[i] += 1
+
+        for row_idx in range(num_rows):
+            texts = row_texts_map.get(row_idx, [])
+            if not texts:
+                continue  # Skip rows with no texts
+            code = codes[row_idx]
+            num_to_sample = min(samples_per_row[row_idx], len(texts))
+            # Randomly sample num_to_sample texts from this row
+            selected_texts = random.sample(texts, num_to_sample)
+
+            for text in selected_texts:
+                sample_texts.append(text)
+                samples_true_codes.append(code)
+
+                # Generate candidates for this sample
+                if max_candidates is not None and len(full_candidates) > max_candidates:
+                    correct_idx = codes.index(code)
+                    correct_candidate = full_candidates[correct_idx]
+                    other_candidates = [
+                        c for i, c in enumerate(full_candidates) if i != correct_idx
+                    ]
+                    sampled_others = random.sample(
+                        other_candidates, min(max_candidates - 1, len(other_candidates))
+                    )
+                    candidates = [correct_candidate] + sampled_others
+                    random.shuffle(candidates)
+                else:
+                    candidates = full_candidates.copy()
+                samples_candidates.append(candidates)
 
     # Apply max_total_samples limit with random sampling if specified
     if max_total_samples is not None and len(sample_texts) > max_total_samples:
@@ -183,8 +251,7 @@ def load_evaluation_data(
         subject=subject,
         num_rows=num_rows,
         num_candidates=num_candidates,
-        num_samples=num_samples,
-        max_samples_per_row=max_samples_per_row,
+        num_samples=len(sample_texts),
         max_candidates=max_candidates,
         folder_name=folder_name,
     )
@@ -194,11 +261,11 @@ def prepare_training_dataset(
     train_dir: str,
     tokenizer,
     encoding: str = None,
-    max_samples_per_row: int = None,
+    num_samples: int = None,
     max_total_samples: int = None,
     max_candidates: int = None,
     seed: int = 42,
-    few_shot: bool = True
+    few_shot: bool = True,
 ):
     """
     Prepare training examples from CSV data in a directory.
@@ -207,7 +274,7 @@ def prepare_training_dataset(
         train_dir: Directory containing training CSV files
         tokenizer: Tokenizer for applying chat template
         encoding: CSV encoding (default: auto-detect)
-        max_samples_per_row: Maximum samples per row (default: None, use all)
+        num_samples: Target number of samples per CSV file (default: None, use all)
         max_total_samples: Maximum total samples (default: None, use all)
         max_candidates: Maximum candidates per prompt (default: None, use all)
         seed: Random seed for shuffling dataset
@@ -234,7 +301,7 @@ def prepare_training_dataset(
         data = load_evaluation_data(
             csv_file,
             encoding,
-            max_samples_per_row,
+            num_samples,  # Pass num_samples to generate samples per file
             None,  # Don't apply max_total_samples per file
             max_candidates,  # Pass max_candidates to generate candidates per sample
         )
@@ -258,7 +325,9 @@ def prepare_training_dataset(
             # (already includes correct answer and random sampling if max_candidates was specified)
 
             # Create chat prompt for training with completion
-            chat_prompt = create_chat_classification_prompt(text, candidates, code, few_shot=few_shot, subject=data.subject)
+            chat_prompt = create_chat_classification_prompt(
+                text, candidates, code, few_shot=few_shot, subject=data.subject
+            )
 
             all_training_examples.append(chat_prompt)
 
@@ -290,4 +359,3 @@ def prepare_training_dataset(
     print(f"Dataset size: {len(train_dataset)} (shuffled)")
 
     return train_dataset
- 
