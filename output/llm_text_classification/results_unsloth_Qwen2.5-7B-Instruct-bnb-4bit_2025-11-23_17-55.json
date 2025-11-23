@@ -1,0 +1,23 @@
+[
+    {
+        "folder": "valid_80",
+        "subject": "과학",
+        "num_standards": 190,
+        "top_k": 15,
+        "total_samples": 200,
+        "correct": 90,
+        "accuracy": 0.45,
+        "exact_match_count": 169,
+        "exact_match_percentage": 84.5,
+        "match_type_distribution": {
+            "exact": 84.5,
+            "invalid": 14.0,
+            "partial": 1.5
+        },
+        "max_new_tokens": 10,
+        "temperature": 0.1,
+        "max_input_length": 2000,
+        "truncated_count": 4,
+        "truncated_percentage": 2.0
+    }
+]

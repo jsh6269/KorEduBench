@@ -133,5 +133,34 @@
     "top30_acc": 0.9567,
     "top40_acc": 0.9637,
     "mrr": 0.7164
+  },
+  {
+    "folder": "valid.csv",
+    "model_name": "model/achievement_classifier/best_model",
+    "subject": "valid",
+    "num_standards": 1071,
+    "max_samples_per_row": 160,
+    "total_samples": 85680,
+    "top1_acc": 0.6325,
+    "top3_acc": 0.8125,
+    "top10_acc": 0.9146,
+    "top20_acc": 0.9461,
+    "top30_acc": 0.9588,
+    "top40_acc": 0.9659,
+    "mrr": 0.7351
+  },
+  {
+    "folder": "valid.csv",
+    "model_name": "model/achievement_classifier/best_model",
+    "subject": "valid",
+    "num_standards": 1071,
+    "max_samples_per_row": 160,
+    "total_samples": 85680,
+    "top1_acc": 0.6325,
+    "top3_acc": 0.8125,
+    "top10_acc": 0.9146,
+    "top20_acc": 0.9461,
+    "top30_acc": 0.9588,
+    "mrr": 0.7349
   }
 ]
