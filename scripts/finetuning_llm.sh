@@ -10,7 +10,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Training configuration
 TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"  # Directory containing training CSV files
-MODEL_NAME="unsloth/Qwen2.5-7B-Instruct"
+MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
 OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"
 MAX_SEQ_LENGTH=3000
 MAX_SAMPLES_PER_ROW=20     # Train with n sample per achievement standard
