@@ -26,8 +26,7 @@ TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=2000
 TOP_K=20
-MAX_TOTAL_SAMPLES=200
-MAX_SAMPLES_PER_ROW=2
+NUM_SAMPLES=2
 FEW_SHOT=True
 TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
@@ -67,7 +66,7 @@ echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Top-k: ${YELLOW}${TOP_K}${NC}"
 echo -e "Train CSV: ${YELLOW}${TRAIN_CSV}${NC}"
 echo -e "Tool model dir: ${YELLOW}${MODEL_DIR}${NC}"
@@ -112,9 +111,8 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --temperature "$TEMPERATURE" \
         --device "$DEVICE" \
         --max-input-length "$MAX_INPUT_LENGTH" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
         --top-k "$TOP_K" \
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
+        --num-samples "$NUM_SAMPLES" \
         --train-csv "$TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \
         --infer-device "$INFER_DEVICE" \
