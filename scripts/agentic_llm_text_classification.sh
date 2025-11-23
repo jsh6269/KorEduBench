@@ -19,7 +19,7 @@ TOP_K=15
 MAX_TOTAL_SAMPLES=200
 MAX_SAMPLES_PER_ROW=2
 FEW_SHOT=True
-TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
+#TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
 INFER_DEVICE="cuda"
 
@@ -39,10 +39,10 @@ if [ ! -d "$DATASET_FOLDER" ]; then
 fi
 
 # Check if train CSV exists
-if [ ! -f "$TRAIN_CSV" ]; then
-    echo -e "${RED}Error: Train CSV file not found: $TRAIN_CSV${NC}"
-    exit 1
-fi
+#if [ ! -f "$TRAIN_CSV" ]; then
+#    echo -e "${RED}Error: Train CSV file not found: $TRAIN_CSV${NC}"
+#    exit 1
+#fi
 
 # Check if model directory exists
 if [ ! -d "$MODEL_DIR" ]; then
@@ -85,6 +85,13 @@ FAILED=0
 
 for CSV_FILE in "${CSV_FILES[@]}"; do
     BASENAME=$(basename "$CSV_FILE")
+    SUBJECT="${BASENAME%.csv}"
+    SUBJECT_TRAIN_CSV="${PROJECT_ROOT}/dataset/train_80/${SUBJECT}.csv"
+    if [ ! -f "$SUBJECT_TRAIN_CSV" ]; then
+        echo -e "${RED}Error: Train CSV not found for ${SUBJECT}: ${SUBJECT_TRAIN_CSV}${NC}"
+        ((FAILED++))
+        continue
+    fi
     echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║  Processing: ${BASENAME}${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
@@ -105,7 +112,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --max-total-samples "$MAX_TOTAL_SAMPLES" \
         --top-k "$TOP_K" \
         --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
-        --train-csv "$TRAIN_CSV" \
+        --train-csv "$SUBJECT_TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \
         --infer-device "$INFER_DEVICE" \
         $FEW_SHOT_FLAG; then
