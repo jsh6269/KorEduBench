@@ -10,12 +10,11 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
 MAX_CANDIDATES=30
-MAX_TOTAL_SAMPLES=200
-MAX_SAMPLES_PER_ROW=5
+NUM_SAMPLES=200
 FEW_SHOT=True
 PRINT_SAMPLE_PROMPT=True
 
-OUTPUT_PATH="${PROJECT_ROOT}/output/check_prompt_length/results_${MAX_CANDIDATES}_${MAX_TOTAL_SAMPLES}_${MAX_SAMPLES_PER_ROW}.csv"
+OUTPUT_PATH="${PROJECT_ROOT}/output/check_prompt_length/results_${MAX_CANDIDATES}_${NUM_SAMPLES}.csv"
 
 # Color output
 GREEN='\033[0;32m'
@@ -35,8 +34,7 @@ fi
 echo -e "Dataset folder: ${YELLOW}${DATASET_FOLDER}${NC}"
 echo -e "Model (tokenizer): ${YELLOW}${MODEL_NAME}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
-echo -e "Max samples per row: ${YELLOW}${MAX_SAMPLES_PER_ROW}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Output path: ${YELLOW}${OUTPUT_PATH}${NC}"
 echo ""
 
@@ -48,8 +46,7 @@ if python "${PROJECT_ROOT}/src/test/check_prompt_length.py" \
     --input_dir "$DATASET_FOLDER" \
     --model_name "$MODEL_NAME" \
     --max-candidates "$MAX_CANDIDATES" \
-    --max-total-samples "$MAX_TOTAL_SAMPLES" \
-    --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
+    --num-samples "$NUM_SAMPLES" \
     --output_path "$OUTPUT_PATH" \
     --print-sample-prompt "$PRINT_SAMPLE_PROMPT" \
     --few-shot "$FEW_SHOT"; then

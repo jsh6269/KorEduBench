@@ -25,14 +25,14 @@ def evaluate_bi_cross_pipeline(
     top_k: int = 20,
     encoding: str = None,
     json_path: str = None,
-    max_samples_per_row: int = None,
+    num_samples: int = None,
 ):
     if json_path is None:
         json_path = PROJECT_ROOT / "output" / "cross_encoder" / "results_rerank.json"
     json_path = str(json_path)
 
     # === Load and preprocess data ===
-    data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
+    data = load_evaluation_data(input_csv, encoding, num_samples)
 
     # Extract data for convenience
     contents = data.contents
@@ -42,7 +42,6 @@ def evaluate_bi_cross_pipeline(
     subject = data.subject
     num_rows = data.num_rows
     num_samples = data.num_samples
-    max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
     # Validate that we have samples to evaluate
@@ -197,7 +196,6 @@ def evaluate_bi_cross_pipeline(
             "cross_model": cross_model_name,
             "subject": subject,
             "num_standards": num_rows,
-            "max_samples_per_row": int(max_samples_per_row),
             "total_samples": num_samples,
             "top_k": actual_top_k,
             **{k: round(float(v), 4) for k, v in acc_dict.items()},
@@ -304,10 +302,10 @@ if __name__ == "__main__":
         help="Path to JSON log file (default: {PROJECT_ROOT}/output/cross_encoder/results_rerank.json).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Max number of text samples to evaluate per row (default: auto-detect).",
+        help="Target number of samples to generate (default: None, use all available samples).",
     )
     args = parser.parse_args()
 
@@ -324,5 +322,5 @@ if __name__ == "__main__":
         top_k=args.top_k,
         encoding=args.encoding,
         json_path=args.json_path,
-        max_samples_per_row=args.max_samples_per_row,
+        num_samples=args.num_samples,
     )

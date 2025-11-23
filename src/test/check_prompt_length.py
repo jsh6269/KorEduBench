@@ -22,8 +22,7 @@ def check_prompt_length(
     input_csv: str,
     model_name: str,
     few_shot: bool,
-    max_samples_per_row: int,
-    max_total_samples: int,
+    num_samples: int,
     max_candidates: int,
     print_sample_prompt: bool = False,
 ):
@@ -35,8 +34,7 @@ def check_prompt_length(
     data = load_evaluation_data(
         input_csv=input_csv,
         encoding=None,
-        max_samples_per_row=max_samples_per_row,
-        max_total_samples=max_total_samples,
+        num_samples=num_samples,
         max_candidates=max_candidates,
     )
 
@@ -54,7 +52,7 @@ def check_prompt_length(
     print(f"  Subject: {subject}")
     print(f"  CSV: {Path(input_csv).name}")
     print(f"  Number of candidates: {len(candidates)}")
-    print(f"  Max samples per row: {max_samples_per_row}")
+    print(f"  Num samples: {num_samples}")
 
     # Build a sample prompt (first sample)
     chat_messages = create_chat_classification_prompt(
@@ -155,16 +153,10 @@ if __name__ == "__main__":
         help="Path to output file (default: {PROJECT_ROOT}/output/check_prompt_length/results.csv).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Max number of text samples to evaluate per row (default: auto-detect).",
-    )
-    parser.add_argument(
-        "--max-total-samples",
-        type=int,
-        default=None,
-        help="Max total number of samples, randomly sampled from all available (default: no limit).",
+        help="Target number of samples to generate (default: None, use all available samples).",
     )
     # Local model arguments
     parser.add_argument(
@@ -214,8 +206,7 @@ if __name__ == "__main__":
             input_csv=str(csv_path),
             model_name=args.model_name,
             few_shot=args.few_shot,
-            max_samples_per_row=args.max_samples_per_row,
-            max_total_samples=args.max_total_samples,
+            num_samples=args.num_samples,
             max_candidates=args.max_candidates,
             print_sample_prompt=args.print_sample_prompt,
         )

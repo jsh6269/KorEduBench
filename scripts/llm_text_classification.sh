@@ -16,8 +16,7 @@ TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=1400
 MAX_CANDIDATES=15
-MAX_TOTAL_SAMPLES=100
-MAX_SAMPLES_PER_ROW=5
+NUM_SAMPLES=100
 FEW_SHOT=True
 
 # Color output
@@ -41,7 +40,7 @@ echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
 
@@ -83,9 +82,8 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --temperature "$TEMPERATURE" \
         --device "$DEVICE" \
         --max-input-length "$MAX_INPUT_LENGTH" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
+        --num-samples "$NUM_SAMPLES" \
         --max-candidates "$MAX_CANDIDATES" \
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
         $FEW_SHOT_FLAG; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
