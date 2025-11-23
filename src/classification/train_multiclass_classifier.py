@@ -16,6 +16,7 @@ Optimized for L40S GPU.
 import argparse
 import json
 import sys
+import warnings
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -105,7 +106,19 @@ class AchievementClassifier(nn.Module):
         super().__init__()
 
         self.config = AutoConfig.from_pretrained(model_name)
-        self.encoder = AutoModel.from_pretrained(model_name)
+        # Suppress warnings about uninitialized weights (normal when loading base model)
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message="Some weights of.*were not initialized.*",
+                category=UserWarning,
+            )
+            warnings.filterwarnings(
+                "ignore",
+                message="You should probably TRAIN this model.*",
+                category=UserWarning,
+            )
+            self.encoder = AutoModel.from_pretrained(model_name)
         self.pooling = pooling
 
         hidden_dim = self.config.hidden_size
@@ -350,6 +363,7 @@ def train_classifier(
     mixed_precision: bool = True,
     gradient_accumulation_steps: int = 1,
     resume_from: str = None,
+    no_eval: bool = False,
 ):
     """
     Train multi-class classifier for achievement standard prediction.
@@ -595,64 +609,71 @@ def train_classifier(
         print(f"   Train Accuracy: {train_acc:.4f}")
 
         # Evaluation
-        print("\nEvaluating...")
-        metrics = evaluate_model(model, test_loader, device, idx_to_code)
+        metrics = None
+        if not no_eval:
+            print("\nEvaluating...")
+            metrics = evaluate_model(model, test_loader, device, idx_to_code)
 
-        print("\n" + "=" * 80)
-        print("EVALUATION RESULTS")
-        print("=" * 80)
-        print(f"\n   Main Metrics:")
-        print(f"   Accuracy:        {metrics['accuracy']:.4f}")
-        print(f"   F1 (weighted):   {metrics['f1_weighted']:.4f}")
-        print(f"   F1 (macro):      {metrics['f1_macro']:.4f}")
-        print(f"   Precision:       {metrics['precision']:.4f}")
-        print(f"   Recall:          {metrics['recall']:.4f}")
+            print("\n" + "=" * 80)
+            print("EVALUATION RESULTS")
+            print("=" * 80)
+            print(f"\n   Main Metrics:")
+            print(f"   Accuracy:        {metrics['accuracy']:.4f}")
+            print(f"   F1 (weighted):   {metrics['f1_weighted']:.4f}")
+            print(f"   F1 (macro):      {metrics['f1_macro']:.4f}")
+            print(f"   Precision:       {metrics['precision']:.4f}")
+            print(f"   Recall:          {metrics['recall']:.4f}")
 
-        print(f"\n   Top-K Accuracies:")
-        for k in [1, 3, 5, 10, 20]:
-            key = f"top_{k}_acc"
-            if key in metrics:
-                print(f"   Top-{k:2d}:  {metrics[key]:.4f}")
+            print(f"\n   Top-K Accuracies:")
+            for k in [1, 3, 5, 10, 20]:
+                key = f"top_{k}_acc"
+                if key in metrics:
+                    print(f"   Top-{k:2d}:  {metrics[key]:.4f}")
 
-        print("=" * 80)
+            print("=" * 80)
 
         # Save history
         epoch_history = {
             "epoch": epoch + 1,
             "train_loss": avg_train_loss,
             "train_accuracy": train_acc,
-            **metrics,
         }
+        if metrics:
+            epoch_history.update(metrics)
         training_history.append(epoch_history)
 
-        # Save best model
-        current_f1 = metrics["f1_weighted"]
-        current_acc = metrics["accuracy"]
+        # Save best model (only if evaluation is enabled)
+        if not no_eval and metrics:
+            current_f1 = metrics["f1_weighted"]
+            current_acc = metrics["accuracy"]
 
-        is_best = False
-        if current_f1 > best_f1 or (
-            current_f1 == best_f1 and current_acc > best_accuracy
-        ):
-            is_best = True
-            best_f1 = current_f1
-            best_accuracy = current_acc
+            is_best = False
+            if current_f1 > best_f1 or (
+                current_f1 == best_f1 and current_acc > best_accuracy
+            ):
+                is_best = True
+                best_f1 = current_f1
+                best_accuracy = current_acc
 
-        if is_best:
-            patience_counter = 0
-            best_model_path = output_dir / "best_model"
-            best_model_path.mkdir(exist_ok=True)
+            if is_best:
+                patience_counter = 0
+                best_model_path = output_dir / "best_model"
+                best_model_path.mkdir(exist_ok=True)
 
-            torch.save(model.state_dict(), best_model_path / "model.pt")
-            tokenizer.save_pretrained(best_model_path)
+                torch.save(model.state_dict(), best_model_path / "model.pt")
+                tokenizer.save_pretrained(best_model_path)
 
-            print(f"\nNEW BEST MODEL!")
-            print(f"   F1: {best_f1:.4f} | Accuracy: {best_accuracy:.4f}")
-            print(f"   Saved to: {best_model_path}")
+                print(f"\nNEW BEST MODEL!")
+                print(f"   F1: {best_f1:.4f} | Accuracy: {best_accuracy:.4f}")
+                print(f"   Saved to: {best_model_path}")
+            else:
+                patience_counter += 1
+                print(
+                    f"\nNo improvement. Patience: {patience_counter}/{early_stopping_patience}"
+                )
         else:
-            patience_counter += 1
-            print(
-                f"\nNo improvement. Patience: {patience_counter}/{early_stopping_patience}"
-            )
+            # When evaluation is disabled, reset patience counter
+            patience_counter = 0
 
         # Save checkpoint
         checkpoint_path = output_dir / f"checkpoint_epoch_{epoch + 1}"
@@ -679,8 +700,8 @@ def train_classifier(
         # Also save model.pt for backward compatibility
         torch.save(model.state_dict(), checkpoint_path / "model.pt")
 
-        # Early stopping
-        if patience_counter >= early_stopping_patience:
+        # Early stopping (only if evaluation is enabled)
+        if not no_eval and patience_counter >= early_stopping_patience:
             print(f"\n{'='*80}")
             print(f"Early stopping triggered at epoch {epoch + 1}")
             print(f"   Best F1: {best_f1:.4f}")
@@ -752,6 +773,7 @@ if __name__ == "__main__":
     parser.add_argument("--mixed_precision", action="store_true", default=True)
     parser.add_argument("--no_mixed_precision", action="store_true")
     parser.add_argument("--resume_from", type=str, default=None)
+    parser.add_argument("--no_eval", type=bool, default=False)
 
     # Loss arguments
     parser.add_argument(
@@ -796,4 +818,5 @@ if __name__ == "__main__":
         mixed_precision=args.mixed_precision,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         resume_from=args.resume_from,
+        no_eval=args.no_eval,
     )
