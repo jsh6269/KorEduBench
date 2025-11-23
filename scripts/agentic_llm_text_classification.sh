@@ -10,15 +10,18 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
-MODEL_NAME="qwen/qwen2.5-3b-instruct"
+MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
 MAX_NEW_TOKENS=10
 TEMPERATURE=0.1
 DEVICE="cuda"
-MAX_INPUT_LENGTH=1400
-MAX_CANDIDATES=15
-MAX_TOTAL_SAMPLES=100
-MAX_SAMPLES_PER_ROW=5
+MAX_INPUT_LENGTH=2000
+TOP_K=15
+MAX_TOTAL_SAMPLES=200
+MAX_SAMPLES_PER_ROW=2
 FEW_SHOT=True
+#TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
+INFER_DEVICE="cuda"
 
 # Color output
 GREEN='\033[0;32m'
@@ -27,11 +30,24 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== LLM Text Classification Evaluation ===${NC}"
+echo -e "${GREEN}=== Agentic LLM Text Classification Evaluation ===${NC}"
 
 # Check if folder exists
 if [ ! -d "$DATASET_FOLDER" ]; then
     echo -e "${RED}Error: Dataset folder not found: $DATASET_FOLDER${NC}"
+    exit 1
+fi
+
+# Check if train CSV exists
+#if [ ! -f "$TRAIN_CSV" ]; then
+#    echo -e "${RED}Error: Train CSV file not found: $TRAIN_CSV${NC}"
+#    exit 1
+#fi
+
+# Check if model directory exists
+if [ ! -d "$MODEL_DIR" ]; then
+    echo -e "${RED}Error: Tool model directory not found: $MODEL_DIR${NC}"
+    echo -e "${YELLOW}Please make sure the achievement_classifier best model exists.${NC}"
     exit 1
 fi
 
@@ -42,7 +58,10 @@ echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
 echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
-echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
+echo -e "Top-k: ${YELLOW}${TOP_K}${NC}"
+echo -e "Train CSV: ${YELLOW}${TRAIN_CSV}${NC}"
+echo -e "Tool model dir: ${YELLOW}${MODEL_DIR}${NC}"
+echo -e "Infer device: ${YELLOW}${INFER_DEVICE}${NC}"
 echo ""
 
 # Get list of CSV files (정렬된 순서로)
@@ -66,6 +85,13 @@ FAILED=0
 
 for CSV_FILE in "${CSV_FILES[@]}"; do
     BASENAME=$(basename "$CSV_FILE")
+    SUBJECT="${BASENAME%.csv}"
+    SUBJECT_TRAIN_CSV="${PROJECT_ROOT}/dataset/train_80/${SUBJECT}.csv"
+    if [ ! -f "$SUBJECT_TRAIN_CSV" ]; then
+        echo -e "${RED}Error: Train CSV not found for ${SUBJECT}: ${SUBJECT_TRAIN_CSV}${NC}"
+        ((FAILED++))
+        continue
+    fi
     echo -e "${BLUE}╔═══════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║  Processing: ${BASENAME}${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
@@ -76,7 +102,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     else
         FEW_SHOT_FLAG=""
     fi
-    if python "${PROJECT_ROOT}/src/llm_text_classification/eval_llm.py" \
+    if python "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
@@ -84,8 +110,11 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --device "$DEVICE" \
         --max-input-length "$MAX_INPUT_LENGTH" \
         --max-total-samples "$MAX_TOTAL_SAMPLES" \
-        --max-candidates "$MAX_CANDIDATES" \
+        --top-k "$TOP_K" \
         --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
+        --train-csv "$SUBJECT_TRAIN_CSV" \
+        --model-dir "$MODEL_DIR" \
+        --infer-device "$INFER_DEVICE" \
         $FEW_SHOT_FLAG; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
@@ -98,7 +127,7 @@ done
 
 # Summary
 echo -e "${GREEN}╔═══════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║  LLM Classification Evaluation Complete!${NC}"
+echo -e "${GREEN}║  Agentic LLM Classification Evaluation Complete!${NC}"
 echo -e "${GREEN}╚═══════════════════════════════════════════════════════╝${NC}"
 echo -e "Processed: ${GREEN}${PROCESSED}${NC} / Total: ${BLUE}${#CSV_FILES[@]}${NC}"
 if [ $FAILED -gt 0 ]; then

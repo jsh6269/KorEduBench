@@ -9,6 +9,7 @@ import json
 import os
 import random
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import torch
@@ -24,7 +25,6 @@ from src.utils.model import generate_prediction
 from src.utils.prompt import (
     LLMClassificationResponse,
     create_chat_classification_prompt,
-    create_classification_prompt,
     parse_llm_response,
 )
 from src.utils.random_seed import set_predict_random_seed
@@ -43,6 +43,7 @@ def evaluate_finetuned_llm(
     device: str = "cuda",
     max_input_length: int = 6144,
     max_candidates: int = 200,
+    few_shot: bool = True,
 ):
     """
     Evaluate fine-tuned LLM classification on educational content.
@@ -61,32 +62,44 @@ def evaluate_finetuned_llm(
         max_candidates: Maximum number of candidate achievement standards to use (default: 200)
     """
     if json_path is None:
+        # Generate filename with date and model_name
+        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        # Use base_model from training_info, or model_path basename as fallback
+        model_name = training_info.get("model_name", os.path.basename(model_path))
+        # Sanitize model_name for filename (replace / and other invalid chars with _)
+        safe_model_name = (
+            model_name.replace("/", "_").replace("\\", "_").replace(":", "_")
+        )
         json_path = (
             PROJECT_ROOT
             / "output"
             / "llm_text_classification"
-            / "finetuned_results.json"
+            / f"finetuned_results_{safe_model_name}_{current_date}.json"
         )
     json_path = str(json_path)
 
     # === Load and preprocess data ===
     print("Loading evaluation data...")
     data = load_evaluation_data(
-        input_csv, encoding, max_samples_per_row, max_total_samples, max_candidates
+        input_csv=input_csv,
+        encoding=encoding,
+        max_samples_per_row=max_samples_per_row,
+        max_total_samples=max_total_samples,
+        max_candidates=max_candidates,
     )
 
     # Extract data for convenience
     contents = data.contents
     codes = data.codes
     sample_texts = data.sample_texts
-    true_codes = data.true_codes
+    samples_true_codes = data.samples_true_codes
+    samples_candidates = data.samples_candidates
     subject = data.subject
     num_rows = data.num_rows
     num_candidates = data.num_candidates
     num_samples = data.num_samples
     max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
-    candidates = [(i + 1, codes[i], contents[i]) for i in range(num_candidates)]
 
     # === Load Fine-tuned Model ===
     model, tokenizer = load_finetuned_model(model_path, device, max_input_length)
@@ -106,7 +119,12 @@ def evaluate_finetuned_llm(
     # === Check prompt length ===
     # Create a sample prompt to check length
     chat_messages = create_chat_classification_prompt(
-        sample_texts[0], candidates, completion="", for_inference=True
+        sample_texts[0],
+        samples_candidates[0],
+        completion="",
+        for_inference=True,
+        few_shot=few_shot,
+        subject=subject,
     )
     sample_prompt = tokenizer.apply_chat_template(
         chat_messages["messages"], tokenize=False, add_generation_prompt=True
@@ -115,7 +133,7 @@ def evaluate_finetuned_llm(
     prompt_length = sample_tokens["input_ids"].shape[1]
 
     print(f"\nPrompt statistics:")
-    print(f"  Number of candidates: {len(candidates)}")
+    print(f"  Number of candidates: {len(samples_candidates[0])}")
     print(f"  Sample prompt token length: {prompt_length}")
     print(f"  Max input length: {max_input_length}")
 
@@ -141,11 +159,17 @@ def evaluate_finetuned_llm(
 
     for i in tqdm(range(num_samples), desc="Classifying"):
         text = sample_texts[i]
-        true_code = true_codes[i]
+        true_code = samples_true_codes[i]
+        candidates = samples_candidates[i]
 
         # Create chat prompt for inference
         chat_messages = create_chat_classification_prompt(
-            text, candidates, completion="", for_inference=True
+            text,
+            candidates,
+            completion="",
+            for_inference=True,
+            few_shot=few_shot,
+            subject=subject,
         )
         prompt = tokenizer.apply_chat_template(
             chat_messages["messages"], tokenize=False, add_generation_prompt=True
@@ -208,14 +232,10 @@ def evaluate_finetuned_llm(
     print("\nCalculating metrics...")
 
     # LLM only produces top-1 predictions
-    correct = sum(1 for pred, true in zip(predictions, true_codes) if pred == true)
+    correct = sum(
+        1 for pred, true in zip(predictions, samples_true_codes) if pred == true
+    )
     accuracy = correct / num_samples
-
-    # Calculate MRR (for single predictions, MRR = accuracy)
-    reciprocal_ranks = [
-        1.0 if pred == true else 0.0 for pred, true in zip(predictions, true_codes)
-    ]
-    mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
 
     # === Summary ===
     print("\n=== Fine-tuned LLM Evaluation ===")
@@ -235,7 +255,6 @@ def evaluate_finetuned_llm(
         f"\nExact matches: {exact_match_count}/{num_samples} ({exact_match_count/num_samples*100:.1f}%)"
     )
     print(f"Accuracy: {accuracy:.4f} ({correct}/{num_samples})")
-    print(f"MRR: {mrr:.4f}")
 
     # === JSON Logging ===
     result_entry = {}
@@ -254,13 +273,6 @@ def evaluate_finetuned_llm(
             "total_samples": num_samples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
-            "mrr": round(float(mrr), 4),
-            "exact_match_count": exact_match_count,
-            "exact_match_percentage": (
-                round(exact_match_count / num_samples * 100, 2)
-                if num_samples > 0
-                else 0
-            ),
             "match_type_distribution": {
                 k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
             },
@@ -268,9 +280,6 @@ def evaluate_finetuned_llm(
             "temperature": temperature,
             "max_input_length": max_input_length,
             "truncated_count": truncated_count,
-            "truncated_percentage": (
-                round(truncated_count / num_samples * 100, 2) if num_samples > 0 else 0
-            ),
             "training_info": training_info,
         }
     )
@@ -358,7 +367,7 @@ def evaluate_finetuned_llm(
             f"Saved {len(sampled_corrects)} randomly selected correct samples to {correct_path}"
         )
 
-    return accuracy, mrr
+    return accuracy
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 # LLM Fine-tuning Script
 # This script fine-tunes an LLM on a training dataset and saves the model
 
-set -e  # Exit on error
+# set -e  # Exit on error
 
 # Get project root directory
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

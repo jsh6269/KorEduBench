@@ -34,34 +34,27 @@ Examples:
 import json
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 
 # ============================================================================
 # Prompt Templates - Separated into 4 sections for easy modification
 # ============================================================================
 
 # Default Template (outputs content text)
-# Section 1: System Prompt
-SYSTEM_PROMPT_CODE = """You are an educational curriculum expert. Your task is to match textbook content with achievement standards.
+# Section 1: System Prompt - Establishes the role and context
+SYSTEM_PROMPT = """You are an educational curriculum expert. Your task is to match textbook text with the most appropriate achievement standards.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
-Achievement standards are specific learning objectives that define what students should know and be able to do at a particular grade level. Each standard describes:
+Achievement standards are specific learning objectives that each standard describes:
 - The specific knowledge or skills students need to acquire
 - The level of understanding or performance expected
 - The context or situation where learning should be applied
 
 HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
-1. Read the textbook text carefully and identify its primary educational purpose
-2. Ask yourself: "What is this content trying to teach students?"
-3. Look for key indicators:
-   - What subject knowledge is being presented?
-   - What skills or abilities are students expected to develop?
-   - What cognitive processes are involved (understanding, applying, analyzing)?
-4. Select the standard that most directly aligns with the main learning goal
+1. Read the textbook text carefully and determine the subject area
+2. Identify the primary educational purpose of the text
+3. Select the standard that most directly aligns with the main learning goal"""
 
-IMPORTANT PRINCIPLES:
-- Focus on the PRIMARY learning objective, not secondary or supporting content
-- Consider what students should be able to DO after studying this content
-- Match based on educational intent, not just topic similarity"""
 # Section 2: User Prompt Introduction (optional, can be empty)
 USER_PROMPT_INTRO = ""
 
@@ -69,28 +62,28 @@ USER_PROMPT_INTRO = ""
 # Achievement standards are moved to Section 1 (System Prompt)
 
 # Section 4: Output Format Instructions
-OUTPUT_FORMAT_INSTRUCTION_CODE = """# Task
+OUTPUT_FORMAT_INSTRUCTION = """# Task
 Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
-# Output Format
-Output ONLY the achievement standard code. No explanations, no additional text.
+# Instructions
+Select ONLY ONE achievement standard that best describes the textbook text above.
+
+IMPORTANT: Output ONLY the achievement standard code. Do NOT add any explanations, reasoning, or additional text.
 
 Correct format:
 10영03-04
 
-Wrong formats:
-❌ "10영03-04 because..."
-❌ Code: 10영03-04
-
 # Answer"""
 
-OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE = """# Task
+OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT = """# Task
 Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was matched to its corresponding achievement standard.
 
 Apply the same analysis process to classify the "Textbook Text" provided above.
 
-# Output Format
-Output ONLY the achievement standard code. No explanations, no additional text.
+# Instructions
+Select ONLY ONE achievement standard that best describes the textbook text above.
+
+IMPORTANT: Output ONLY the achievement standard code. Do NOT add any explanations, reasoning, or additional text.
 
 Correct format:
 10영03-04
@@ -135,92 +128,33 @@ class LLMClassificationResponse:
 
 
 def load_few_shot_examples(
-    subject: str, num_examples: int = 3, file_name: str = "few_shot_examples.json"
+    subject: str,
+    num_examples: int = 5,
+    file_path: str | Path | None = None,
 ) -> str:
     """
     Load few-shot examples from a JSON file.
     """
-    with open(file_name, "r") as f:
-        data = json.load(f)
-    examples = data[subject][:num_examples]
-    examples_str = "\n".join(
-        [f"{idx}. {example['text']}" for idx, example in enumerate(examples)]
-    )
-    return examples_str
-
-
-def create_classification_prompt(
-    text: str,
-    candidates: list[tuple[int, str, str]],
-    system_prompt: str = None,
-    user_intro: str = None,
-    output_instruction: str = None,
-    few_shot: bool = False,
-    file_name: str = "few_shot_examples.json",
-    subject: str = None,
-    num_examples: int = 3,
-) -> str:
-    """
-    Create a classification prompt for educational content matching.
-
-    The prompt is composed of 4 sections:
-    1. System prompt: Establishes the role + provides achievement standards as knowledge
-    2. User prompt intro: Optional introduction (can be empty)
-    3. Content section: Textbook text only
-    4. Output format: Instructions on how to format the answer
-
-    If few_shot is True, the prompt will include a few-shot example.
-
-    Args:
-        text: The textbook excerpt to classify
-        candidates: List of tuples (index, code, content) representing achievement standards
-        system_prompt: Custom system prompt (uses SYSTEM_PROMPT if None)
-        user_intro: Custom user intro (uses USER_PROMPT_INTRO if None)
-        output_instruction: Custom output instruction (uses OUTPUT_FORMAT_INSTRUCTION if None)
-
-    Returns:
-        Formatted prompt string for LLM
-    """
-
-    # Use defaults if not specified
-    if few_shot:
-        if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
-        if user_intro is None:
-            user_intro = USER_PROMPT_INTRO
-        if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT_CODE
-    else:
-        if system_prompt is None:
-            system_prompt = SYSTEM_PROMPT_CODE
-        if user_intro is None:
-            user_intro = USER_PROMPT_INTRO
-        if output_instruction is None:
-            output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
-
-    # Format candidates for system prompt (without code)
-    candidate_text = "\n".join(
-        [f"{code}: {content}" for idx, code, content in candidates]
-    )  # code 대신 index 사용으로 수정
-
-    # Section 1: System prompt with achievement standards
-    system_section = (
-        f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
-    )
-    if few_shot:
-        few_shot_examples = load_few_shot_examples(subject, num_examples, file_name)
-        system_section = (
-            system_section + "\n" + "# Few-Shot Examples\n" + few_shot_examples
+    if file_path is None:
+        PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+        few_shot_file = (
+            PROJECT_ROOT / "dataset" / "few_shot_examples" / f"{subject}.json"
         )
+    else:
+        few_shot_file = Path(file_path / f"{subject}.json")
 
-    # Section 3: Content section (textbook text only)
-    content_section = "# Textbook Text\n" f"{text}"
-
-    # Combine all sections
-    prompt_parts = [system_section, user_intro, content_section, output_instruction]
-
-    # Filter out empty parts and join with double newlines
-    return "\n\n".join(part for part in prompt_parts if part.strip())
+    with open(few_shot_file, "r") as f:
+        data = json.load(f)
+    examples = data[:num_examples]
+    examples_list = []
+    for idx, example in enumerate(examples, 1):
+        examples_list.append(
+            f"Example {idx}:\n"
+            f"Text: {example['text']}\n"
+            f"Achievement Standard: {example['content']}\n"
+            f"Answer code: {example['code']}"
+        )
+    return "\n\n".join(examples_list)
 
 
 def create_chat_classification_prompt(
@@ -230,6 +164,10 @@ def create_chat_classification_prompt(
     system_prompt: str = None,
     output_instruction: str = None,
     for_inference: bool = False,
+    few_shot: bool = False,
+    subject: str = None,
+    num_examples: int = 5,
+    few_shot_file: str | Path | None = None,
 ) -> dict:
     """
     Create a chat-based classification prompt for training or inference with message roles.
@@ -256,10 +194,16 @@ def create_chat_classification_prompt(
         >>> result = create_chat_classification_prompt(text, candidates, "", for_inference=True)
     """
     # Use defaults if not specified
-    if system_prompt is None:
-        system_prompt = SYSTEM_PROMPT_CODE
-    if output_instruction is None:
-        output_instruction = OUTPUT_FORMAT_INSTRUCTION_CODE
+    if few_shot:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION_FEW_SHOT
+    else:
+        if system_prompt is None:
+            system_prompt = SYSTEM_PROMPT
+        if output_instruction is None:
+            output_instruction = OUTPUT_FORMAT_INSTRUCTION
 
     # Format candidates for system prompt
     candidate_text = "\n".join(
@@ -270,6 +214,17 @@ def create_chat_classification_prompt(
     system_content = (
         f"{system_prompt}\n" "\n" "# Achievement Standards List\n" f"{candidate_text}"
     )
+
+    # Add few-shot examples if requested
+    if few_shot:
+        few_shot_examples = load_few_shot_examples(
+            subject=subject,
+            num_examples=num_examples,
+            file_path=few_shot_file,
+        )
+        system_content = (
+            f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
+        )
 
     # User message: Textbook text + Output instructions
     user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
@@ -309,7 +264,7 @@ def parse_llm_response(
     # Extract codes from candidates
     codes = [code for _, code, _ in candidates]
 
-    # Try to find exact code match
+    # Strategy 1: Exact code match
     if response_clean in codes:
         return LLMClassificationResponse(
             predicted_code=response_clean,
@@ -318,7 +273,7 @@ def parse_llm_response(
             raw_response=response,
         )
 
-    # Try to find partial code match (code in response or response in code)
+    # Strategy 2: Partial code match (code in response or response in code)
     for code in codes:
         if code in response_clean or response_clean in code:
             return LLMClassificationResponse(
@@ -328,7 +283,7 @@ def parse_llm_response(
                 raw_response=response,
             )
 
-    # No valid match found
+    # Strategy 3: No valid match found
     return LLMClassificationResponse(
         predicted_code="INVALID",
         match_type=MatchType.INVALID,
