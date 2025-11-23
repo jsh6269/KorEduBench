@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Check prompt length for agentic LLM classification to ensure it doesn't exceed model limits.
+Check prompt length for RAG LLM classification to ensure it doesn't exceed model limits.
 Checks both Step 1 (query generation) and Step 2 (final selection) prompts.
 """
 
@@ -15,8 +15,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from transformers import AutoTokenizer
 
-from src.utils.agentic_prompt import create_rag_chat_prompt
 from src.utils.data_loader import load_evaluation_data
+from src.utils.rag_prompt import create_rag_chat_prompt
 
 
 def check_prompt_length(
@@ -38,7 +38,7 @@ def check_prompt_length(
         encoding=None,
         max_samples_per_row=max_samples_per_row,
         max_total_samples=max_total_samples,
-        max_candidates=None,  # Not used in agentic workflow
+        max_candidates=None,  # Not used in RAG workflow
     )
 
     # Extract data for convenience
@@ -50,22 +50,20 @@ def check_prompt_length(
     num_candidates = len(codes)
     num_samples = data.num_samples
 
-    # For Step 2, we use top_k candidates (simulating infer_top_k result)
-    step2_candidates = [
-        (i + 1, codes[i], contents[i]) for i in range(min(top_k, len(codes)))
-    ]
+    # Use top_k candidates (simulating infer_top_k result)
+    candidates = [(i + 1, codes[i], contents[i]) for i in range(min(top_k, len(codes)))]
 
     print("Prompt statistics:")
     print(f"  Subject: {subject}")
     print(f"  CSV: {Path(input_csv).name}")
     print(f"  Total candidates available: {num_candidates}")
-    print(f"  Top-k candidates for Step 2: {top_k}")
+    print(f"  Top-k candidates: {top_k}")
     print(f"  Max samples per row: {max_samples_per_row}")
 
-    # Step 2: Final selection
-    step2_messages = create_rag_chat_prompt(
+    # Create RAG prompt
+    messages = create_rag_chat_prompt(
         text=sample_texts[0],
-        candidates=step2_candidates,
+        candidates=candidates,
         completion="",
         for_inference=True,
         few_shot=few_shot,
@@ -73,58 +71,55 @@ def check_prompt_length(
     )
 
     if hasattr(tokenizer, "apply_chat_template"):
-        sample_step2_prompt = tokenizer.apply_chat_template(
-            step2_messages["messages"], tokenize=False, add_generation_prompt=True
+        sample_prompt = tokenizer.apply_chat_template(
+            messages["messages"], tokenize=False, add_generation_prompt=True
         )
     else:
         # Fallback: simple concatenation if no chat template available
-        sample_step2_prompt = "\n".join(
-            [m.get("content", "") for m in step2_messages.get("messages", [])]
+        sample_prompt = "\n".join(
+            [m.get("content", "") for m in messages.get("messages", [])]
         )
 
-    sample_step2_tokens = tokenizer(sample_step2_prompt, return_tensors="pt")
-    sample_step2_length = int(sample_step2_tokens["input_ids"].shape[1])
+    sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
+    sample_length = int(sample_tokens["input_ids"].shape[1])
 
-    print(f"  Step 2 sample prompt token length: {sample_step2_length}")
+    print(f"  Sample prompt token length: {sample_length}")
     print(f"  Total samples: {num_samples}")
 
     if print_sample_prompt:
-        print("\n=== Sample Step 2 Prompt ===")
+        print("\n=== Sample Prompt ===")
         print("-" * 100)
-        print(sample_step2_prompt)
+        print(sample_prompt)
         print("-" * 100)
         print("\n")
 
     # Compute total and average token counts across all samples
-    total_step2_tokens = 0
+    total_tokens = 0
     for text in sample_texts:
-        # Step 2
-        step2_messages = create_rag_chat_prompt(
+        messages = create_rag_chat_prompt(
             text=text,
-            candidates=step2_candidates,
+            candidates=candidates,
             completion="",
             for_inference=True,
             few_shot=few_shot,
             subject=subject,
         )
         if hasattr(tokenizer, "apply_chat_template"):
-            step2_prompt = tokenizer.apply_chat_template(
-                step2_messages["messages"], tokenize=False, add_generation_prompt=True
+            prompt = tokenizer.apply_chat_template(
+                messages["messages"], tokenize=False, add_generation_prompt=True
             )
         else:
-            step2_prompt = "\n".join(
-                [m.get("content", "") for m in step2_messages.get("messages", [])]
+            prompt = "\n".join(
+                [m.get("content", "") for m in messages.get("messages", [])]
             )
-        step2_tokenized = tokenizer(step2_prompt, return_tensors="pt")
-        total_step2_tokens += int(step2_tokenized["input_ids"].shape[1])
+        tokenized = tokenizer(prompt, return_tensors="pt")
+        total_tokens += int(tokenized["input_ids"].shape[1])
 
     if num_samples > 0:
-        avg_step2_tokens = total_step2_tokens / num_samples
-        print(
-            f"  Average Step 2 prompt token length (all samples): {avg_step2_tokens:.1f}"
-        )
+        avg_tokens = total_tokens / num_samples
+        print(f"  Average prompt token length (all samples): {avg_tokens:.1f}")
     else:
-        avg_step2_tokens = 0.0
+        avg_tokens = 0.0
         print("  No samples available.")
 
     return {
@@ -134,9 +129,9 @@ def check_prompt_length(
         "num_candidates": int(num_candidates),
         "num_samples": int(num_samples),
         "top_k": int(top_k),
-        "sample_step2_prompt_tokens": int(sample_step2_length),
-        "total_step2_prompt_tokens": int(total_step2_tokens),
-        "avg_step2_prompt_tokens": float(avg_step2_tokens),
+        "sample_prompt_tokens": int(sample_length),
+        "total_prompt_tokens": int(total_tokens),
+        "avg_prompt_tokens": float(avg_tokens),
     }
 
 
@@ -144,7 +139,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Check prompt length for agentic LLM classification across all CSVs in a folder"
+        description="Check prompt length for RAG LLM classification across all CSVs in a folder"
     )
     parser.add_argument(
         "--input_dir",
@@ -162,7 +157,7 @@ if __name__ == "__main__":
         "--output_path",
         type=str,
         default=None,
-        help="Path to output file (default: {PROJECT_ROOT}/output/check_agentic_prompt_length/results.csv).",
+        help="Path to output file (default: {PROJECT_ROOT}/output/check_rag_prompt_length/results.csv).",
     )
     parser.add_argument(
         "--max-samples-per-row",
@@ -208,7 +203,7 @@ if __name__ == "__main__":
     # Set default output path if not provided
     if args.output_path is None:
         output_path = (
-            PROJECT_ROOT / "output" / "check_agentic_prompt_length" / "results.csv"
+            PROJECT_ROOT / "output" / "check_rag_prompt_length" / "results.csv"
         )
     else:
         output_path = Path(args.output_path)
@@ -240,7 +235,6 @@ if __name__ == "__main__":
         lambda: {
             "num_files": 0,
             "total_samples": 0,
-            "total_step2_tokens": 0,
             "total_tokens": 0,
         }
     )
@@ -248,41 +242,31 @@ if __name__ == "__main__":
         s = r["subject"]
         by_subject[s]["num_files"] += 1
         by_subject[s]["total_samples"] += r["num_samples"]
-        by_subject[s]["total_step2_tokens"] += r["total_step2_prompt_tokens"]
         by_subject[s]["total_tokens"] += r["total_prompt_tokens"]
 
     print("\n=== Per-subject summary ===")
     overall_samples = 0
-    overall_step2_tokens = 0
     overall_tokens = 0
     for subject in sorted(by_subject.keys()):
         info = by_subject[subject]
-        avg_step2 = (
-            (info["total_step2_tokens"] / info["total_samples"])
-            if info["total_samples"] > 0
-            else 0.0
-        )
         avg_total = (
             (info["total_tokens"] / info["total_samples"])
             if info["total_samples"] > 0
             else 0.0
         )
         overall_samples += info["total_samples"]
-        overall_step2_tokens += info["total_step2_tokens"]
         overall_tokens += info["total_tokens"]
         print(
             f"- {subject}: files={info['num_files']}, samples={info['total_samples']}, "
-            f"avg_step2={avg_step2:.1f}, avg_total={avg_total:.1f}, "
+            f"avg={avg_total:.1f}, "
             f"total_tokens={info['total_tokens']}"
         )
 
     if overall_samples > 0:
-        overall_avg_step2 = overall_step2_tokens / overall_samples
         overall_avg = overall_tokens / overall_samples
         print(
             f"\nOverall: samples={overall_samples}, "
-            f"avg_step2={overall_avg_step2:.1f}, "
-            f"avg_total={overall_avg:.1f}, total_tokens={overall_tokens}"
+            f"avg={overall_avg:.1f}, total_tokens={overall_tokens}"
         )
     else:
         print("\nOverall: No samples found.")
@@ -296,10 +280,8 @@ if __name__ == "__main__":
             "num_candidates",
             "num_samples",
             "top_k",
-            "sample_step2_prompt_tokens",
-            "total_step2_prompt_tokens",
+            "sample_prompt_tokens",
             "total_prompt_tokens",
-            "avg_step2_prompt_tokens",
             "avg_prompt_tokens",
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -311,7 +293,6 @@ if __name__ == "__main__":
 
         # Add total row
         if overall_samples > 0:
-            overall_avg_step2 = overall_step2_tokens / overall_samples
             overall_avg = overall_tokens / overall_samples
             total_row = {
                 "subject": "TOTAL",
@@ -319,10 +300,8 @@ if __name__ == "__main__":
                 "num_candidates": "",  # Not meaningful to sum
                 "num_samples": overall_samples,
                 "top_k": "",  # Not meaningful to sum
-                "sample_step2_prompt_tokens": "",  # Not meaningful to sum
-                "total_step2_prompt_tokens": overall_step2_tokens,
+                "sample_prompt_tokens": "",  # Not meaningful to sum
                 "total_prompt_tokens": overall_tokens,
-                "avg_step2_prompt_tokens": round(overall_avg_step2, 1),
                 "avg_prompt_tokens": round(overall_avg, 1),
             }
             writer.writerow(total_row)

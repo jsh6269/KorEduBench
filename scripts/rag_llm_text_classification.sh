@@ -28,7 +28,6 @@ MAX_INPUT_LENGTH=4000
 TOP_K=20
 NUM_SAMPLES=200
 FEW_SHOT=True
-#TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
 INFER_DEVICE="cuda"
 
@@ -39,19 +38,13 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== Agentic LLM Text Classification Evaluation ===${NC}"
+echo -e "${GREEN}=== RAG LLM Text Classification Evaluation ===${NC}"
 
 # Check if folder exists
 if [ ! -d "$DATASET_FOLDER" ]; then
     echo -e "${RED}Error: Dataset folder not found: $DATASET_FOLDER${NC}"
     exit 1
 fi
-
-# Check if train CSV exists
-#if [ ! -f "$TRAIN_CSV" ]; then
-#    echo -e "${RED}Error: Train CSV file not found: $TRAIN_CSV${NC}"
-#    exit 1
-#fi
 
 # Check if model directory exists
 if [ ! -d "$MODEL_DIR" ]; then
@@ -111,7 +104,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     else
         FEW_SHOT_FLAG=""
     fi
-    if $PYTHON_CMD "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
+    if $PYTHON_CMD "${PROJECT_ROOT}/src/rag_llm_text_classification/rag_eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
@@ -135,7 +128,7 @@ done
 
 # Summary
 echo -e "${GREEN}╔═══════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║  Agentic LLM Classification Evaluation Complete!${NC}"
+echo -e "${GREEN}║  RAG LLM Classification Evaluation Complete!${NC}"
 echo -e "${GREEN}╚═══════════════════════════════════════════════════════╝${NC}"
 echo -e "Processed: ${GREEN}${PROCESSED}${NC} / Total: ${BLUE}${#CSV_FILES[@]}${NC}"
 if [ $FAILED -gt 0 ]; then
