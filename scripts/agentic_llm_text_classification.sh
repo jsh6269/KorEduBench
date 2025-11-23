@@ -28,7 +28,6 @@ MAX_INPUT_LENGTH=4000
 TOP_K=20
 NUM_SAMPLES=200
 FEW_SHOT=True
-#TRAIN_CSV="${PROJECT_ROOT}/dataset/train.csv"
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
 INFER_DEVICE="cuda"
 
@@ -46,12 +45,6 @@ if [ ! -d "$DATASET_FOLDER" ]; then
     echo -e "${RED}Error: Dataset folder not found: $DATASET_FOLDER${NC}"
     exit 1
 fi
-
-# Check if train CSV exists
-#if [ ! -f "$TRAIN_CSV" ]; then
-#    echo -e "${RED}Error: Train CSV file not found: $TRAIN_CSV${NC}"
-#    exit 1
-#fi
 
 # Check if model directory exists
 if [ ! -d "$MODEL_DIR" ]; then
