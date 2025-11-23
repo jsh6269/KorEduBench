@@ -11,12 +11,11 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
 TOP_K=15
-MAX_TOTAL_SAMPLES=200
-MAX_SAMPLES_PER_ROW=5
+NUM_SAMPLES=200
 FEW_SHOT=True
 PRINT_SAMPLE_PROMPT=True
 
-OUTPUT_PATH="${PROJECT_ROOT}/output/check_rag_prompt_length/results_${TOP_K}_${MAX_TOTAL_SAMPLES}_${FEW_SHOT}.csv"
+OUTPUT_PATH="${PROJECT_ROOT}/output/check_rag_prompt_length/results_${TOP_K}_${NUM_SAMPLES}_${FEW_SHOT}.csv"
 
 # Color output
 GREEN='\033[0;32m'
@@ -36,8 +35,7 @@ fi
 echo -e "Dataset folder: ${YELLOW}${DATASET_FOLDER}${NC}"
 echo -e "Model (tokenizer): ${YELLOW}${MODEL_NAME}${NC}"
 echo -e "Top-k candidates: ${YELLOW}${TOP_K}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
-echo -e "Max samples per row: ${YELLOW}${MAX_SAMPLES_PER_ROW}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Output path: ${YELLOW}${OUTPUT_PATH}${NC}"
 echo ""
 
@@ -50,8 +48,7 @@ if python "${PROJECT_ROOT}/src/test/check_rag_prompt_length.py" \
     --input_dir "$DATASET_FOLDER" \
     --model_name "$MODEL_NAME" \
     --top-k "$TOP_K" \
-    --max-total-samples "$MAX_TOTAL_SAMPLES" \
-    --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
+    --num-samples "$NUM_SAMPLES" \
     --output_path "$OUTPUT_PATH" \
     --print-sample-prompt "$PRINT_SAMPLE_PROMPT" \
     --few-shot "$FEW_SHOT"; then

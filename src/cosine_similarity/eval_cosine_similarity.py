@@ -22,14 +22,14 @@ def evaluate_cosine_similarity_baseline(
     model_name: str,
     encoding: str | None,
     json_path: str = None,
-    max_samples_per_row: int = None,
+    num_samples: int = None,
 ):
     if json_path is None:
         json_path = PROJECT_ROOT / "output" / "cosine_similarity" / "results.json"
     json_path = str(json_path)
 
     # Load and preprocess data
-    data = load_evaluation_data(input_csv, encoding, max_samples_per_row)
+    data = load_evaluation_data(input_csv, encoding, num_samples)
 
     # Extract data for convenience
     contents = data.contents
@@ -39,7 +39,6 @@ def evaluate_cosine_similarity_baseline(
     subject = data.subject
     num_rows = data.num_rows
     num_samples = data.num_samples
-    max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
     # Validate that we have samples to evaluate
@@ -117,7 +116,6 @@ def evaluate_cosine_similarity_baseline(
         print(f"Top-{k} Accuracy: {acc_dict[f'top{k}_acc']:.4f}")
 
     print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
-    print(f"Max Samples per Row: {max_samples_per_row}")
 
     result_entry = {}
 
@@ -131,7 +129,6 @@ def evaluate_cosine_similarity_baseline(
             "model_name": model_name,
             "subject": subject,
             "num_standards": num_rows,
-            "max_samples_per_row": int(max_samples_per_row),
             "total_samples": num_samples,
             **{k: round(float(v), 4) for k, v in acc_dict.items()},
             "mrr": round(float(mrr), 4),
@@ -157,7 +154,6 @@ def evaluate_cosine_similarity_baseline(
             and r["subject"] == result_entry["subject"]
             and r["num_standards"] == result_entry["num_standards"]
             and r["total_samples"] == result_entry["total_samples"]
-            and r.get("max_samples_per_row") == result_entry["max_samples_per_row"]
         ):
             results[i] = result_entry  # 덮어쓰기
             replaced = True
@@ -197,10 +193,10 @@ if __name__ == "__main__":
         help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Maximum number of text samples to evaluate per row (default: auto-detect).",
+        help="Target number of samples to generate (default: None, use all available samples).",
     )
     args = parser.parse_args()
 
@@ -210,5 +206,5 @@ if __name__ == "__main__":
         args.model_name,
         encoding=args.encoding,
         json_path=args.json_path,
-        max_samples_per_row=args.max_samples_per_row,
+        num_samples=args.num_samples,
     )

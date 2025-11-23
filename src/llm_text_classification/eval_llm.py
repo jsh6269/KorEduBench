@@ -39,8 +39,7 @@ def evaluate_llm_classification(
     few_shot: bool = False,
     encoding: str = None,
     json_path: str = None,
-    max_samples_per_row: int = None,
-    max_total_samples: int = None,
+    num_samples: int = None,
     max_new_tokens: int = 10,
     temperature: float = 0.1,
     max_input_length: int = 8192,
@@ -58,8 +57,7 @@ def evaluate_llm_classification(
         few_shot: Use few-shot examples (not yet implemented)
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
-        max_samples_per_row: Maximum samples per row
-        max_total_samples: Maximum total samples (randomly sampled if specified)
+        num_samples: Target number of samples to generate (default: None, use all available samples)
         max_new_tokens: Maximum tokens to generate (passed to generate_fn)
         temperature: Sampling temperature (passed to generate_fn)
         max_input_length: Maximum input length (will truncate if exceeded, for local models)
@@ -86,8 +84,7 @@ def evaluate_llm_classification(
     data = load_evaluation_data(
         input_csv=input_csv,
         encoding=encoding,
-        max_samples_per_row=max_samples_per_row,
-        max_total_samples=max_total_samples,
+        num_samples=num_samples,
         max_candidates=max_candidates,
     )
 
@@ -101,7 +98,6 @@ def evaluate_llm_classification(
     num_rows = data.num_rows
     num_candidates = data.num_candidates
     num_samples = data.num_samples
-    max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
     # === Check prompt length ===
@@ -261,7 +257,6 @@ def evaluate_llm_classification(
             "num_standards": num_rows,
             "num_candidates": num_candidates,
             "max_candidates": max_candidates,
-            "max_samples_per_row": int(max_samples_per_row),
             "total_samples": num_samples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
@@ -413,16 +408,10 @@ if __name__ == "__main__":
         help="Path to JSON log file (default: {PROJECT_ROOT}/output/llm_text_classification/results.json).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Max number of text samples to evaluate per row (default: auto-detect).",
-    )
-    parser.add_argument(
-        "--max-total-samples",
-        type=int,
-        default=None,
-        help="Max total number of samples, randomly sampled from all available (default: no limit).",
+        help="Target number of samples to generate (default: None, use all available samples).",
     )
     parser.add_argument(
         "--max-new-tokens",
@@ -525,8 +514,7 @@ if __name__ == "__main__":
         few_shot=args.few_shot,
         encoding=args.encoding,
         json_path=args.json_path,
-        max_samples_per_row=args.max_samples_per_row,
-        max_total_samples=args.max_total_samples,
+        num_samples=args.num_samples,
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
         max_input_length=args.max_input_length,

@@ -43,7 +43,6 @@ def load_evaluation_data(
     input_csv: str,
     encoding: Optional[str] = None,
     num_samples: Optional[int] = None,
-    max_total_samples: Optional[int] = None,
     max_candidates: Optional[int] = None,
 ) -> EvaluationData:
     """
@@ -56,8 +55,7 @@ def load_evaluation_data(
                      If None, use all available samples.
                      If num_samples <= num_rows: randomly sample num_samples rows, then 1 sample per row.
                      If num_samples > num_rows: distribute samples across all rows (e.g., 10/3 = 3,3,4).
-        max_total_samples: Maximum total number of samples across all rows.
-                          If specified, randomly samples from all available samples (default: no limit)
+        max_candidates: Maximum number of candidates per sample (default: None, use all)
 
     Returns:
         EvaluationData object containing all necessary data for evaluation
@@ -215,22 +213,7 @@ def load_evaluation_data(
                     candidates = full_candidates.copy()
                 samples_candidates.append(candidates)
 
-    # Apply max_total_samples limit with random sampling if specified
-    if max_total_samples is not None and len(sample_texts) > max_total_samples:
-        # Random sampling
-        indices = list(range(len(sample_texts)))
-        random.shuffle(indices)
-        selected_indices = sorted(indices[:max_total_samples])
-
-        sample_texts = [sample_texts[i] for i in selected_indices]
-        samples_true_codes = [samples_true_codes[i] for i in selected_indices]
-        samples_candidates = [samples_candidates[i] for i in selected_indices]
-
-        print(
-            f"Total evaluation samples: {len(sample_texts)} (randomly sampled from {len(indices)} by max_total_samples={max_total_samples})"
-        )
-    else:
-        print(f"Total evaluation samples: {len(sample_texts)}")
+    print(f"Total evaluation samples: {len(sample_texts)}")
 
     num_samples = len(sample_texts)
 
@@ -302,7 +285,6 @@ def prepare_training_dataset(
             csv_file,
             encoding,
             num_samples,  # Pass num_samples to generate samples per file
-            None,  # Don't apply max_total_samples per file
             max_candidates,  # Pass max_candidates to generate candidates per sample
         )
 
