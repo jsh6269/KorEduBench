@@ -24,8 +24,7 @@ from src.classification.inference import infer_top_k
 from src.classification.predict_multiclass import load_model
 from src.utils.agentic_prompt import (
     LLMClassificationResponse,
-    create_agentic_step1_chat_prompt,
-    create_agentic_step2_chat_prompt,
+    create_rag_chat_prompt,
     parse_llm_response,
 )
 from src.utils.api_model import create_api_client, create_api_generate_function
@@ -116,28 +115,12 @@ def evaluate_llm_classification(
     print(f"  Top-k candidates to retrieve: {top_k}")
 
     if tokenizer is not None:
-        # Check Step 1 prompt length
-        sample_step1_messages = create_agentic_step1_chat_prompt(
-            text=sample_texts[0],
-            completion="",
-            for_inference=True,
-            few_shot=few_shot,
-            subject=subject,
-        )
-        sample_step1_prompt = tokenizer.apply_chat_template(
-            sample_step1_messages["messages"],
-            tokenize=False,
-            add_generation_prompt=True,
-        )
-        sample_step1_tokens = tokenizer(sample_step1_prompt, return_tensors="pt")
-        sample_step1_length = sample_step1_tokens["input_ids"].shape[1]
-
         # Check Step 2 prompt length (use sample candidates for estimation)
         # Create temporary candidates list for length estimation
         temp_candidates = [
             (i + 1, codes[i], contents[i]) for i in range(min(top_k, len(codes)))
         ]
-        sample_step2_messages = create_agentic_step2_chat_prompt(
+        sample_step2_messages = create_rag_chat_prompt(
             text=sample_texts[0],
             candidates=temp_candidates,
             completion="",
@@ -154,18 +137,15 @@ def evaluate_llm_classification(
         sample_step2_tokens = tokenizer(sample_step2_prompt, return_tensors="pt")
         sample_step2_length = sample_step2_tokens["input_ids"].shape[1]
 
-        max_prompt_length = max(sample_step1_length, sample_step2_length)
-        print(f"  Step 1 prompt token length: {sample_step1_length}")
-        print(f"  Step 2 prompt token length: {sample_step2_length}")
-        print(f"  Max prompt token length: {max_prompt_length}")
+        print(f"  LLM prompt token length: {sample_step2_length}")
 
         if check_token_length:
             # Local model: check against max_input_length
             print(f"  Max input length: {max_input_length}")
 
-            if max_prompt_length > max_input_length:
+            if sample_step2_length > max_input_length:
                 print(
-                    f"  ⚠️  WARNING: Prompt length ({max_prompt_length}) exceeds max_input_length ({max_input_length})"
+                    f"  ⚠️  WARNING: Prompt length ({sample_step2_length}) exceeds max_input_length ({max_input_length})"
                 )
                 print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
                 print(
@@ -193,36 +173,9 @@ def evaluate_llm_classification(
         text = sample_texts[i]
         true_code = samples_true_codes[i]
 
-        # Step 1: Query Generation
-        step1_messages = create_agentic_step1_chat_prompt(
-            text=text,
-            completion="",
-            for_inference=True,
-            few_shot=few_shot,
-            subject=subject,
-        )
-
-        if tokenizer is not None:
-            # Local models: convert chat messages to string using tokenizer's chat template
-            step1_prompt = tokenizer.apply_chat_template(
-                step1_messages["messages"], tokenize=False, add_generation_prompt=True
-            )
-        else:
-            # API models: pass messages list directly (API natively supports chat format)
-            step1_prompt = step1_messages["messages"]
-
-        # Check if Step 1 prompt will be truncated (only for local models)
-        if check_token_length and tokenizer is not None:
-            step1_tokens = tokenizer(step1_prompt, return_tensors="pt")
-            if step1_tokens["input_ids"].shape[1] > max_input_length:
-                truncated_count += 1
-
-        # Generate query
-        step1_query = generate_fn(step1_prompt).strip()
-
         # Call infer_top_k with generated query
         infer_result = infer_top_k(
-            text=step1_query,
+            text=text,
             top_k=top_k,
             train_csv=train_csv,
             model=top_k_model,
@@ -240,7 +193,7 @@ def evaluate_llm_classification(
         ]
 
         # Step 2: Final Selection
-        step2_messages = create_agentic_step2_chat_prompt(
+        step2_messages = create_rag_chat_prompt(
             text=text,
             candidates=candidates,
             completion="",
@@ -293,7 +246,6 @@ def evaluate_llm_classification(
             "pred_code": pred_code,
             "true_content": true_content,
             "pred_content": pred_content,
-            "step1_query": step1_query,
             "llm_response": step2_response,
             "match_type": match_type_str,
             "confidence": llm_response.confidence,
@@ -414,7 +366,6 @@ def evaluate_llm_classification(
                 f.write(f"Confidence: {w['confidence']:.2f}\n")
                 f.write(f"Exact Match: {'YES' if w['is_exact_match'] else 'NO'}\n")
                 f.write(f"Input Text: {w['input_text']}\n")
-                f.write(f"Step 1 Query: {w.get('step1_query', 'N/A')}\n")
                 f.write(f"True Content: {w['true_content']}\n")
                 f.write(f"Pred Content: {w['pred_content']}\n")
                 f.write(f"True Code: {w['true_code']}\n")

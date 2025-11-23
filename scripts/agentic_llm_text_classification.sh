@@ -8,6 +8,16 @@
 # Get project root directory
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+# Determine Python command (python3 if python is not available)
+if command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+elif command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+else
+    echo -e "${RED}Error: Neither python nor python3 found${NC}"
+    exit 1
+fi
+
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
@@ -15,7 +25,7 @@ MAX_NEW_TOKENS=10
 TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=2000
-TOP_K=15
+TOP_K=20
 MAX_TOTAL_SAMPLES=200
 MAX_SAMPLES_PER_ROW=2
 FEW_SHOT=True
@@ -95,7 +105,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     else
         FEW_SHOT_FLAG=""
     fi
-    if python "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
+    if $PYTHON_CMD "${PROJECT_ROOT}/src/agentic_llm_text_classification/agentic_eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
