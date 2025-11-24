@@ -49,7 +49,7 @@ def evaluate_llm_classification(
     model_dir: str = None,
     top_k: int = 20,
     infer_device: str = "cuda",
-    check_token_length: bool = True,
+    is_local_model: bool = True,
 ):
     """
     Evaluate LLM-based classification on educational content using RAG workflow.
@@ -70,7 +70,7 @@ def evaluate_llm_classification(
         model_dir: Path to model directory for infer_top_k
         top_k: Number of candidates to retrieve (default: 20)
         infer_device: Device for infer_top_k execution (default: "cuda")
-        check_token_length: Whether to check token length (False for API mode)
+        is_local_model: Whether to use local model (True for local models, False for API models)
     """
     if json_path is None:
         # Generate filename with date and model_name
@@ -135,7 +135,7 @@ def evaluate_llm_classification(
 
         print(f"  LLM prompt token length: {sample_length}")
 
-        if check_token_length:
+        if is_local_model:
             # Local model: check against max_input_length
             print(f"  Max input length: {max_input_length}")
 
@@ -198,7 +198,7 @@ def evaluate_llm_classification(
             subject=subject,
         )
 
-        if tokenizer is not None:
+        if is_local_model:
             # Local models: convert chat messages to string using tokenizer's chat template
             prompt = tokenizer.apply_chat_template(
                 messages["messages"], tokenize=False, add_generation_prompt=True
@@ -208,7 +208,7 @@ def evaluate_llm_classification(
             prompt = messages["messages"]
 
         # Check if prompt will be truncated (only for local models)
-        if check_token_length and tokenizer is not None:
+        if is_local_model:
             tokens = tokenizer(prompt, return_tensors="pt")
             if tokens["input_ids"].shape[1] > max_input_length:
                 truncated_count += 1
@@ -544,7 +544,7 @@ if __name__ == "__main__":
         tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
         model_identifier = f"{args.api_provider}/{args.api_model}"
-        check_token_length = False
+        is_local_model = False
 
     else:
         # Local model mode
@@ -564,7 +564,7 @@ if __name__ == "__main__":
         )
 
         model_identifier = args.model_name
-        check_token_length = True
+        is_local_model = True
 
     # === Call evaluation function ===
     evaluate_llm_classification(
@@ -583,5 +583,5 @@ if __name__ == "__main__":
         model_dir=args.model_dir,
         top_k=args.top_k,
         infer_device=args.infer_device,
-        check_token_length=check_token_length,
+        is_local_model=is_local_model,
     )
