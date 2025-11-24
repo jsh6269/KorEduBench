@@ -61,7 +61,7 @@ def evaluate_finetuned_llm(
     """
     if json_path is None:
         # Generate filename with date and model_name
-        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        current_date = datetime.now().strftime("%Y-%m-%d")
         # Use base_model from training_info, or model_path basename as fallback
         model_name = training_info.get("model_name", os.path.basename(model_path))
         # Sanitize model_name for filename (replace / and other invalid chars with _)

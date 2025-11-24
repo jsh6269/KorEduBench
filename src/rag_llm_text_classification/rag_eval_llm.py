@@ -74,7 +74,7 @@ def evaluate_llm_classification(
     """
     if json_path is None:
         # Generate filename with date and model_name
-        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        current_date = datetime.now().strftime("%Y-%m-%d")
         # Sanitize model_name for filename (replace / and other invalid chars with _)
         safe_model_name = (
             model_identifier.replace("/", "_").replace("\\", "_").replace(":", "_")
