@@ -21,8 +21,7 @@ API_DELAY=1.0  # Delay in seconds between API calls (to avoid rate limits)
 MAX_NEW_TOKENS=20
 TEMPERATURE=0.1
 MAX_CANDIDATES=15
-MAX_TOTAL_SAMPLES=100
-MAX_SAMPLES_PER_ROW=5
+NUM_SAMPLES=100
 FEW_SHOT=False
 
 # Color output
@@ -46,7 +45,7 @@ echo -e "API Model: ${YELLOW}${API_MODEL}${NC}"
 echo -e "API Delay: ${YELLOW}${API_DELAY}s${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
 
@@ -90,9 +89,8 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --api-delay "$API_DELAY" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
         --temperature "$TEMPERATURE" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
+        --num-samples "$NUM_SAMPLES" \
         --max-candidates "$MAX_CANDIDATES" \
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW" \
         $FEW_SHOT_FLAG; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))

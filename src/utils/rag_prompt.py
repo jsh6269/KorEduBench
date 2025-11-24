@@ -1,26 +1,15 @@
 """
-Agentic prompt templates for LLM-based text classification.
-Provides functions to generate prompts for educational content classification using agentic workflow.
+RAG prompt templates for LLM-based text classification.
+Provides functions to generate prompts for educational content classification using RAG workflow.
 
-=== Agentic Workflow ===
+=== RAG Workflow ===
 
-Step 1: Query Generation
-    - Analyze textbook text
-    - Generate a descriptive query
-    - Use infer_top_k tool to retrieve candidate achievement standards
-
-Step 2: Final Selection
-    - Review candidates from Step 1
-    - Select the best matching achievement standard code
+The workflow uses infer_top_k to retrieve candidate achievement standards,
+then the LLM selects the best matching achievement standard from the candidates.
 
 === Usage Guide ===
 
-For Step 1 (Query Generation):
-    prompt = create_agentic_step1_prompt(text)
-    # LLM generates query and calls infer_top_k tool
-    
-For Step 2 (Final Selection):
-    prompt = create_agentic_step2_prompt(text, candidates)
+    prompt = create_rag_chat_prompt(text, candidates)
     # LLM selects the best code from candidates
 """
 
@@ -30,19 +19,10 @@ from enum import Enum
 from pathlib import Path
 
 # ============================================================================
-# Agentic System Prompts
+# RAG System Prompts
 # ============================================================================
 
-AGENTIC_SYSTEM_PROMPT_STEP1 = """You are an educational curriculum expert specializing in analyzing textbook content.
-
-Your role is to analyze textbook text and generate a descriptive query that captures the key educational concepts and learning objectives present in the text.
-
-This query will be used to search for matching achievement standards in a database.
-
-IMPORTANT CAPABILITIES:
-You have access to a tool called 'infer_top_k' that can search for achievement standards similar to a given query."""
-
-AGENTIC_SYSTEM_PROMPT_STEP2 = """You are an educational curriculum expert. Your task is to select the most appropriate achievement standard from a list of candidates.
+RAG_SYSTEM_PROMPT = """You are an educational curriculum expert. Your task is to select the most appropriate achievement standard from a list of candidates.
 
 WHAT ARE ACHIEVEMENT STANDARDS:
 Achievement standards are specific learning objectives that each standard describes:
@@ -56,51 +36,10 @@ HOW TO MATCH TEXTBOOK CONTENT TO STANDARDS:
 3. Select the standard that most directly aligns with the main learning goal"""
 
 # ============================================================================
-# Agentic Output Format Instructions
+# RAG Output Format Instructions
 # ============================================================================
 
-# Step 1: Query Generation
-AGENTIC_OUTPUT_FORMAT_STEP1 = """# Task
-Analyze the textbook text below and generate a search query that describes the achievement standard that would match this text.
-
-Your query should:
-- Capture the main subject area and learning objective
-- Be concise but descriptive (1-2 sentences)
-- Focus on the educational purpose rather than specific details
-
-# Instructions
-1. Read and analyze the textbook text carefully
-2. Identify the core educational concept being taught
-3. Generate a descriptive query for searching
-
-# Correct format:
-일차방정식의 풀이 방법 이해 활용
-
-# Query"""
-
-AGENTIC_OUTPUT_FORMAT_STEP1_FEW_SHOT = """# Task
-Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was analyzed to generate an effective search query.
-
-Apply the same analysis process to generate a search query for the "Textbook Text" provided above.
-
-Your query should:
-- Capture the main subject area and learning objective
-- Be concise but descriptive (1-2 sentences)
-- Focus on the educational purpose rather than specific details
-
-# Instructions
-Based on the patterns learned from the examples:
-1. Read and analyze the textbook text carefully
-2. Identify the core educational concept being taught
-3. Generate a descriptive query similar to the example patterns
-
-# Correct format:
-일차방정식의 풀이 방법 이해 활용
-
-# Query"""
-
-# Step 2: Final Selection
-AGENTIC_OUTPUT_FORMAT_STEP2 = """#  Task
+RAG_OUTPUT_FORMAT = """#  Task
 Analyze the textbook text and select the ONE achievement standard that best matches its primary educational objective.
 
 # Instructions
@@ -113,7 +52,7 @@ Correct format:
 
 # Answer"""
 
-AGENTIC_OUTPUT_FORMAT_STEP2_FEW_SHOT = """# Task
+RAG_OUTPUT_FORMAT_FEW_SHOT = """# Task
 Review the example patterns shown in the "Few-Shot Examples" section above. Each example demonstrates how a textbook text was matched to its corresponding achievement standard.
 
 Apply the same analysis process to classify the "Textbook Text" provided above.
@@ -233,9 +172,9 @@ def load_few_shot_examples(
 # ============================================================================
 
 
-def format_candidates_for_step2(candidates: list[tuple[int, str, str]]) -> str:
+def format_candidates(candidates: list[tuple[int, str, str]]) -> str:
     """
-    Format candidates for Step 2 prompt.
+    Format candidates for prompt.
 
     Args:
         candidates: List of tuples (rank, code, content) from infer_top_k
@@ -245,7 +184,7 @@ def format_candidates_for_step2(candidates: list[tuple[int, str, str]]) -> str:
 
     Example:
         >>> candidates = [(1, "10영03-04", "영어로 의견 표현하기"), (2, "10영03-05", "...")]
-        >>> format_candidates_for_step2(candidates)
+        >>> format_candidates(candidates)
         "1: 10영03-04; 영어로 의견 표현하기\\n2: 10영03-05; ..."
     """
     return "\n".join(
@@ -254,86 +193,11 @@ def format_candidates_for_step2(candidates: list[tuple[int, str, str]]) -> str:
 
 
 # ============================================================================
-# Agentic Step 1: Query Generation
+# RAG Prompt Creation
 # ============================================================================
 
 
-def create_agentic_step1_chat_prompt(
-    text: str,
-    completion: str = "",
-    system_prompt: str = None,
-    output_instruction: str = None,
-    for_inference: bool = False,
-    few_shot: bool = False,
-    subject: str = None,
-    num_examples: int = 5,
-    few_shot_file: str | Path | None = None,
-) -> dict:
-    """
-    Create a chat-based prompt for Step 1: Query generation.
-
-    Returns a dictionary with 'messages' field for chat-based models.
-
-    Args:
-        text: The textbook excerpt to analyze
-        completion: The search query (standard context) for training
-        system_prompt: Custom system prompt (uses AGENTIC_SYSTEM_PROMPT_STEP1 if None)
-        output_instruction: Custom output instruction (uses AGENTIC_OUTPUT_FORMAT_STEP1 if None)
-        for_inference: If True, exclude assistant message (for inference mode)
-        few_shot: Whether to include few-shot examples
-        subject: Subject name for few-shot examples
-        num_examples: Number of few-shot examples
-        few_shot_file: Custom few-shot file path
-
-    Returns:
-        Dictionary with 'messages' field containing role-based messages
-    """
-    if few_shot:
-        if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP1
-        if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP1_FEW_SHOT
-    else:
-        if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP1
-        if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP1
-
-    # System message: Role definition + Achievement Standards
-    system_content = system_prompt
-    # Add few-shot examples if requested
-    if few_shot and subject:
-        few_shot_examples = load_few_shot_examples(
-            subject=subject,
-            num_examples=num_examples,
-            file_path=few_shot_file,
-        )
-        system_content = (
-            f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
-        )
-
-    # User message: Textbook text + Output instructions
-    user_content = "# Textbook Text\n" + f"{text}\n" + "\n" + f"{output_instruction}"
-
-    # Build messages list
-    messages = [
-        {"role": "system", "content": system_content},
-        {"role": "user", "content": user_content},
-    ]
-
-    # Add assistant message only for training (not inference)
-    if not for_inference:
-        messages.append({"role": "assistant", "content": completion})
-
-    return {"messages": messages}
-
-
-# ============================================================================
-# Agentic Step 2: Final Selection
-# ============================================================================
-
-
-def create_agentic_step2_chat_prompt(
+def create_rag_chat_prompt(
     text: str,
     candidates: list[tuple[int, str, str]],
     completion: str = "",
@@ -346,7 +210,7 @@ def create_agentic_step2_chat_prompt(
     few_shot_file: str | Path | None = None,
 ) -> dict:
     """
-    Create a chat-based prompt for Step 2: Final selection.
+    Create a chat-based prompt for RAG classification.
 
     Returns a dictionary with 'messages' field for chat-based models.
 
@@ -354,7 +218,7 @@ def create_agentic_step2_chat_prompt(
         text: The textbook excerpt to classify
         candidates: List of tuples (rank, code, content) from infer_top_k
         completion: The achievement standard code (answer) for training
-        system_prompt: Custom system prompt (uses AGENTIC_SYSTEM_PROMPT_STEP2 if None)
+        system_prompt: Custom system prompt (uses RAG_SYSTEM_PROMPT if None)
         output_instruction: Custom output instruction (uses default if None)
         for_inference: If True, exclude assistant message
         few_shot: Whether to include few-shot examples
@@ -367,19 +231,17 @@ def create_agentic_step2_chat_prompt(
     """
     if few_shot:
         if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP2
+            system_prompt = RAG_SYSTEM_PROMPT
         if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP2_FEW_SHOT
+            output_instruction = RAG_OUTPUT_FORMAT_FEW_SHOT
     else:
         if system_prompt is None:
-            system_prompt = AGENTIC_SYSTEM_PROMPT_STEP2
+            system_prompt = RAG_SYSTEM_PROMPT
         if output_instruction is None:
-            output_instruction = AGENTIC_OUTPUT_FORMAT_STEP2
+            output_instruction = RAG_OUTPUT_FORMAT
 
     # Format candidates for system prompt
-    # different from prompt.py
-    # because we use rank instead of index
-    candidate_text_with_rank = format_candidates_for_step2(candidates)
+    candidate_text_with_rank = format_candidates(candidates)
 
     # System message: Role definition + Achievement Standards
     system_content = (

@@ -16,8 +16,7 @@ TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=4096
 MAX_CANDIDATES=50
-MAX_SAMPLES_PER_ROW=3
-MAX_TOTAL_SAMPLES=200
+NUM_SAMPLES=200
 
 # Color output
 GREEN='\033[0;32m'
@@ -47,8 +46,7 @@ echo -e "Device: ${YELLOW}${DEVICE}${NC}"
 echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
-echo -e "Max samples per row: ${YELLOW}${MAX_SAMPLES_PER_ROW}${NC}"
-echo -e "Max total samples: ${YELLOW}${MAX_TOTAL_SAMPLES}${NC}"
+echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
 echo -e "Max candidates: ${YELLOW}${MAX_CANDIDATES}${NC}"
 echo ""
 
@@ -85,8 +83,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --temperature "$TEMPERATURE"
         --device "$DEVICE"
         --max-input-length "$MAX_INPUT_LENGTH"
-        --max-samples-per-row "$MAX_SAMPLES_PER_ROW"
-        --max-total-samples "$MAX_TOTAL_SAMPLES"
+        --num-samples "$NUM_SAMPLES"
         --max-candidates "$MAX_CANDIDATES"
     )
     
