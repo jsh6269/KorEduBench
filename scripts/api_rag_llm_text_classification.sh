@@ -112,7 +112,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --api-delay "$API_DELAY" \
         --max-new-tokens "$MAX_NEW_TOKENS" \
         --temperature "$TEMPERATURE" \
-        --max-total-samples "$MAX_TOTAL_SAMPLES" \
+        --num-samples "$MAX_TOTAL_SAMPLES" \
         --top-k "$TOP_K" \
         --train-csv "$SUBJECT_TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \

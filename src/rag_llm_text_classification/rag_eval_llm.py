@@ -50,6 +50,7 @@ def evaluate_llm_classification(
     top_k: int = 20,
     infer_device: str = "cuda",
     is_local_model: bool = True,
+    num_examples: int = 5,
 ):
     """
     Evaluate LLM-based classification on educational content using RAG workflow.
@@ -123,7 +124,7 @@ def evaluate_llm_classification(
             for_inference=True,
             few_shot=few_shot,
             subject=subject,
-            num_examples=5,
+            num_examples=num_examples,
         )
         sample_prompt = tokenizer.apply_chat_template(
             sample_messages["messages"],
@@ -196,6 +197,7 @@ def evaluate_llm_classification(
             for_inference=True,
             few_shot=few_shot,
             subject=subject,
+            num_examples=num_examples,
         )
 
         if is_local_model:
@@ -513,6 +515,13 @@ if __name__ == "__main__":
         help="Use few-shot examples (default: False).",
     )
 
+    parser.add_argument(
+        "--num-examples",
+        type=int,
+        default=5,
+        help="Number of few-shot examples to use (default: 5).",
+    )
+
     args = parser.parse_args()
 
     # Validation
@@ -584,4 +593,5 @@ if __name__ == "__main__":
         top_k=args.top_k,
         infer_device=args.infer_device,
         is_local_model=is_local_model,
+        num_examples=args.num_examples,
     )
