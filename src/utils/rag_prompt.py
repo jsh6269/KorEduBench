@@ -316,7 +316,7 @@ def parse_llm_response(
 
     # Strategy 2: Partial code match (code in response or response in code)
     for code in codes:
-        if code in response_clean or response_clean in code:
+        if code in response_clean :
             return LLMClassificationResponse(
                 predicted_code=code,
                 match_type=MatchType.PARTIAL,
