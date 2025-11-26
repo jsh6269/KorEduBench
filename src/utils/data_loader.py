@@ -17,6 +17,7 @@ from tqdm import tqdm
 # from src.test.check_prompt_length import subject
 from src.utils.common import detect_encoding
 from src.utils.prompt import create_chat_classification_prompt
+from src.utils.rag_prompt import create_rag_chat_prompt
 
 
 @dataclass
@@ -309,6 +310,151 @@ def prepare_training_dataset(
             # Create chat prompt for training with completion
             chat_prompt = create_chat_classification_prompt(
                 text, candidates, code, few_shot=few_shot, subject=data.subject
+            )
+
+            all_training_examples.append(chat_prompt)
+
+    print(f"\nTotal training examples from all files: {len(all_training_examples)}")
+
+    # Apply max_total_samples if specified
+    if max_total_samples is not None and len(all_training_examples) > max_total_samples:
+        print(
+            f"Randomly sampling {max_total_samples} examples from {len(all_training_examples)}"
+        )
+        all_training_examples = random.sample(all_training_examples, max_total_samples)
+
+    # === Prepare dataset ===
+    print("\nPreparing dataset...")
+
+    # Convert messages to text using chat template
+    print("Converting messages to text format...")
+    text_examples = []
+    for example in tqdm(all_training_examples, desc="Applying chat template"):
+        text = tokenizer.apply_chat_template(
+            example["messages"],
+            tokenize=False,
+            add_generation_prompt=False,
+        )
+        text_examples.append({"text": text})
+
+    train_dataset = Dataset.from_list(text_examples)
+    train_dataset = train_dataset.shuffle(seed=seed)
+    print(f"Dataset size: {len(train_dataset)} (shuffled)")
+
+    return train_dataset
+
+
+def prepare_rag_training_dataset(
+    train_dir: str,
+    tokenizer,
+    train_csv: str,
+    model_dir: str,
+    top_k: int = 20,
+    infer_device: str = "cuda",
+    encoding: str = None,
+    num_samples: int = None,
+    max_total_samples: int = None,
+    seed: int = 42,
+    few_shot: bool = True,
+    num_examples: int = 5,
+):
+    """
+    Prepare training examples from CSV data in a directory using RAG workflow.
+    Uses infer_top_k to retrieve top-k candidates for each sample.
+
+    Args:
+        train_dir: Directory containing training CSV files
+        tokenizer: Tokenizer for applying chat template
+        train_csv: Path to train CSV file for infer_top_k
+        model_dir: Path to model directory for infer_top_k
+        top_k: Number of top candidates to retrieve (default: 20)
+        infer_device: Device for infer_top_k execution (default: "cuda")
+        encoding: CSV encoding (default: auto-detect)
+        num_samples: Target number of samples per CSV file (default: None, use all)
+        max_total_samples: Maximum total samples (default: None, use all)
+        seed: Random seed for shuffling dataset
+        few_shot: Whether to include few-shot examples (default: True)
+        num_examples: Number of few-shot examples (default: 5)
+
+    Returns:
+        Dataset ready for SFTTrainer (with "text" field)
+    """
+    # Import here to avoid circular dependencies
+    from src.classification.inference import infer_top_k
+    from src.classification.predict_multiclass import load_model
+
+    # Load all CSV files from directory
+    csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
+    if not csv_files:
+        raise ValueError(f"No CSV files found in directory: {train_dir}")
+
+    print(f"Found {len(csv_files)} CSV files in directory: {train_dir}")
+    for csv_file in csv_files:
+        print(f"  - {os.path.basename(csv_file)}")
+
+    # Load classification model for infer_top_k (load once, reuse for all samples)
+    print(f"\nLoading classification model for RAG retrieval from: {model_dir}")
+    top_k_model, top_k_tokenizer, top_k_config, top_k_mappings = load_model(
+        model_dir, infer_device
+    )
+    print(f"Top-k retrieval model loaded. Using top_k={top_k}")
+
+    # Collect all training examples from all CSV files
+    all_training_examples = []
+
+    for csv_file in csv_files:
+        print(f"\nLoading: {os.path.basename(csv_file)}")
+
+        # Load data using existing utility function (without max_candidates for RAG)
+        data = load_evaluation_data(
+            csv_file,
+            encoding,
+            num_samples,  # Pass num_samples to generate samples per file
+            max_candidates=None,  # RAG uses infer_top_k instead
+        )
+
+        # Extract data
+        sample_texts = data.sample_texts
+        samples_true_codes = data.samples_true_codes
+        num_rows = data.num_rows
+
+        print(f"  Achievement standards: {num_rows}")
+        print(f"  Training samples: {len(sample_texts)}")
+
+        # Create training examples for this file using RAG workflow
+        for text, code in tqdm(
+            zip(sample_texts, samples_true_codes),
+            desc=f"Creating RAG prompts for {os.path.basename(csv_file)}",
+            total=len(sample_texts),
+        ):
+            # Call infer_top_k to retrieve top-k candidates
+            infer_result = infer_top_k(
+                text=text,
+                top_k=top_k,
+                train_csv=train_csv,
+                model=top_k_model,
+                tokenizer=top_k_tokenizer,
+                config=top_k_config,
+                mappings=top_k_mappings,
+                device=infer_device,
+                random=False,  # Keep probability order for training
+            )
+
+            # Convert infer_top_k result to (rank, code, content) tuple list
+            candidates = [
+                (idx + 1, item["code"], item["content"])
+                for idx, item in enumerate(infer_result["top-k"])
+            ]
+
+            # Create RAG chat prompt for training with completion
+            chat_prompt = create_rag_chat_prompt(
+                text=text,
+                candidates=candidates,
+                completion=code,
+                for_inference=False,
+                few_shot=few_shot,
+                subject=data.subject,
+                num_examples=num_examples,
             )
 
             all_training_examples.append(chat_prompt)

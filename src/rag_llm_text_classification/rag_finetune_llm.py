@@ -1,6 +1,7 @@
 """
-LLM Fine-tuning script using Unsloth.
-Fine-tunes a language model for educational achievement standard classification.
+LLM Fine-tuning script using Unsloth with RAG workflow.
+Fine-tunes a language model for educational achievement standard classification using RAG.
+Uses infer_top_k to retrieve top-k candidates for each training sample.
 
 Requirements:
     - unsloth (install via: pip install unsloth)
@@ -29,19 +30,25 @@ from trl import SFTConfig, SFTTrainer
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.data_loader import prepare_training_dataset
+from src.utils.data_loader import prepare_rag_training_dataset
 from src.utils.random_seed import set_train_random_seed
 
 
 def finetune_llm(
     train_dir: str,
+    train_csv: str,
+    model_dir: str,
     model_name: str = "unsloth/Qwen2.5-1.5B-Instruct",
     output_dir: str = None,
     max_seq_length: int = 2048,
     max_samples_per_row: int = None,
     max_total_samples: int = None,
-    max_candidates: int = None,
     encoding: str = None,
+    # RAG parameters
+    top_k: int = 20,
+    infer_device: str = "cuda",
+    few_shot: bool = True,
+    num_examples: int = 5,
     # Training hyperparameters
     num_train_epochs: int = 3,
     per_device_train_batch_size: int = 2,
@@ -59,17 +66,22 @@ def finetune_llm(
     seed: int = 42,
 ):
     """
-    Fine-tune an LLM for educational achievement standard classification.
+    Fine-tune an LLM for educational achievement standard classification using RAG workflow.
 
     Args:
         train_dir: Directory containing training CSV files
+        train_csv: Path to train CSV file for infer_top_k
+        model_dir: Path to model directory for infer_top_k
         model_name: Hugging Face model name (unsloth optimized)
         output_dir: Directory to save the fine-tuned model
         max_seq_length: Maximum sequence length
-        max_samples_per_row: Maximum samples per row
+        max_samples_per_row: Maximum samples per row (deprecated, use num_samples in prepare_rag_training_dataset)
         max_total_samples: Maximum total samples (random sample if exceeded)
-        max_candidates: Maximum candidates per prompt (random sample if exceeded)
         encoding: CSV encoding
+        top_k: Number of top candidates to retrieve (default: 20)
+        infer_device: Device for infer_top_k execution (default: "cuda")
+        few_shot: Whether to include few-shot examples (default: True)
+        num_examples: Number of few-shot examples (default: 5)
         num_train_epochs: Number of training epochs
         per_device_train_batch_size: Batch size per device
         gradient_accumulation_steps: Gradient accumulation steps
@@ -81,7 +93,6 @@ def finetune_llm(
         lora_alpha: LoRA alpha
         lora_dropout: LoRA dropout
         load_in_4bit: Use 4-bit quantization
-        use_gradient_checkpointing: Use gradient checkpointing to save memory
         seed: Random seed for reproducibility
     """
     # === Set random seed for reproducibility ===
@@ -98,6 +109,9 @@ def finetune_llm(
 
     print(f"Model: {model_name}")
     print(f"Training data directory: {train_dir}")
+    print(f"Train CSV for RAG: {train_csv}")
+    print(f"Model directory for RAG: {model_dir}")
+    print(f"Top-k candidates: {top_k}")
     print(f"Output directory: {output_dir}")
     print()
 
@@ -123,14 +137,19 @@ def finetune_llm(
             cfg.eos_token = tokenizer.eos_token
 
     # === Load training data ===
-    train_dataset = prepare_training_dataset(
+    train_dataset = prepare_rag_training_dataset(
         train_dir,
         tokenizer,
+        train_csv,
+        model_dir,
+        top_k,
+        infer_device,
         encoding,
         max_samples_per_row,
         max_total_samples,
-        max_candidates,
         seed,
+        few_shot,
+        num_examples,
     )
 
     # === Add LoRA adapters ===
@@ -212,6 +231,8 @@ def finetune_llm(
     training_info = {
         "model_name": model_name,
         "train_dir": train_dir,
+        "train_csv": train_csv,
+        "top_k": top_k,
         "num_examples": len(train_dataset),
         "num_train_epochs": num_train_epochs,
         "per_device_train_batch_size": per_device_train_batch_size,
@@ -224,6 +245,8 @@ def finetune_llm(
         "seed": seed,
         "load_in_4bit": load_in_4bit,
         "use_gradient_checkpointing": "unsloth",
+        "few_shot": few_shot,
+        "num_examples_few_shot": num_examples,
     }
 
     info_path = os.path.join(output_dir, "training_info.json")
@@ -238,13 +261,25 @@ def finetune_llm(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Fine-tune LLM for educational achievement standard classification using Unsloth."
+        description="Fine-tune LLM for educational achievement standard classification using Unsloth with RAG workflow."
     )
     parser.add_argument(
         "--train_dir",
         type=str,
         required=True,
         help="Directory containing training CSV files.",
+    )
+    parser.add_argument(
+        "--train-csv",
+        type=str,
+        required=True,
+        help="Path to train CSV file for infer_top_k.",
+    )
+    parser.add_argument(
+        "--model-dir",
+        type=str,
+        required=True,
+        help="Path to model directory for infer_top_k.",
     )
     parser.add_argument(
         "--model_name",
@@ -277,10 +312,16 @@ if __name__ == "__main__":
         help="Maximum total samples, randomly sampled if exceeded (default: use all).",
     )
     parser.add_argument(
-        "--max-candidates",
+        "--top-k",
         type=int,
-        default=None,
-        help="Maximum candidates per prompt, randomly sampled if exceeded (default: use all).",
+        default=20,
+        help="Number of top candidates to retrieve in RAG workflow (default: 20).",
+    )
+    parser.add_argument(
+        "--infer-device",
+        type=str,
+        default="cuda",
+        help="Device for infer_top_k execution (default: cuda).",
     )
     parser.add_argument(
         "--encoding",
@@ -359,18 +400,28 @@ if __name__ == "__main__":
         default=42,
         help="Random seed for reproducibility (default: 42).",
     )
+    parser.add_argument(
+        "--num-examples-few-shot",
+        type=int,
+        default=5,
+        help="Number of few-shot examples to use (default: 5).",
+    )
 
     args = parser.parse_args()
 
     finetune_llm(
         train_dir=args.train_dir,
+        train_csv=args.train_csv,
+        model_dir=args.model_dir,
         model_name=args.model_name,
         output_dir=args.output_dir,
         max_seq_length=args.max_seq_length,
         max_samples_per_row=args.max_samples_per_row,
         max_total_samples=args.max_total_samples,
-        max_candidates=args.max_candidates,
         encoding=args.encoding,
+        top_k=args.top_k,
+        infer_device=args.infer_device,
+        num_examples=args.num_examples_few_shot,
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.per_device_train_batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
@@ -383,4 +434,5 @@ if __name__ == "__main__":
         lora_dropout=args.lora_dropout,
         load_in_4bit=not args.no_4bit,
         seed=args.seed,
+        few_shot=True if args.num_examples_few_shot > 0 else False,
     )
