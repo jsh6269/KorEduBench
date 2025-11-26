@@ -22,15 +22,14 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.classification.inference import infer_top_k
 from src.classification.predict_multiclass import load_model
-from src.utils.agentic_prompt import (
-    LLMClassificationResponse,
-    create_agentic_step1_chat_prompt,
-    create_agentic_step2_chat_prompt,
-    parse_llm_response,
-)
 from src.utils.api_model import create_api_client, create_api_generate_function
 from src.utils.data_loader import load_evaluation_data
 from src.utils.model import create_generate_function, load_llm_model
+from src.utils.rag_prompt import (
+    LLMClassificationResponse,
+    create_rag_chat_prompt,
+    parse_llm_response,
+)
 from src.utils.random_seed import set_predict_random_seed
 
 
@@ -42,19 +41,19 @@ def evaluate_llm_classification(
     few_shot: bool = False,
     encoding: str = None,
     json_path: str = None,
-    max_samples_per_row: int = None,
-    max_total_samples: int = None,
+    num_samples: int = None,
     max_new_tokens: int = 10,
     temperature: float = 0.1,
     max_input_length: int = 8192,
     train_csv: str = None,
     model_dir: str = None,
-    top_k: int = 15,
+    top_k: int = 20,
     infer_device: str = "cuda",
-    check_token_length: bool = True,
+    is_local_model: bool = True,
+    num_examples: int = 5,
 ):
     """
-    Evaluate LLM-based classification on educational content using agentic workflow.
+    Evaluate LLM-based classification on educational content using RAG workflow.
 
     Args:
         input_csv: Path to input CSV file
@@ -64,20 +63,19 @@ def evaluate_llm_classification(
         few_shot: Use few-shot examples
         encoding: CSV encoding (default: auto-detect)
         json_path: Path to save results JSON
-        max_samples_per_row: Maximum samples per row
-        max_total_samples: Maximum total samples (randomly sampled if specified)
+        num_samples: Target number of samples to generate
         max_new_tokens: Maximum tokens to generate (passed to generate_fn)
         temperature: Sampling temperature (passed to generate_fn)
         max_input_length: Maximum input length (will truncate if exceeded, for local models)
         train_csv: Path to train CSV file for infer_top_k
         model_dir: Path to model directory for infer_top_k
-        top_k: Number of candidates to retrieve in Step 1 (default: 15)
+        top_k: Number of candidates to retrieve (default: 20)
         infer_device: Device for infer_top_k execution (default: "cuda")
-        check_token_length: Whether to check token length (False for API mode)
+        is_local_model: Whether to use local model (True for local models, False for API models)
     """
     if json_path is None:
         # Generate filename with date and model_name
-        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        current_date = datetime.now().strftime("%Y-%m-%d")
         # Sanitize model_name for filename (replace / and other invalid chars with _)
         safe_model_name = (
             model_identifier.replace("/", "_").replace("\\", "_").replace(":", "_")
@@ -85,7 +83,7 @@ def evaluate_llm_classification(
         json_path = (
             PROJECT_ROOT
             / "output"
-            / "agentic_llm_text_classification"
+            / "rag_llm_text_classification"
             / f"results_{safe_model_name}_{current_date}.json"
         )
     json_path = str(json_path)
@@ -95,8 +93,7 @@ def evaluate_llm_classification(
     data = load_evaluation_data(
         input_csv=input_csv,
         encoding=encoding,
-        max_samples_per_row=max_samples_per_row,
-        max_total_samples=max_total_samples,
+        num_samples=num_samples,
         max_candidates=None,
     )
 
@@ -108,7 +105,6 @@ def evaluate_llm_classification(
     subject = data.subject
     num_rows = data.num_rows
     num_samples = data.num_samples
-    max_samples_per_row = data.max_samples_per_row
     folder_name = data.folder_name
 
     # === Check prompt length ===
@@ -116,56 +112,37 @@ def evaluate_llm_classification(
     print(f"  Top-k candidates to retrieve: {top_k}")
 
     if tokenizer is not None:
-        # Check Step 1 prompt length
-        sample_step1_messages = create_agentic_step1_chat_prompt(
-            text=sample_texts[0],
-            completion="",
-            for_inference=True,
-            few_shot=few_shot,
-            subject=subject,
-        )
-        sample_step1_prompt = tokenizer.apply_chat_template(
-            sample_step1_messages["messages"],
-            tokenize=False,
-            add_generation_prompt=True,
-        )
-        sample_step1_tokens = tokenizer(sample_step1_prompt, return_tensors="pt")
-        sample_step1_length = sample_step1_tokens["input_ids"].shape[1]
-
         # Check Step 2 prompt length (use sample candidates for estimation)
         # Create temporary candidates list for length estimation
         temp_candidates = [
             (i + 1, codes[i], contents[i]) for i in range(min(top_k, len(codes)))
         ]
-        sample_step2_messages = create_agentic_step2_chat_prompt(
+        sample_messages = create_rag_chat_prompt(
             text=sample_texts[0],
             candidates=temp_candidates,
             completion="",
             for_inference=True,
             few_shot=few_shot,
             subject=subject,
-            num_examples=5,
+            num_examples=num_examples,
         )
-        sample_step2_prompt = tokenizer.apply_chat_template(
-            sample_step2_messages["messages"],
+        sample_prompt = tokenizer.apply_chat_template(
+            sample_messages["messages"],
             tokenize=False,
             add_generation_prompt=True,
         )
-        sample_step2_tokens = tokenizer(sample_step2_prompt, return_tensors="pt")
-        sample_step2_length = sample_step2_tokens["input_ids"].shape[1]
+        sample_tokens = tokenizer(sample_prompt, return_tensors="pt")
+        sample_length = sample_tokens["input_ids"].shape[1]
 
-        max_prompt_length = max(sample_step1_length, sample_step2_length)
-        print(f"  Step 1 prompt token length: {sample_step1_length}")
-        print(f"  Step 2 prompt token length: {sample_step2_length}")
-        print(f"  Max prompt token length: {max_prompt_length}")
+        print(f"  LLM prompt token length: {sample_length}")
 
-        if check_token_length:
+        if is_local_model:
             # Local model: check against max_input_length
             print(f"  Max input length: {max_input_length}")
 
-            if max_prompt_length > max_input_length:
+            if sample_length > max_input_length:
                 print(
-                    f"  ⚠️  WARNING: Prompt length ({max_prompt_length}) exceeds max_input_length ({max_input_length})"
+                    f"  ⚠️  WARNING: Prompt length ({sample_length}) exceeds max_input_length ({max_input_length})"
                 )
                 print(f"  ⚠️  Prompts will be truncated, which may affect accuracy!")
                 print(
@@ -193,36 +170,9 @@ def evaluate_llm_classification(
         text = sample_texts[i]
         true_code = samples_true_codes[i]
 
-        # Step 1: Query Generation
-        step1_messages = create_agentic_step1_chat_prompt(
-            text=text,
-            completion="",
-            for_inference=True,
-            few_shot=few_shot,
-            subject=subject,
-        )
-
-        if tokenizer is not None:
-            # Local models: convert chat messages to string using tokenizer's chat template
-            step1_prompt = tokenizer.apply_chat_template(
-                step1_messages["messages"], tokenize=False, add_generation_prompt=True
-            )
-        else:
-            # API models: pass messages list directly (API natively supports chat format)
-            step1_prompt = step1_messages["messages"]
-
-        # Check if Step 1 prompt will be truncated (only for local models)
-        if check_token_length and tokenizer is not None:
-            step1_tokens = tokenizer(step1_prompt, return_tensors="pt")
-            if step1_tokens["input_ids"].shape[1] > max_input_length:
-                truncated_count += 1
-
-        # Generate query
-        step1_query = generate_fn(step1_prompt).strip()
-
         # Call infer_top_k with generated query
         infer_result = infer_top_k(
-            text=step1_query,
+            text=text,
             top_k=top_k,
             train_csv=train_csv,
             model=top_k_model,
@@ -239,36 +189,37 @@ def evaluate_llm_classification(
             for idx, item in enumerate(infer_result["top-k"])
         ]
 
-        # Step 2: Final Selection
-        step2_messages = create_agentic_step2_chat_prompt(
+        # Create RAG prompt with candidates
+        messages = create_rag_chat_prompt(
             text=text,
             candidates=candidates,
             completion="",
             for_inference=True,
             few_shot=few_shot,
             subject=subject,
+            num_examples=num_examples,
         )
 
-        if tokenizer is not None:
+        if is_local_model:
             # Local models: convert chat messages to string using tokenizer's chat template
-            step2_prompt = tokenizer.apply_chat_template(
-                step2_messages["messages"], tokenize=False, add_generation_prompt=True
+            prompt = tokenizer.apply_chat_template(
+                messages["messages"], tokenize=False, add_generation_prompt=True
             )
         else:
             # API models: pass messages list directly (API natively supports chat format)
-            step2_prompt = step2_messages["messages"]
+            prompt = messages["messages"]
 
-        # Check if Step 2 prompt will be truncated (only for local models)
-        if check_token_length and tokenizer is not None:
-            step2_tokens = tokenizer(step2_prompt, return_tensors="pt")
-            if step2_tokens["input_ids"].shape[1] > max_input_length:
+        # Check if prompt will be truncated (only for local models)
+        if is_local_model:
+            tokens = tokenizer(prompt, return_tensors="pt")
+            if tokens["input_ids"].shape[1] > max_input_length:
                 truncated_count += 1
 
         # Generate final prediction
-        step2_response = generate_fn(step2_prompt)
+        response = generate_fn(prompt)
 
         # Parse response - now returns LLMClassificationResponse object
-        llm_response = parse_llm_response(step2_response, candidates)
+        llm_response = parse_llm_response(response, candidates)
         pred_code = llm_response.predicted_code
 
         # Track match types (exact, partial, invalid)
@@ -293,8 +244,7 @@ def evaluate_llm_classification(
             "pred_code": pred_code,
             "true_content": true_content,
             "pred_content": pred_content,
-            "step1_query": step1_query,
-            "llm_response": step2_response,
+            "llm_response": response,
             "match_type": match_type_str,
             "confidence": llm_response.confidence,
             "is_exact_match": llm_response.is_exact_match,
@@ -397,7 +347,7 @@ def evaluate_llm_classification(
     print(f"Results saved to {json_path}")
 
     # Save wrong samples
-    logs_dir = PROJECT_ROOT / "output" / "agentic_llm_text_classification" / "logs"
+    logs_dir = PROJECT_ROOT / "output" / "rag_llm_text_classification" / "logs"
     os.makedirs(logs_dir, exist_ok=True)
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
 
@@ -414,7 +364,6 @@ def evaluate_llm_classification(
                 f.write(f"Confidence: {w['confidence']:.2f}\n")
                 f.write(f"Exact Match: {'YES' if w['is_exact_match'] else 'NO'}\n")
                 f.write(f"Input Text: {w['input_text']}\n")
-                f.write(f"Step 1 Query: {w.get('step1_query', 'N/A')}\n")
                 f.write(f"True Content: {w['true_content']}\n")
                 f.write(f"Pred Content: {w['pred_content']}\n")
                 f.write(f"True Code: {w['true_code']}\n")
@@ -439,7 +388,6 @@ def evaluate_llm_classification(
                 f.write(f"Confidence: {c['confidence']:.2f}\n")
                 f.write(f"Exact Match: {'YES' if c['is_exact_match'] else 'NO'}\n")
                 f.write(f"Input Text: {c['input_text']}\n")
-                f.write(f"Step 1 Query: {c.get('step1_query', 'N/A')}\n")
                 f.write(f"Content: {c['true_content']}\n")
                 f.write(f"True Content: {c['true_content']}\n")
                 f.write(f"Pred Content: {c['pred_content']}\n")
@@ -501,19 +449,13 @@ if __name__ == "__main__":
         "--json_path",
         type=str,
         default=None,
-        help="Path to JSON log file (default: {PROJECT_ROOT}/output/agentic_llm_text_classification/results.json).",
+        help="Path to JSON log file (default: {PROJECT_ROOT}/output/rag_llm_text_classification/results.json).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Max number of text samples to evaluate per row (default: auto-detect).",
-    )
-    parser.add_argument(
-        "--max-total-samples",
-        type=int,
-        default=None,
-        help="Max total number of samples, randomly sampled from all available (default: no limit).",
+        help="Target number of samples to generate. If None, use all available samples. If num_samples <= num_rows: randomly sample num_samples rows, then 1 sample per row. If num_samples > num_rows: distribute samples across all rows.",
     )
     parser.add_argument(
         "--max-new-tokens",
@@ -527,7 +469,7 @@ if __name__ == "__main__":
         default=0.1,
         help="Sampling temperature (default: 0.1).",
     )
-    # Agentic LLM arguments
+    # RAG LLM arguments
     parser.add_argument(
         "--train-csv",
         type=str,
@@ -573,6 +515,13 @@ if __name__ == "__main__":
         help="Use few-shot examples (default: False).",
     )
 
+    parser.add_argument(
+        "--num-examples",
+        type=int,
+        default=5,
+        help="Number of few-shot examples to use (default: 5).",
+    )
+
     args = parser.parse_args()
 
     # Validation
@@ -604,7 +553,7 @@ if __name__ == "__main__":
         tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
         model_identifier = f"{args.api_provider}/{args.api_model}"
-        check_token_length = False
+        is_local_model = False
 
     else:
         # Local model mode
@@ -624,7 +573,7 @@ if __name__ == "__main__":
         )
 
         model_identifier = args.model_name
-        check_token_length = True
+        is_local_model = True
 
     # === Call evaluation function ===
     evaluate_llm_classification(
@@ -635,8 +584,7 @@ if __name__ == "__main__":
         few_shot=args.few_shot,
         encoding=args.encoding,
         json_path=args.json_path,
-        max_samples_per_row=args.max_samples_per_row,
-        max_total_samples=args.max_total_samples,
+        num_samples=args.num_samples,
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
         max_input_length=args.max_input_length,
@@ -644,5 +592,6 @@ if __name__ == "__main__":
         model_dir=args.model_dir,
         top_k=args.top_k,
         infer_device=args.infer_device,
-        check_token_length=check_token_length,
+        is_local_model=is_local_model,
+        num_examples=args.num_examples,
     )
