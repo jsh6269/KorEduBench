@@ -14,8 +14,7 @@ MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"  # Path to m
 MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
 OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_rag_llm"
 MAX_SEQ_LENGTH=2600
-MAX_SAMPLES_PER_ROW=20     # Train with n sample per achievement standard
-MAX_TOTAL_SAMPLES=None    # No limit on total samples (after per-row filtering)
+NUM_SAMPLES=2500          # Target number of samples per CSV file (default: None, use all)
 ENCODING="utf-8"
 
 # RAG parameters
@@ -113,12 +112,8 @@ CMD_ARGS=(
 )
 
 # Add optional arguments
-if [ "$MAX_SAMPLES_PER_ROW" != "None" ]; then
-    CMD_ARGS+=(--max-samples-per-row "$MAX_SAMPLES_PER_ROW")
-fi
-
-if [ "$MAX_TOTAL_SAMPLES" != "None" ]; then
-    CMD_ARGS+=(--max-total-samples "$MAX_TOTAL_SAMPLES")
+if [ "$NUM_SAMPLES" != "None" ]; then
+    CMD_ARGS+=(--num-samples "$NUM_SAMPLES")
 fi
 
 if [ "$LOAD_IN_4BIT" = False ]; then

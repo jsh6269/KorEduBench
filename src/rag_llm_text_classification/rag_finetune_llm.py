@@ -40,8 +40,7 @@ def finetune_llm(
     model_name: str = "unsloth/Qwen2.5-1.5B-Instruct",
     output_dir: str = None,
     max_seq_length: int = 2048,
-    max_samples_per_row: int = None,
-    max_total_samples: int = None,
+    num_samples: int = None,
     encoding: str = None,
     # RAG parameters
     top_k: int = 20,
@@ -73,8 +72,7 @@ def finetune_llm(
         model_name: Hugging Face model name (unsloth optimized)
         output_dir: Directory to save the fine-tuned model
         max_seq_length: Maximum sequence length
-        max_samples_per_row: Maximum samples per row (deprecated, use num_samples in prepare_rag_training_dataset)
-        max_total_samples: Maximum total samples (random sample if exceeded)
+        num_samples: Target number of samples per CSV file (default: None, use all)
         encoding: CSV encoding
         top_k: Number of top candidates to retrieve (default: 20)
         infer_device: Device for infer_top_k execution (default: "cuda")
@@ -141,8 +139,7 @@ def finetune_llm(
         top_k,
         infer_device,
         encoding,
-        max_samples_per_row,
-        max_total_samples,
+        num_samples,
         seed,
         few_shot,
         num_examples,
@@ -289,16 +286,10 @@ if __name__ == "__main__":
         help="Maximum sequence length (default: 2048).",
     )
     parser.add_argument(
-        "--max-samples-per-row",
+        "--num-samples",
         type=int,
         default=None,
-        help="Maximum samples per row (default: use all).",
-    )
-    parser.add_argument(
-        "--max-total-samples",
-        type=int,
-        default=None,
-        help="Maximum total samples, randomly sampled if exceeded (default: use all).",
+        help="Target number of samples per CSV file (default: None, use all).",
     )
     parser.add_argument(
         "--top-k",
@@ -404,8 +395,7 @@ if __name__ == "__main__":
         model_name=args.model_name,
         output_dir=args.output_dir,
         max_seq_length=args.max_seq_length,
-        max_samples_per_row=args.max_samples_per_row,
-        max_total_samples=args.max_total_samples,
+        num_samples=args.num_samples,
         encoding=args.encoding,
         top_k=args.top_k,
         infer_device=args.infer_device,

@@ -11,10 +11,12 @@ from glob import glob
 from typing import List, Optional
 
 import pandas as pd
+import torch
 from datasets import Dataset
 from tqdm import tqdm
 
 # from src.test.check_prompt_length import subject
+from src.classification.predict_multiclass import load_model, predict_batch
 from src.utils.common import detect_encoding
 from src.utils.prompt import create_chat_classification_prompt
 from src.utils.rag_prompt import create_rag_chat_prompt
@@ -352,15 +354,15 @@ def prepare_rag_training_dataset(
     infer_device: str = "cuda",
     encoding: str = None,
     num_samples: int = None,
-    max_total_samples: int = None,
     seed: int = 42,
     few_shot: bool = True,
     num_examples: int = 5,
+    batch_size: int = 16,
 ):
     """
     Prepare training examples from CSV data in a directory using RAG workflow.
-    Uses infer_top_k to retrieve top-k candidates for each sample.
-    Each CSV file in train_dir is used as train_csv for infer_top_k.
+    Uses batch inference to retrieve top-k candidates for each sample.
+    Each CSV file in train_dir is used as train_csv for filtering candidates.
 
     Args:
         train_dir: Directory containing training CSV files
@@ -370,18 +372,14 @@ def prepare_rag_training_dataset(
         infer_device: Device for infer_top_k execution (default: "cuda")
         encoding: CSV encoding (default: auto-detect)
         num_samples: Target number of samples per CSV file (default: None, use all)
-        max_total_samples: Maximum total samples (default: None, use all)
         seed: Random seed for shuffling dataset
         few_shot: Whether to include few-shot examples (default: True)
         num_examples: Number of few-shot examples (default: 5)
+        batch_size: Batch size for inference (default: 16)
 
     Returns:
         Dataset ready for SFTTrainer (with "text" field)
     """
-    # Import here to avoid circular dependencies
-    from src.classification.inference import infer_top_k
-    from src.classification.predict_multiclass import load_model
-
     # Load all CSV files from directory
     csv_files = sorted(glob(os.path.join(train_dir, "*.csv")))
     if not csv_files:
@@ -393,10 +391,13 @@ def prepare_rag_training_dataset(
 
     # Load classification model for infer_top_k (load once, reuse for all samples)
     print(f"\nLoading classification model for RAG retrieval from: {model_dir}")
+    device = torch.device(infer_device if torch.cuda.is_available() else "cpu")
     top_k_model, top_k_tokenizer, top_k_config, top_k_mappings = load_model(
-        model_dir, infer_device
+        model_dir, device
     )
-    print(f"Top-k retrieval model loaded. Using top_k={top_k}")
+    print(
+        f"Top-k retrieval model loaded. Using top_k={top_k}, batch_size={batch_size}, device={device}"
+    )
 
     # Collect all training examples from all CSV files
     all_training_examples = []
@@ -421,53 +422,83 @@ def prepare_rag_training_dataset(
         print(f"  Training samples: {len(sample_texts)}")
 
         # Create training examples for this file using RAG workflow
-        # Use the current CSV file as train_csv for infer_top_k
+        # Use the current CSV file as train_csv for filtering candidates
         train_csv = csv_file
-        for text, code in tqdm(
-            zip(sample_texts, samples_true_codes),
+
+        # Load train_csv to get available achievement standards and code-content mapping
+        encoding_csv = detect_encoding(train_csv)
+        df_train = pd.read_csv(train_csv, encoding=encoding_csv)
+        train_codes = set(df_train["code"].astype(str).unique())
+        code_to_content = df_train.groupby("code")["content"].first().to_dict()
+
+        # Get idx_to_code from mappings
+        idx_to_code = {int(k): v for k, v in top_k_mappings["idx_to_code"].items()}
+
+        # Process samples in batches
+        for batch_start in tqdm(
+            range(0, len(sample_texts), batch_size),
             desc=f"Creating RAG prompts for {os.path.basename(csv_file)}",
-            total=len(sample_texts),
         ):
-            # Call infer_top_k to retrieve top-k candidates
-            infer_result = infer_top_k(
-                text=text,
-                top_k=top_k,
-                train_csv=train_csv,
-                model=top_k_model,
-                tokenizer=top_k_tokenizer,
-                config=top_k_config,
-                mappings=top_k_mappings,
-                device=infer_device,
-                random=False,  # Keep probability order for training
+            batch_end = min(batch_start + batch_size, len(sample_texts))
+            batch_texts = sample_texts[batch_start:batch_end]
+            batch_codes = samples_true_codes[batch_start:batch_end]
+
+            # Batch inference - get predictions for ALL classes
+            batch_results = predict_batch(
+                top_k_model,
+                top_k_tokenizer,
+                batch_texts,
+                device,
+                max_length=top_k_config["max_length"],
+                batch_size=batch_size,
+                top_k=top_k_config["num_classes"],  # Get all predictions
+                num_classes=top_k_config["num_classes"],
             )
 
-            # Convert infer_top_k result to (rank, code, content) tuple list
-            candidates = [
-                (idx + 1, item["code"], item["content"])
-                for idx, item in enumerate(infer_result["top-k"])
-            ]
+            # Process each sample in the batch
+            for text, code, result in zip(batch_texts, batch_codes, batch_results):
+                # Extract all predictions with probabilities, filter by train_csv codes
+                all_predictions = []
+                for item in result["top_k"]:
+                    pred_code = idx_to_code[item["class_idx"]]
 
-            # Create RAG chat prompt for training with completion
-            chat_prompt = create_rag_chat_prompt(
-                text=text,
-                candidates=candidates,
-                completion=code,
-                for_inference=False,
-                few_shot=few_shot,
-                subject=data.subject,
-                num_examples=num_examples,
-            )
+                    # Only include codes that exist in train_csv
+                    if pred_code in train_codes:
+                        content = code_to_content.get(pred_code, "N/A")
+                        all_predictions.append(
+                            {
+                                "code": pred_code,
+                                "content": content,
+                                "probability": item["probability"],
+                            }
+                        )
 
-            all_training_examples.append(chat_prompt)
+                # Sort by probability (highest first)
+                all_predictions.sort(key=lambda x: x["probability"], reverse=True)
+
+                # Take top-k (already sorted, no shuffle for training)
+                top_k_list = all_predictions[:top_k]
+
+                # Convert to (rank, code, content) tuple list
+                candidates = [
+                    (idx + 1, item["code"], item["content"])
+                    for idx, item in enumerate(top_k_list)
+                ]
+
+                # Create RAG chat prompt for training with completion
+                chat_prompt = create_rag_chat_prompt(
+                    text=text,
+                    candidates=candidates,
+                    completion=code,
+                    for_inference=False,
+                    few_shot=few_shot,
+                    subject=data.subject,
+                    num_examples=num_examples,
+                )
+
+                all_training_examples.append(chat_prompt)
 
     print(f"\nTotal training examples from all files: {len(all_training_examples)}")
-
-    # Apply max_total_samples if specified
-    if max_total_samples is not None and len(all_training_examples) > max_total_samples:
-        print(
-            f"Randomly sampling {max_total_samples} examples from {len(all_training_examples)}"
-        )
-        all_training_examples = random.sample(all_training_examples, max_total_samples)
 
     # === Prepare dataset ===
     print("\nPreparing dataset...")
