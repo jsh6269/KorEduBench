@@ -347,7 +347,6 @@ def prepare_training_dataset(
 def prepare_rag_training_dataset(
     train_dir: str,
     tokenizer,
-    train_csv: str,
     model_dir: str,
     top_k: int = 20,
     infer_device: str = "cuda",
@@ -361,11 +360,11 @@ def prepare_rag_training_dataset(
     """
     Prepare training examples from CSV data in a directory using RAG workflow.
     Uses infer_top_k to retrieve top-k candidates for each sample.
+    Each CSV file in train_dir is used as train_csv for infer_top_k.
 
     Args:
         train_dir: Directory containing training CSV files
         tokenizer: Tokenizer for applying chat template
-        train_csv: Path to train CSV file for infer_top_k
         model_dir: Path to model directory for infer_top_k
         top_k: Number of top candidates to retrieve (default: 20)
         infer_device: Device for infer_top_k execution (default: "cuda")
@@ -422,6 +421,8 @@ def prepare_rag_training_dataset(
         print(f"  Training samples: {len(sample_texts)}")
 
         # Create training examples for this file using RAG workflow
+        # Use the current CSV file as train_csv for infer_top_k
+        train_csv = csv_file
         for text, code in tqdm(
             zip(sample_texts, samples_true_codes),
             desc=f"Creating RAG prompts for {os.path.basename(csv_file)}",

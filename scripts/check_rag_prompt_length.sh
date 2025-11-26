@@ -10,7 +10,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # Set paths
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
-TOP_K=15
+TOP_K=20
 NUM_SAMPLES=200
 FEW_SHOT=True
 PRINT_SAMPLE_PROMPT=True

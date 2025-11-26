@@ -36,7 +36,6 @@ from src.utils.random_seed import set_train_random_seed
 
 def finetune_llm(
     train_dir: str,
-    train_csv: str,
     model_dir: str,
     model_name: str = "unsloth/Qwen2.5-1.5B-Instruct",
     output_dir: str = None,
@@ -69,8 +68,7 @@ def finetune_llm(
     Fine-tune an LLM for educational achievement standard classification using RAG workflow.
 
     Args:
-        train_dir: Directory containing training CSV files
-        train_csv: Path to train CSV file for infer_top_k
+        train_dir: Directory containing training CSV files (each CSV file is used as train_csv for infer_top_k)
         model_dir: Path to model directory for infer_top_k
         model_name: Hugging Face model name (unsloth optimized)
         output_dir: Directory to save the fine-tuned model
@@ -109,7 +107,6 @@ def finetune_llm(
 
     print(f"Model: {model_name}")
     print(f"Training data directory: {train_dir}")
-    print(f"Train CSV for RAG: {train_csv}")
     print(f"Model directory for RAG: {model_dir}")
     print(f"Top-k candidates: {top_k}")
     print(f"Output directory: {output_dir}")
@@ -140,7 +137,6 @@ def finetune_llm(
     train_dataset = prepare_rag_training_dataset(
         train_dir,
         tokenizer,
-        train_csv,
         model_dir,
         top_k,
         infer_device,
@@ -230,8 +226,7 @@ def finetune_llm(
     # === Save training info ===
     training_info = {
         "model_name": model_name,
-        "train_dir": train_dir,
-        "train_csv": train_csv,
+        "model_dir": model_dir,
         "top_k": top_k,
         "num_examples": len(train_dataset),
         "num_train_epochs": num_train_epochs,
@@ -267,13 +262,7 @@ if __name__ == "__main__":
         "--train_dir",
         type=str,
         required=True,
-        help="Directory containing training CSV files.",
-    )
-    parser.add_argument(
-        "--train-csv",
-        type=str,
-        required=True,
-        help="Path to train CSV file for infer_top_k.",
+        help="Directory containing training CSV files (each CSV file is used as train_csv for infer_top_k).",
     )
     parser.add_argument(
         "--model-dir",
@@ -411,7 +400,6 @@ if __name__ == "__main__":
 
     finetune_llm(
         train_dir=args.train_dir,
-        train_csv=args.train_csv,
         model_dir=args.model_dir,
         model_name=args.model_name,
         output_dir=args.output_dir,

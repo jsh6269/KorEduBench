@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# LLM Fine-tuning Script
-# This script fine-tunes an LLM on a training dataset and saves the model
+# RAG LLM Fine-tuning Script
+# This script fine-tunes an LLM on a training dataset using RAG workflow and saves the model
 
 # set -e  # Exit on error
 
@@ -9,14 +9,19 @@
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Training configuration
-TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"  # Directory containing training CSV files
+TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"  # Directory containing training CSV files (each CSV file is used as train_csv for infer_top_k)
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"  # Path to model directory for infer_top_k
 MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
-OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"
-MAX_SEQ_LENGTH=3000
+OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_rag_llm"
+MAX_SEQ_LENGTH=2600
 MAX_SAMPLES_PER_ROW=20     # Train with n sample per achievement standard
 MAX_TOTAL_SAMPLES=None    # No limit on total samples (after per-row filtering)
-MAX_CANDIDATES=30         # Limit candidates per prompt to avoid overly long prompts
 ENCODING="utf-8"
+
+# RAG parameters
+TOP_K=20                   # Number of top candidates to retrieve
+INFER_DEVICE="cuda"        # Device for infer_top_k execution
+NUM_EXAMPLES_FEW_SHOT=5    # Number of few-shot examples (0 to disable few-shot)
 
 # Training hyperparameters
 NUM_TRAIN_EPOCHS=1
@@ -43,7 +48,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== LLM Fine-tuning ===${NC}"
+echo -e "${GREEN}=== RAG LLM Fine-tuning ===${NC}"
 echo ""
 
 # Check if training directory exists
@@ -53,12 +58,26 @@ if [ ! -d "$TRAIN_DIR" ]; then
     exit 1
 fi
 
+
+# Check if model directory exists
+if [ ! -d "$MODEL_DIR" ]; then
+    echo -e "${RED}Error: Model directory not found: $MODEL_DIR${NC}"
+    echo -e "${YELLOW}Please update MODEL_DIR in this script to point to your classification model.${NC}"
+    exit 1
+fi
+
 # Print configuration
 echo -e "${BLUE}Configuration:${NC}"
 echo -e "  Training Directory: ${YELLOW}${TRAIN_DIR}${NC}"
+echo -e "  Model Directory (for RAG): ${YELLOW}${MODEL_DIR}${NC}"
 echo -e "  Base Model: ${YELLOW}${MODEL_NAME}${NC}"
 echo -e "  Output Directory: ${YELLOW}${OUTPUT_DIR}${NC}"
 echo -e "  Max Sequence Length: ${YELLOW}${MAX_SEQ_LENGTH}${NC}"
+echo ""
+echo -e "${BLUE}RAG Parameters:${NC}"
+echo -e "  Top-k: ${YELLOW}${TOP_K}${NC}"
+echo -e "  Infer Device: ${YELLOW}${INFER_DEVICE}${NC}"
+echo -e "  Few-shot Examples: ${YELLOW}${NUM_EXAMPLES_FEW_SHOT}${NC}"
 echo ""
 echo -e "${BLUE}Training Hyperparameters:${NC}"
 echo -e "  Epochs: ${YELLOW}${NUM_TRAIN_EPOCHS}${NC}"
@@ -72,9 +91,13 @@ echo ""
 # Prepare command arguments
 CMD_ARGS=(
     --train_dir "$TRAIN_DIR"
+    --model-dir "$MODEL_DIR"
     --model_name "$MODEL_NAME"
     --output_dir "$OUTPUT_DIR"
     --max_seq_length "$MAX_SEQ_LENGTH"
+    --top-k "$TOP_K"
+    --infer-device "$INFER_DEVICE"
+    --num-examples-few-shot "$NUM_EXAMPLES_FEW_SHOT"
     --encoding "$ENCODING"
     --num-train-epochs "$NUM_TRAIN_EPOCHS"
     --per-device-train-batch-size "$PER_DEVICE_TRAIN_BATCH_SIZE"
@@ -98,16 +121,8 @@ if [ "$MAX_TOTAL_SAMPLES" != "None" ]; then
     CMD_ARGS+=(--max-total-samples "$MAX_TOTAL_SAMPLES")
 fi
 
-if [ "$MAX_CANDIDATES" != "None" ]; then
-    CMD_ARGS+=(--max-candidates "$MAX_CANDIDATES")
-fi
-
 if [ "$LOAD_IN_4BIT" = False ]; then
     CMD_ARGS+=(--no-4bit)
-fi
-
-if [ "$USE_GRADIENT_CHECKPOINTING" = False ]; then
-    CMD_ARGS+=(--no-gradient-checkpointing)
 fi
 
 # Run fine-tuning
@@ -116,7 +131,7 @@ echo -e "${BLUE}║  Starting Fine-tuning...${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-if python "${PROJECT_ROOT}/src/llm_text_classification/finetune_llm.py" "${CMD_ARGS[@]}"; then
+if python "${PROJECT_ROOT}/src/rag_llm_text_classification/rag_finetune_llm.py" "${CMD_ARGS[@]}"; then
     echo ""
     echo -e "${GREEN}╔═══════════════════════════════════════════════════════╗${NC}"
     echo -e "${GREEN}║  Fine-tuning Complete!${NC}"
