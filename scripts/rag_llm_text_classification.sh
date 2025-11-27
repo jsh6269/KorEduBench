@@ -27,7 +27,6 @@ DEVICE="cuda"
 MAX_INPUT_LENGTH=4000
 TOP_K=20
 NUM_SAMPLES=200
-FEW_SHOT=True
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
 INFER_DEVICE="cuda"
 
@@ -99,11 +98,6 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
     
     # Run LLM evaluation
-    if [ "$FEW_SHOT" = True ]; then
-        FEW_SHOT_FLAG="--few-shot"
-    else
-        FEW_SHOT_FLAG=""
-    fi
     if $PYTHON_CMD "${PROJECT_ROOT}/src/rag_llm_text_classification/rag_eval_llm.py" \
         --input_csv "$CSV_FILE" \
         --model_name "$MODEL_NAME" \
@@ -116,7 +110,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --train-csv "$SUBJECT_TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \
         --infer-device "$INFER_DEVICE" \
-        $FEW_SHOT_FLAG; then
+        --num-examples "$NUM_EXAMPLES"; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
     else

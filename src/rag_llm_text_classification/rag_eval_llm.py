@@ -510,12 +510,6 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--few-shot",
-        action="store_true",
-        help="Use few-shot examples (default: False).",
-    )
-
-    parser.add_argument(
         "--num-examples",
         type=int,
         default=5,
@@ -581,7 +575,7 @@ if __name__ == "__main__":
         generate_fn=generate_fn,
         model_identifier=model_identifier,
         tokenizer=tokenizer,
-        few_shot=args.few_shot,
+        few_shot=True if args.num_examples > 0 else False,
         encoding=args.encoding,
         json_path=args.json_path,
         num_samples=args.num_samples,
