@@ -76,21 +76,25 @@ def evaluate_finetuned_rag_llm(
         with open(info_path, "r", encoding="utf-8") as f:
             training_info = json.load(f)
 
+    # Create output folder with model_name_yy-mm-dd format
+    current_date = datetime.now().strftime("%y-%m-%d")
+    # Use base_model from training_info, or model_path basename as fallback
+    model_name = training_info.get("model_name", os.path.basename(model_path))
+    # Sanitize model_name for filename (replace / and other invalid chars with _)
+    safe_model_name = model_name.replace("/", "_").replace("\\", "_").replace(":", "_")
+    output_folder = (
+        PROJECT_ROOT
+        / "output"
+        / "rag_llm_text_classification"
+        / f"{safe_model_name}_{current_date}"
+    )
+    os.makedirs(output_folder, exist_ok=True)
+
     if json_path is None:
-        # Generate filename with date and model_name
-        current_date = datetime.now().strftime("%Y-%m-%d")
-        # Use base_model from training_info, or model_path basename as fallback
-        model_name = training_info.get("model_name", os.path.basename(model_path))
-        # Sanitize model_name for filename (replace / and other invalid chars with _)
-        safe_model_name = (
-            model_name.replace("/", "_").replace("\\", "_").replace(":", "_")
-        )
-        json_path = (
-            PROJECT_ROOT
-            / "output"
-            / "rag_llm_text_classification"
-            / f"finetuned_results_{safe_model_name}_{current_date}.json"
-        )
+        json_path = output_folder / f"finetuned_results.json"
+    else:
+        # If json_path is provided, still use the organized folder structure
+        json_path = output_folder / os.path.basename(json_path)
     json_path = str(json_path)
 
     # === Load and preprocess data ===
@@ -303,17 +307,12 @@ def evaluate_finetuned_rag_llm(
             "num_standards": num_rows,
             "top_k": top_k,
             "total_samples": num_samples,
+            "num_examples": num_examples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
             "match_type_distribution": {
                 k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
             },
-            "exact_match_count": exact_match_count,
-            "exact_match_percentage": (
-                round(exact_match_count / num_samples * 100, 2)
-                if num_samples > 0
-                else 0
-            ),
             "max_new_tokens": max_new_tokens,
             "temperature": temperature,
             "max_input_length": max_input_length,
@@ -358,15 +357,12 @@ def evaluate_finetuned_rag_llm(
     print(f"Results saved to {json_path}")
 
     # Save wrong samples
-    logs_dir = (
-        PROJECT_ROOT / "output" / "rag_llm_text_classification" / "finetuned_logs"
-    )
+    logs_dir = output_folder / "logs"
     os.makedirs(logs_dir, exist_ok=True)
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
-    model_name = os.path.basename(model_path)
 
     if wrong_samples:
-        wrong_path = logs_dir / f"{model_name}_{csv_name}_wrongs.txt"
+        wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
         sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
         with open(wrong_path, "w", encoding="utf-8") as f:
             f.write(f"Total wrong samples: {len(wrong_samples)}\n\n")
@@ -388,7 +384,7 @@ def evaluate_finetuned_rag_llm(
 
     # Save correct samples
     if correct_samples:
-        correct_path = logs_dir / f"{model_name}_{csv_name}_corrects.txt"
+        correct_path = logs_dir / f"{csv_name}_corrects.txt"
         sampled_corrects = random.sample(
             correct_samples, min(100, len(correct_samples))
         )

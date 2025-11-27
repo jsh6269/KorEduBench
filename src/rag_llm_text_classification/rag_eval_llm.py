@@ -73,19 +73,25 @@ def evaluate_llm_classification(
         infer_device: Device for infer_top_k execution (default: "cuda")
         is_local_model: Whether to use local model (True for local models, False for API models)
     """
+    # Create output folder with model_name_yy-mm-dd format
+    current_date = datetime.now().strftime("%y-%m-%d")
+    # Sanitize model_name for filename (replace / and other invalid chars with _)
+    safe_model_name = (
+        model_identifier.replace("/", "_").replace("\\", "_").replace(":", "_")
+    )
+    output_folder = (
+        PROJECT_ROOT
+        / "output"
+        / "rag_llm_text_classification"
+        / f"{safe_model_name}_{current_date}"
+    )
+    os.makedirs(output_folder, exist_ok=True)
+
     if json_path is None:
-        # Generate filename with date and model_name
-        current_date = datetime.now().strftime("%Y-%m-%d")
-        # Sanitize model_name for filename (replace / and other invalid chars with _)
-        safe_model_name = (
-            model_identifier.replace("/", "_").replace("\\", "_").replace(":", "_")
-        )
-        json_path = (
-            PROJECT_ROOT
-            / "output"
-            / "rag_llm_text_classification"
-            / f"results_{safe_model_name}_{current_date}.json"
-        )
+        json_path = output_folder / f"results.json"
+    else:
+        # If json_path is provided, still use the organized folder structure
+        json_path = output_folder / os.path.basename(json_path)
     json_path = str(json_path)
 
     # === Load and preprocess data ===
@@ -294,14 +300,9 @@ def evaluate_llm_classification(
             "num_standards": num_rows,
             "top_k": top_k,
             "total_samples": num_samples,
+            "num_examples": num_examples,
             "correct": correct,
             "accuracy": round(float(accuracy), 4),
-            "exact_match_count": exact_match_count,
-            "exact_match_percentage": (
-                round(exact_match_count / num_samples * 100, 2)
-                if num_samples > 0
-                else 0
-            ),
             "match_type_distribution": {
                 k: round(v / num_samples * 100, 2) for k, v in match_type_counts.items()
             },
@@ -347,7 +348,7 @@ def evaluate_llm_classification(
     print(f"Results saved to {json_path}")
 
     # Save wrong samples
-    logs_dir = PROJECT_ROOT / "output" / "rag_llm_text_classification" / "logs"
+    logs_dir = output_folder / "logs"
     os.makedirs(logs_dir, exist_ok=True)
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
 
