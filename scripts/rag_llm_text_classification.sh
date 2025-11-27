@@ -27,6 +27,7 @@ DEVICE="cuda"
 MAX_INPUT_LENGTH=4000
 TOP_K=20
 NUM_SAMPLES=200
+NUM_EXAMPLES=5
 MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
 INFER_DEVICE="cuda"
 
@@ -59,6 +60,7 @@ echo -e "Max new tokens: ${YELLOW}${MAX_NEW_TOKENS}${NC}"
 echo -e "Temperature: ${YELLOW}${TEMPERATURE}${NC}"
 echo -e "Max input length: ${YELLOW}${MAX_INPUT_LENGTH}${NC}"
 echo -e "Num samples: ${YELLOW}${NUM_SAMPLES}${NC}"
+echo -e "Num examples: ${YELLOW}${NUM_EXAMPLES}${NC}"
 echo -e "Top-k: ${YELLOW}${TOP_K}${NC}"
 echo -e "Train CSV: ${YELLOW}${TRAIN_CSV}${NC}"
 echo -e "Tool model dir: ${YELLOW}${MODEL_DIR}${NC}"
