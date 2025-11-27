@@ -5,6 +5,7 @@ The LLM directly outputs achievement standard codes (e.g., "10영03-04") instead
 """
 
 import argparse
+import csv
 import json
 import os
 import random
@@ -353,6 +354,7 @@ def evaluate_llm_classification(
     csv_name = os.path.splitext(os.path.basename(input_csv))[0]
 
     if wrong_samples:
+        # Save wrong samples as text file (sampled)
         wrong_path = logs_dir / f"{csv_name}_wrongs.txt"
         sampled_wrongs = random.sample(wrong_samples, min(100, len(wrong_samples)))
         with open(wrong_path, "w", encoding="utf-8") as f:
@@ -373,6 +375,32 @@ def evaluate_llm_classification(
         print(
             f"\nSaved {len(sampled_wrongs)} randomly selected wrong samples to {wrong_path}"
         )
+
+        # Save wrong samples as CSV file (all samples)
+        wrong_csv_path = logs_dir / f"{csv_name}_wrongs.csv"
+        with open(wrong_csv_path, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(
+                f,
+                fieldnames=[
+                    "true_code",
+                    "pred_code",
+                    "match_type",
+                    "true_content",
+                    "pred_content",
+                ],
+            )
+            writer.writeheader()
+            for w in wrong_samples:
+                writer.writerow(
+                    {
+                        "true_code": w["true_code"],
+                        "pred_code": w["pred_code"],
+                        "match_type": w["match_type"],
+                        "true_content": w["true_content"],
+                        "pred_content": w["pred_content"],
+                    }
+                )
+        print(f"Saved {len(wrong_samples)} wrong samples to {wrong_csv_path}")
 
     # Save correct samples
     if correct_samples:
