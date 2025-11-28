@@ -15,7 +15,7 @@ LR="${LR:-2e-5}"
 MAX_LENGTH="${MAX_LENGTH:-256}"
 LOSS_TYPE="${LOSS_TYPE:-ce}"
 NO_EVAL="${NO_EVAL:-true}"
-RESUME_FROM="${RESUME_FROM:-model/achievement_classifier/checkpoint_epoch_3}"
+RESUME_FROM="${RESUME_FROM:-}"
 
 echo "======================================================================"
 echo "Multi-Class Achievement Standard Classifier Training"

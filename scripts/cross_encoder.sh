@@ -9,8 +9,8 @@ set -e  # Exit on error
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
-TRAIN_CSV="${PROJECT_ROOT}/dataset/training_subject_text20/과학.csv"
-VALIDATION_CSV="${PROJECT_ROOT}/dataset/validation_subject_text20/과학.csv"
+TRAIN_CSV="${PROJECT_ROOT}/dataset/train_80/과학.csv"
+VALIDATION_CSV="${PROJECT_ROOT}/dataset/valid_80/과학.csv"
 
 # Color output
 GREEN='\033[0;32m'
@@ -64,4 +64,3 @@ echo ""
 echo -e "${GREEN}✓ Cross encoder training and evaluation completed!${NC}"
 echo -e "${GREEN}Model saved to: ${YELLOW}${PROJECT_ROOT}/model/cross_finetuned${NC}"
 echo -e "${GREEN}Results saved to: ${YELLOW}${PROJECT_ROOT}/output/cross_encoder/results_rerank.json${NC}"
-

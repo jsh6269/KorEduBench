@@ -43,7 +43,7 @@ def evaluate_folder(
     # Evaluate each CSV
     for csv_path in tqdm(csv_files, desc="Evaluating CSV files", unit="file"):
         try:
-            print(f"\n=== Processing file: {os.path.basename(csv_path)} ===")
+            print(f"\n\n=== Processing file: {os.path.basename(csv_path)} ===")
             evaluate_bi_cross_pipeline(
                 input_csv=csv_path,
                 bi_model_name=bi_model_name,

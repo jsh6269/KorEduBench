@@ -13,15 +13,12 @@
 
 ### 멀티클래스 분류
 4. [train_classifier.sh](#4-train_classifiersh) - 기본 분류기 학습
-5. [train_classifier_focal.sh](#5-train_classifier_focalsh) - Focal Loss 분류기
-6. [train_classifier_large.sh](#6-train_classifier_largesh) - 대형 분류기
-7. [train_advanced.sh](#7-train_advancedsh) - 고급 분류기
-8. [train_advanced_large.sh](#8-train_advanced_largesh) - 대형 고급 분류기
+5. [train_advanced.sh](#5-train_advancedsh) - 고급 분류기
 
 ### LLM 기반 텍스트 분류
-9. [llm_text_classification.sh](#9-llm_text_classificationsh) - LLM 평가
-10. [finetuning_llm.sh](#10-finetuning_llmsh) - LLM 파인튜닝
-11. [finetune_llm_text_classification.sh](#11-finetune_llm_text_classificationsh) - 파인튜닝된 LLM 평가
+6. [llm_text_classification.sh](#6-llm_text_classificationsh) - LLM 평가
+7. [finetuning_llm.sh](#7-finetuning_llmsh) - LLM 파인튜닝
+8. [finetune_llm_text_classification.sh](#8-finetune_llm_text_classificationsh) - 파인튜닝된 LLM 평가
 
 ---
 
@@ -113,6 +110,7 @@ MAX_TEXTS=80                   # 텍스트 샘플 수 (기본값: 80)
 ## 2. cosine_similarity.sh
 
 ### 개요
+jhgan/ko-sroberta-multitask 기반
 과목별 CSV 파일에 대해 코사인 유사도 기반 평가를 수행하는 스크립트입니다.
 
 ### 사전 요구사항
@@ -296,52 +294,7 @@ bash train_classifier.sh
 
 ---
 
-## 5. train_classifier_focal.sh
-
-### 개요
-Focal Loss를 사용하는 분류기 학습 스크립트입니다. 클래스 불균형 문제를 해결하기 위해 설계되었습니다.
-
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-
-### 실행 방법
-
-```bash
-cd scripts
-bash train_classifier_focal.sh
-```
-
-### 주요 특징
-- Focal Loss를 사용하여 어려운 샘플에 집중
-- 클래스 불균형 문제 완화
-- 소수 클래스 성능 향상
-
----
-
-## 6. train_classifier_large.sh
-
-### 개요
-대형 모델을 사용하는 분류기 학습 스크립트입니다.
-
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- 충분한 VRAM (대형 모델용)
-
-### 실행 방법
-
-```bash
-cd scripts
-bash train_classifier_large.sh
-```
-
-### 주요 특징
-- 더 큰 모델 아키텍처 사용
-- 더 많은 파라미터로 표현력 향상
-- 더 많은 컴퓨팅 리소스 필요
-
----
-
-## 7. train_advanced.sh
+## 5. train_advanced.sh
 
 ### 개요
 고급 학습 기법을 적용한 분류기 학습 스크립트입니다.
@@ -363,30 +316,7 @@ bash train_advanced.sh
 
 ---
 
-## 8. train_advanced_large.sh
-
-### 개요
-고급 기법과 대형 모델을 결합한 분류기 학습 스크립트입니다.
-
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- 충분한 VRAM
-
-### 실행 방법
-
-```bash
-cd scripts
-bash train_advanced_large.sh
-```
-
-### 주요 특징
-- 대형 모델 + 고급 학습 기법
-- 최고 성능을 위한 설정
-- 가장 많은 리소스 필요
-
----
-
-## 9. llm_text_classification.sh
+## 6. llm_text_classification.sh
 
 ### 개요
 LLM(Large Language Model)을 사용한 텍스트 분류 평가 스크립트입니다. Validation 데이터셋의 모든 과목을 순차적으로 처리합니다.
@@ -507,7 +437,7 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/train_80"
 
 ---
 
-## 10. finetuning_llm.sh
+## 7. finetuning_llm.sh
 
 ### 개요
 LLM을 성취기준 분류 태스크에 맞게 파인튜닝하는 스크립트입니다.
@@ -556,7 +486,7 @@ model/
 
 ---
 
-## 11. finetune_llm_text_classification.sh
+## 8. finetune_llm_text_classification.sh
 
 ### 개요
 파인튜닝된 LLM을 평가하는 스크립트입니다. Validation 데이터셋의 모든 과목을 순차적으로 처리합니다.
@@ -680,10 +610,7 @@ bash preprocess.sh
 
 # 다양한 분류기 학습
 bash train_classifier.sh              # 기본 분류기
-bash train_classifier_focal.sh        # Focal Loss 분류기
-bash train_classifier_large.sh        # 대형 분류기
 bash train_advanced.sh                # 고급 분류기
-bash train_advanced_large.sh          # 대형 고급 분류기
 ```
 
 ### LLM 파인튜닝 파이프라인
@@ -751,5 +678,3 @@ Failed to load model
 → 인터넷 연결 확인 및 Hugging Face 접근 권한 확인
 
 ---
-
-
