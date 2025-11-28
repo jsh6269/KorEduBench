@@ -86,7 +86,7 @@ def evaluate_finetuned_rag_llm(
     output_folder = (
         PROJECT_ROOT
         / "output"
-        / "rag_llm_text_classification"
+        / "rag_finetuned_llm_text_classification"
         / f"{safe_model_name}_{current_date}"
     )
     os.makedirs(output_folder, exist_ok=True)
