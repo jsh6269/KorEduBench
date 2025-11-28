@@ -4,11 +4,11 @@ Korean Education Benchmark - Educational achievement standard classification sys
 
 ## Description
 
-KorEduBench is a benchmark project for Korean educational achievement standard classification. It provides various methods for automatically mapping textbook texts to achievement standards:
+KorEduBench is a benchmark project for 2022 Korean educational achievement standard classification. It provides various methods for automatically mapping textbook texts to achievement standards:
 
 - **Embedding-based**: Cosine similarity, Cross-encoder
-- **Classification-based**: Multi-class classifiers (Focal loss, advanced techniques)
-- **LLM-based**: Zero-shot, Few-shot, Fine-tuned LLM (with Unsloth support)
+- **Classification-based**: Multi-class classifier
+- **LLM-based**: Zero-shot, Few-shot, Fine-tuned LLM (with Unsloth support), RAG-based approach
 
 ## Requirements
 
@@ -109,6 +109,13 @@ All version conflicts are managed by `uv.lock` file.
 
 ## Quick Start
 
+Since processing the dataset may take a long time, we've provided a well‑organized, pre‑processed dataset at `dataset/dataset_bundle.tar.gz`. Once you extract this archive in the dataset/ directory, you may skip #0 and #1.
+
+### 0. Download Dataset
+
+Download [Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchOptnCnd=OPTNCND001&searchKeyword=&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=20&srchDataRealmCode=REALM010&aihubDataSe=data&dataSetSn=71855)  
+Note that we only use texts (not the images) which means **label directory** of dataset above is used in our project.
+
 ### 1. Data Preprocessing
 ```bash
 cd scripts && bash preprocess.sh
@@ -122,6 +129,10 @@ bash cosine_similarity.sh
 # Cross-encoder
 bash cross_encoder.sh
 
+# Multi-class classifier
+bash train_classifier.sh
+bash eval_classifier.sh
+
 # LLM evaluation
 bash llm_text_classification.sh
 
@@ -131,7 +142,7 @@ bash finetune_llm_text_classification.sh
 ```
 
 ### Detailed Usage
-For detailed script usage, see [`doc/SCRIPTS.md`](doc/SCRIPTS.md).
+For detailed script usage, see [`docs/SCRIPTS.md`](docs/SCRIPTS.md).
 
 ## Project Structure
 
@@ -150,7 +161,7 @@ KorEduBench/
 ├── model/                       # Trained models
 ├── output/                      # Evaluation results
 ├── scripts/                     # Execution scripts (11 scripts)
-└── doc/                         # Documentation
+└── docs/                         # Documentation
     ├── PROJECT_STRUCTURE.md    # Detailed project structure
     └── SCRIPTS.md              # Script usage guide
 ```
@@ -159,16 +170,10 @@ KorEduBench/
 
 - **Source**: [AI Hub - Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=71855)
 - **Subjects**: Science, Korean, Math, English, Social Studies, Sociology, Ethics, Technology-Home Economics, Information (9 subjects)
-- **Split**: Train 80% / Validation 20%
-- **Samples**: Up to 80 texts per achievement standard
+- **Split**: Both train, validation contain 80 texts per achievement standard
 
 ## Documentation
 
-- **[PROJECT_STRUCTURE.md](doc/PROJECT_STRUCTURE.md)**: Project structure and data flow
-- **[SCRIPTS.md](doc/SCRIPTS.md)**: Detailed usage guide for 11 scripts
-- **[CODE_ANALYSIS.md](doc/CODE_ANALYSIS.md)**: Code analysis and technical documentation
-
-## License
-
-See LICENSE file for details.
-
+- **[PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)**: Project structure and data flow
+- **[SCRIPTS.md](docs/SCRIPTS.md)**: Detailed usage guide for 11 scripts
+- **[CODE_ANALYSIS.md](docs/CODE_ANALYSIS.md)**: Code analysis and technical documentation
