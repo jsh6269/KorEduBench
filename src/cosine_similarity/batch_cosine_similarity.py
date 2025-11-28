@@ -20,7 +20,6 @@ def evaluate_folder(
     model_name: str,
     encoding: str | None,
     json_path: str,
-    max_samples_per_row: int = None,
 ):
     if json_path is None:
         json_path = str(PROJECT_ROOT / "output" / "cosine_similarity" / "results.json")
@@ -41,13 +40,12 @@ def evaluate_folder(
     # Evaluate each CSV
     for csv_path in tqdm(csv_files, desc="Evaluating CSV files", unit="file"):
         try:
-            print(f"\n=== Processing file: {os.path.basename(csv_path)} ===")
+            print(f"\n\n=== Processing file: {os.path.basename(csv_path)} ===")
             evaluate_cosine_similarity_baseline(
                 input_csv=csv_path,
                 model_name=model_name,
                 encoding=encoding,
                 json_path=json_path,
-                max_samples_per_row=max_samples_per_row,
             )
         except Exception as e:
             import traceback
@@ -82,12 +80,6 @@ if __name__ == "__main__":
         default=None,
         help="Path to JSON log file (default: {PROJECT_ROOT}/output/cosine_similarity/results.json).",
     )
-    parser.add_argument(
-        "--max-samples-per-row",
-        type=int,
-        default=None,
-        help="Maximum number of text samples to evaluate per row (default: auto-detect).",
-    )
     args = parser.parse_args()
 
     set_predict_random_seed(42)
@@ -96,5 +88,4 @@ if __name__ == "__main__":
         model_name=args.model_name,
         encoding=args.encoding,
         json_path=args.json_path,
-        max_samples_per_row=args.max_samples_per_row,
     )

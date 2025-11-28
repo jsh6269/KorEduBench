@@ -213,4 +213,3 @@ echo ""
 echo -e "${GREEN}Next steps:${NC}"
 echo -e "  1. Run cosine similarity on training: cd scripts && bash cosine_similarity.sh"
 echo -e "  2. Finetune and evaluate cross encoder: cd scripts && bash cross_encoder.sh"
-

@@ -9,7 +9,7 @@ set -e  # Exit on error
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Set paths
-DATASET_FOLDER="${PROJECT_ROOT}/dataset/training_subject_text20"
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 
 # Color output
 GREEN='\033[0;32m'
@@ -35,4 +35,3 @@ python "${PROJECT_ROOT}/src/cosine_similarity/batch_cosine_similarity.py" --fold
 echo ""
 echo -e "${GREEN}✓ Cosine similarity evaluation completed!${NC}"
 echo -e "Results saved to: ${YELLOW}${PROJECT_ROOT}/output/cosine_similarity/results.json${NC}"
-
