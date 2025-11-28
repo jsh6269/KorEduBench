@@ -1,12 +1,13 @@
-# KorEduBench 코드 상세 분석
+# KorEduBench Code Analysis
 
-이 문서는 KorEduBench 프로젝트의 각 코드 파일을 상세히 분석하여, 각 파일이 수행하는 작업을 단계별로 설명합니다.
+This document provides a comprehensive technical analysis of the KorEduBench project, detailing the implementation and functionality of each code module with step-by-step explanations.
 
 ---
 
-## 목차
+## Table of Contents
 
-1. [데이터 전처리 파이프라인](#1-데이터-전처리-파이프라인)
+1. [Data Preprocessing Pipeline](#1-data-preprocessing-pipeline)
+
    - 1.1 [extract_standards.py](#11-extract_standardspy)
    - 1.2 [add_text_to_standards.py](#12-add_text_to_standardspy)
    - 1.3 [verify_not_empty.py](#13-verify_not_emptypy)
@@ -15,63 +16,82 @@
    - 1.6 [filter_standards.py](#16-filter_standardspy)
    - 1.7 [split_subject.py](#17-split_subjectpy)
 
-2. [Cosine Similarity 평가](#2-cosine-similarity-평가)
+2. [Cosine Similarity Evaluation](#2-cosine-similarity-evaluation)
+
    - 2.1 [eval_cosine_similarity.py](#21-eval_cosine_similaritypy)
    - 2.2 [batch_cosine_similarity.py](#22-batch_cosine_similaritypy)
 
-3. [Cross Encoder 학습 및 평가](#3-cross-encoder-학습-및-평가)
+3. [Cross-Encoder Training and Evaluation](#3-cross-encoder-training-and-evaluation)
+
    - 3.1 [finetune_cross_encoder.py](#31-finetune_cross_encoderpy)
    - 3.2 [eval_cross_encoder.py](#32-eval_cross_encoderpy)
 
-4. [LLM 텍스트 분류](#4-llm-텍스트-분류)
-   - 4.1 [eval_llm.py](#41-eval_llmpy)
-   - 4.2 [finetune_llm.py](#42-finetune_llmpy)
-   - 4.3 [eval_finetune_llm.py](#43-eval_finetune_llmpy)
+4. [Multi-Class Classifier Training and Evaluation](#4-multi-class-classifier-training-and-evaluation)
+
+   - 4.1 [train_multiclass_classifier.py](#41-train_multiclass_classifierpy)
+   - 4.2 [eval_multiclass_classifier.py](#42-eval_multiclass_classifierpy)
+   - 4.3 [predict_multiclass.py](#43-predict_multiclasspy)
+   - 4.4 [inference.py](#44-inferencepy)
+
+5. [LLM-based Text Classification](#5-llm-based-text-classification)
+
+   - 5.1 [eval_llm.py](#51-eval_llmpy)
+   - 5.2 [finetune_llm.py](#52-finetune_llmpy)
+   - 5.3 [eval_finetune_llm.py](#53-eval_finetune_llmpy)
+
+6. [RAG-based LLM Text Classification](#6-rag-based-llm-text-classification)
+   - 6.1 [rag_eval_llm.py](#61-rag_eval_llmpy)
+   - 6.2 [rag_finetune_llm.py](#62-rag_finetune_llmpy)
+   - 6.3 [rag_eval_ft_llm.py](#63-rag_eval_ft_llmpy)
 
 ---
 
-## 1. 데이터 전처리 파이프라인
+## 1. Data Preprocessing Pipeline
 
 ### 1.1 extract_standards.py
 
-**위치**: `src/preprocessing/extract_standards.py`
+**Location**: `src/preprocessing/extract_standards.py`
 
-**목적**: AI Hub 데이터셋의 ZIP 파일들로부터 2022 성취기준(achievement standard)을 추출하여 CSV로 저장
+**Purpose**: Extracts 2022 achievement standards from AI Hub dataset ZIP files and stores them in CSV format.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `extract_unique_standards(label_dir, output_csv)`
+**Function**: `extract_unique_standards(label_dir, output_csv)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **ZIP 파일 수집**
-   - `label_dir` 디렉토리를 순회하며 모든 `.zip` 파일 수집
-   - `os.walk()`로 하위 디렉토리까지 재귀적으로 탐색
+1. **ZIP File Collection**
 
-2. **ZIP 파일 처리**
-   - 각 ZIP 파일 내부의 JSON 파일들을 순회
-   - JSON에서 다음 정보 추출:
-     - `source_data_info.2022_achievement_standard`: 성취기준 리스트
-     - `raw_data_info`: subject(과목), school(학교급), grade(학년)
-   
-3. **성취기준 파싱**
-   - 형식: `"[코드] 내용"` (예: `"[6과01-01] 물체의 운동을 관찰하여..."`)
-   - `[` 와 `]` 사이의 텍스트를 코드로 추출
-   - `]` 이후의 텍스트를 내용(content)으로 추출
-   - 중복 제거: `unique_standards` 딕셔너리에 코드를 키로 사용
+   - Recursively traverses `label_dir` directory using `os.walk()`
+   - Collects all `.zip` files from all subdirectories
 
-4. **CSV 저장**
-   - 컬럼: `subject`, `school`, `grade`, `code`, `content`
-   - 정렬 기준: 과목(subject) → 코드(code) 순
-   - UTF-8-sig 인코딩으로 저장 (Excel 호환)
+2. **ZIP File Processing**
+   - Iterates through JSON files within each ZIP archive
+   - Extracts the following information from JSON:
+     - `source_data_info.2022_achievement_standard`: List of achievement standards
+     - `raw_data_info`: Subject, school level, and grade metadata
+3. **Achievement Standard Parsing**
 
-**입력**: 
-- `label_dir`: ZIP 파일들이 있는 디렉토리 경로
+   - Format: `"[code] content"` (e.g., `"[6과01-01] 물체의 운동을 관찰하여..."`)
+   - Extracts code from text between `[` and `]`
+   - Extracts content from text after `]`
+   - Deduplication: Uses `unique_standards` dictionary with code as key to ensure uniqueness
 
-**출력**: 
-- `unique_achievement_standards.csv`: 고유한 성취기준 목록
+4. **CSV Export**
+   - Columns: `subject`, `school`, `grade`, `code`, `content`
+   - Sorting: By subject, then by code
+   - Encoding: UTF-8-sig (Excel-compatible)
 
-**예시 실행**:
+**Input**:
+
+- `label_dir`: Directory path containing ZIP files
+
+**Output**:
+
+- `unique_achievement_standards.csv`: Unique achievement standards list
+
+**Example Execution**:
+
 ```bash
 python extract_standards.py ./Training/label
 ```
@@ -80,51 +100,58 @@ python extract_standards.py ./Training/label
 
 ### 1.2 add_text_to_standards.py
 
-**위치**: `src/preprocessing/add_text_to_standards.py`
+**Location**: `src/preprocessing/add_text_to_standards.py`
 
-**목적**: 추출된 성취기준 CSV에 실제 교육 텍스트 샘플들을 매칭하여 추가
+**Purpose**: Matches and appends actual educational text samples to extracted achievement standards CSV.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `append_texts_to_csv(label_dir, csv_path, output_csv, max_texts)`
+**Function**: `append_texts_to_csv(label_dir, csv_path, output_csv, max_texts)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **CSV 로딩 및 준비**
-   - `chardet`로 CSV 인코딩 자동 감지
-   - pandas DataFrame으로 CSV 로딩
-   - `text_1`, `text_2`, ..., `text_N` 컬럼을 `max_texts` 개수만큼 생성
-   - 기존에 `text_` 컬럼이 있다면 이어서 추가
+1. **CSV Loading and Preparation**
 
-2. **코드-인덱스 매핑 생성**
-   - `code_to_idx`: 성취기준 코드를 DataFrame 행 인덱스로 매핑
-   - 빠른 검색을 위한 해시맵 구조
+   - Auto-detects CSV encoding using `chardet`
+   - Loads CSV into pandas DataFrame
+   - Creates `text_1`, `text_2`, ..., `text_N` columns up to `max_texts`
+   - Appends to existing `text_` columns if present
 
-3. **ZIP 파일 순회 및 텍스트 추출**
-   - 각 JSON 파일에서 학습 데이터 추출:
-     - `learning_data_info.text_description`: 텍스트 설명
-     - `learning_data_info.text_qa`: 질문-답변 텍스트
-     - `learning_data_info.text_an`: 추가 텍스트
-   - 세 가지 텍스트를 공백으로 결합하여 `combined_text` 생성
+2. **Code-to-Index Mapping**
 
-4. **텍스트-성취기준 매칭**
-   - JSON의 `2022_achievement_standard`에서 코드 추출
-   - 해당 코드가 CSV에 있으면 빈 `text_` 컬럼에 텍스트 추가
-   - 이미 `max_texts`만큼 채워진 경우 건너뜀
+   - Creates `code_to_idx`: Maps achievement standard codes to DataFrame row indices
+   - Hashmap structure for O(1) lookup performance
 
-5. **결과 저장**
-   - 업데이트된 DataFrame을 CSV로 저장
-   - UTF-8-sig 인코딩 사용
+3. **ZIP File Iteration and Text Extraction**
 
-**입력**: 
-- `label_dir`: ZIP 파일 디렉토리 (Training/label)
-- `csv_path`: 입력 CSV (성취기준만 있는 파일)
-- `max_texts`: 추가할 최대 텍스트 개수 (기본값: 160)
+   - Extracts learning data from each JSON file:
+     - `learning_data_info.text_description`: Text description
+     - `learning_data_info.text_qa`: Question-answer text
+     - `learning_data_info.text_an`: Additional text
+   - Concatenates three text fields with whitespace to create `combined_text`
 
-**출력**: 
-- `text_achievement_standards.csv`: 텍스트 샘플이 추가된 CSV
+4. **Text-to-Standard Matching**
 
-**예시 실행**:
+   - Extracts code from JSON's `2022_achievement_standard`
+   - If code exists in CSV, appends text to first empty `text_` column
+   - Skips if `max_texts` columns are already filled
+
+5. **Result Persistence**
+   - Saves updated DataFrame to CSV
+   - Uses UTF-8-sig encoding
+
+**Input**:
+
+- `label_dir`: ZIP file directory (Training/label)
+- `csv_path`: Input CSV (standards-only file)
+- `max_texts`: Maximum number of text samples to add (default: 160)
+
+**Output**:
+
+- `text_achievement_standards.csv`: CSV with text samples appended
+
+**Example Execution**:
+
 ```bash
 python add_text_to_standards.py ./Training/label --csv_path unique_achievement_standards.csv --max_texts 160
 ```
@@ -133,38 +160,43 @@ python add_text_to_standards.py ./Training/label --csv_path unique_achievement_s
 
 ### 1.3 verify_not_empty.py
 
-**위치**: `src/preprocessing/verify_not_empty.py`
+**Location**: `src/preprocessing/verify_not_empty.py`
 
-**목적**: `text_` 컬럼들이 순서대로 채워져 있는지 검증 (중간에 빈 컬럼이 없는지 확인)
+**Purpose**: Validates that `text_` columns are filled sequentially without gaps (ensures no empty columns between filled ones).
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `verify_text_order(input_csv)`
+**Function**: `verify_text_order(input_csv)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **CSV 로딩**
-   - 인코딩 자동 감지 및 DataFrame 로딩
-   - 모든 `text_` 컬럼을 찾아 숫자 순으로 정렬
+1. **CSV Loading**
 
-2. **순서 검증**
-   - 각 행에 대해 첫 번째 빈 `text_` 컬럼을 찾음
-   - 그 이후의 컬럼에 데이터가 있는지 확인
-   - 이슈 발견 시 기록 (예: `text_5`가 비었는데 `text_10`에 데이터가 있음)
+   - Auto-detects encoding and loads DataFrame
+   - Finds all `text_` columns and sorts numerically
 
-3. **결과 출력**
-   - 검증 통과/실패 여부
-   - 과목별 이슈 요약
-   - 처음 10개 이슈 상세 출력
+2. **Order Validation**
 
-**입력**: 
-- `input_csv`: 검증할 CSV 파일 경로
+   - For each row, finds first empty `text_` column
+   - Verifies that subsequent columns contain no data
+   - Records issues (e.g., `text_5` empty but `text_10` contains data)
 
-**출력**: 
-- 콘솔에 검증 결과 출력
-- exit code (0: 성공, 1: 실패)
+3. **Result Output**
+   - Prints validation pass/fail status
+   - Subject-wise issue summary
+   - Detailed output of first 10 issues
 
-**예시 실행**:
+**Input**:
+
+- `input_csv`: CSV file path to validate
+
+**Output**:
+
+- Console output of validation results
+- Exit code (0: success, 1: failure)
+
+**Example Execution**:
+
 ```bash
 python verify_not_empty.py text_achievement_standards.csv
 ```
@@ -173,45 +205,52 @@ python verify_not_empty.py text_achievement_standards.csv
 
 ### 1.4 check_insufficient_text.py
 
-**위치**: `src/preprocessing/check_insufficient_text.py`
+**Location**: `src/preprocessing/check_insufficient_text.py`
 
-**목적**: 텍스트 샘플이 충분하지 않은 성취기준들을 찾아 별도 CSV로 저장
+**Purpose**: Identifies achievement standards with insufficient text samples and saves them to a separate CSV.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `check_insufficient_text(input_csv, output_csv, min_texts)`
+**Function**: `check_insufficient_text(input_csv, output_csv, min_texts)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **CSV 로딩 및 분석**
-   - 인코딩 자동 감지 및 로딩
-   - 모든 `text_` 컬럼 찾기
+1. **CSV Loading and Analysis**
 
-2. **텍스트 개수 카운팅**
-   - 각 행의 비어있지 않은 `text_` 컬럼 개수 계산
-   - NaN, 빈 문자열, 공백 문자열은 비어있음으로 간주
+   - Auto-detects encoding and loads data
+   - Identifies all `text_` columns
 
-3. **통계 출력**
-   - 텍스트 개수별 행 분포 (0개, 1-20개, 21-40개, ...)
-   - 과목별/학교급별 충분/불충분 통계
-   - 평균, 중앙값, 최소/최대 텍스트 개수
+2. **Text Count Calculation**
 
-4. **부족한 행 필터링**
-   - `min_texts` 미만인 행들만 선택
-   - `subject`, `school`, `grade`, `code`, `content`, `text_count` 컬럼 저장
+   - Counts non-empty `text_` columns per row
+   - Treats NaN, empty strings, and whitespace-only strings as empty
 
-5. **결과 저장**
-   - `insufficient_text.csv`로 저장
-   - 과목별, 학교급별 통계 출력
+3. **Statistical Output**
 
-**입력**: 
-- `input_csv`: 입력 CSV 파일 (기본값: `text_achievement_standards.csv`)
-- `min_texts`: 최소 텍스트 개수 (기본값: 160)
+   - Row distribution by text count (0, 1-20, 21-40, ...)
+   - Subject/school level sufficient/insufficient statistics
+   - Mean, median, min/max text counts
 
-**출력**: 
-- `insufficient_text.csv`: 텍스트가 부족한 성취기준 목록
+4. **Insufficient Row Filtering**
 
-**예시 실행**:
+   - Selects rows with fewer than `min_texts` samples
+   - Saves columns: `subject`, `school`, `grade`, `code`, `content`, `text_count`
+
+5. **Result Persistence**
+   - Saves to `insufficient_text.csv`
+   - Prints subject and school level statistics
+
+**Input**:
+
+- `input_csv`: Input CSV file (default: `text_achievement_standards.csv`)
+- `min_texts`: Minimum number of text samples (default: 160)
+
+**Output**:
+
+- `insufficient_text.csv`: List of achievement standards with insufficient text samples
+
+**Example Execution**:
+
 ```bash
 python check_insufficient_text.py --min_texts 160
 ```
@@ -220,48 +259,55 @@ python check_insufficient_text.py --min_texts 160
 
 ### 1.5 add_additional_text_to_standards.py
 
-**위치**: `src/preprocessing/add_additional_text_to_standards.py`
+**Location**: `src/preprocessing/add_additional_text_to_standards.py`
 
-**목적**: `insufficient_text.csv`에 있는 성취기준들에 대해 Validation 데이터셋에서 추가 텍스트 샘플 추가
+**Purpose**: Adds additional text samples from Validation dataset to achievement standards listed in `insufficient_text.csv`.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `add_additional_texts_to_csv(...)`
+**Function**: `add_additional_texts_to_csv(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **부족 성취기준 로딩**
-   - `insufficient_text.csv` 로딩
-   - (code, content) 튜플의 집합(set) 생성하여 빠른 검색 지원
+1. **Insufficient Standards Loading**
 
-2. **기존 CSV 로딩**
-   - `text_achievement_standards.csv` 로딩
-   - 필요 시 추가 `text_` 컬럼 생성
+   - Loads `insufficient_text.csv`
+   - Creates set of (code, content) tuples for O(1) lookup
 
-3. **Validation ZIP 파일 순회**
-   - Validation/label 디렉토리의 ZIP 파일들 처리
-   - JSON에서 `text_description` 추출
-   - 성취기준 코드가 부족 목록에 있는지 확인
+2. **Existing CSV Loading**
 
-4. **텍스트 추가**
-   - 부족 목록에 있는 성취기준에만 텍스트 추가
-   - 첫 번째 빈 `text_` 컬럼에 추가
-   - `max_texts`에 도달하면 해당 성취기준을 부족 목록에서 제거
+   - Loads `text_achievement_standards.csv`
+   - Creates additional `text_` columns if needed
 
-5. **결과 저장**
-   - 업데이트된 DataFrame을 원래 경로에 덮어쓰기
-   - 추가된 텍스트 개수 출력
+3. **Validation ZIP File Iteration**
 
-**입력**: 
-- `label_dir`: Validation ZIP 파일 디렉토리
-- `insufficient_csv`: 부족 성취기준 목록
-- `text_standards_csv`: 업데이트할 CSV
-- `max_texts`: 최대 텍스트 컬럼 수
+   - Processes ZIP files in Validation/label directory
+   - Extracts `text_description` from JSON
+   - Checks if achievement standard code is in insufficient list
 
-**출력**: 
-- `text_achievement_standards.csv` (업데이트됨)
+4. **Text Addition**
 
-**예시 실행**:
+   - Adds text only to standards in insufficient list
+   - Appends to first empty `text_` column
+   - Removes standard from insufficient list when `max_texts` is reached
+
+5. **Result Persistence**
+   - Overwrites original CSV file
+   - Prints number of texts added
+
+**Input**:
+
+- `label_dir`: Validation ZIP file directory
+- `insufficient_csv`: Insufficient standards list
+- `text_standards_csv`: CSV to update
+- `max_texts`: Maximum number of text columns
+
+**Output**:
+
+- `text_achievement_standards.csv` (updated)
+
+**Example Execution**:
+
 ```bash
 python add_additional_text_to_standards.py ./Validation/label --max_texts 160
 ```
@@ -270,52 +316,59 @@ python add_additional_text_to_standards.py ./Validation/label --max_texts 160
 
 ### 1.6 filter_standards.py
 
-**위치**: `src/preprocessing/filter_standards.py`
+**Location**: `src/preprocessing/filter_standards.py`
 
-**목적**: 충분한 텍스트가 있는 성취기준만 선택하고, train/valid로 분할
+**Purpose**: Filters achievement standards with sufficient text samples and performs train/validation split.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `split_texts_to_train_valid(...)`
+**Function**: `split_texts_to_train_valid(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **CSV 로딩**
-   - `text_achievement_standards.csv` 로딩
-   - `text_1` ~ `text_{num_texts}` 범위 확인
+1. **CSV Loading**
 
-2. **필터링**
-   - 각 행의 `text_1` ~ `text_{num_texts}` 범위에서 비어있지 않은 컬럼 개수 확인
-   - `num_texts` 개 이상의 텍스트가 있는 행만 선택
+   - Loads `text_achievement_standards.csv`
+   - Verifies `text_1` ~ `text_{num_texts}` range
 
-3. **텍스트 전처리**
-   - HTML 테이블 처리: `<td>` 태그 내용만 추출
-   - 줄바꿈을 공백으로 변환
-   - 다중 공백을 단일 공백으로 변환
+2. **Filtering**
 
-4. **Train/Valid 분할**
-   - 각 행에서 `num_texts`개의 텍스트를 랜덤 샘플링
-   - 앞의 `num_texts/2`개는 train으로
-   - 뒤의 `num_texts/2`개는 valid로
-   - **중요**: 동일 성취기준의 train과 valid 텍스트는 완전히 분리됨
+   - Counts non-empty columns in `text_1` ~ `text_{num_texts}` range per row
+   - Selects rows with at least `num_texts` samples
 
-5. **결과 저장**
-   - `train.csv`: 각 성취기준당 `num_texts/2`개의 텍스트
-   - `valid.csv`: 각 성취기준당 `num_texts/2`개의 텍스트
-   - 메타 컬럼 + `text_1` ~ `text_{num_texts/2}` 구조
+3. **Text Preprocessing**
 
-**입력**: 
-- `input_csv`: 입력 CSV (기본값: `text_achievement_standards.csv`)
-- `num_texts`: 샘플링할 텍스트 개수 (짝수여야 함, 기본값: 160)
-- `train_csv`: train 출력 경로
-- `valid_csv`: valid 출력 경로
-- `seed`: 랜덤 시드 (기본값: 42)
+   - HTML table processing: Extracts content from `<td>` tags only
+   - Converts line breaks to spaces
+   - Normalizes multiple spaces to single space
 
-**출력**: 
-- `train.csv`: 학습용 데이터
-- `valid.csv`: 검증용 데이터
+4. **Train/Validation Split**
 
-**예시 실행**:
+   - Randomly samples `num_texts` texts from each row
+   - First `num_texts/2` samples → train
+   - Remaining `num_texts/2` samples → validation
+   - **Critical**: Train and validation texts for the same standard are completely separated
+
+5. **Result Persistence**
+   - `train.csv`: `num_texts/2` texts per achievement standard
+   - `valid.csv`: `num_texts/2` texts per achievement standard
+   - Structure: metadata columns + `text_1` ~ `text_{num_texts/2}`
+
+**Input**:
+
+- `input_csv`: Input CSV (default: `text_achievement_standards.csv`)
+- `num_texts`: Number of texts to sample (must be even, default: 160)
+- `train_csv`: Train output path
+- `valid_csv`: Validation output path
+- `seed`: Random seed (default: 42)
+
+**Output**:
+
+- `train.csv`: Training data
+- `valid.csv`: Validation data
+
+**Example Execution**:
+
 ```bash
 python filter_standards.py --num_texts 160 --input_csv text_achievement_standards.csv --train_csv train.csv --valid_csv valid.csv
 ```
@@ -324,41 +377,46 @@ python filter_standards.py --num_texts 160 --input_csv text_achievement_standard
 
 ### 1.7 split_subject.py
 
-**위치**: `src/preprocessing/split_subject.py`
+**Location**: `src/preprocessing/split_subject.py`
 
-**목적**: train.csv와 valid.csv를 각각 과목별로 분할하여 개별 파일로 저장
+**Purpose**: Splits `train.csv` and `valid.csv` by subject and saves as individual files.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `split_csv_by_subject(input_path, output_folder, max_texts, encoding)`
+**Function**: `split_csv_by_subject(input_path, output_folder, max_texts, encoding)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **출력 디렉토리 생성**
-   - 형식: `{output_folder}` (예: `train_80`, `valid_80`)
-   - 이미 존재해도 오류 없음 (`exist_ok=True`)
+1. **Output Directory Creation**
 
-2. **CSV 로딩 및 컬럼 선택**
-   - 기본 컬럼: `subject`, `school`, `grade`, `code`, `content`
-   - 텍스트 컬럼: `text_1` ~ `text_{max_texts}`
-   - 존재하는 컬럼만 선택 (일부만 있어도 동작)
+   - Format: `{output_folder}` (e.g., `train_80`, `valid_80`)
+   - Creates directory if it doesn't exist (`exist_ok=True`)
 
-3. **과목별 그룹화 및 저장**
-   - `df.groupby("subject")`로 과목별로 데이터 분할
-   - 파일명 안전화: 영숫자와 `_`만 허용, 공백은 `_`로 변환
-   - 각 과목을 `{과목명}.csv`로 저장
-   - 예시: `과학.csv`, `수학.csv`, `영어.csv`
+2. **CSV Loading and Column Selection**
 
-**입력**: 
-- `input_path`: 통합 CSV 파일 경로 (`train.csv` 또는 `valid.csv`)
-- `output_folder`: 출력 폴더명 (예: `train_80`)
-- `max_texts`: 포함할 텍스트 컬럼 개수
-- `encoding`: CSV 인코딩 (기본값: utf-8-sig)
+   - Base columns: `subject`, `school`, `grade`, `code`, `content`
+   - Text columns: `text_1` ~ `text_{max_texts}`
+   - Selects only existing columns (handles partial presence)
 
-**출력**: 
-- `{output_folder}/` 디렉토리 내 과목별 CSV 파일들
+3. **Subject-wise Grouping and Persistence**
+   - Groups data by subject using `df.groupby("subject")`
+   - Sanitizes filenames: alphanumeric and `_` only, spaces converted to `_`
+   - Saves each subject as `{subject_name}.csv`
+   - Examples: `과학.csv`, `수학.csv`, `영어.csv`
 
-**예시 실행**:
+**Input**:
+
+- `input_path`: Unified CSV file path (`train.csv` or `valid.csv`)
+- `output_folder`: Output folder name (e.g., `train_80`)
+- `max_texts`: Number of text columns to include
+- `encoding`: CSV encoding (default: utf-8-sig)
+
+**Output**:
+
+- Subject-specific CSV files in `{output_folder}/` directory
+
+**Example Execution**:
+
 ```bash
 python split_subject.py --input train.csv --output train_80 --max-texts 80
 python split_subject.py --input valid.csv --output valid_80 --max-texts 80
@@ -366,76 +424,87 @@ python split_subject.py --input valid.csv --output valid_80 --max-texts 80
 
 ---
 
-## 2. Cosine Similarity 평가
+## 2. Cosine Similarity Evaluation
 
 ### 2.1 eval_cosine_similarity.py
 
-**위치**: `src/cosine_similarity/eval_cosine_similarity.py`
+**Location**: `src/cosine_similarity/eval_cosine_similarity.py`
 
-**목적**: Bi-Encoder를 사용하여 코사인 유사도 기반 검색 성능 평가 (베이스라인)
+**Purpose**: Evaluates retrieval performance using bi-encoder-based cosine similarity (baseline approach).
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `evaluate_cosine_similarity_baseline(...)`
+**Function**: `evaluate_cosine_similarity_baseline(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **데이터 준비**
-   - CSV 인코딩 자동 감지 (`detect_encoding`)
-   - 필수 컬럼 확인: `code`, `content`
-   - `text_` 컬럼들 찾기 (평가용 샘플)
-   - `max_samples_per_row` 자동 계산 (각 행의 최대 텍스트 개수)
+1. **Data Preparation**
 
-2. **Bi-Encoder 모델 로딩**
-   - `SentenceTransformer` 모델 로딩
-   - 기본 모델: `jhgan/ko-sroberta-multitask` (한국어 문장 임베딩)
-   - 평가 모드로 설정
+   - Auto-detects CSV encoding (`detect_encoding`)
+   - Validates required columns: `code`, `content`
+   - Identifies `text_` columns (evaluation samples)
+   - Auto-calculates `max_samples_per_row` (maximum texts per row)
 
-3. **성취기준 인코딩**
-   - 모든 성취기준의 `content` 필드를 벡터로 변환
-   - GPU 텐서로 변환 (`convert_to_tensor=True`)
-   - 진행 상황 표시 (`show_progress_bar=True`)
+2. **Bi-Encoder Model Loading**
 
-4. **샘플 텍스트 수집 및 인코딩**
-   - 각 행의 `text_1`, `text_2`, ... 컬럼에서 텍스트 추출
-   - `max_samples_per_row` 제한 적용
-   - 샘플과 정답 코드 쌍 생성
-   - 모든 샘플 텍스트를 벡터로 인코딩
+   - Loads `SentenceTransformer` model
+   - Default model: `jhgan/ko-sroberta-multitask` (Korean sentence embedding)
+   - Sets model to evaluation mode
 
-5. **코사인 유사도 계산**
-   - `util.cos_sim(emb_samples, emb_contents)`: 유사도 행렬 계산
-   - 크기: `[num_samples, num_standards]`
-   - 각 샘플이 모든 성취기준과 얼마나 유사한지 계산
+3. **Achievement Standard Encoding**
 
-6. **Top-K 정확도 계산**
-   - Top-1, 3, 10, 20, 40, 60 정확도 계산
-   - 각 샘플에 대해 상위 k개 예측 중 정답이 있는지 확인
-   - 정확도 = 맞춘 샘플 수 / 전체 샘플 수
+   - Encodes all achievement standard `content` fields into vectors
+   - Converts to GPU tensors (`convert_to_tensor=True`)
+   - Displays progress bar (`show_progress_bar=True`)
 
-7. **MRR (Mean Reciprocal Rank) 계산**
-   - 각 샘플의 정답이 몇 번째 순위인지 확인
-   - Reciprocal Rank = 1 / 순위
-   - MRR = 모든 샘플의 RR 평균
-   - 높을수록 정답이 상위에 랭크됨을 의미
+4. **Sample Text Collection and Encoding**
 
-8. **결과 저장**
-   - JSON 파일로 결과 저장 (`results.json`)
-   - 기존 결과가 있으면 업데이트, 없으면 추가
-   - 저장 정보: 모델명, 과목, 정확도, MRR 등
+   - Extracts texts from `text_1`, `text_2`, ... columns per row
+   - Applies `max_samples_per_row` limit
+   - Creates sample and ground truth code pairs
+   - Encodes all sample texts into vectors
 
-**평가 메트릭**:
-- **Top-K Accuracy**: 상위 K개 예측 중 정답 포함 비율
-- **MRR**: 정답의 평균 역순위 (1위면 1.0, 2위면 0.5, 3위면 0.33...)
+5. **Cosine Similarity Computation**
 
-**입력**: 
-- `input_csv`: 평가할 CSV 파일
-- `model_name`: Bi-Encoder 모델 이름
-- `max_samples_per_row`: 행당 최대 샘플 수
+   - `util.cos_sim(emb_samples, emb_contents)`: Computes similarity matrix
+   - Dimensions: `[num_samples, num_standards]`
+   - Calculates similarity between each sample and all achievement standards
 
-**출력**: 
-- `results.json`: 평가 결과
+6. **Top-K Accuracy Computation**
 
-**예시 실행**:
+   - Computes Top-1, 3, 10, 20, 40, 60 accuracy
+   - For each sample, checks if ground truth is in top-k predictions
+   - Accuracy = correct samples / total samples
+
+7. **MRR (Mean Reciprocal Rank) Computation**
+
+   - Identifies rank of ground truth for each sample
+   - Reciprocal Rank = 1 / rank
+   - MRR = average of all RR values
+   - Higher MRR indicates ground truth ranked higher
+
+8. **Result Persistence**
+   - Saves results to JSON file (`results.json`)
+   - Updates existing results or appends new entries
+   - Stores: model name, subject, accuracy metrics, MRR
+
+**Evaluation Metrics**:
+
+- **Top-K Accuracy**: Proportion of samples where ground truth is in top-k predictions
+- **MRR**: Mean reciprocal rank of ground truth (1.0 for rank 1, 0.5 for rank 2, 0.33 for rank 3...)
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `model_name`: Bi-encoder model name
+- `max_samples_per_row`: Maximum samples per row
+
+**Output**:
+
+- `results.json`: Evaluation results
+
+**Example Execution**:
+
 ```bash
 python eval_cosine_similarity.py --input_csv ../dataset/valid_80/과학.csv
 ```
@@ -444,113 +513,127 @@ python eval_cosine_similarity.py --input_csv ../dataset/valid_80/과학.csv
 
 ### 2.2 batch_cosine_similarity.py
 
-**위치**: `src/cosine_similarity/batch_cosine_similarity.py`
+**Location**: `src/cosine_similarity/batch_cosine_similarity.py`
 
-**목적**: 폴더 내 모든 CSV 파일에 대해 코사인 유사도 평가를 일괄 실행
+**Purpose**: Executes cosine similarity evaluation in batch for all CSV files in a directory.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `evaluate_folder(...)`
+**Function**: `evaluate_folder(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **CSV 파일 수집**
-   - `folder_path` 내 모든 `.csv` 파일 찾기
-   - 파일이 없으면 경고 메시지 출력
+1. **CSV File Collection**
 
-2. **각 CSV 파일 평가**
-   - `tqdm`으로 진행 상황 표시
-   - 각 파일에 대해 `evaluate_cosine_similarity_baseline` 호출
-   - 오류 발생 시 건너뛰고 계속 진행
-   - 모든 결과를 동일한 JSON 파일에 누적 저장
+   - Finds all `.csv` files in `folder_path`
+   - Prints warning if no files found
 
-**입력**: 
-- `folder_path`: CSV 파일들이 있는 폴더
-- `model_name`: 사용할 Bi-Encoder 모델
-- `json_path`: 결과를 저장할 JSON 파일
+2. **Per-File Evaluation**
+   - Displays progress with `tqdm`
+   - Calls `evaluate_cosine_similarity_baseline` for each file
+   - Continues processing on error (skips failed files)
+   - Accumulates all results in the same JSON file
 
-**출력**: 
-- `results.json`: 모든 과목의 평가 결과
+**Input**:
 
-**예시 실행**:
+- `folder_path`: Folder containing CSV files
+- `model_name`: Bi-encoder model to use
+- `json_path`: JSON file path for results
+
+**Output**:
+
+- `results.json`: Evaluation results for all subjects
+
+**Example Execution**:
+
 ```bash
 python batch_cosine_similarity.py --folder_path ../dataset/valid_80/
 ```
 
 ---
 
-## 3. Cross Encoder 학습 및 평가
+## 3. Cross-Encoder Training and Evaluation
 
 ### 3.1 finetune_cross_encoder.py
 
-**위치**: `src/cross_encoder/finetune_cross_encoder.py`
+**Location**: `src/cross_encoder/finetune_cross_encoder.py`
 
-**목적**: Cross-Encoder 모델을 한국어 교육 데이터에 파인튜닝
+**Purpose**: Fine-tunes a cross-encoder model on Korean educational data.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `fine_tune_cross_encoder(...)`
+**Function**: `fine_tune_cross_encoder(...)`
 
-#### Cross-Encoder란?
-- Bi-Encoder: 텍스트를 별도로 인코딩 후 유사도 계산 (빠르지만 정확도 낮음)
-- Cross-Encoder: 두 텍스트를 함께 입력하여 직접 관련성 점수 계산 (느리지만 정확)
+#### Cross-Encoder Architecture
 
-**단계별 처리 과정**:
+- **Bi-Encoder**: Encodes texts separately then computes similarity (fast but lower accuracy)
+- **Cross-Encoder**: Encodes two texts together to directly compute relevance score (slower but more accurate)
 
-1. **데이터 로딩 및 분할**
-   - CSV에서 성취기준 데이터 로딩
-   - Train/Test 분할 (기본 8:2)
-   - 행(row) 단위로 분할하여 데이터 누수 방지
+**Processing Pipeline**:
 
-2. **학습 데이터 쌍 생성** (`build_pairs_from_df`)
-   
-   **긍정 쌍(Positive Pairs) 생성**:
-   - 각 성취기준(`content`)과 해당 텍스트 샘플들 매칭
-   - 형식: `(text_sample, achievement_standard_content)` → label=1.0
-   - 중복 제거를 위해 `pos_keys` 집합 사용
-   
-   **부정 쌍(Negative Pairs) 생성**:
-   - 랜덤하게 텍스트와 성취기준을 매칭 (관련 없는 쌍)
-   - 형식: `(text_sample, random_content)` → label=0.0
-   - 긍정 쌍과 겹치지 않도록 검증
-   - 부정 쌍 개수 = 긍정 쌍 개수 × `neg_ratio`
-   - 최대 시도 횟수: `num_neg * 20`
+1. **Data Loading and Splitting**
 
-3. **모델 초기화**
-   - 기본 모델: `bongsoo/albert-small-kor-cross-encoder-v1`
-   - 한국어에 특화된 경량 Cross-Encoder
-   - `num_labels=1`: 연속적인 관련성 점수 출력 (0~1)
+   - Loads achievement standard data from CSV
+   - Train/Test split (default 8:2)
+   - Splits at row level to prevent data leakage
 
-4. **학습 설정**
-   - DataLoader 생성 (배치 처리)
-   - Warmup steps: 전체 스텝의 10%
-   - Learning rate 서서히 증가 후 감소 (학습 안정화)
+2. **Training Pair Generation** (`build_pairs_from_df`)
 
-5. **파인튜닝 실행**
-   - `model.fit()` 호출
-   - 에폭 수, Learning rate, Warmup 설정
-   - 진행 상황 표시
-   - 학습된 모델을 `output_dir`에 저장
+   **Positive Pair Generation**:
 
-6. **평가**
-   - Test set에서 예측 수행
-   - 0.5를 기준으로 이진 분류
-   - 메트릭 계산:
-     - **Accuracy**: 정확히 분류한 비율
-     - **F1 Score**: Precision과 Recall의 조화평균
-     - **ROC-AUC**: 분류 성능의 종합 지표 (0.5=랜덤, 1.0=완벽)
+   - Matches each achievement standard (`content`) with its corresponding text samples
+   - Format: `(text_sample, achievement_standard_content)` → label=1.0
+   - Uses `pos_keys` set for deduplication
 
-**입력**: 
-- `input_csv`: 학습용 CSV 파일
-- `base_model`: 사전학습된 Cross-Encoder 모델
-- `epochs`: 학습 에폭 수 (기본값: 2)
-- `batch_size`: 배치 크기 (기본값: 8)
+   **Negative Pair Generation**:
 
-**출력**: 
-- `cross_finetuned/`: 파인튜닝된 모델 디렉토리
-- 콘솔에 Accuracy, F1, ROC-AUC 출력
+   - Randomly matches texts with achievement standards (unrelated pairs)
+   - Format: `(text_sample, random_content)` → label=0.0
+   - Validates no overlap with positive pairs
+   - Negative pair count = positive pair count × `neg_ratio`
+   - Maximum attempts: `num_neg * 20`
 
-**예시 실행**:
+3. **Model Initialization**
+
+   - Base model: `bongsoo/albert-small-kor-cross-encoder-v1`
+   - Korean-optimized lightweight cross-encoder
+   - `num_labels=1`: Outputs continuous relevance score (0~1)
+
+4. **Training Configuration**
+
+   - Creates DataLoader (batch processing)
+   - Warmup steps: 10% of total steps
+   - Learning rate schedule: gradual increase then decrease (training stabilization)
+
+5. **Fine-tuning Execution**
+
+   - Calls `model.fit()`
+   - Configures epochs, learning rate, warmup
+   - Displays progress
+   - Saves trained model to `output_dir`
+
+6. **Evaluation**
+   - Performs predictions on test set
+   - Binary classification with 0.5 threshold
+   - Computes metrics:
+     - **Accuracy**: Proportion of correctly classified pairs
+     - **F1 Score**: Harmonic mean of precision and recall
+     - **ROC-AUC**: Comprehensive classification performance metric (0.5=random, 1.0=perfect)
+
+**Input**:
+
+- `input_csv`: Training CSV file
+- `base_model`: Pre-trained cross-encoder model
+- `epochs`: Number of training epochs (default: 2)
+- `batch_size`: Batch size (default: 8)
+
+**Output**:
+
+- `cross_finetuned/`: Fine-tuned model directory
+- Console output: Accuracy, F1, ROC-AUC
+
+**Example Execution**:
+
 ```bash
 python finetune_cross_encoder.py --input_csv ../dataset/train_80/과학.csv --epochs 3
 ```
@@ -559,385 +642,1049 @@ python finetune_cross_encoder.py --input_csv ../dataset/train_80/과학.csv --ep
 
 ### 3.2 eval_cross_encoder.py
 
-**위치**: `src/cross_encoder/eval_cross_encoder.py`
+**Location**: `src/cross_encoder/eval_cross_encoder.py`
 
-**목적**: Bi-Encoder로 후보를 추출한 후 Cross-Encoder로 재순위화하여 정확도 향상
+**Purpose**: Improves accuracy by extracting candidates with bi-encoder then re-ranking with cross-encoder.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `evaluate_bi_cross_pipeline(...)`
+**Function**: `evaluate_bi_cross_pipeline(...)`
 
-#### 2단계 검색 파이프라인
-1. **Bi-Encoder**: 빠르게 상위 K개 후보 추출
-2. **Cross-Encoder**: 후보들을 정밀하게 재순위화
+#### Two-Stage Retrieval Pipeline
 
-**단계별 처리 과정**:
+1. **Bi-Encoder**: Rapidly extracts top-k candidates
+2. **Cross-Encoder**: Precisely re-ranks candidates
 
-1. **데이터 및 모델 준비**
-   - CSV 로딩 및 검증
-   - Bi-Encoder 로딩 (`jhgan/ko-sroberta-multitask`)
-   - Cross-Encoder 로딩 (파인튜닝된 모델)
-   - 성취기준 벡터화 (Bi-Encoder)
+**Processing Pipeline**:
 
-2. **샘플 수집**
-   - `text_` 컬럼에서 평가 샘플 추출
-   - 정답 코드와 함께 저장
-   - `max_samples_per_row` 제한 적용
+1. **Data and Model Preparation**
 
-3. **1단계: Bi-Encoder 검색**
-   - 모든 샘플을 벡터로 인코딩
-   - 코사인 유사도 계산
-   - 각 샘플당 상위 `top_k`개 후보 선택 (기본값: 20)
-   - 빠른 속도로 후보군 축소
+   - Loads and validates CSV
+   - Loads bi-encoder (`jhgan/ko-sroberta-multitask`)
+   - Loads cross-encoder (fine-tuned model)
+   - Vectorizes achievement standards (bi-encoder)
 
-4. **2단계: Cross-Encoder 재순위화**
-   
-   각 샘플에 대해:
-   - `top_k`개 후보와 query를 쌍으로 만듦
-   - Cross-Encoder로 정확한 관련성 점수 계산
-   - 점수 기준으로 재정렬
-   - Top-1 예측이 틀린 경우 오답 샘플로 기록
+2. **Sample Collection**
 
-5. **평가 메트릭 계산**
-   - **Top-1/3/10/20 Accuracy**: 상위 K개 내 정답 포함 비율
-   - **MRR**: 평균 역순위
-   - Bi-Encoder 단독보다 일반적으로 높은 성능
+   - Extracts evaluation samples from `text_` columns
+   - Stores with ground truth codes
+   - Applies `max_samples_per_row` limit
 
-6. **결과 저장**
-   
-   **JSON 로깅**:
-   - 모델 정보, 과목, 정확도, MRR
-   - 기존 결과 업데이트 또는 추가
-   - `results_rerank.json`에 저장
-   
-   **오답 분석**:
-   - 틀린 샘플 중 랜덤 100개 저장
-   - 저장 정보:
-     - 입력 텍스트
-     - 정답 코드 및 내용
-     - 예측 코드 및 내용
-   - `logs/{과목명}_wrongs.txt`에 저장
+3. **Stage 1: Bi-Encoder Retrieval**
 
-**입력**: 
-- `input_csv`: 평가할 CSV 파일
-- `bi_model`: Bi-Encoder 모델
-- `cross_model`: Cross-Encoder 모델 (파인튜닝된 것)
-- `top_k`: 재순위화할 후보 개수
+   - Encodes all samples into vectors
+   - Computes cosine similarity
+   - Selects top `top_k` candidates per sample (default: 20)
+   - Rapidly reduces candidate pool
 
-**출력**: 
-- `results_rerank.json`: 평가 결과
-- `logs/{subject}_wrongs.txt`: 오답 샘플 분석
+4. **Stage 2: Cross-Encoder Re-ranking**
 
-**예시 실행**:
+   For each sample:
+
+   - Creates pairs of `top_k` candidates with query
+   - Computes precise relevance scores with cross-encoder
+   - Re-sorts by score
+   - Records incorrect samples if top-1 prediction is wrong
+
+5. **Evaluation Metric Computation**
+
+   - **Top-1/3/10/20 Accuracy**: Proportion of ground truth in top-k predictions
+   - **MRR**: Mean reciprocal rank
+   - Generally outperforms bi-encoder alone
+
+6. **Result Persistence**
+
+   **JSON Logging**:
+
+   - Model information, subject, accuracy, MRR
+   - Updates existing results or appends new entries
+   - Saves to `results_rerank.json`
+
+   **Error Analysis**:
+
+   - Saves random 100 incorrect samples
+   - Stores:
+     - Input text
+     - Ground truth code and content
+     - Predicted code and content
+   - Saves to `logs/{subject}_wrongs.txt`
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `bi_model`: Bi-encoder model
+- `cross_model`: Cross-encoder model (fine-tuned)
+- `top_k`: Number of candidates to re-rank
+
+**Output**:
+
+- `results_rerank.json`: Evaluation results
+- `logs/{subject}_wrongs.txt`: Incorrect sample analysis
+
+**Example Execution**:
+
 ```bash
 python eval_cross_encoder.py --input_csv ../dataset/valid_80/과학.csv --cross_model ./cross_finetuned
 ```
 
 ---
 
-## 4. LLM 텍스트 분류
+## 4. Multi-Class Classifier Training and Evaluation
 
-### 4.1 eval_llm.py
+### 4.1 train_multiclass_classifier.py
 
-**위치**: `src/llm_text_classification/eval_llm.py`
+**Location**: `src/classification/train_multiclass_classifier.py`
 
-**목적**: 사전학습된 생성형 LLM을 사용하여 교육 텍스트를 성취기준으로 분류
+**Purpose**: Trains a multi-class classifier that directly maps educational texts to achievement standard codes, treating each achievement standard as a distinct class.
 
-#### 개요
+#### Technical Analysis
 
-기존의 Bi-Encoder나 Cross-Encoder와 달리, 생성형 LLM을 사용하여 직접 성취기준 코드를 생성합니다.
+**Function**: `train_classifier(...)`
 
-**접근 방법**:
-- 프롬프트에 모든 후보 성취기준을 나열
-- LLM이 가장 관련성 높은 성취기준 코드를 직접 출력
-- 예: `10영03-04`
+#### Multi-Class Classification Architecture
 
-#### 주요 기능 분석
+This approach formulates the task as a multi-class classification problem where:
 
-**함수**: `evaluate_llm_classification(...)`
+- Each achievement standard code represents a distinct class
+- The model performs direct classification from text to achievement standard code
+- Advantages over bi-encoder approaches:
+  - Direct classification yields higher accuracy
+  - Single forward pass enables fast inference
+  - Enhanced semantic understanding through end-to-end training
+  - Supports advanced techniques (label smoothing, focal loss, etc.)
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **데이터 로딩**
-   - CSV에서 성취기준 및 샘플 텍스트 로딩
-   - `max_samples_per_row`: 각 성취기준당 평가할 샘플 수
-   - `max_total_samples`: 전체 샘플 수 제한 (랜덤 샘플링)
+1. **Data Preparation**
 
-2. **후보 준비**
-   - 모든 성취기준을 후보 리스트로 준비
-   - `max_candidates`: 후보 수 제한 (기본값: 200)
-   - 성취기준이 많은 경우 랜덤 샘플링
-   - 형식: `[(번호, 코드, 내용), ...]`
+   - Loads CSV file containing achievement standards and text samples
+   - Extracts all text samples from `text_` columns
+   - Builds label mappings: `code_to_idx`, `idx_to_code`, `code_to_content`
+   - Applies `max_samples_per_class` limit if specified
+   - Performs train/validation split at row level to prevent data leakage
 
-3. **LLM 모델 로딩**
-   - 기본 모델: `Qwen/Qwen2.5-3B-Instruct`
-   - float16 정밀도로 로딩 (GPU)
-   - 평가 모드로 설정
+2. **Model Architecture Initialization**
 
-4. **프롬프트 생성**
-   - 각 샘플에 대해 분류 프롬프트 생성
-   - 프롬프트 구조:
+   - Base model: `klue/roberta-large` (Korean language model)
+   - Architecture components:
+     - Pre-trained transformer encoder
+     - Pooling layer (CLS token or mean pooling)
+     - Dropout layer for regularization
+     - Classification head with `num_classes` output dimensions
+   - Model configuration:
+     - `max_length`: Maximum sequence length (default: 256)
+     - `dropout`: Dropout rate (default: 0.1)
+     - `pooling`: Pooling strategy (`cls` or `mean`)
+
+3. **Loss Function Selection**
+
+   - **Cross-Entropy Loss** (`ce`): Standard classification loss
+   - **Label Smoothing Cross-Entropy** (`label_smoothing`): Regularization technique to prevent overconfidence
+   - **Focal Loss** (`focal`): Addresses class imbalance by down-weighting easy examples
+     - Parameters: `focal_alpha` (class weighting), `focal_gamma` (focusing parameter)
+
+4. **Training Configuration**
+
+   - Optimizer: AdamW with weight decay
+   - Learning rate: 2e-5 (default)
+   - Learning rate schedule: Cosine annealing with warmup
+   - Warmup ratio: 10% of total training steps
+   - Gradient accumulation: Configurable for effective larger batch sizes
+   - Mixed precision training: FP16/BF16 for memory efficiency
+
+5. **Training Execution**
+
+   - Iterates through training epochs
+   - Computes loss and backpropagates gradients
+   - Evaluates on validation set after each epoch
+   - Implements early stopping based on validation performance
+   - Saves best model checkpoint based on validation accuracy
+
+6. **Model Evaluation**
+
+   - Computes comprehensive metrics on test set:
+     - **Top-K Accuracy**: Accuracy at different k values (1, 3, 5, 10, 20)
+     - **Weighted F1 Score**: Class-weighted F1 score
+     - **Macro F1 Score**: Unweighted mean F1 across classes
+     - **Precision and Recall**: Per-class and weighted averages
+
+7. **Model Persistence**
+   - Saves trained model weights: `model.pt`
+   - Saves configuration: `config.json`
+   - Saves label mappings: `label_mappings.json`
+   - Saves training history and metrics
+
+**Input**:
+
+- `input_csv`: Training CSV file
+- `base_model`: Pre-trained transformer model (default: `klue/roberta-large`)
+- `output_dir`: Directory to save trained model
+- `max_samples_per_class`: Maximum samples per achievement standard
+- `epochs`: Number of training epochs (default: 10)
+- `batch_size`: Batch size (default: 32)
+- `lr`: Learning rate (default: 2e-5)
+- `loss_type`: Loss function type (`ce`, `focal`, `label_smoothing`)
+
+**Output**:
+
+- `model/achievement_classifier/`: Trained model directory
+  - `model.pt`: Model weights
+  - `config.json`: Model configuration
+  - `label_mappings.json`: Code-to-index mappings
+
+**Example Execution**:
+
+```bash
+python train_multiclass_classifier.py \
+    --input_csv ../dataset/train_80/과학.csv \
+    --base_model klue/roberta-large \
+    --output_dir ../model/achievement_classifier \
+    --epochs 10 \
+    --loss_type ce
+```
+
+---
+
+### 4.2 eval_multiclass_classifier.py
+
+**Location**: `src/classification/eval_multiclass_classifier.py`
+
+**Purpose**: Evaluates a trained multi-class classifier on test data and computes comprehensive performance metrics.
+
+#### Technical Analysis
+
+**Function**: `evaluate_model(...)`
+
+**Processing Pipeline**:
+
+1. **Model Loading**
+
+   - Loads trained model from checkpoint directory
+   - Restores model architecture from `config.json`
+   - Loads label mappings from `label_mappings.json`
+   - Initializes tokenizer
+
+2. **Data Preparation**
+
+   - Loads test CSV file
+   - Prepares test dataset using same preprocessing as training
+   - Creates DataLoader for batch processing
+
+3. **Inference**
+
+   - Processes test samples in batches
+   - Computes logits for all classes
+   - Applies softmax to obtain class probabilities
+   - Extracts top-k predictions for each sample
+
+4. **Metric Computation**
+
+   - **Top-K Accuracy**: Computes accuracy at multiple k values
+   - **Weighted F1**: Class-weighted F1 score accounting for class imbalance
+   - **Macro F1**: Unweighted mean F1 across all classes
+   - **Precision/Recall**: Per-class and weighted averages
+   - **Classification Report**: Detailed per-class metrics
+
+5. **Result Persistence**
+   - Saves evaluation metrics to JSON
+   - Generates classification report
+   - Outputs confusion matrix (optional)
+
+**Input**:
+
+- `input_csv`: Test CSV file
+- `model_dir`: Directory containing trained model
+- `batch_size`: Batch size for evaluation
+
+**Output**:
+
+- Evaluation metrics (JSON format)
+- Classification report
+- Per-class performance statistics
+
+**Example Execution**:
+
+```bash
+python eval_multiclass_classifier.py \
+    --input_csv ../dataset/valid_80/과학.csv \
+    --model_dir ../model/achievement_classifier/best_model
+```
+
+---
+
+### 4.3 predict_multiclass.py
+
+**Location**: `src/classification/predict_multiclass.py`
+
+**Purpose**: Provides inference functionality for trained multi-class classifiers, enabling prediction on new text samples.
+
+#### Technical Analysis
+
+**Function**: `predict_batch(...)`
+
+**Processing Pipeline**:
+
+1. **Model Loading**
+
+   - Loads trained model and configuration
+   - Initializes tokenizer
+   - Restores label mappings
+
+2. **Text Preprocessing**
+
+   - Tokenizes input texts
+   - Applies padding and truncation
+   - Converts to model input format
+
+3. **Batch Inference**
+
+   - Processes texts in batches for efficiency
+   - Computes logits for all classes
+   - Applies softmax to obtain probability distribution
+
+4. **Top-K Extraction**
+
+   - Extracts top-k class predictions with probabilities
+   - Maps class indices to achievement standard codes
+   - Retrieves corresponding content descriptions
+
+5. **Result Formatting**
+   - Returns structured predictions with:
+     - Predicted achievement standard codes
+     - Corresponding probabilities
+     - Content descriptions
+
+**Input**:
+
+- `model`: Trained AchievementClassifier model
+- `tokenizer`: Tokenizer instance
+- `texts`: List of input text strings
+- `top_k`: Number of top predictions to return
+- `batch_size`: Batch size for inference
+
+**Output**:
+
+- List of prediction dictionaries containing:
+  - `top_k`: List of top-k predictions with codes, probabilities, and contents
+
+**Example Usage**:
+
+```python
+from src.classification.predict_multiclass import load_model, predict_batch
+
+model, tokenizer, config, mappings = load_model(model_dir, device)
+results = predict_batch(model, tokenizer, texts, device, top_k=10)
+```
+
+---
+
+### 4.4 inference.py
+
+**Location**: `src/classification/inference.py`
+
+**Purpose**: Provides a high-level inference interface for retrieving top-k achievement standards for a given text, with filtering capabilities based on training data.
+
+#### Technical Analysis
+
+**Function**: `infer_top_k(...)`
+
+**Processing Pipeline**:
+
+1. **Model and Data Loading**
+
+   - Loads trained classifier model (or uses provided model instance)
+   - Loads training CSV to obtain available achievement standards
+   - Builds code-to-content mapping from training data
+
+2. **Text Classification**
+
+   - Performs inference on input text
+   - Obtains probability distribution over all classes
+   - Maps class indices to achievement standard codes
+
+3. **Candidate Filtering**
+
+   - Filters predictions to only include codes present in training CSV
+   - This ensures retrieved candidates are from the training distribution
+   - Retrieves content descriptions for filtered candidates
+
+4. **Top-K Selection and Ordering**
+
+   - Selects top-k candidates based on probability scores
+   - If `random=True`: Shuffles results to prevent position bias
+   - If `random=False`: Maintains probability-based ordering (highest first)
+
+5. **Result Formatting**
+   - Returns structured dictionary with:
+     - Input text
+     - Top-k achievement standards with codes, contents, and probabilities
+     - Metadata (k value, total candidates considered)
+
+**Key Features**:
+
+- **Training Data Filtering**: Only returns candidates from training distribution
+- **Flexible Ordering**: Supports both probability-ordered and shuffled outputs
+- **Batch Processing Support**: Can be used with pre-loaded models for efficiency
+
+**Input**:
+
+- `text`: Input text string to classify
+- `top_k`: Number of top predictions to return
+- `train_csv`: Path to training CSV (for filtering and content mapping)
+- `model_dir`: Path to trained model directory (or provide model instance)
+- `random`: Whether to shuffle results (default: True)
+
+**Output**:
+
+- Dictionary containing:
+  - `text`: Input text
+  - `k`: Number of results returned
+  - `top_k`: List of top-k predictions with codes, contents, and probabilities
+
+**Example Usage**:
+
+```python
+from src.classification.inference import infer_top_k
+
+result = infer_top_k(
+    text="일차방정식의 풀이 방법을 이해하고 활용할 수 있다",
+    top_k=20,
+    train_csv="../dataset/train_80/수학.csv",
+    model_dir="../model/achievement_classifier/best_model",
+    random=False
+)
+```
+
+**Integration with RAG Workflow**:
+This function serves as the retrieval component in the RAG pipeline:
+
+1. `infer_top_k` retrieves top-k candidate achievement standards
+2. LLM selects the best match from the retrieved candidates
+3. This two-stage approach combines efficient retrieval with precise selection
+
+---
+
+## 5. LLM-based Text Classification
+
+### 5.1 eval_llm.py
+
+**Location**: `src/llm_text_classification/eval_llm.py`
+
+**Purpose**: Classifies educational texts into achievement standards using pre-trained generative LLMs.
+
+#### Overview
+
+Unlike bi-encoder or cross-encoder approaches, this method uses generative LLMs to directly output achievement standard codes.
+
+**Approach**:
+
+- Lists all candidate achievement standards in the prompt
+- LLM directly outputs the most relevant achievement standard code
+- Example: `10영03-04`
+
+#### Technical Analysis
+
+**Function**: `evaluate_llm_classification(...)`
+
+**Processing Pipeline**:
+
+1. **Data Loading**
+
+   - Loads achievement standards and sample texts from CSV
+   - `num_samples`: Target number of samples to evaluate
+   - `max_total_samples`: Total sample limit (random sampling if exceeded)
+
+2. **Candidate Preparation**
+
+   - Prepares all achievement standards as candidate list
+   - `max_candidates`: Candidate limit (default: 200)
+   - Random sampling if number of standards exceeds limit
+   - Format: `[(number, code, content), ...]`
+
+3. **LLM Model Loading**
+
+   - Default model: `Qwen/Qwen2.5-3B-Instruct`
+   - Loads with float16 precision (GPU)
+   - Sets to evaluation mode
+
+4. **Prompt Generation**
+
+   - Generates classification prompt for each sample
+   - Prompt structure:
+
      ```
-     다음 교육 내용을 가장 잘 설명하는 성취기준 코드를 선택하세요.
-     
-     교육 내용:
-     [샘플 텍스트]
-     
-     후보 성취기준:
+     Select the achievement standard code that best describes the following educational content.
+
+     Educational Content:
+     [Sample text]
+
+     Candidate Achievement Standards:
      1. [6과01-01] 물체의 운동을 관찰하여...
      2. [6과01-02] 자석의 성질을 탐구하여...
      ...
-     
-     정답 코드:
+
+     Answer Code:
      ```
 
-5. **예측 생성**
-   - 각 샘플에 대해 LLM이 코드 생성
-   - `max_new_tokens`: 생성할 최대 토큰 수 (기본값: 50)
-   - `temperature`: 샘플링 온도 (기본값: 0.1, 거의 탐욕적)
-   - `max_input_length`: 입력 최대 길이 (초과 시 자동 truncate)
+5. **Prediction Generation**
 
-6. **응답 파싱**
-   - LLM 출력에서 성취기준 코드 추출
-   - 매칭 타입 분류:
-     - **exact**: 정확히 일치하는 코드 (예: `10영03-04`)
-     - **partial**: 부분 일치 (예: `03-04`를 `10영03-04`로 복원)
-     - **invalid**: 유효하지 않은 코드
+   - LLM generates code for each sample
+   - `max_new_tokens`: Maximum tokens to generate (default: 50)
+   - `temperature`: Sampling temperature (default: 0.1, nearly greedy)
+   - `max_input_length`: Maximum input length (auto-truncates if exceeded)
 
-7. **평가**
-   - **Accuracy**: 정답 비율
-   - **MRR**: 평균 역순위 (LLM은 단일 예측만 하므로 Accuracy와 동일)
-   - **Exact Match %**: 정확히 일치하는 응답 비율
-   - **Match Type 분포**: exact/partial/invalid 비율
+6. **Response Parsing**
 
-8. **결과 저장**
-   - JSON 로깅: `results.json`
-   - 오답 샘플 저장: `logs/{과목명}_wrongs.txt` (최대 100개)
-   - 정답 샘플 저장: `logs/{과목명}_corrects.txt` (최대 100개)
+   - Extracts achievement standard code from LLM output
+   - Classifies match type:
+     - **exact**: Exact code match (e.g., `10영03-04`)
+     - **partial**: Partial match (e.g., `03-04` restored to `10영03-04`)
+     - **invalid**: Invalid code
 
-**입력**: 
-- `input_csv`: 평가할 CSV 파일
-- `model_name`: LLM 모델 이름 (기본값: `Qwen/Qwen2.5-3B-Instruct`)
-- `max_samples_per_row`: 행당 최대 샘플 수
-- `max_total_samples`: 전체 최대 샘플 수
-- `max_candidates`: 최대 후보 개수 (기본값: 200)
-- `max_new_tokens`: 생성 최대 토큰 수 (기본값: 50)
-- `temperature`: 샘플링 온도 (기본값: 0.1)
-- `max_input_length`: 입력 최대 길이 (기본값: 6144)
+7. **Evaluation**
 
-**출력**: 
-- `output/llm_text_classification/results.json`: 평가 결과
-- `output/llm_text_classification/logs/{과목명}_wrongs.txt`: 오답 샘플
-- `output/llm_text_classification/logs/{과목명}_corrects.txt`: 정답 샘플
+   - **Accuracy**: Correct prediction rate
+   - **MRR**: Mean reciprocal rank (same as accuracy for single prediction)
+   - **Exact Match %**: Proportion of exact matches
+   - **Match Type Distribution**: exact/partial/invalid proportions
 
-**예시 실행**:
+8. **Result Persistence**
+   - JSON logging: `results.json`
+   - Incorrect samples: `logs/{subject}_wrongs.txt` (max 100)
+   - Correct samples: `logs/{subject}_corrects.txt` (max 100)
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `model_name`: LLM model name (default: `Qwen/Qwen2.5-3B-Instruct`)
+- `num_samples`: Target number of samples
+- `max_total_samples`: Maximum total samples
+- `max_candidates`: Maximum candidate count (default: 200)
+- `max_new_tokens`: Maximum tokens to generate (default: 50)
+- `temperature`: Sampling temperature (default: 0.1)
+- `max_input_length`: Maximum input length (default: 6144)
+
+**Output**:
+
+- `output/llm_text_classification/results.json`: Evaluation results
+- `output/llm_text_classification/logs/{subject}_wrongs.txt`: Incorrect samples
+- `output/llm_text_classification/logs/{subject}_corrects.txt`: Correct samples
+
+**Example Execution**:
+
 ```bash
 python eval_llm.py \
     --input_csv ../dataset/valid_80/과학.csv \
     --model_name Qwen/Qwen2.5-3B-Instruct \
     --max-candidates 120 \
-    --max-total-samples 100
+    --num-samples 100
 ```
 
 ---
 
-### 4.2 finetune_llm.py
+### 5.2 finetune_llm.py
 
-**위치**: `src/llm_text_classification/finetune_llm.py`
+**Location**: `src/llm_text_classification/finetune_llm.py`
 
-**목적**: 생성형 LLM을 교육 성취기준 분류 태스크에 파인튜닝
+**Purpose**: Fine-tunes generative LLMs for educational achievement standard classification task.
 
-#### 개요
+#### Overview
 
-Unsloth 라이브러리를 사용하여 효율적으로 LLM을 파인튜닝합니다. LoRA (Low-Rank Adaptation) 기법을 사용하여 메모리 효율적으로 학습합니다.
+Uses Unsloth library for efficient LLM fine-tuning. Employs LoRA (Low-Rank Adaptation) technique for memory-efficient training.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `finetune_llm(...)`
+**Function**: `finetune_llm(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **학습 데이터 준비**
-   - `train_dir` 내 모든 CSV 파일 로딩 (과목별 파일들)
-   - 각 파일에서 성취기준과 텍스트 샘플 추출
-   - `max_samples_per_row`: 각 성취기준당 사용할 샘플 수 (기본값: 1)
-   - `max_total_samples`: 전체 학습 샘플 수 제한
-   - `max_candidates`: 프롬프트당 후보 개수 제한 (기본값: 120)
+1. **Training Data Preparation**
 
-2. **프롬프트 생성**
-   - 각 샘플에 대해 평가와 동일한 형식의 프롬프트 생성
-   - 정답 코드를 completion으로 추가
-   - 형식:
+   - Loads all CSV files in `train_dir` (subject-specific files)
+   - Extracts achievement standards and text samples from each file
+   - `num_samples`: Number of samples per achievement standard (default: 1)
+   - `max_total_samples`: Total training sample limit
+   - `max_candidates`: Candidate limit per prompt (default: 120)
+
+2. **Prompt Generation**
+
+   - Generates prompts in same format as evaluation
+   - Adds ground truth code as completion
+   - Format:
      ```
-     [프롬프트]
-     정답 코드:
-     [정답 코드]
+     [Prompt]
+     Answer Code:
+     [Ground truth code]
      ```
 
-3. **모델 로딩 (Unsloth)**
-   - 기본 모델: `unsloth/Qwen2.5-3B-Instruct`
-   - 4-bit 양자화 로딩 (메모리 절약)
-   - `max_seq_length`: 최대 시퀀스 길이 (기본값: 6144)
+3. **Model Loading (Unsloth)**
 
-4. **LoRA 어댑터 추가**
+   - Base model: `unsloth/Qwen2.5-3B-Instruct`
+   - Loads with 4-bit quantization (memory efficient)
+   - `max_seq_length`: Maximum sequence length (default: 6144)
+
+4. **LoRA Adapter Addition**
+
    - Target modules: `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`
-   - `lora_r`: LoRA rank (기본값: 16)
-   - `lora_alpha`: LoRA alpha (기본값: 16)
-   - `lora_dropout`: LoRA dropout (기본값: 0.0)
+   - `lora_r`: LoRA rank (default: 16)
+   - `lora_alpha`: LoRA alpha (default: 16)
+   - `lora_dropout`: LoRA dropout (default: 0.0)
 
-5. **학습 설정**
-   - `SFTTrainer` (Supervised Fine-Tuning Trainer) 사용
-   - 하이퍼파라미터:
-     - `num_train_epochs`: 에폭 수 (기본값: 1)
-     - `per_device_train_batch_size`: 배치 크기 (기본값: 4)
-     - `gradient_accumulation_steps`: 그래디언트 누적 (기본값: 4)
-     - `learning_rate`: 학습률 (기본값: 2e-4)
-     - `warmup_steps`: 워밍업 스텝 (기본값: 5)
+5. **Training Configuration**
+
+   - Uses `SFTTrainer` (Supervised Fine-Tuning Trainer)
+   - Hyperparameters:
+     - `num_train_epochs`: Number of epochs (default: 1)
+     - `per_device_train_batch_size`: Batch size (default: 4)
+     - `gradient_accumulation_steps`: Gradient accumulation (default: 4)
+     - `learning_rate`: Learning rate (default: 2e-4)
+     - `warmup_steps`: Warmup steps (default: 5)
    - Optimizer: AdamW 8-bit
-   - Mixed Precision: FP16 또는 BF16 (GPU 지원 여부에 따라)
+   - Mixed Precision: FP16 or BF16 (depending on GPU support)
 
-6. **학습 실행**
-   - `trainer.train()` 호출
-   - 진행 상황 자동 출력
-   - 체크포인트 자동 저장
+6. **Training Execution**
 
-7. **모델 저장**
-   - **LoRA 어댑터**: `output_dir/` (경량, 재사용 가능)
-   - **Merged 16-bit 모델**: `output_dir/merged_16bit/` (추론용, 고품질)
-   - **Merged 4-bit 모델**: `output_dir/merged_4bit/` (추론용, 메모리 절약)
-   - **학습 정보**: `output_dir/training_info.json`
+   - Calls `trainer.train()`
+   - Automatic progress output
+   - Automatic checkpoint saving
 
-**입력**: 
-- `train_dir`: 학습용 CSV 파일들이 있는 디렉토리
-- `model_name`: 기본 LLM 모델 (기본값: `unsloth/Qwen2.5-3B-Instruct`)
-- `output_dir`: 출력 디렉토리 (기본값: `model/finetuned_llm`)
-- `max_seq_length`: 최대 시퀀스 길이 (기본값: 6144)
-- `max_samples_per_row`: 행당 최대 샘플 수 (기본값: 1)
-- `max_total_samples`: 전체 최대 샘플 수 (기본값: None)
-- `max_candidates`: 후보 최대 개수 (기본값: 120)
-- 학습 하이퍼파라미터들
+7. **Model Persistence**
+   - **LoRA Adapter**: `output_dir/` (lightweight, reusable)
+   - **Merged 16-bit Model**: `output_dir/merged_16bit/` (inference, high quality)
+   - **Merged 4-bit Model**: `output_dir/merged_4bit/` (inference, memory efficient)
+   - **Training Information**: `output_dir/training_info.json`
 
-**출력**: 
-- `model/finetuned_llm/`: LoRA 어댑터
-- `model/finetuned_llm/merged_16bit/`: 병합된 16-bit 모델
-- `model/finetuned_llm/merged_4bit/`: 병합된 4-bit 모델
-- `model/finetuned_llm/training_info.json`: 학습 정보
+**Input**:
 
-**예시 실행**:
+- `train_dir`: Directory containing training CSV files
+- `model_name`: Base LLM model (default: `unsloth/Qwen2.5-3B-Instruct`)
+- `output_dir`: Output directory (default: `model/finetuned_llm`)
+- `max_seq_length`: Maximum sequence length (default: 6144)
+- `num_samples`: Target number of samples per achievement standard (default: 1)
+- `max_total_samples`: Maximum total samples (default: None)
+- `max_candidates`: Maximum candidate count (default: 120)
+- Training hyperparameters
+
+**Output**:
+
+- `model/finetuned_llm/`: LoRA adapter
+- `model/finetuned_llm/merged_16bit/`: Merged 16-bit model
+- `model/finetuned_llm/merged_4bit/`: Merged 4-bit model
+- `model/finetuned_llm/training_info.json`: Training information
+
+**Example Execution**:
+
 ```bash
 python finetune_llm.py \
     --train_dir ../dataset/train_80 \
     --model_name unsloth/Qwen2.5-3B-Instruct \
     --output_dir ../model/finetuned_llm \
     --num-train-epochs 1 \
-    --max-samples-per-row 1 \
+    --num-samples 1 \
     --max-candidates 120
 ```
 
 ---
 
-### 4.3 eval_finetune_llm.py
+### 5.3 eval_finetune_llm.py
 
-**위치**: `src/llm_text_classification/eval_finetune_llm.py`
+**Location**: `src/llm_text_classification/eval_finetune_llm.py`
 
-**목적**: 파인튜닝된 LLM을 사용하여 교육 텍스트 분류 평가
+**Purpose**: Evaluates fine-tuned LLMs for educational text classification.
 
-#### 개요
+#### Overview
 
-`finetune_llm.py`로 학습된 모델을 로딩하여 평가합니다. `eval_llm.py`와 거의 동일한 평가 프로세스를 사용하지만, 파인튜닝된 모델을 로딩하는 방식이 다릅니다.
+Loads models trained with `finetune_llm.py` for evaluation. Uses nearly identical evaluation process as `eval_llm.py` but with different model loading mechanism.
 
-#### 주요 기능 분석
+#### Technical Analysis
 
-**함수**: `evaluate_finetuned_llm(...)`
+**Function**: `evaluate_finetuned_llm(...)`
 
-**단계별 처리 과정**:
+**Processing Pipeline**:
 
-1. **데이터 로딩**
-   - `eval_llm.py`와 동일
+1. **Data Loading**
 
-2. **파인튜닝된 모델 로딩**
-   - Unsloth의 `FastLanguageModel.from_pretrained()` 사용
-   - 로딩 옵션:
-     - `use_merged=True` (기본값): `merged_16bit/` 모델 로딩
-     - `use_merged=False`: LoRA 어댑터 로딩
-   - `FastLanguageModel.for_inference()`: 추론 최적화 (2배 빠름)
+   - Same as `eval_llm.py`
 
-3. **학습 정보 로딩**
-   - `training_info.json`에서 학습 설정 읽기
-   - 기본 모델, 학습 샘플 수, 에폭 수 등 출력
+2. **Fine-tuned Model Loading**
 
-4. **평가**
-   - `eval_llm.py`와 동일한 프로세스
-   - 프롬프트 생성 → LLM 예측 → 응답 파싱 → 평가
+   - Uses Unsloth's `FastLanguageModel.from_pretrained()`
+   - Loading options:
+     - `use_merged=True` (default): Loads `merged_16bit/` model
+     - `use_merged=False`: Loads LoRA adapter
+   - `FastLanguageModel.for_inference()`: Inference optimization (2x faster)
 
-5. **결과 저장**
-   - JSON 로깅: `finetuned_results.json`
-   - 오답 샘플: `finetuned_logs/{모델명}_{과목명}_wrongs.txt`
-   - 정답 샘플: `finetuned_logs/{모델명}_{과목명}_corrects.txt`
+3. **Training Information Loading**
 
-**입력**: 
-- `input_csv`: 평가할 CSV 파일
-- `model_path`: 파인튜닝된 모델 디렉토리
-- `use_merged`: merged 모델 사용 여부 (기본값: True)
-- 나머지는 `eval_llm.py`와 동일
+   - Reads training configuration from `training_info.json`
+   - Prints base model, training sample count, epochs, etc.
 
-**출력**: 
-- `output/llm_text_classification/finetuned_results.json`: 평가 결과
-- `output/llm_text_classification/finetuned_logs/`: 오답/정답 샘플
+4. **Evaluation**
 
-**예시 실행**:
+   - Same process as `eval_llm.py`
+   - Prompt generation → LLM prediction → Response parsing → Evaluation
+
+5. **Result Persistence**
+   - JSON logging: `finetuned_results.json`
+   - Incorrect samples: `finetuned_logs/{model_name}_{subject}_wrongs.txt`
+   - Correct samples: `finetuned_logs/{model_name}_{subject}_corrects.txt`
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `model_path`: Fine-tuned model directory
+- `use_merged`: Whether to use merged model (default: True)
+- Remaining parameters same as `eval_llm.py`
+
+**Output**:
+
+- `output/llm_text_classification/finetuned_results.json`: Evaluation results
+- `output/llm_text_classification/finetuned_logs/`: Incorrect/correct samples
+
+**Example Execution**:
+
 ```bash
 python eval_finetune_llm.py \
     --input_csv ../dataset/valid_80/과학.csv \
     --model_path ../model/finetuned_llm \
     --max-candidates 120 \
-    --max-total-samples 100
+    --num-samples 100
 ```
 
 ---
 
-## 전체 파이프라인 요약
+## 6. RAG-based LLM Text Classification
 
-### Phase 1: 데이터 준비
+### 6.1 rag_eval_llm.py
+
+**Location**: `src/rag_llm_text_classification/rag_eval_llm.py`
+
+**Purpose**: Evaluates LLM-based classification using Retrieval-Augmented Generation (RAG) workflow. Implements a two-stage approach: first retrieves top-k candidate achievement standards using a trained multi-class classifier, then uses an LLM to select the best match from the candidates.
+
+#### Overview
+
+The RAG workflow combines the efficiency of dense retrieval with the reasoning capability of generative LLMs. This approach addresses the limitation of including all candidates in the prompt by first filtering to a smaller, more relevant candidate set.
+
+**Architecture**:
+
+- **Stage 1 (Retrieval)**: Multi-class classifier retrieves top-k candidates using `infer_top_k`
+- **Stage 2 (Generation)**: LLM selects the best matching achievement standard from retrieved candidates
+
+#### Technical Analysis
+
+**Function**: `evaluate_llm_classification(...)`
+
+**Processing Pipeline**:
+
+1. **Data Loading**
+
+   - Loads achievement standards and sample texts from CSV
+   - `num_samples`: Target number of samples to evaluate
+   - Uses `load_evaluation_data` without `max_candidates` (RAG uses retrieval instead)
+
+2. **Multi-class Classifier Loading**
+
+   - Loads trained multi-class classifier from `model_dir`
+   - Required for `infer_top_k` function
+   - Loads model, tokenizer, config, and mappings
+
+3. **Per-Sample Processing**
+
+   For each sample:
+
+   **Stage 1: Candidate Retrieval**
+
+   - Calls `infer_top_k` with sample text
+   - Retrieves top-k candidate achievement standards (default: 20)
+   - Candidates are ranked by classifier confidence
+   - Converts to `(rank, code, content)` tuple list
+
+   **Stage 2: LLM Selection**
+
+   - Generates RAG prompt with retrieved candidates
+   - Includes few-shot examples if enabled
+   - LLM selects best matching code from candidates
+   - Parses response to extract predicted code
+
+4. **Prompt Generation**
+
+   - Uses `create_rag_chat_prompt` from `rag_prompt.py`
+   - Prompt structure includes:
+     - System prompt: Educational curriculum expert role
+     - Few-shot examples (optional)
+     - Textbook text
+     - Candidate achievement standards (retrieved)
+     - Output format instructions
+
+5. **Response Parsing**
+
+   - Uses `parse_llm_response` to extract achievement standard code
+   - Match types: exact, partial, invalid
+   - Confidence scoring for fuzzy matches
+
+6. **Evaluation Metrics**
+
+   - **Accuracy**: Correct prediction rate
+   - **Exact Match Count**: Number of exact code matches
+   - **Match Type Distribution**: exact/partial/invalid proportions
+   - **Truncation Count**: Number of prompts truncated due to length
+
+7. **Result Persistence**
+   - JSON logging: `results.json` in model-specific subdirectory
+   - Incorrect samples: `logs/{subject}_wrongs.txt` (random 100)
+   - Correct samples: `logs/{subject}_corrects.txt` (random 100)
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `generate_fn`: Function to generate predictions
+- `model_identifier`: Model name or API identifier
+- `tokenizer`: Tokenizer for token length checking (optional for API mode)
+- `num_samples`: Target number of samples
+- `train_csv`: Path to train CSV for `infer_top_k`
+- `model_dir`: Path to multi-class classifier model directory
+- `top_k`: Number of candidates to retrieve (default: 20)
+- `infer_device`: Device for retrieval model (default: "cuda")
+- `num_examples`: Number of few-shot examples (default: 5)
+
+**Output**:
+
+- `output/rag_llm_text_classification/{model_name}_{date}/results.json`: Evaluation results
+- `output/rag_llm_text_classification/{model_name}_{date}/logs/`: Sample logs
+
+**Example Execution**:
+
+```bash
+python rag_eval_llm.py \
+    --input_csv ../dataset/valid_80/과학.csv \
+    --model_name unsloth/Qwen2.5-7B-Instruct-bnb-4bit \
+    --train-csv ../dataset/train_80/과학.csv \
+    --model-dir ../model/achievement_classifier/best_model \
+    --top-k 20 \
+    --num-samples 200
 ```
-원본 ZIP 파일 (Training/label)
+
+---
+
+### 6.2 rag_finetune_llm.py
+
+**Location**: `src/rag_llm_text_classification/rag_finetune_llm.py`
+
+**Purpose**: Fine-tunes LLMs for RAG-based achievement standard classification. The model is trained on the RAG workflow where it receives retrieved candidates and learns to select the best match.
+
+#### Overview
+
+Uses Unsloth library for efficient fine-tuning with LoRA. The training process incorporates the RAG retrieval step, ensuring the model learns to work with retrieved candidates rather than all possible standards.
+
+#### Technical Analysis
+
+**Function**: `finetune_llm(...)`
+
+**Processing Pipeline**:
+
+1. **Training Data Preparation**
+
+   - Loads all CSV files from `train_dir` (subject-specific files)
+   - For each CSV file:
+     - Uses the file itself as `train_csv` for `infer_top_k` filtering
+     - Loads samples using `load_evaluation_data`
+     - Retrieves top-k candidates for each sample using `infer_top_k`
+     - Generates RAG prompts with retrieved candidates
+
+2. **RAG Prompt Generation**
+
+   - Uses `prepare_rag_training_dataset` from `data_loader.py`
+   - For each training sample:
+     - Retrieves top-k candidates using multi-class classifier
+     - Generates prompt with `create_rag_chat_prompt`
+     - Includes few-shot examples if enabled
+     - Adds ground truth code as completion
+
+3. **Model Loading (Unsloth)**
+
+   - Base model: `unsloth/Qwen2.5-7B-Instruct-bnb-4bit` (default)
+   - Loads with 4-bit quantization
+   - `max_seq_length`: Maximum sequence length (default: 2600)
+
+4. **LoRA Adapter Configuration**
+
+   - Target modules: attention and MLP layers
+   - `lora_r`: LoRA rank (default: 16)
+   - `lora_alpha`: LoRA alpha (default: 16)
+   - `lora_dropout`: LoRA dropout (default: 0.0)
+
+5. **Training Configuration**
+
+   - Uses `SFTTrainer` for supervised fine-tuning
+   - Hyperparameters:
+     - `num_train_epochs`: Number of epochs (default: 1)
+     - `per_device_train_batch_size`: Batch size (default: 4)
+     - `gradient_accumulation_steps`: Gradient accumulation (default: 4)
+     - `learning_rate`: Learning rate (default: 1e-4)
+     - `warmup_steps`: Warmup steps (default: 5)
+   - Optimizer: AdamW 8-bit
+   - Mixed precision training
+
+6. **Training Execution**
+
+   - Processes training examples with RAG workflow
+   - Each example includes retrieved candidates in the prompt
+   - Model learns to select correct code from candidates
+   - Saves checkpoints at specified intervals
+
+7. **Model Persistence**
+   - **LoRA Adapter**: `output_dir/` (lightweight)
+   - **Merged Models**: 16-bit and 4-bit merged versions
+   - **Training Information**: `training_info.json`
+
+**Input**:
+
+- `train_dir`: Directory containing training CSV files
+- `model_dir`: Path to multi-class classifier for retrieval
+- `model_name`: Base LLM model
+- `output_dir`: Output directory for fine-tuned model
+- `top_k`: Number of candidates to retrieve (default: 20)
+- `infer_device`: Device for retrieval model
+- `num_examples`: Number of few-shot examples (default: 5)
+- Training hyperparameters
+
+**Output**:
+
+- `model/finetuned_rag_llm/`: Fine-tuned RAG LLM
+- `model/finetuned_rag_llm/training_info.json`: Training information
+
+**Example Execution**:
+
+```bash
+python rag_finetune_llm.py \
+    --train_dir ../dataset/train_80 \
+    --model_dir ../model/achievement_classifier/best_model \
+    --model_name unsloth/Qwen2.5-7B-Instruct-bnb-4bit \
+    --output_dir ../model/finetuned_rag_llm \
+    --top-k 20 \
+    --num-train-epochs 1
+```
+
+---
+
+### 6.3 rag_eval_ft_llm.py
+
+**Location**: `src/rag_llm_text_classification/rag_eval_ft_llm.py`
+
+**Purpose**: Evaluates fine-tuned RAG LLMs for educational text classification using the RAG workflow.
+
+#### Overview
+
+Loads models trained with `rag_finetune_llm.py` and evaluates them using the same two-stage RAG workflow. The fine-tuned model has learned to work effectively with retrieved candidates.
+
+#### Technical Analysis
+
+**Function**: `evaluate_finetuned_rag_llm(...)`
+
+**Processing Pipeline**:
+
+1. **Data Loading**
+
+   - Same as `rag_eval_llm.py`
+
+2. **Fine-tuned Model Loading**
+
+   - Loads fine-tuned RAG LLM using Unsloth
+   - Uses `load_finetuned_model` utility
+   - Loads training information from `training_info.json`
+
+3. **Multi-class Classifier Loading**
+
+   - Loads trained classifier for candidate retrieval
+   - Same as `rag_eval_llm.py`
+
+4. **Evaluation Process**
+
+   - For each sample:
+     - Retrieves top-k candidates using `infer_top_k`
+     - Generates RAG prompt with candidates
+     - Fine-tuned LLM selects best match
+     - Parses and evaluates response
+
+5. **Result Persistence**
+   - JSON logging: `finetuned_results.json`
+   - Sample logs: `finetuned_logs/` directory
+   - Includes training information in results
+
+**Input**:
+
+- `input_csv`: CSV file to evaluate
+- `model_path`: Path to fine-tuned RAG model
+- `train_csv`: Path to train CSV for retrieval
+- `model_dir`: Path to multi-class classifier
+- `top_k`: Number of candidates to retrieve
+- Other parameters same as `rag_eval_llm.py`
+
+**Output**:
+
+- `output/rag_llm_text_classification/{model_name}_{date}/finetuned_results.json`: Evaluation results
+- `output/rag_llm_text_classification/{model_name}_{date}/finetuned_logs/`: Sample logs
+
+**Example Execution**:
+
+```bash
+python rag_eval_ft_llm.py \
+    --input_csv ../dataset/valid_80/과학.csv \
+    --model_path ../model/finetuned_rag_llm/251127 \
+    --train-csv ../dataset/train_80/과학.csv \
+    --model-dir ../model/achievement_classifier/best_model \
+    --top-k 20 \
+    --num-samples 200
+```
+
+---
+
+## Complete Pipeline Summary
+
+### Phase 1: Data Preparation
+
+```
+Raw ZIP files (Training/label)
     ↓ extract_standards.py
-unique_achievement_standards.csv (성취기준만)
+unique_achievement_standards.csv (standards only)
     ↓ add_text_to_standards.py (Training)
-text_achievement_standards.csv (텍스트 샘플 추가, 일부 부족)
-    ↓ verify_not_empty.py (선택적)
-검증 완료
+text_achievement_standards.csv (text samples added, some insufficient)
+    ↓ verify_not_empty.py (optional)
+Validation complete
     ↓ check_insufficient_text.py
-insufficient_text.csv (텍스트 부족 성취기준 목록)
+insufficient_text.csv (insufficient standards list)
     ↓ add_additional_text_to_standards.py (Validation)
-text_achievement_standards.csv (업데이트, 텍스트 추가)
-    ↓ check_insufficient_text.py (재확인)
-충분도 확인
+text_achievement_standards.csv (updated, additional texts added)
+    ↓ check_insufficient_text.py (recheck)
+Sufficiency confirmed
     ↓ filter_standards.py
-train.csv + valid.csv (train/valid 분할)
+train.csv + valid.csv (train/validation split)
     ↓ split_subject.py
-train_80/과학.csv, 수학.csv, ... (과목별 분할)
-valid_80/과학.csv, 수학.csv, ... (과목별 분할)
+train_80/과학.csv, 수학.csv, ... (subject-wise split)
+valid_80/과학.csv, 수학.csv, ... (subject-wise split)
 ```
 
-### Phase 2: 베이스라인 평가 (Bi-Encoder)
+### Phase 2: Baseline Evaluation (Bi-Encoder)
+
 ```
 valid_80/*.csv
-    ↓ eval_cosine_similarity.py (또는 batch)
+    ↓ eval_cosine_similarity.py (or batch)
 output/cosine_similarity/results.json
 ```
 
-### Phase 3: Cross-Encoder 파인튜닝 및 평가
+### Phase 3: Cross-Encoder Fine-tuning and Evaluation
+
 ```
 train_80/*.csv
     ↓ finetune_cross_encoder.py
-cross_finetuned/ (파인튜닝된 모델)
+cross_finetuned/ (fine-tuned model)
     ↓ eval_cross_encoder.py
 output/cross_encoder/results_rerank.json
 output/cross_encoder/logs/*_wrongs.txt
 ```
 
-### Phase 4: LLM 베이스라인 평가
+### Phase 4: LLM Baseline Evaluation
+
 ```
 valid_80/*.csv
     ↓ eval_llm.py
@@ -946,223 +1693,128 @@ output/llm_text_classification/logs/*_wrongs.txt
 output/llm_text_classification/logs/*_corrects.txt
 ```
 
-### Phase 5: LLM 파인튜닝 및 평가
+### Phase 5: LLM Fine-tuning and Evaluation
+
 ```
 train_80/*.csv
     ↓ finetune_llm.py
-model/finetuned_llm/ (LoRA 어댑터)
-model/finetuned_llm/merged_16bit/ (병합된 모델)
-model/finetuned_llm/merged_4bit/ (4-bit 양자화 모델)
+model/finetuned_llm/ (LoRA adapter)
+model/finetuned_llm/merged_16bit/ (merged model)
+model/finetuned_llm/merged_4bit/ (4-bit quantized model)
     ↓ eval_finetune_llm.py
 output/llm_text_classification/finetuned_results.json
 output/llm_text_classification/finetuned_logs/*_wrongs.txt
 output/llm_text_classification/finetuned_logs/*_corrects.txt
 ```
 
+### Phase 6: Multi-class Classifier Training (for RAG)
+
+```
+train_80/*.csv
+    ↓ train_multiclass_classifier.py
+model/achievement_classifier/best_model/ (trained classifier)
+```
+
+### Phase 7: RAG LLM Evaluation
+
+```
+valid_80/*.csv
+    ↓ rag_eval_llm.py
+output/rag_llm_text_classification/{model}_{date}/results.json
+output/rag_llm_text_classification/{model}_{date}/logs/
+```
+
+### Phase 8: RAG LLM Fine-tuning and Evaluation
+
+```
+train_80/*.csv
+    ↓ rag_finetune_llm.py
+model/finetuned_rag_llm/ (fine-tuned RAG LLM)
+    ↓ rag_eval_ft_llm.py
+output/rag_llm_text_classification/{model}_{date}/finetuned_results.json
+output/rag_llm_text_classification/{model}_{date}/finetuned_logs/
+```
+
 ---
 
-## 핵심 개념 정리
+## Core Concepts
 
-### 1. 성취기준 (Achievement Standard)
-- 교육과정에서 정의한 학습 목표
-- 형식: `[코드] 내용` (예: `[6과01-01] 물체의 운동 관찰...`)
-- 이 프로젝트의 목표: 교육 텍스트를 올바른 성취기준에 매칭
+### 1. Achievement Standard
 
-### 2. 접근 방법 비교
+- Learning objectives defined in educational curriculum
+- Format: `[code] content` (e.g., `[6과01-01] 물체의 운동 관찰...`)
+- Project goal: Match educational texts to correct achievement standards
 
-#### Bi-Encoder (코사인 유사도)
-- 두 텍스트를 각각 벡터로 변환 후 코사인 유사도 계산
-- 장점: 빠름 (사전 계산 가능), 확장성 좋음
-- 단점: 상호작용 없어 정확도 낮음
-- 사용 모델: `jhgan/ko-sroberta-multitask`
+### 2. Approach Comparison
 
-#### Cross-Encoder (재순위화)
-- 두 텍스트를 함께 입력하여 직접 관련성 점수 계산
-- 장점: 정확함 (Attention으로 상호작용)
-- 단점: 느림 (모든 쌍을 매번 계산)
-- 사용 방법: Bi-Encoder로 후보 추출 → Cross-Encoder로 재순위화
-- 사용 모델: `bongsoo/albert-small-kor-cross-encoder-v1`
+#### Bi-Encoder (Cosine Similarity)
 
-#### LLM (생성형)
-- 생성형 LLM이 직접 성취기준 코드를 생성
-- 장점: 유연함, 사람처럼 추론 가능, 파인튜닝 효과 큼
-- 단점: 느림, 리소스 많이 사용, 프롬프트 길이 제한
-- 사용 모델: `Qwen/Qwen2.5-3B-Instruct` (베이스라인), `unsloth/Qwen2.5-3B-Instruct` (파인튜닝)
+- Encodes two texts separately then computes cosine similarity
+- Advantages: Fast (pre-computable), scalable
+- Disadvantages: No interaction, lower accuracy
+- Model: `jhgan/ko-sroberta-multitask`
 
-### 3. 2단계 검색 (Bi-Encoder + Cross-Encoder)
-- Bi-Encoder: 전체에서 후보 추출 (Recall 중시)
-- Cross-Encoder: 후보를 정밀 재순위화 (Precision 중시)
-- 속도와 정확도의 균형
+#### Cross-Encoder (Re-ranking)
 
-### 4. LoRA (Low-Rank Adaptation)
-- 대규모 언어 모델을 효율적으로 파인튜닝하는 기법
-- 전체 파라미터를 업데이트하지 않고 작은 어댑터만 학습
-- 메모리 사용량 대폭 감소
-- 학습 속도 향상
+- Encodes two texts together to directly compute relevance score
+- Advantages: Accurate (attention-based interaction)
+- Disadvantages: Slow (computes all pairs each time)
+- Usage: Bi-encoder extracts candidates → Cross-encoder re-ranks
+- Model: `bongsoo/albert-small-kor-cross-encoder-v1`
 
-### 5. 주요 평가 메트릭
+#### LLM (Generative)
+
+- Generative LLM directly outputs achievement standard code
+- Advantages: Flexible, human-like reasoning, significant fine-tuning benefits
+- Disadvantages: Slow, resource-intensive, prompt length limitations
+- Models: `Qwen/Qwen2.5-3B-Instruct` (baseline), `unsloth/Qwen2.5-3B-Instruct` (fine-tuning)
+
+#### RAG LLM (Retrieval-Augmented Generation)
+
+- Two-stage approach: Multi-class classifier retrieves candidates, then LLM selects best match
+- Advantages: Combines retrieval efficiency with LLM reasoning, handles large candidate spaces
+- Disadvantages: Requires trained classifier, two-stage processing overhead
+- Workflow: `infer_top_k` (retrieval) → LLM selection (generation)
+
+### 3. Two-Stage Retrieval (Bi-Encoder + Cross-Encoder)
+
+- Bi-Encoder: Extracts candidates from entire space (recall-focused)
+- Cross-Encoder: Precisely re-ranks candidates (precision-focused)
+- Balance between speed and accuracy
+
+### 4. RAG Workflow Architecture
+
+- **Retrieval Stage**: Dense retrieval using trained multi-class classifier
+  - Uses `infer_top_k` function from `src/classification/inference.py`
+  - Retrieves top-k candidates ranked by classifier confidence
+- **Generation Stage**: LLM selects best match from retrieved candidates
+  - Reduces prompt length compared to including all candidates
+  - Improves accuracy by focusing on relevant candidates
+
+### 5. Evaluation Metrics
 
 #### Top-K Accuracy
-- 상위 K개 예측 중 정답 포함률
-- K=1: 가장 높은 예측만 평가
-- K가 클수록 완화된 평가
+
+- Proportion of samples where ground truth is in top-k predictions
+- K=1: Evaluates only highest prediction
+- Higher K provides more lenient evaluation
 
 #### MRR (Mean Reciprocal Rank)
-- 정답의 평균 역순위
-- Top-1에 정답이 많을수록 높음
-- 범위: 0~1 (1이 완벽)
-- 계산: RR = 1 / rank, MRR = average(RR)
+
+- Mean reciprocal rank of ground truth
+- Higher when ground truth appears in top ranks
+- Range: 0~1 (1 is perfect)
+- Calculation: RR = 1 / rank, MRR = average(RR)
 
 #### Exact Match Percentage
-- LLM이 정확히 유효한 성취기준 코드를 생성한 비율
-- Partial match (부분 일치)와 구분
+
+- Proportion of samples where LLM generates exactly valid achievement standard code
+- Distinguished from partial match
 
 #### Match Type Distribution
-- exact: 정확히 일치하는 코드
-- partial: 부분 일치 (예: `03-04` → `10영03-04`)
-- invalid: 유효하지 않은 코드
+
+- **exact**: Exactly matching code
+- **partial**: Partial match (e.g., `03-04` → `10영03-04`)
+- **invalid**: Invalid code
 
 ---
-
-## 모델 정보
-
-### Bi-Encoder
-- **jhgan/ko-sroberta-multitask**
-- 한국어 문장 임베딩 모델
-- RoBERTa 기반
-- 768 차원 벡터 출력
-
-### Cross-Encoder
-- **bongsoo/albert-small-kor-cross-encoder-v1**
-- 한국어 경량 Cross-Encoder
-- ALBERT 기반 (파라미터 적음)
-- 단일 관련성 점수 출력 (0~1)
-
-### LLM
-- **Qwen/Qwen2.5-3B-Instruct** (베이스라인)
-- **unsloth/Qwen2.5-3B-Instruct** (파인튜닝용)
-- 3B 파라미터 생성형 언어 모델
-- Instruction-tuned (지시사항 따르기 특화)
-- 한국어 지원
-
----
-
-## 주요 라이브러리
-
-### 공통
-- **pandas**: CSV 데이터 처리
-- **chardet**: 인코딩 자동 감지
-- **tqdm**: 진행 상황 표시
-
-### Bi-Encoder / Cross-Encoder
-- **sentence-transformers**: Bi/Cross Encoder 구현
-- **torch**: 딥러닝 프레임워크
-- **sklearn**: 평가 메트릭 계산
-
-### LLM
-- **transformers**: Hugging Face Transformers 라이브러리
-- **unsloth**: 효율적인 LLM 파인튜닝 라이브러리
-- **trl**: Transformer Reinforcement Learning (SFTTrainer)
-- **torch**: PyTorch 프레임워크
-- **peft**: Parameter-Efficient Fine-Tuning (LoRA 지원)
-
----
-
-## 파일 구조 요약
-
-```
-KorEduBench/
-├── src/
-│   ├── preprocessing/
-│   │   ├── extract_standards.py              # ZIP → 성취기준 CSV
-│   │   ├── add_text_to_standards.py          # Training 텍스트 추가
-│   │   ├── verify_not_empty.py               # 텍스트 순서 검증
-│   │   ├── check_insufficient_text.py        # 부족 텍스트 체크
-│   │   ├── add_additional_text_to_standards.py  # Validation 텍스트 추가
-│   │   ├── filter_standards.py               # Train/Valid 분할
-│   │   └── split_subject.py                  # 과목별 분할
-│   ├── cosine_similarity/
-│   │   ├── eval_cosine_similarity.py         # 단일 CSV 평가
-│   │   └── batch_cosine_similarity.py        # 폴더 일괄 평가
-│   ├── cross_encoder/
-│   │   ├── finetune_cross_encoder.py         # Cross-Encoder 학습
-│   │   └── eval_cross_encoder.py             # 재순위화 평가
-│   └── llm_text_classification/
-│       ├── eval_llm.py                       # LLM 베이스라인 평가
-│       ├── finetune_llm.py                   # LLM 파인튜닝
-│       └── eval_finetune_llm.py              # 파인튜닝 LLM 평가
-├── scripts/
-│   ├── preprocess.sh                         # 전처리 파이프라인 실행
-│   ├── cosine_similarity.sh                  # Bi-Encoder 평가 실행
-│   ├── cross_encoder.sh                      # Cross-Encoder 실행
-│   ├── llm_text_classification.sh            # LLM 베이스라인 실행
-│   ├── finetuning_llm.sh                     # LLM 파인튜닝 실행
-│   └── finetune_llm_text_classification.sh   # 파인튜닝 LLM 평가 실행
-├── dataset/
-│   ├── unique_achievement_standards.csv      # 성취기준 목록
-│   ├── text_achievement_standards.csv        # 텍스트 추가된 데이터
-│   ├── insufficient_text.csv                 # 부족 성취기준 목록
-│   ├── train.csv                             # 통합 학습 데이터
-│   ├── valid.csv                             # 통합 검증 데이터
-│   ├── train_80/                             # 과목별 학습 데이터
-│   └── valid_80/                             # 과목별 검증 데이터
-├── model/
-│   └── finetuned_llm/                        # 파인튜닝된 LLM
-│       ├── merged_16bit/                     # 16-bit 병합 모델
-│       ├── merged_4bit/                      # 4-bit 병합 모델
-│       └── training_info.json                # 학습 정보
-└── output/
-    ├── cosine_similarity/
-    │   └── results.json
-    ├── cross_encoder/
-    │   ├── results_rerank.json
-    │   └── logs/
-    └── llm_text_classification/
-        ├── results.json                      # LLM 베이스라인 결과
-        ├── finetuned_results.json            # 파인튜닝 LLM 결과
-        ├── logs/                             # 베이스라인 로그
-        └── finetuned_logs/                   # 파인튜닝 로그
-```
-
----
-
-## 실행 가이드 요약
-
-### 1. 데이터 전처리
-```bash
-cd scripts
-bash preprocess.sh
-```
-
-### 2. Bi-Encoder 평가
-```bash
-cd scripts
-bash cosine_similarity.sh
-```
-
-### 3. Cross-Encoder 학습 및 평가
-```bash
-cd scripts
-bash cross_encoder.sh
-```
-
-### 4. LLM 베이스라인 평가
-```bash
-cd scripts
-bash llm_text_classification.sh
-```
-
-### 5. LLM 파인튜닝
-```bash
-cd scripts
-bash finetuning_llm.sh
-```
-
-### 6. 파인튜닝된 LLM 평가
-```bash
-cd scripts
-bash finetune_llm_text_classification.sh
-```
-
----
-
