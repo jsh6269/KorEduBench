@@ -267,6 +267,7 @@ def evaluate_llm_classification(
             "temperature": temperature,
             "max_input_length": max_input_length,
             "truncated_count": truncated_count,
+            "seed": seed,
         }
     )
 
@@ -475,6 +476,7 @@ if __name__ == "__main__":
             args.max_new_tokens,
             args.temperature,
             args.api_delay,
+            seed=42,
         )
         print(f"API delay: {args.api_delay}s between requests")
         print(f"API retry: automatic retry up to 10 times on rate limit errors")

@@ -72,6 +72,7 @@ def create_api_generate_function(
     max_new_tokens: int = 50,
     temperature: float = 0.1,
     delay_seconds: float = 0.0,
+    seed: Optional[int] = 42,
 ) -> Callable:
     """
     Create a generate_prediction function for API calls.
@@ -82,6 +83,7 @@ def create_api_generate_function(
         max_new_tokens: Maximum tokens to generate
         temperature: Sampling temperature
         delay_seconds: Delay in seconds after each API call (to avoid rate limits)
+        seed: Random seed for reproducibility (default: 42)
 
     Returns:
         Function that generates predictions using the API (takes messages list or string prompt)
@@ -117,12 +119,18 @@ def create_api_generate_function(
 
         for attempt in range(MAX_RETRIES + 1):
             try:
-                response = client.chat.completions.create(
-                    model=model,
-                    messages=messages,
-                    max_tokens=max_new_tokens,
-                    temperature=temperature,
-                )
+                # Build request parameters
+                request_params = {
+                    "model": model,
+                    "messages": messages,
+                    "max_tokens": max_new_tokens,
+                    "temperature": temperature,
+                }
+                # Add seed if provided
+                if seed is not None:
+                    request_params["seed"] = seed
+
+                response = client.chat.completions.create(**request_params)
 
                 # Add delay to avoid rate limits
                 if delay_seconds > 0:

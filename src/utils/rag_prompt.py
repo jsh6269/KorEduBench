@@ -208,6 +208,7 @@ def create_rag_chat_prompt(
     subject: str | None = None,
     num_examples: int = 5,
     few_shot_file: str | Path | None = None,
+    is_qwen3: bool = False,
 ) -> dict:
     """
     Create a chat-based prompt for RAG classification.
@@ -262,6 +263,8 @@ def create_rag_chat_prompt(
         system_content = (
             f"{system_content}\n" "# Few-Shot Examples\n" f"{few_shot_examples}"
         )
+    if is_qwen3:
+        system_content += "\n\n/no_think"
 
     # User message: Textbook text + Output instructions
     user_content = "# Textbook Text\n" f"{text}\n" "\n" f"{output_instruction}"
@@ -316,7 +319,7 @@ def parse_llm_response(
 
     # Strategy 2: Partial code match (code in response or response in code)
     for code in codes:
-        if code in response_clean :
+        if code in response_clean:
             return LLMClassificationResponse(
                 predicted_code=code,
                 match_type=MatchType.PARTIAL,

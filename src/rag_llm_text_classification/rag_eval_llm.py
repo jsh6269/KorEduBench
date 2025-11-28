@@ -114,6 +114,9 @@ def evaluate_llm_classification(
     num_samples = data.num_samples
     folder_name = data.folder_name
 
+    # Check if model is qwen3
+    is_qwen3 = "qwen3" in model_identifier.lower()
+
     # === Check prompt length ===
     print(f"\nPrompt statistics:")
     print(f"  Top-k candidates to retrieve: {top_k}")
@@ -132,6 +135,7 @@ def evaluate_llm_classification(
             few_shot=few_shot,
             subject=subject,
             num_examples=num_examples,
+            is_qwen3=is_qwen3,
         )
         sample_prompt = tokenizer.apply_chat_template(
             sample_messages["messages"],
@@ -205,6 +209,7 @@ def evaluate_llm_classification(
             few_shot=few_shot,
             subject=subject,
             num_examples=num_examples,
+            is_qwen3=is_qwen3,
         )
 
         if is_local_model:
@@ -568,6 +573,7 @@ if __name__ == "__main__":
             args.max_new_tokens,
             args.temperature,
             args.api_delay,
+            seed=42,
         )
         print(f"API delay: {args.api_delay}s between requests")
         print(f"API retry: automatic retry up to 10 times on rate limit errors")
