@@ -6,22 +6,23 @@ This document describes the directory structure and organization of the KorEduBe
 
 ```
 KorEduBench/
-├── src/                         # Source code directory
-│   ├── preprocessing/           # Data preprocessing scripts
-│   ├── cosine_similarity/       # Cosine similarity evaluation
-│   ├── cross_encoder/           # Cross-encoder training and evaluation
-│   ├── classification/          # Multi-class classifier training
-│   ├── llm_text_classification/ # LLM-based text classification
-│   ├── test/                    # Test scripts
-│   └── utils/                   # Utility functions
-├── dataset/                     # Generated datasets
-├── model/                       # Saved trained models
-├── output/                      # Evaluation results and logs
-│   ├── cosine_similarity/       # Cosine similarity results
-│   ├── cross_encoder/           # Cross-encoder results
-│   └── llm_text_classification/ # LLM classification results
-├── scripts/                     # Shell scripts for automation
-└── docs/                         # Documentation
+├── src/                             # Source code directory
+│   ├── preprocessing/               # Data preprocessing scripts
+│   ├── cosine_similarity/           # Cosine similarity evaluation
+│   ├── cross_encoder/               # Cross-encoder training and evaluation
+│   ├── classification/              # Multi-class classifier training
+│   ├── llm_text_classification/     # LLM-based text classification
+│   ├── rag_llm_text_classification/ # RAG based LLM text classification
+│   ├── test/                        # Test scripts
+│   └── utils/                       # Utility functions
+├── dataset/                         # Generated datasets
+├── model/                           # Saved trained models
+├── output/                          # Evaluation results and logs
+│   ├── cosine_similarity/           # Cosine similarity results
+│   ├── cross_encoder/               # Cross-encoder results
+│   └── llm_text_classification/     # LLM classification results
+├── scripts/                         # Shell scripts for automation
+└── docs/                            # Documentation
 ```
 
 ## Directory Details
@@ -31,51 +32,48 @@ KorEduBench/
 Contains all Python source code organized by functionality.
 
 #### `src/preprocessing/`
+
 Data preprocessing scripts that extract and prepare curriculum data.
 
 - **`extract_standards.py`** - Extracts unique achievement standards from raw data
   - Input: Label directory with ZIP files containing JSON data
   - Output: `dataset/unique_achievement_standards.csv`
-  
 - **`add_text_to_standards.py`** - Adds text samples to each achievement standard
   - Input: Achievement standards CSV and label directory
   - Output: `dataset/text_achievement_standards.csv` with text columns added
-  
 - **`split_subject.py`** - Splits the dataset by subject and creates train/validation splits
   - Input: Text achievement standards CSV
-  - Output: 
+  - Output:
     - `dataset/train.csv`, `dataset/valid.csv` - Complete train/validation datasets
     - `dataset/train_80/`, `dataset/valid_80/` - Per-subject CSV files (80 texts per standard)
     - `dataset/few_shot_examples/` - Few-shot example JSON files for each subject
     - `dataset/insufficient_text.csv` - Standards with insufficient text samples
 
 #### `src/cosine_similarity/`
+
 Cosine similarity-based curriculum mapping evaluation.
 
 - **`eval_cosine_similarity.py`** - Evaluates cosine similarity baseline on a single CSV
   - Uses SentenceTransformer models for embedding
   - Computes top-k accuracy and MRR (Mean Reciprocal Rank)
   - Output: `output/cosine_similarity/results.json`
-  
 - **`batch_cosine_similarity.py`** - Batch evaluation on multiple CSV files in a folder
   - Iterates through all CSV files in a directory
   - Appends results to shared JSON file
-  
 - **`train_dual_encoder.py`** - Fine-tunes a dual (bi-encoder) model
   - Trains on positive and negative text-standard pairs
   - Output: Trained bi-encoder model
-  
 - **`train_advanced_biencoder.py`** - Advanced bi-encoder training
   - Enhanced training with advanced techniques
   - Output: Advanced bi-encoder model
 
 #### `src/cross_encoder/`
+
 Cross-encoder reranking for improved accuracy.
 
 - **`finetune_cross_encoder.py`** - Fine-tunes a cross-encoder model
   - Trains on text-standard pairs with binary labels
   - Output: `model/cross_finetuned/`
-  
 - **`eval_cross_encoder.py`** - Evaluates bi-encoder + cross-encoder pipeline
   - First retrieves top-k candidates with bi-encoder
   - Then reranks with cross-encoder
@@ -83,37 +81,38 @@ Cross-encoder reranking for improved accuracy.
   - Logs: `output/cross_encoder/logs/` (contains misclassified samples)
 
 #### `src/classification/`
+
 Traditional multi-class classifier training and prediction.
 
 - **`train_multiclass_classifier.py`** - Trains a multi-class classifier on achievement standards
   - Uses transformer-based models for classification
   - Output: Trained classifier model
-  
 - **`predict_multiclass.py`** - Predicts achievement standards using trained classifier
   - Evaluates classification performance
   - Output: Prediction results and metrics
 
 #### `src/llm_text_classification/`
+
 LLM (Large Language Model) based text classification evaluation.
 
 - **`finetune_llm.py`** - Fine-tunes LLM for achievement standard classification
   - Trains generative models on curriculum mapping task
   - Output: Fine-tuned LLM model
-  
 - **`eval_llm.py`** - Evaluates pre-trained LLM on classification task
   - Uses zero-shot or few-shot prompting
   - Output: `output/llm_text_classification/results.json`
   - Logs: `output/llm_text_classification/logs/` (misclassified samples)
-  
 - **`eval_finetune_llm.py`** - Evaluates fine-tuned LLM on classification task
   - Tests fine-tuned model performance
   - Output: `output/llm_text_classification/finetuned_results.json`
   - Logs: `output/llm_text_classification/finetuned_logs/` (correct/wrong samples)
 
 #### `src/test/`
+
 Test scripts for development and validation.
 
 #### `src/utils/`
+
 Utility functions and helper scripts.
 
 - **`check_api_key_access.py`** - Checks API key access for external services
@@ -123,6 +122,7 @@ Utility functions and helper scripts.
 All preprocessed data files are stored here. The directory is created and populated by preprocessing scripts.
 
 **Typical contents after preprocessing:**
+
 ```
 dataset/
 ├── unique_achievement_standards.csv      # All unique achievement standards
@@ -151,6 +151,7 @@ dataset/
 ```
 
 **File descriptions:**
+
 - `unique_achievement_standards.csv` - Deduplicated achievement standards from raw data
 - `text_achievement_standards.csv` - Standards with associated text samples
 - `train.csv` / `valid.csv` - Complete training/validation datasets
@@ -163,6 +164,7 @@ dataset/
 Stores fine-tuned models and model outputs generated during training.
 
 **Contents:**
+
 ```
 model/
 ├── cross_encoder/          # Cross-encoder models (training checkpoints)
@@ -173,6 +175,7 @@ model/
 ```
 
 Each model directory contains:
+
 - Model weights (for trained models)
 - Configuration files
 - Tokenizer files
@@ -183,12 +186,14 @@ Each model directory contains:
 All evaluation results and logs are stored here.
 
 #### `output/cosine_similarity/`
+
 ```
 output/cosine_similarity/
 └── results.json            # Cosine similarity evaluation results
 ```
 
 **`results.json` format:**
+
 ```json
 [
   {
@@ -210,6 +215,7 @@ output/cosine_similarity/
 ```
 
 #### `output/cross_encoder/`
+
 ```
 output/cross_encoder/
 ├── results_rerank.json     # Cross-encoder reranking results
@@ -219,6 +225,7 @@ output/cross_encoder/
 ```
 
 **`results_rerank.json` format:**
+
 ```json
 [
   {
@@ -241,11 +248,13 @@ output/cross_encoder/
 ```
 
 **`logs/{subject}_wrongs.txt`** - Contains up to 100 randomly sampled misclassified examples with:
+
 - Input text
 - True achievement standard code and content
 - Predicted achievement standard code and content
 
 #### `output/llm_text_classification/`
+
 ```
 output/llm_text_classification/
 ├── results.json              # Pre-trained LLM evaluation results
@@ -259,6 +268,7 @@ output/llm_text_classification/
 ```
 
 **`results.json` / `finetuned_results.json` format:**
+
 ```json
 [
   {
@@ -292,6 +302,7 @@ output/llm_text_classification/
 ```
 
 **`logs/{subject}_corrects.txt`** and **`logs/{subject}_wrongs.txt`** - Contains correctly/incorrectly classified examples with:
+
 - Input text
 - True achievement standard code and content
 - Predicted achievement standard code and content
@@ -302,6 +313,7 @@ output/llm_text_classification/
 Shell scripts for running the entire pipeline.
 
 #### Data Preprocessing
+
 - **`preprocess.sh`** - Runs the full preprocessing pipeline
   - Extracts standards
   - Adds text samples
@@ -309,47 +321,45 @@ Shell scripts for running the entire pipeline.
   - Generates few-shot examples for LLM evaluation
 
 #### Embedding-based Approaches
+
 - **`cosine_similarity.sh`** - Runs cosine similarity evaluation
   - Evaluates on validation dataset
   - Saves results to `output/cosine_similarity/results.json`
-  
 - **`cross_encoder.sh`** - Trains and evaluates cross-encoder
   - Fine-tunes cross-encoder on training data
   - Evaluates on validation data with reranking
   - Saves model and results
 
 #### Multi-class Classification
+
 - **`train_classifier.sh`** - Trains standard multi-class classifier
   - Basic training configuration
-  
 - **`train_classifier_focal.sh`** - Trains classifier with focal loss
   - Handles class imbalance with focal loss
-  
 - **`train_classifier_large.sh`** - Trains large-scale classifier
   - Uses larger model variants
-  
 - **`train_advanced.sh`** - Trains advanced classifier
   - Advanced training configuration
-  
 - **`train_advanced_large.sh`** - Trains large advanced classifier
   - Combines advanced techniques with large models
 
 #### LLM-based Text Classification
+
 - **`llm_text_classification.sh`** - Evaluates pre-trained LLM
   - Zero-shot or few-shot evaluation
   - Saves results to `output/llm_text_classification/results.json`
-  
 - **`finetuning_llm.sh`** - Fine-tunes LLM for classification
   - Trains generative model on curriculum mapping
-  
 - **`finetune_llm_text_classification.sh`** - Evaluates fine-tuned LLM
   - Tests fine-tuned model performance
   - Saves results to `output/llm_text_classification/finetuned_results.json`
 
 #### Other
+
 - **`checkpoints/`** - Stores training checkpoint information
 
 **Basic Usage:**
+
 ```bash
 cd scripts
 
@@ -362,10 +372,14 @@ bash cosine_similarity.sh
 # Step 3: Train and evaluate cross-encoder
 bash cross_encoder.sh
 
-# Step 4: Evaluate LLM
+# Step 4: Train and evaluate multi-class classifier
+bash train_classifier.sh
+bash eval_classifier.sh
+
+# Step 5: Evaluate LLM
 bash llm_text_classification.sh
 
-# Step 5: Fine-tune and evaluate LLM
+# Step 6: Fine-tune and evaluate LLM
 bash finetuning_llm.sh
 bash finetune_llm_text_classification.sh
 ```
@@ -389,6 +403,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 ```
 
 This ensures that:
+
 - Scripts can be run from any directory
 - All outputs go to the correct location relative to project root
 - No issues with relative path confusion
@@ -436,9 +451,7 @@ dataset/few_shot_examples/{subject}.json
 
 1. **Organized Structure**: Clear separation between source code, data, models, and outputs
 2. **Automatic Path Resolution**: Scripts automatically find project root
-3. **Consistent Naming**: Clear train/valid split with standardized naming conventions
-4. **Reproducible Pipeline**: Shell scripts automate the entire workflow
-5. **Version Control Friendly**: Generated files (dataset/, model/, output/) can be gitignored
+3. **Reproducible Pipeline**: Shell scripts automate the entire workflow
 
 ## Notes
 
@@ -447,6 +460,5 @@ dataset/few_shot_examples/{subject}.json
 - Shell scripts use `PROJECT_ROOT` variable for consistency
 - JSON result files use append logic to accumulate results from multiple runs
 - Dataset uses fixed 80 text samples per achievement standard in train_80/ and valid_80/
-- Few-shot examples are automatically generated for LLM evaluation
-- The project now includes multiple evaluation approaches: embedding-based, classification-based, and LLM-based
-
+- Few-shot examples are automatically inserted for LLM evaluation
+- The project includes multiple evaluation approaches: embedding-based, classification-based, and LLM-based
