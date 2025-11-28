@@ -25,6 +25,13 @@ This document describes the execution methods and usage of shell scripts located
 8. [finetuning_llm.sh](#8-finetuning_llmsh) - LLM fine-tuning
 9. [finetune_llm_text_classification.sh](#9-finetune_llm_text_classificationsh) - Fine-tuned LLM evaluation
 
+### RAG-based LLM Text Classification
+
+10. [rag_llm_text_classification.sh](#10-rag_llm_text_classificationsh) - RAG LLM evaluation
+11. [api_rag_llm_text_classification.sh](#11-api_rag_llm_text_classificationsh) - API-based RAG LLM evaluation
+12. [rag_finetuning_llm.sh](#12-rag_finetuning_llmsh) - RAG LLM fine-tuning
+13. [rag_finetune_llm_text_classification.sh](#13-rag_finetune_llm_text_classificationsh) - Fine-tuned RAG LLM evaluation
+
 ---
 
 ## 1. preprocess.sh
@@ -611,6 +618,321 @@ output/
 
 ---
 
+## 10. rag_llm_text_classification.sh
+
+### Overview
+
+Text classification evaluation script using RAG (Retrieval-Augmented Generation) workflow with Large Language Models. Implements a two-stage approach: first retrieves top-k candidate achievement standards using a multi-class classifier, then uses an LLM to select the best match from the candidates.
+
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- Trained multi-class classifier model available (`model/achievement_classifier/best_model`)
+- CUDA-enabled GPU (recommended)
+- Sufficient VRAM (varies by model size)
+
+### Configuration
+
+```bash
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
+MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"  # LLM model to use
+MAX_NEW_TOKENS=10                                   # Maximum tokens to generate
+TEMPERATURE=0.1                                     # Sampling temperature
+DEVICE="cuda"                                       # Device (cuda or cpu)
+MAX_INPUT_LENGTH=4000                               # Maximum input length
+TOP_K=20                                            # Number of candidates to retrieve
+NUM_SAMPLES=200                                     # Target number of samples to evaluate
+NUM_EXAMPLES=5                                      # Number of few-shot examples
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"  # Retrieval model
+INFER_DEVICE="cuda"                                 # Device for retrieval model
+```
+
+### Execution
+
+```bash
+cd scripts
+bash rag_llm_text_classification.sh
+```
+
+### Methodology
+
+1. Discovers all CSV files in the `valid_80` folder (9 subjects)
+2. For each CSV file (subject), sequentially:
+   - **Step 1**: Retrieves top-k candidate achievement standards using `infer_top_k` from the trained multi-class classifier
+   - **Step 2**: Loads few-shot examples for the subject
+   - **Step 3**: Loads the LLM
+   - **Step 4**: LLM selects the best matching achievement standard from the retrieved candidates
+   - Computes accuracy and MRR
+   - Saves correct/incorrect samples
+3. Continues processing subsequent files even if errors occur
+
+### Output Files
+
+```
+output/
+└── rag_llm_text_classification/
+    ├── results.json           # Evaluation results for all subjects
+    └── logs/
+        ├── {subject}_corrects.txt
+        ├── {subject}_wrongs.txt
+        └── ...
+```
+
+**Example results.json:**
+
+```json
+[
+  {
+    "folder": "valid_80",
+    "model_path": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+    "base_model": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+    "subject": "과학",
+    "num_standards": 190,
+    "top_k": 20,
+    "num_samples": 200,
+    "total_samples": 200,
+    "correct": 150,
+    "accuracy": 0.75,
+    "exact_match_count": 145,
+    "exact_match_percentage": 0.725,
+    "match_type_distribution": {
+      "exact": 72.5,
+      "partial": 25.0,
+      "invalid": 2.5
+    },
+    "max_new_tokens": 10,
+    "temperature": 0.1,
+    "max_input_length": 4000,
+    "truncated_count": 0,
+    "truncated_percentage": 0.0
+  }
+]
+```
+
+### Customization
+
+#### Using a Different LLM Model
+
+```bash
+MODEL_NAME="meta-llama/Llama-2-7b-chat-hf"
+```
+
+#### Adjusting Retrieval Parameters
+
+```bash
+TOP_K=30  # Retrieve more candidates
+```
+
+#### Running on CPU
+
+```bash
+DEVICE="cpu"
+```
+
+---
+
+## 11. api_rag_llm_text_classification.sh
+
+### Overview
+
+API-based RAG LLM text classification evaluation script. Uses external API providers (OpenRouter, OpenAI, Anthropic, Google) instead of local models for the LLM component, while still using a local multi-class classifier for candidate retrieval.
+
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- Trained multi-class classifier model available (`model/achievement_classifier/best_model`)
+- API key configured in `.env` file or provided via environment variables
+
+### Configuration
+
+```bash
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
+API_PROVIDER="openrouter"                    # API provider (openrouter, openai, anthropic, google)
+API_MODEL="qwen/qwen-2.5-7b-instruct:free"  # API model name
+API_DELAY=1.0                                # Delay between API calls (seconds)
+TOP_K=20                                     # Number of candidates to retrieve
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
+INFER_DEVICE="cuda"
+MAX_NEW_TOKENS=20
+TEMPERATURE=0.1
+NUM_SAMPLES=200
+NUM_EXAMPLES=5
+```
+
+### Execution
+
+```bash
+cd scripts
+bash api_rag_llm_text_classification.sh
+```
+
+### Methodology
+
+Same two-stage RAG workflow as `rag_llm_text_classification.sh`, but uses API-based LLM instead of local model:
+
+1. Retrieves top-k candidates using local multi-class classifier
+2. Sends candidates to API-based LLM for final selection
+3. Processes all subjects sequentially
+
+### Output Files
+
+Same structure as `rag_llm_text_classification.sh`:
+
+```
+output/
+└── rag_llm_text_classification/
+    ├── results.json
+    └── logs/
+```
+
+### Customization
+
+#### Using Different API Providers
+
+```bash
+API_PROVIDER="openai"
+API_MODEL="gpt-4"
+```
+
+```bash
+API_PROVIDER="anthropic"
+API_MODEL="claude-3-5-sonnet-20241022"
+```
+
+---
+
+## 12. rag_finetuning_llm.sh
+
+### Overview
+
+Fine-tunes an LLM for RAG-based achievement standard classification. The model is trained on the RAG workflow where it receives retrieved candidates and learns to select the best match.
+
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `dataset/train_80/` directory exists
+- Trained multi-class classifier model available (`model/achievement_classifier/best_model`)
+- Sufficient VRAM for LLM fine-tuning
+
+### Configuration
+
+```bash
+TRAIN_DIR="${PROJECT_ROOT}/dataset/train_80"
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
+MODEL_NAME="unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
+OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_rag_llm"
+MAX_SEQ_LENGTH=2600
+NUM_SAMPLES=2500                    # Target number of samples per CSV file
+TOP_K=20                            # Number of candidates to retrieve
+INFER_DEVICE="cuda"
+NUM_EXAMPLES_FEW_SHOT=5             # Number of few-shot examples
+```
+
+### Execution
+
+```bash
+cd scripts
+bash rag_finetuning_llm.sh
+```
+
+### Methodology
+
+1. Loads training dataset from `train_80/` directory
+2. For each training CSV file:
+   - Retrieves top-k candidates using multi-class classifier
+   - Generates training prompts with RAG workflow
+3. Fine-tunes the LLM on RAG-based classification task
+4. Saves the fine-tuned model
+
+### Output Files
+
+```
+model/
+└── finetuned_rag_llm/           # Fine-tuned RAG LLM
+    ├── config.json
+    ├── model weights
+    ├── tokenizer files
+    └── training_args.json
+```
+
+### Implementation Details
+
+- Instruction tuning approach with RAG workflow
+- Efficient fine-tuning techniques (LoRA, QLoRA, etc.)
+- Training logs and checkpoint saving
+
+---
+
+## 13. rag_finetune_llm_text_classification.sh
+
+### Overview
+
+Evaluation script for fine-tuned RAG LLMs. Sequentially processes all subjects in the validation dataset using the RAG workflow.
+
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `rag_finetuning_llm.sh` execution completed (fine-tuned RAG model required)
+- `model/finetuned_rag_llm/` directory exists
+- Trained multi-class classifier model available
+
+### Configuration
+
+```bash
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
+MODEL_PATH="${PROJECT_ROOT}/model/finetuned_rag_llm/{checkpoint}"  # Path to fine-tuned RAG model
+MODEL_DIR="${PROJECT_ROOT}/model/achievement_classifier/best_model"
+MAX_NEW_TOKENS=20
+TEMPERATURE=0.1
+DEVICE="cuda"
+MAX_INPUT_LENGTH=2600
+TOP_K=20
+NUM_SAMPLES=200
+NUM_EXAMPLES=0                      # Few-shot examples (0 to disable)
+INFER_DEVICE="cuda"
+```
+
+### Execution
+
+```bash
+cd scripts
+bash rag_finetune_llm_text_classification.sh
+```
+
+### Methodology
+
+1. Loads the fine-tuned RAG LLM
+2. Processes all CSV files in the `valid_80` folder (9 subjects)
+3. For each subject:
+   - Retrieves top-k candidates using multi-class classifier
+   - Evaluates with fine-tuned RAG LLM
+   - Saves correct/incorrect samples
+   - Computes performance metrics
+
+### Output Files
+
+```
+output/
+└── rag_llm_text_classification/
+    ├── finetuned_results.json    # Fine-tuned RAG LLM evaluation results
+    └── finetuned_logs/
+        ├── {subject}_corrects.txt
+        ├── {subject}_wrongs.txt
+        └── ...
+```
+
+**Example finetuned_results.json:**
+
+Similar format to `rag_llm_text_classification.sh` results, with additional training information.
+
+### Implementation Details
+
+- Measures fine-tuning effectiveness for RAG workflow
+- Enables performance comparison with pre-trained RAG LLMs
+- Provides detailed logs and analysis materials
+
+---
+
 ## Recommended Execution Order
 
 For executing the complete pipeline from scratch:
@@ -663,6 +985,26 @@ bash finetune_llm_text_classification.sh      # Fine-tuned LLM evaluation
 bash llm_text_classification.sh               # Pre-trained LLM evaluation
 ```
 
+### RAG LLM Pipeline
+
+```bash
+cd scripts
+
+# Data preprocessing (skip if already completed)
+bash preprocess.sh
+
+# Train multi-class classifier (required for RAG retrieval)
+bash train_classifier.sh
+
+# RAG LLM evaluation
+bash rag_llm_text_classification.sh           # Pre-trained RAG LLM evaluation
+bash api_rag_llm_text_classification.sh        # API-based RAG LLM evaluation
+
+# RAG LLM fine-tuning and evaluation
+bash rag_finetuning_llm.sh                   # RAG LLM fine-tuning
+bash rag_finetune_llm_text_classification.sh # Fine-tuned RAG LLM evaluation
+```
+
 ## Common Considerations
 
 ### Path Configuration
@@ -679,7 +1021,7 @@ bash llm_text_classification.sh               # Pre-trained LLM evaluation
 
 - **Immediate termination**: `preprocess.sh`, `cosine_similarity.sh`, `cross_encoder.sh`, classifier training scripts
   - Terminates immediately on error (`set -e`)
-- **Continue processing**: `llm_text_classification.sh`, `finetune_llm_text_classification.sh`
+- **Continue processing**: `llm_text_classification.sh`, `finetune_llm_text_classification.sh`, `rag_llm_text_classification.sh`, `api_rag_llm_text_classification.sh`, `rag_finetune_llm_text_classification.sh`
   - Continues processing subsequent files even on error (batch processing)
 
 ## Troubleshooting

@@ -107,6 +107,24 @@ LLM (Large Language Model) based text classification evaluation.
   - Output: `output/llm_text_classification/finetuned_results.json`
   - Logs: `output/llm_text_classification/finetuned_logs/` (correct/wrong samples)
 
+#### `src/rag_llm_text_classification/`
+
+RAG (Retrieval-Augmented Generation) based LLM text classification evaluation. Uses a two-stage approach: first retrieves top-k candidate achievement standards using a multi-class classifier, then uses an LLM to select the best match from the candidates.
+
+- **`rag_eval_llm.py`** - Evaluates pre-trained LLM with RAG workflow
+  - Step 1: Retrieves top-k candidates using `infer_top_k` from trained multi-class classifier
+  - Step 2: LLM selects the best matching achievement standard from candidates
+  - Supports both local models and API-based models
+  - Output: `output/rag_llm_text_classification/results.json`
+  - Logs: `output/rag_llm_text_classification/logs/` (correct/wrong samples)
+- **`rag_finetune_llm.py`** - Fine-tunes LLM for RAG-based classification
+  - Trains generative models on RAG workflow with retrieved candidates
+  - Output: Fine-tuned RAG LLM model
+- **`rag_eval_ft_llm.py`** - Evaluates fine-tuned LLM with RAG workflow
+  - Tests fine-tuned RAG model performance
+  - Output: `output/rag_llm_text_classification/finetuned_results.json`
+  - Logs: `output/rag_llm_text_classification/finetuned_logs/` (correct/wrong samples)
+
 #### `src/test/`
 
 Test scripts for development and validation.
@@ -267,6 +285,27 @@ output/llm_text_classification/
     └── {subject}_wrongs.txt
 ```
 
+#### `output/rag_llm_text_classification/`
+
+```
+output/rag_llm_text_classification/
+├── results.json              # Pre-trained RAG LLM evaluation results
+├── finetuned_results.json    # Fine-tuned RAG LLM evaluation results
+├── logs/                     # Pre-trained RAG LLM logs
+│   ├── {subject}_corrects.txt
+│   └── {subject}_wrongs.txt
+└── finetuned_logs/           # Fine-tuned RAG LLM logs
+    ├── {subject}_corrects.txt
+    └── {subject}_wrongs.txt
+```
+
+**`results.json` / `finetuned_results.json` format:**
+
+Similar to `llm_text_classification` results, but includes additional RAG-specific fields:
+
+- `top_k`: Number of candidates retrieved in Step 1
+- Other fields are consistent with standard LLM evaluation results
+
 **`results.json` / `finetuned_results.json` format:**
 
 ```json
@@ -354,6 +393,23 @@ Shell scripts for running the entire pipeline.
   - Tests fine-tuned model performance
   - Saves results to `output/llm_text_classification/finetuned_results.json`
 
+#### RAG-based LLM Text Classification
+
+- **`rag_llm_text_classification.sh`** - Evaluates pre-trained LLM with RAG workflow
+  - Two-stage approach: retrieval + LLM selection
+  - Uses multi-class classifier for candidate retrieval
+  - Saves results to `output/rag_llm_text_classification/results.json`
+- **`api_rag_llm_text_classification.sh`** - Evaluates API-based LLM with RAG workflow
+  - Uses external API providers (OpenRouter, OpenAI, etc.)
+  - Same RAG workflow as local model evaluation
+  - Saves results to `output/rag_llm_text_classification/results.json`
+- **`rag_finetuning_llm.sh`** - Fine-tunes LLM for RAG-based classification
+  - Trains generative model on RAG workflow with retrieved candidates
+  - Output: `model/finetuned_rag_llm/`
+- **`rag_finetune_llm_text_classification.sh`** - Evaluates fine-tuned RAG LLM
+  - Tests fine-tuned RAG model performance
+  - Saves results to `output/rag_llm_text_classification/finetuned_results.json`
+
 #### Other
 
 - **`checkpoints/`** - Stores training checkpoint information
@@ -382,6 +438,14 @@ bash llm_text_classification.sh
 # Step 6: Fine-tune and evaluate LLM
 bash finetuning_llm.sh
 bash finetune_llm_text_classification.sh
+
+# Step 7: Evaluate RAG LLM (requires trained classifier from Step 4)
+bash rag_llm_text_classification.sh
+bash api_rag_llm_text_classification.sh
+
+# Step 8: Fine-tune and evaluate RAG LLM
+bash rag_finetuning_llm.sh
+bash rag_finetune_llm_text_classification.sh
 ```
 
 ### `docs/` - Documentation
@@ -445,6 +509,16 @@ dataset/few_shot_examples/{subject}.json
     │
     └─→ [eval_finetune_llm.py] → output/llm_text_classification/finetuned_results.json
                                  → output/llm_text_classification/finetuned_logs/
+    │
+└─→ [train_multiclass_classifier.py] → model/achievement_classifier/
+        ↓
+    [rag_finetune_llm.py] → model/finetuned_rag_llm/
+        ↓
+    ├─→ [rag_eval_llm.py] → output/rag_llm_text_classification/results.json
+    │                       → output/rag_llm_text_classification/logs/
+    │
+    └─→ [rag_eval_ft_llm.py] → output/rag_llm_text_classification/finetuned_results.json
+                               → output/rag_llm_text_classification/finetuned_logs/
 ```
 
 ## Key Features
