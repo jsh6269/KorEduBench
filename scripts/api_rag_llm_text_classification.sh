@@ -13,8 +13,8 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 
 # API Configuration
 API_PROVIDER="openrouter"
-API_MODEL="qwen/qwen-2.5-7b-instruct:free"
-API_DELAY=1.0
+API_MODEL="qwen/qwen3-8b"
+API_DELAY=0.1
 # API_KEY .env에서
 
 # RAG Configuration
@@ -26,7 +26,6 @@ INFER_DEVICE="cuda"
 MAX_NEW_TOKENS=20
 TEMPERATURE=0.1
 MAX_TOTAL_SAMPLES=200
-FEW_SHOT=True
 NUM_EXAMPLES=5
 
 # Color output
@@ -97,13 +96,6 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
     echo -e "${BLUE}║  Processing: ${BASENAME}${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════╝${NC}"
 
-    # Build few-shot flag
-    if [ "$FEW_SHOT" = True ]; then
-        FEW_SHOT_FLAG="--few-shot"
-    else
-        FEW_SHOT_FLAG=""
-    fi
-
     # Run API RAG evaluation
     if python "${PROJECT_ROOT}/src/rag_llm_text_classification/rag_eval_llm.py" \
         --input_csv "$CSV_FILE" \
@@ -117,8 +109,7 @@ for CSV_FILE in "${CSV_FILES[@]}"; do
         --train-csv "$SUBJECT_TRAIN_CSV" \
         --model-dir "$MODEL_DIR" \
         --infer-device "$INFER_DEVICE" \
-        --num-examples "$NUM_EXAMPLES" \
-        $FEW_SHOT_FLAG; then
+        --num-examples "$NUM_EXAMPLES"; then
         echo -e "${GREEN}✓ Successfully processed ${BASENAME}${NC}"
         ((PROCESSED++))
     else

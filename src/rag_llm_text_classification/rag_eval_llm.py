@@ -572,8 +572,8 @@ if __name__ == "__main__":
         print(f"API delay: {args.api_delay}s between requests")
         print(f"API retry: automatic retry up to 10 times on rate limit errors")
 
-        # Load a tokenizer for approximate token counting
-        tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        # Load a tokenizer for approximate token counting (supports chat template)
+        tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-1.5B-Instruct")
 
         model_identifier = f"{args.api_provider}/{args.api_model}"
         is_local_model = False
