@@ -158,7 +158,7 @@ KorEduBench/
 │   ├── cross_encoder/               # Cross-encoder
 │   ├── classification/              # Classifier training
 │   └── llm_text_classification/     # LLM-based classification
-│   └── rag_llm_text_classification/ # LLM-based classification
+│   └── rag_llm_text_classification/ # RAG based LLM classification
 ├── dataset/                         # Datasets
 │   ├── train_80/                    # Train data by subject (80 texts)
 │   ├── valid_80/                    # Validation data by subject
