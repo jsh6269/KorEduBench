@@ -101,6 +101,7 @@ if "COLAB_" in "".join(os.environ.keys()):
 ### Important: Package Versions
 
 This project requires specific package versions for compatibility with Unsloth:
+
 - `transformers==4.56.2` (newer versions may have issues)
 - `trl==0.22.2` (required for SFTTrainer)
 - `torch==2.8.0` with `xformers==0.0.32.post2`
@@ -117,11 +118,13 @@ Download [Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/da
 Note that we only use texts (not the images) which means **label directory** of dataset above is used in our project.
 
 ### 1. Data Preprocessing
+
 ```bash
 cd scripts && bash preprocess.sh
 ```
 
 ### 2. Run Evaluation
+
 ```bash
 # Cosine similarity baseline
 bash cosine_similarity.sh
@@ -142,28 +145,30 @@ bash finetune_llm_text_classification.sh
 ```
 
 ### Detailed Usage
+
 For detailed script usage, see [`docs/SCRIPTS.md`](docs/SCRIPTS.md).
 
 ## Project Structure
 
 ```
 KorEduBench/
-├── src/                         # Source code
-│   ├── preprocessing/           # Data preprocessing
-│   ├── cosine_similarity/       # Embedding-based evaluation
-│   ├── cross_encoder/           # Cross-encoder
-│   ├── classification/          # Classifier training
-│   └── llm_text_classification/ # LLM-based classification
-├── dataset/                     # Datasets
-│   ├── train_80/               # Train data by subject (80 texts)
-│   ├── valid_80/               # Validation data by subject
-│   └── few_shot_examples/      # Few-shot examples
-├── model/                       # Trained models
-├── output/                      # Evaluation results
-├── scripts/                     # Execution scripts (11 scripts)
-└── docs/                         # Documentation
-    ├── PROJECT_STRUCTURE.md    # Detailed project structure
-    └── SCRIPTS.md              # Script usage guide
+├── src/                             # Source code
+│   ├── preprocessing/               # Data preprocessing
+│   ├── cosine_similarity/           # Embedding-based evaluation
+│   ├── cross_encoder/               # Cross-encoder
+│   ├── classification/              # Classifier training
+│   └── llm_text_classification/     # LLM-based classification
+│   └── rag_llm_text_classification/ # LLM-based classification
+├── dataset/                         # Datasets
+│   ├── train_80/                    # Train data by subject (80 texts)
+│   ├── valid_80/                    # Validation data by subject
+│   └── few_shot_examples/           # Few-shot examples
+├── model/                           # Trained models
+├── output/                          # Evaluation results
+├── scripts/                         # Execution scripts (11 scripts)
+└── docs/                            # Documentation
+    ├── PROJECT_STRUCTURE.md         # Detailed project structure
+    └── SCRIPTS.md                   # Script usage guide
 ```
 
 ## Dataset
@@ -171,16 +176,16 @@ KorEduBench/
 - **Source**: [AI Hub - Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=71855)
 
 - **Overview**
-This dataset is designed to support research in curriculum-aligned natural language understanding and multimodal learning. It was constructed through the systematic collection of textual and visual data from official educational materials, such as textbooks and reference guides, across multiple educational stages. These resources were then rigorously annotated and aligned with the achievement standards defined in the 2022 Revised National Curriculum of Korea, across nine core subject domains. The resulting dataset facilitates a range of educational AI tasks, including curriculum-based content inference, standard-level classification, and subject-specific knowledge modeling.
+  This dataset is designed to support research in curriculum-aligned natural language understanding and multimodal learning. It was constructed through the systematic collection of textual and visual data from official educational materials, such as textbooks and reference guides, across multiple educational stages. These resources were then rigorously annotated and aligned with the achievement standards defined in the 2022 Revised National Curriculum of Korea, across nine core subject domains. The resulting dataset facilitates a range of educational AI tasks, including curriculum-based content inference, standard-level classification, and subject-specific knowledge modeling.
 
 - **Subjects**:
-Science, Korean, Mathematics, English, Social Studies, Sociology, Ethics, Technology–Home Economics, Information (9 subjects in total)
+  Science, Korean, Mathematics, English, Social Studies, Sociology, Ethics, Technology–Home Economics, Information (9 subjects in total)
 
 - **Split**:
-The dataset is partitioned into training and validation sets, each containing 80 textual samples per achievement standard to ensure balanced representation across labels.
+  The dataset is partitioned into training and validation sets, each containing 80 textual samples per achievement standard to ensure balanced representation across labels.
 
 - **Contributors**:
-Media Group Sarangwasup Co., Ltd.
+  Media Group Sarangwasup Co., Ltd.
 
 ## Documentation
 
