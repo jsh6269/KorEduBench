@@ -1,84 +1,94 @@
 # Shell Scripts Documentation
 
-이 문서는 `scripts/` 폴더에 있는 Shell 스크립트들의 실행 방법과 사용법을 설명합니다.
+This document describes the execution methods and usage of shell scripts located in the `scripts/` directory.
 
-## 목차
+## Table of Contents
 
-### 데이터 전처리
-1. [preprocess.sh](#1-preprocesssh) - 데이터 전처리
+### Data Preprocessing
 
-### 임베딩 기반 접근법
-2. [cosine_similarity.sh](#2-cosine_similaritysh) - 코사인 유사도 평가
-3. [cross_encoder.sh](#3-cross_encodersh) - Cross Encoder 학습 및 평가
+1. [preprocess.sh](#1-preprocesssh) - Data preprocessing pipeline
 
-### 멀티클래스 분류
-4. [train_classifier.sh](#4-train_classifiersh) - 기본 분류기 학습
-5. [train_advanced.sh](#5-train_advancedsh) - 고급 분류기
-6. [eval_classifier.sh](#6-eval_classifiersh) - 분류기 평가
+### Embedding-based Approaches
 
-### LLM 기반 텍스트 분류
-7. [llm_text_classification.sh](#7-llm_text_classificationsh) - LLM 평가
-8. [finetuning_llm.sh](#8-finetuning_llmsh) - LLM 파인튜닝
-9. [finetune_llm_text_classification.sh](#9-finetune_llm_text_classificationsh) - 파인튜닝된 LLM 평가
+2. [cosine_similarity.sh](#2-cosine_similaritysh) - Cosine similarity evaluation
+3. [cross_encoder.sh](#3-cross_encodersh) - Cross-encoder training and evaluation
+
+### Multi-class Classification
+
+4. [train_classifier.sh](#4-train_classifiersh) - Multi-class classifier training
+5. [train_advanced.sh](#5-train_advancedsh) - Advanced multi-class classifier training
+6. [eval_classifier.sh](#6-eval_classifiersh) - Multi-class classifier evaluation
+
+### LLM-based Text Classification
+
+7. [llm_text_classification.sh](#7-llm_text_classificationsh) - LLM evaluation
+8. [finetuning_llm.sh](#8-finetuning_llmsh) - LLM fine-tuning
+9. [finetune_llm_text_classification.sh](#9-finetune_llm_text_classificationsh) - Fine-tuned LLM evaluation
 
 ---
 
 ## 1. preprocess.sh
 
-### 개요
-AI Hub의 교육과정 수준 과목별 데이터셋을 전처리하는 스크립트입니다. 성취기준 추출, 텍스트 샘플 추가, train/validation 분할, few-shot 예시 생성을 수행합니다.
+### Overview
 
-### 사전 요구사항
-- [교육과정 수준 과목별 데이터셋](https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchOptnCnd=OPTNCND001&searchKeyword=&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=20&srchDataRealmCode=REALM010&aihubDataSe=data&dataSetSn=71855) 다운로드 필요
-- 데이터셋의 `label` 디렉토리 경로 확인 필요
+Preprocessing script for the AI Hub curriculum-level subject-specific dataset. Performs achievement standard extraction, text sample addition and train/validation splitting.  
+You can also proceed using well-organized sample dataset archived at `dataset/dataset_bundle.tar.gz`.
 
-### 주요 설정 (스크립트 내부 수정 필요)
+### Prerequisites
+
+- Download the [Curriculum-level Subject-specific Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?pageIndex=1&currMenu=115&topMenu=100&srchOptnCnd=OPTNCND001&searchKeyword=&srchDetailCnd=DETAILCND001&srchOrder=ORDER001&srchPagePer=20&srchDataRealmCode=REALM010&aihubDataSe=data&dataSetSn=71855)
+- Verify the path to the `label` directory in the dataset
+
+### Configuration
+
+Modify the following variables within the script:
 
 ```bash
-BASE_DIR="/mnt/e/2025_2_KorEduBench"  # 데이터셋이 있는 기본 경로
-MAX_TEXTS=80                           # 각 성취기준당 최대 텍스트 샘플 수
+BASE_DIR="/mnt/e/2025_2_KorEduBench"  # Base path to the dataset
+MAX_TEXTS=80                           # Maximum number of text samples per achievement standard
 ```
 
-### 실행 방법
+### Execution
 
 ```bash
 cd scripts
 bash preprocess.sh
 ```
 
+### Processing Pipeline
 
-### 처리 단계
+1. **Step 1: Achievement Standard Extraction**
 
-1. **Step 1: 성취기준 추출**
-   - `extract_standards.py` 실행
-   - 입력: `{BASE_DIR}/label/`
-   - 출력: `dataset/unique_achievement_standards.csv`
+   - Executes `extract_standards.py`
+   - Input: `{BASE_DIR}/label/`
+   - Output: `dataset/unique_achievement_standards.csv`
 
-2. **Step 2: 텍스트 샘플 추가**
-   - `add_text_to_standards.py` 실행
-   - 각 성취기준에 최대 `MAX_TEXTS`개의 텍스트 샘플 추가
-   - 출력: `dataset/text_achievement_standards.csv`
+2. **Step 2: Text Sample Addition**
 
-3. **Step 3: Train/Validation 분할 및 과목별 분할**
-   - `split_subject.py` 실행
-   - Train/Validation 분할 (80/20)
-   - 과목별로 CSV 파일 생성
-   - Few-shot 예시 JSON 파일 생성
-   - 출력:
+   - Executes `add_text_to_standards.py`
+   - Adds up to `MAX_TEXTS` text samples per achievement standard
+   - Output: `dataset/text_achievement_standards.csv`
+
+3. **Step 3: Train/Validation Split and Subject-wise Partitioning**
+   - Executes `split_subject.py`
+   - Performs train/validation split (80/20)
+   - Generates subject-specific CSV files
+   - Generates few-shot example JSON files
+   - Outputs:
      - `dataset/train.csv`, `dataset/valid.csv`
      - `dataset/train_80/{subject}.csv`, `dataset/valid_80/{subject}.csv`
      - `dataset/few_shot_examples/{subject}.json`
      - `dataset/insufficient_text.csv`
 
-### 출력 파일
+### Output Structure
 
 ```
 dataset/
 ├── unique_achievement_standards.csv
 ├── text_achievement_standards.csv
-├── train.csv                  # 전체 train 데이터
-├── valid.csv                  # 전체 validation 데이터
-├── train_80/                  # 과목별 train (80 texts/standard)
+├── train.csv                  # Complete training data
+├── valid.csv                  # Complete validation data
+├── train_80/                  # Subject-specific training data (80 texts/standard)
 │   ├── 과학.csv
 │   ├── 국어.csv
 │   ├── 수학.csv
@@ -88,66 +98,58 @@ dataset/
 │   ├── 도덕.csv
 │   ├── 기술가정.csv
 │   └── 정보.csv
-├── valid_80/                  # 과목별 validation
+├── valid_80/                  # Subject-specific validation data
 │   └── ...
-├── few_shot_examples/         # LLM few-shot 예시
+├── few_shot_examples/         # LLM few-shot examples
 │   ├── 과학.json
 │   ├── 국어.json
 │   └── ...
-└── insufficient_text.csv      # 텍스트 샘플이 부족한 성취기준
-```
-
-### 커스터마이징
-
-스크립트 파일을 열어 다음 변수들을 수정할 수 있습니다:
-
-```bash
-BASE_DIR="/your/dataset/path"  # 데이터셋 경로 변경
-MAX_TEXTS=80                   # 텍스트 샘플 수 (기본값: 80)
+└── insufficient_text.csv      # Achievement standards with insufficient text samples
 ```
 
 ---
 
 ## 2. cosine_similarity.sh
 
-### 개요
-jhgan/ko-sroberta-multitask 기반
-과목별 CSV 파일에 대해 코사인 유사도 기반 평가를 수행하는 스크립트입니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- `dataset/valid_80/` 디렉토리 존재
+Performs cosine similarity-based evaluation on subject-specific CSV files using the `jhgan/ko-sroberta-multitask` model.
 
-### 주요 설정
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `dataset/valid_80/` directory exists
+
+### Configuration
 
 ```bash
-DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"  # 평가할 데이터셋 폴더
+DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"  # Dataset folder for evaluation
 ```
 
-### 실행 방법
+### Execution
 
 ```bash
 cd scripts
 bash cosine_similarity.sh
 ```
 
+### Methodology
 
-### 동작 방식
+1. Discovers all CSV files in the `valid_80` folder (9 subjects)
+2. Performs cosine similarity evaluation for each CSV file
+3. Embeds texts and achievement standards using a SentenceTransformer model
+4. Computes top-k accuracy and MRR (Mean Reciprocal Rank)
 
-1. `valid_80` 폴더 내 모든 CSV 파일을 찾습니다 (9개 과목)
-2. 각 CSV 파일에 대해 코사인 유사도 평가를 수행합니다
-3. SentenceTransformer 모델을 사용하여 텍스트와 성취기준을 임베딩합니다
-4. Top-k 정확도와 MRR(Mean Reciprocal Rank)을 계산합니다
-
-### 출력 파일
+### Output Files
 
 ```
 output/
 └── cosine_similarity/
-    └── results.json  # 평가 결과가 JSON 형식으로 저장됨
+    └── results.json  # Evaluation results in JSON format
 ```
 
-**results.json 예시:**
+**Example results.json:**
+
 ```json
 [
   {
@@ -167,76 +169,65 @@ output/
 ]
 ```
 
-### 커스터마이징
-
-다른 데이터셋 폴더를 평가하려면:
-
-```bash
-DATASET_FOLDER="${PROJECT_ROOT}/dataset/train_80"  # Train 데이터로 평가
-```
-
 ---
 
 ## 3. cross_encoder.sh
 
-### 개요
-Cross Encoder 모델을 fine-tuning하고 평가하는 스크립트입니다. 과학 과목을 기본으로 학습하고 평가합니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- Training 및 Validation 데이터셋 준비 완료
+Fine-tunes and evaluates a cross-encoder model. By default, trains and evaluates on the Science subject.
 
-### 주요 설정
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- Training and validation datasets prepared
+
+### Configuration
 
 ```bash
 TRAIN_CSV="${PROJECT_ROOT}/dataset/train_80/과학.csv"
 VALIDATION_CSV="${PROJECT_ROOT}/dataset/valid_80/과학.csv"
 ```
 
-### 실행 방법
+### Execution
 
 ```bash
 cd scripts
 bash cross_encoder.sh
 ```
 
-또는
+### Processing Pipeline
 
-```bash
-cd /home/jeongmin/projects/2025_nlp/KorEduBench
-bash scripts/cross_encoder.sh
-```
+1. **Step 1: Cross-Encoder Fine-tuning**
 
-### 처리 단계
+   - Executes `finetune_cross_encoder.py`
+   - Trains the model on training data
+   - Output: `model/cross_finetuned/`
 
-1. **Step 1: Cross Encoder Fine-tuning**
-   - `finetune_cross_encoder.py` 실행
-   - Training 데이터로 모델 학습
-   - 출력: `model/cross_finetuned/`
+2. **Step 2: Cross-Encoder Evaluation**
+   - Executes `eval_cross_encoder.py`
+   - Retrieves candidates using a bi-encoder, then re-ranks with the cross-encoder
+   - Evaluates on validation data
+   - Output: `output/cross_encoder/results_rerank.json`
 
-2. **Step 2: Cross Encoder Evaluation**
-   - `eval_cross_encoder.py` 실행
-   - Bi-encoder로 후보를 검색한 후 Cross Encoder로 재정렬
-   - Validation 데이터로 평가
-   - 출력: `output/cross_encoder/results_rerank.json`
-
-### 출력 파일
+### Output Files
 
 ```
 model/
-└── cross_finetuned/           # Fine-tuned Cross Encoder 모델
+└── cross_finetuned/           # Fine-tuned cross-encoder model
     ├── config.json
     ├── pytorch_model.bin
     └── ...
 
 output/
 └── cross_encoder/
-    ├── results_rerank.json    # 평가 결과
+    ├── results_rerank.json    # Evaluation results
     └── logs/
-        └── 과학_wrongs.txt     # 오분류된 샘플 로그 (최대 100개)
+        └── 과학_wrongs.txt     # Misclassified sample logs (max 100 samples)
 ```
 
-**results_rerank.json 예시:**
+**Example results_rerank.json:**
+
 ```json
 [
   {
@@ -257,76 +248,92 @@ output/
 ]
 ```
 
-### 커스터마이징
-
-다른 과목으로 학습/평가하려면:
-
-```bash
-TRAIN_CSV="${PROJECT_ROOT}/dataset/train_80/국어.csv"
-VALIDATION_CSV="${PROJECT_ROOT}/dataset/valid_80/국어.csv"
-```
-
 ---
 
 ## 4. train_classifier.sh
 
-### 개요
-기본 멀티클래스 분류기를 학습하는 스크립트입니다. Transformer 기반 모델을 사용하여 성취기준 분류를 수행합니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- `dataset/train_80/` 디렉토리 존재
+Trains a multi-class classifier using `klue/roberta-large` for achievement standard classification.
 
-### 실행 방법
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `dataset/train_80/` directory exists
+
+### Execution
 
 ```bash
 cd scripts
 bash train_classifier.sh
 ```
 
-### 주요 특징
-- Transformer 기반 분류 모델 학습
-- 기본 Cross-Entropy Loss 사용
-- 표준 학습 설정 적용
+### Default Settings
 
-### 출력
-- 학습된 분류 모델
-- 학습 로그 및 평가 메트릭
+```
+base_model: klue/roberta-large
+
+epochs: 10
+batch_size: 32
+
+lr: 2e-5
+weight_decay: 0.01
+pooling: cls
+dropout: 0.1
+
+gradient_accumulation_steps: 1
+warmup_ratio: 0.1
+early_stopping_patience: 3
+mixed_precision: True
+
+loss_type: ce
+label_smoothing: 0.1
+focal_alpha: 1.0
+focal_gamma: 2.0
+```
+
+### Output
+
+- Trained classification model
+- Training logs and evaluation metrics
 
 ---
 
 ## 5. train_advanced.sh
 
-### 개요
-고급 학습 기법을 적용한 분류기 학습 스크립트입니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
+Training script for an advanced multi-class classifier with enhanced training techniques.
 
-### 실행 방법
+### Prerequisites
+
+- `preprocess.sh` execution completed
+
+### Execution
 
 ```bash
 cd scripts
 bash train_advanced.sh
 ```
 
-### 주요 특징
-- 고급 정규화 기법
-- 최적화된 하이퍼파라미터
-- 향상된 데이터 증강
+### Implementation Details
+
+The script implements advanced training configurations for improved model performance. Refer to the source code for specific implementation details.
 
 ---
 
 ## 6. eval_classifier.sh
 
-### 개요
-분류기 평가 스크립트입니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- `train_advanced.sh` 실행 완료
+Evaluation script for multi-class classifiers.
 
-### 실행 방법
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `train_classifier.sh` execution completed
+
+### Execution
 
 ```bash
 cd scripts
@@ -337,66 +344,66 @@ bash eval_classifier.sh
 
 ## 7. llm_text_classification.sh
 
-### 개요
-LLM(Large Language Model)을 사용한 텍스트 분류 평가 스크립트입니다. Validation 데이터셋의 모든 과목을 순차적으로 처리합니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- CUDA 지원 GPU (권장)
-- 충분한 VRAM (모델 크기에 따라 다름)
+Text classification evaluation script using Large Language Models (LLMs). Sequentially processes all subjects in the validation dataset.
 
-### 주요 설정
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- CUDA-enabled GPU (recommended)
+- Sufficient VRAM (varies by model size)
+
+### Configuration
 
 ```bash
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
-MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"  # 사용할 LLM 모델
-MAX_NEW_TOKENS=50                       # 생성할 최대 토큰 수
-TEMPERATURE=0.1                         # 샘플링 온도 (낮을수록 결정적)
-DEVICE="cuda"                           # 디바이스 (cuda 또는 cpu)
-MAX_INPUT_LENGTH=6144                   # 최대 입력 길이
-MAX_TOTAL_SAMPLES=100                   # 평가할 최대 샘플 수 (None이면 전체)
+MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"  # LLM model to use
+MAX_NEW_TOKENS=50                       # Maximum tokens to generate
+TEMPERATURE=0.1                         # Sampling temperature (lower values are more deterministic)
+DEVICE="cuda"                           # Device (cuda or cpu)
+MAX_INPUT_LENGTH=6144                   # Maximum input length
+NUM_SAMPLES=100                         # Target number of samples to evaluate (None for all)
 ```
 
-### 실행 방법
+### Execution
 
 ```bash
 cd scripts
 bash llm_text_classification.sh
 ```
 
-또는
-
-```bash
-cd /home/jeongmin/projects/2025_nlp/KorEduBench
-bash scripts/llm_text_classification.sh
 ```
 
-### 동작 방식
+### Methodology
 
-1. `valid_80` 폴더 내 모든 CSV 파일을 찾습니다 (9개 과목)
-2. 각 CSV 파일(과목)에 대해 순차적으로:
-   - 해당 과목의 few-shot 예시를 로드합니다 (`few_shot_examples/{subject}.json`)
-   - LLM을 로드합니다
-   - Few-shot 프롬프팅으로 성취기준을 예측합니다
-   - 정확도와 MRR을 계산합니다
-   - 정답/오답 샘플을 저장합니다
-3. 에러가 발생해도 다음 파일을 계속 처리합니다
+1. Discovers all CSV files in the `valid_80` folder (9 subjects)
+2. For each CSV file (subject), sequentially:
+   - Loads few-shot examples for the subject (`few_shot_examples/{subject}.json`)
+   - Loads the LLM
+   - Predicts achievement standards using few-shot prompting
+   - Computes accuracy and MRR
+   - Saves correct/incorrect samples
+3. Continues processing subsequent files even if errors occur
 
-### 출력 파일
+### Output Files
 
 ```
+
 output/
 └── llm_text_classification/
-    ├── results.json           # 모든 과목의 평가 결과
-    └── logs/
-        ├── 과학_corrects.txt   # 과목별 정답 샘플 로그
-        ├── 과학_wrongs.txt     # 과목별 오답 샘플 로그
-        ├── 국어_corrects.txt
-        ├── 국어_wrongs.txt
-        └── ...
-```
+├── results.json # Evaluation results for all subjects
+└── logs/
+├── 과학\_corrects.txt # Subject-specific correct sample logs
+├── 과학\_wrongs.txt # Subject-specific incorrect sample logs
+├── 국어\_corrects.txt
+├── 국어\_wrongs.txt
+└── ...
 
-**results.json 예시:**
+````
+
+**Example results.json:**
+
 ```json
 [
   {
@@ -407,7 +414,7 @@ output/
     "num_standards": 190,
     "num_candidates": 120,
     "max_candidates": 120,
-    "max_samples_per_row": 80,
+    "num_samples": 100,
     "total_samples": 100,
     "correct": 65,
     "accuracy": 0.65,
@@ -426,29 +433,29 @@ output/
     "truncated_percentage": 0.0
   }
 ]
-```
+````
 
-### 커스터마이징
+### Customization
 
-#### 다른 LLM 모델 사용
+#### Using a Different LLM Model
 
 ```bash
 MODEL_NAME="meta-llama/Llama-2-7b-chat-hf"
 ```
 
-#### CPU에서 실행
+#### Running on CPU
 
 ```bash
 DEVICE="cpu"
 ```
 
-#### 전체 데이터셋 평가
+#### Evaluating the Entire Dataset
 
 ```bash
-MAX_TOTAL_SAMPLES=None  # 또는 매우 큰 숫자
+NUM_SAMPLES=None  # Or a very large number
 ```
 
-#### Training 데이터셋 평가
+#### Evaluating on Training Dataset
 
 ```bash
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/train_80"
@@ -458,97 +465,102 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/train_80"
 
 ## 8. finetuning_llm.sh
 
-### 개요
-LLM을 성취기준 분류 태스크에 맞게 파인튜닝하는 스크립트입니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- `dataset/train_80/` 디렉토리 존재
-- 충분한 VRAM (LLM 파인튜닝용)
+Fine-tunes an LLM for the achievement standard classification task.
 
-### 실행 방법
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `dataset/train_80/` directory exists
+- Sufficient VRAM for LLM fine-tuning
+
+### Execution
 
 ```bash
 cd scripts
 bash finetuning_llm.sh
 ```
 
-### 주요 설정
+### Configuration
 
 ```bash
-MODEL_NAME="LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct"  # 파인튜닝할 기본 모델
-OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"   # 파인튜닝된 모델 저장 경로
+MODEL_NAME="LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct"  # Base model for fine-tuning
+OUTPUT_DIR="${PROJECT_ROOT}/model/finetuned_llm"   # Path to save fine-tuned model
 ```
 
-### 동작 방식
+### Methodology
 
-1. Train 데이터셋을 로드합니다
-2. 기본 LLM을 로드합니다
-3. 성취기준 분류 태스크에 맞게 파인튜닝합니다
-4. 파인튜닝된 모델을 저장합니다
+1. Loads the training dataset
+2. Loads the base LLM
+3. Fine-tunes the model for the achievement standard classification task
+4. Saves the fine-tuned model
 
-### 출력 파일
+### Output Files
 
 ```
 model/
-└── finetuned_llm/           # 파인튜닝된 LLM
+└── finetuned_llm/           # Fine-tuned LLM
     ├── config.json
     ├── model weights
     ├── tokenizer files
     └── training_args.json
 ```
 
-### 주요 특징
-- Instruction tuning 방식 적용
-- 효율적인 파인튜닝 기법 (LoRA, QLoRA 등) 사용 가능
-- 학습 로그 및 체크포인트 저장
+### Implementation Details
+
+- Instruction tuning approach
+- Efficient fine-tuning techniques (LoRA, QLoRA, etc.) available
+- Training logs and checkpoint saving
 
 ---
 
 ## 9. finetune_llm_text_classification.sh
 
-### 개요
-파인튜닝된 LLM을 평가하는 스크립트입니다. Validation 데이터셋의 모든 과목을 순차적으로 처리합니다.
+### Overview
 
-### 사전 요구사항
-- `preprocess.sh` 실행 완료
-- `finetuning_llm.sh` 실행 완료 (파인튜닝된 모델 필요)
-- `model/finetuned_llm/` 디렉토리 존재
+Evaluation script for fine-tuned LLMs. Sequentially processes all subjects in the validation dataset.
 
-### 주요 설정
+### Prerequisites
+
+- `preprocess.sh` execution completed
+- `finetuning_llm.sh` execution completed (fine-tuned model required)
+- `model/finetuned_llm/` directory exists
+
+### Configuration
 
 ```bash
 DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
-MODEL_PATH="${PROJECT_ROOT}/model/finetuned_llm"  # 파인튜닝된 모델 경로
+MODEL_PATH="${PROJECT_ROOT}/model/finetuned_llm"  # Path to fine-tuned model
 MAX_NEW_TOKENS=50
 TEMPERATURE=0.1
 DEVICE="cuda"
 MAX_INPUT_LENGTH=6144
-MAX_TOTAL_SAMPLES=100
+NUM_SAMPLES=100
 ```
 
-### 실행 방법
+### Execution
 
 ```bash
 cd scripts
 bash finetune_llm_text_classification.sh
 ```
 
-### 동작 방식
+### Methodology
 
-1. 파인튜닝된 LLM을 로드합니다
-2. `valid_80` 폴더 내 모든 CSV 파일을 처리합니다 (9개 과목)
-3. 각 과목에 대해:
-   - Few-shot 예시와 함께 평가
-   - 정답/오답 샘플 저장
-   - 성능 메트릭 계산
+1. Loads the fine-tuned LLM
+2. Processes all CSV files in the `valid_80` folder (9 subjects)
+3. For each subject:
+   - Evaluates with few-shot examples
+   - Saves correct/incorrect samples
+   - Computes performance metrics
 
-### 출력 파일
+### Output Files
 
 ```
 output/
 └── llm_text_classification/
-    ├── finetuned_results.json    # 파인튜닝된 LLM 평가 결과
+    ├── finetuned_results.json    # Fine-tuned LLM evaluation results
     └── finetuned_logs/
         ├── finetuned_llm_과학_corrects.txt
         ├── finetuned_llm_과학_wrongs.txt
@@ -557,7 +569,8 @@ output/
         └── ...
 ```
 
-**finetuned_results.json 예시:**
+**Example finetuned_results.json:**
+
 ```json
 [
   {
@@ -568,13 +581,13 @@ output/
     "num_standards": 190,
     "num_candidates": 120,
     "max_candidates": 120,
-    "max_samples_per_row": 80,
+    "num_samples": 100,
     "total_samples": 100,
     "correct": 75,
     "accuracy": 0.75,
     "mrr": 0.82,
     "exact_match_count": 70,
-    "exact_match_percentage": 0.70,
+    "exact_match_percentage": 0.7,
     "match_type_distribution": {
       "exact": 70.0,
       "partial": 25.0,
@@ -590,96 +603,94 @@ output/
 ]
 ```
 
-### 주요 특징
-- 파인튜닝 효과 측정
-- 사전 학습 모델과 성능 비교 가능
-- 상세한 로그 및 분석 자료 제공
+### Implementation Details
+
+- Measures fine-tuning effectiveness
+- Enables performance comparison with pre-trained models
+- Provides detailed logs and analysis materials
 
 ---
 
-## 실행 순서 (권장)
+## Recommended Execution Order
 
-전체 파이프라인을 처음부터 실행하는 경우:
+For executing the complete pipeline from scratch:
 
-### 기본 파이프라인
+### Basic Pipeline
 
 ```bash
 cd scripts
 
-# 1단계: 데이터 전처리
+# Step 1: Data preprocessing
 bash preprocess.sh
 
-# 2단계: 코사인 유사도 베이스라인 평가
+# Step 2: Cosine similarity baseline evaluation
 bash cosine_similarity.sh
 
-# 3단계: Cross Encoder 학습 및 평가
+# Step 3: Cross-encoder training and evaluation
 bash cross_encoder.sh
 
-# 4단계: LLM 기반 분류 평가
+# Step 4: LLM-based classification evaluation
 bash llm_text_classification.sh
 ```
 
-### 분류기 학습 파이프라인
+### Multi-class Classifier Training Pipeline
 
 ```bash
 cd scripts
 
-# 데이터 전처리 (이미 완료했다면 스킵)
+# Data preprocessing (skip if already completed)
 bash preprocess.sh
 
-# 다양한 분류기 학습
-bash train_classifier.sh              # 기본 분류기
-bash train_advanced.sh                # 고급 분류기
+# Train various classifiers
+bash train_classifier.sh              # Basic multi-class classifier
+bash eval_classifier.sh               # Evaluate multi-class classifier
+bash train_advanced.sh                 # Advanced multi-class classifier
 ```
 
-### LLM 파인튜닝 파이프라인
+### LLM Fine-tuning Pipeline
 
 ```bash
 cd scripts
 
-# 데이터 전처리 (이미 완료했다면 스킵)
+# Data preprocessing (skip if already completed)
 bash preprocess.sh
 
-# LLM 파인튜닝 및 평가
-bash finetuning_llm.sh                        # LLM 파인튜닝
-bash finetune_llm_text_classification.sh      # 파인튜닝된 LLM 평가
+# LLM fine-tuning and evaluation
+bash finetuning_llm.sh                        # LLM fine-tuning
+bash finetune_llm_text_classification.sh      # Fine-tuned LLM evaluation
 
-# 비교를 위한 사전학습 LLM 평가
-bash llm_text_classification.sh               # 사전학습 LLM 평가
+# Pre-trained LLM evaluation for comparison
+bash llm_text_classification.sh               # Pre-trained LLM evaluation
 ```
 
-## 공통 사항
+## Common Considerations
 
-### 경로 설정
-- 모든 스크립트는 프로젝트 루트를 자동으로 찾습니다
-- 어느 디렉토리에서든 실행 가능합니다
+### Path Configuration
 
-### 출력 형식
-- 모든 스크립트는 컬러 터미널 출력을 지원합니다
-- 진행 상황과 결과를 실시간으로 표시합니다
+- All scripts automatically detect the project root
+- Can be executed from any directory
 
-### 에러 처리
-- **즉시 중단 방식**: `preprocess.sh`, `cosine_similarity.sh`, `cross_encoder.sh`, 분류기 학습 스크립트들
-  - 에러 발생 시 즉시 중단 (`set -e`)
-- **계속 진행 방식**: `llm_text_classification.sh`, `finetune_llm_text_classification.sh`
-  - 에러 발생 시에도 다음 파일 계속 처리 (배치 처리)
+### Output Format
 
-### 스크립트 수정
-모든 스크립트는 텍스트 에디터로 열어 설정을 수정할 수 있습니다:
+- All scripts support colored terminal output
+- Displays progress and results in real-time
 
-```bash
-# 예시
-vim scripts/llm_text_classification.sh
-nano scripts/cross_encoder.sh
-```
+### Error Handling
 
-## 문제 해결
+- **Immediate termination**: `preprocess.sh`, `cosine_similarity.sh`, `cross_encoder.sh`, classifier training scripts
+  - Terminates immediately on error (`set -e`)
+- **Continue processing**: `llm_text_classification.sh`, `finetune_llm_text_classification.sh`
+  - Continues processing subsequent files even on error (batch processing)
 
-### 데이터셋을 찾을 수 없음
+## Troubleshooting
+
+### Dataset Not Found
+
 ```
 Error: Dataset folder not found
 ```
-→ `preprocess.sh` 먼저 실행하여 데이터셋 생성
-→ Or `dataset/dataset_bundle.tar.gz`를 이용해서 sample dataset 생성
+
+→ Execute `preprocess.sh` first to generate the dataset
+→ Or use `dataset/dataset_bundle.tar.gz` to create a sample dataset
 
 ---
