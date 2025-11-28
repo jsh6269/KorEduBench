@@ -109,7 +109,7 @@ All version conflicts are managed by `uv.lock` file.
 
 ## Quick Start
 
-Since processing the dataset may take a long time, we've provided a well‑organized, pre‑processed dataset at `dataset/dataset_bundle.tar.gz`. Once you extract this archive in the dataset/ directory, you may skip #0 and #1.
+Since processing the dataset may take a long time, we've provided a well‑organized, pre‑processed dataset at `dataset/dataset_bundle.tar.gz`. Once you extract this archive in the `dataset/` directory, you may skip `#0` and `#1`.
 
 ### 0. Download Dataset
 
@@ -169,8 +169,18 @@ KorEduBench/
 ## Dataset
 
 - **Source**: [AI Hub - Curriculum-Level Subject Dataset](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=71855)
-- **Subjects**: Science, Korean, Math, English, Social Studies, Sociology, Ethics, Technology-Home Economics, Information (9 subjects)
-- **Split**: Both train, validation contain 80 texts per achievement standard
+
+- **Overview**
+This dataset is designed to support research in curriculum-aligned natural language understanding and multimodal learning. It was constructed through the systematic collection of textual and visual data from official educational materials, such as textbooks and reference guides, across multiple educational stages. These resources were then rigorously annotated and aligned with the achievement standards defined in the 2022 Revised National Curriculum of Korea, across nine core subject domains. The resulting dataset facilitates a range of educational AI tasks, including curriculum-based content inference, standard-level classification, and subject-specific knowledge modeling.
+
+- **Subjects**:
+Science, Korean, Mathematics, English, Social Studies, Sociology, Ethics, Technology–Home Economics, Information (9 subjects in total)
+
+- **Split**:
+The dataset is partitioned into training and validation sets, each containing 80 textual samples per achievement standard to ensure balanced representation across labels.
+
+- **Contributors**:
+Media Group Sarangwasup Co., Ltd.
 
 ## Documentation
 
