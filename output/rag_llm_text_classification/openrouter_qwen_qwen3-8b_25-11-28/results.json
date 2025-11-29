@@ -1,0 +1,181 @@
+[
+    {
+        "folder": "valid_80",
+        "subject": "과학",
+        "num_standards": 190,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 73,
+        "accuracy": 0.365,
+        "match_type_distribution": {
+            "exact": 55.0,
+            "invalid": 44.0,
+            "partial": 1.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "국어",
+        "num_standards": 209,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 45,
+        "accuracy": 0.225,
+        "match_type_distribution": {
+            "partial": 4.0,
+            "exact": 70.0,
+            "invalid": 26.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "기술가정",
+        "num_standards": 86,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 55,
+        "accuracy": 0.275,
+        "match_type_distribution": {
+            "exact": 76.5,
+            "invalid": 20.0,
+            "partial": 3.5
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "도덕",
+        "num_standards": 21,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 43,
+        "accuracy": 0.215,
+        "match_type_distribution": {
+            "invalid": 66.0,
+            "exact": 31.5,
+            "partial": 2.5
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "사회",
+        "num_standards": 173,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 65,
+        "accuracy": 0.325,
+        "match_type_distribution": {
+            "exact": 74.0,
+            "partial": 3.0,
+            "invalid": 23.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "사회문화",
+        "num_standards": 13,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 101,
+        "accuracy": 0.505,
+        "match_type_distribution": {
+            "exact": 99.0,
+            "invalid": 1.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "수학",
+        "num_standards": 241,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 71,
+        "accuracy": 0.355,
+        "match_type_distribution": {
+            "invalid": 14.5,
+            "exact": 83.5,
+            "partial": 2.0
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "영어",
+        "num_standards": 84,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 29,
+        "accuracy": 0.145,
+        "match_type_distribution": {
+            "exact": 68.5,
+            "invalid": 31.0,
+            "partial": 0.5
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    },
+    {
+        "folder": "valid_80",
+        "subject": "정보",
+        "num_standards": 54,
+        "top_k": 20,
+        "total_samples": 200,
+        "num_examples": 5,
+        "correct": 69,
+        "accuracy": 0.345,
+        "match_type_distribution": {
+            "exact": 90.0,
+            "invalid": 7.5,
+            "partial": 2.5
+        },
+        "max_new_tokens": 20,
+        "temperature": 0.1,
+        "max_input_length": 2048,
+        "truncated_count": 0,
+        "truncated_percentage": 0.0
+    }
+]

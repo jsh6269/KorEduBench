@@ -84,7 +84,7 @@ def evaluate_llm_classification(
         PROJECT_ROOT
         / "output"
         / "rag_llm_text_classification"
-        / f"{safe_model_name}_{current_date}"
+        / f"{safe_model_name}_{current_date}_{num_examples}"
     )
     os.makedirs(output_folder, exist_ok=True)
 

@@ -13,8 +13,8 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 
 # API Configuration
 API_PROVIDER="openrouter"
-API_MODEL="qwen/qwen3-8b"
-API_DELAY=0.1
+API_MODEL="qwen/qwen3-next-80b-a3b-instruct"
+API_DELAY=0.2
 # API_KEY .env에서
 
 # RAG Configuration
