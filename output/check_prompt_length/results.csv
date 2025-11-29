@@ -1,0 +1,10 @@
+subject,csv,num_rows,num_candidates,num_samples,sample_prompt_tokens,total_prompt_tokens,avg_prompt_tokens
+과학,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/과학.csv,190,15,75,989,80916,1078.88
+국어,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/국어.csv,209,15,75,863,65341,871.2133333333334
+기술가정,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/기술가정.csv,86,15,75,1137,85609,1141.4533333333334
+도덕,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/도덕.csv,21,15,75,1276,95229,1269.72
+사회,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/사회.csv,173,15,75,1078,83016,1106.88
+사회문화,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/사회문화.csv,13,13,65,1059,68923,1060.3538461538462
+수학,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/수학.csv,241,15,75,930,68277,910.36
+영어,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/영어.csv,84,15,75,818,61396,818.6133333333333
+정보,/home/jeongmin/projects/2025_nlp/KorEduBench/dataset/valid_80/정보.csv,54,15,75,1021,68941,919.2133333333334
