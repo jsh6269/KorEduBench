@@ -224,8 +224,8 @@ cross_finetuned/
 trash_bin/
 checkpoints/
 saved_models/
-# finetuned_logs/
-#logs/
+finetuned_logs/
+logs/
 model/
 
 # Unsloth compiled cache
