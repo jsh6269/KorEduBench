@@ -1,0 +1,710 @@
+Total wrong samples: 59
+
+[Sample #38]
+True Code: 4수01-10
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 1과 $\frac{2}{3}$는 $1 \frac{2}{3}$라 쓰고, 1과 3분의 2라고 읽습니다.
+True Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 4수01-10
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #2]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차함수 $y=a x^{2}+b x+c$ 의 그래프가 $x$ 축과 서로 다른 두 점에서 만날 때, 이차방정식 $a x^{2}+b x+c=0$ 의 판별식 $D$ 는 $D>0$ 이다.
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10공수1-02-11
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #1]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $2 x^{2}-4 x+3 \leq 0$ 의 해는 이차함수 $y=2 x^{2}-4 x+3$ 의 그래프가 $x$ 축 또는 $x$ 축의 아래쪽에 있을 때의 $x$ 의 값의 범위이 지만 $y=2 x^{2}-4 x+3=2(x-1)^{2}+1$ 의 그래프는 $x$ 축 위쪽에만 존재하므로 해는 없다. $2 x^{2}-4 x+3 \leq 0$ 의 해는 이차함수 $y=2 x^{2}-4 x+3$ 의 그래프가 $x$ 축 또는 $x$ 축의 아래쪽에 있을 때의 $x$ 의 값의 범위이 지만 $y=2 x^{2}-4 x+3=2(x-1)^{2}+1$ 의 그래프는 $x$ 축 위쪽에만 존재하므로 해는 없다.
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10공수1-02-11
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #5]
+True Code: 10수학01-03
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여기서 $ r $는 0차 다항식, 즉 상수항이고, $ q(x) $는 몫입니다.
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-03
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #17]
+True Code: 10수학01-09
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $D = 0$일 때: 중근이 존재하며, 해가 하나만 존재합니다.
+True Content: 이차방정식과 이차함수의 관계를 이해한다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-09
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #19]
+True Code: 10수학01-09
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $D > 0$일 때: 서로 다른 두 실근이 존재합니다.
+True Content: 이차방정식과 이차함수의 관계를 이해한다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-09
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #47]
+True Code: 6수03-13
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 평행사변형으로 길이는 14cm x4cm 24cmx8cm 입니다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 6수03-13
+LLM Response: 4수01-10
+------------------------------------------------------------
+[Sample #54]
+True Code: 6수05-02
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: (각 사과는 5명을 나타냅니다)
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 6수05-02
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #72]
+True Code: 9수04-16
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 직각삼각형의 한 변의 길이가 6 cm, 다른 변의 길이가 8 cm일 때, 빗변의 길이를 구하세요.
+True Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9수04-16
+LLM Response: 10수02-05
+------------------------------------------------------------
+[Sample #51]
+True Code: 6수05-02
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그래프는 수치를 시각적으로 표현해 주는 방법으로, 데이터를 쉽게 이해하고 비교할 수 있도록 도와줍니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 6수05-02
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #15]
+True Code: 10수학01-09
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여기서 $a$, $b$, $c$는 상수이며 $a \neq 0$이어야 합니다.
+True Content: 이차방정식과 이차함수의 관계를 이해한다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10수학01-09
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #61]
+True Code: 9수02-12
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $4>-2 x-(x+2)$ 에서 괄호를 풀면 $4>-2 x-x-2,3 x>-6$ 따라서 $x>-2$ 이다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+True Code: 9수02-12
+LLM Response: 10수01-16
+------------------------------------------------------------
+[Sample #57]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 곱셈의 결합법칙 $(a \times b) \times c=a \times(b \times c)$
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+True Code: 9수01-05
+LLM Response: 10수01-07
+------------------------------------------------------------
+[Sample #60]
+True Code: 9수02-12
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "부등식의 모든 항을 좌변으로 이항하여 정리하였을 때, 좌변이 일차식인 식"
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-12
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #50]
+True Code: 6수05-02
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 각 그림이나 기호는 일정한 양의 자료를 나타냅니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 6수05-02
+LLM Response: 4수01-10
+------------------------------------------------------------
+[Sample #34]
+True Code: 4수01-02
+Pred Code: 10공수1-02-11
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 206억 427만 > 208억 742만
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 4수01-02
+LLM Response: 10공수1-02-1
+------------------------------------------------------------
+[Sample #69]
+True Code: 9수02-13
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $A=B=C$ 꼴의 연립방정식은 $\left\{\begin{array}{l}A=B \\ A=C\end{array}\right.$ 또는 $\left\{\begin{array}{l}A=B \\ B=C\end{array}\right.$ 또는 $\left\{\begin{array}{l}A=C \\ B=C\end{array}\right.$ 꼴로 나타낸 후 푼다.
+True Content: 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 9수02-13
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #39]
+True Code: 4수01-10
+Pred Code: 10공수1-02-11
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: $\frac{13}{6}=2 \frac{1}{6}$
+True Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 4수01-10
+LLM Response: 10공수1-02-1
+------------------------------------------------------------
+[Sample #53]
+True Code: 6수05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 그림그래프는 다양한 자료를 그림 또는 기호를 사용하여 나타내는 그래프입니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: INVALID
+True Code: 6수05-02
+LLM Response: 10수05-02
+------------------------------------------------------------
+[Sample #24]
+True Code: 10수학01-16
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $f(x) = ax^2 + bx + c$
+True Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-16
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #0]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차부등식의 해와 이차함수의 그래프의 관계
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10공수1-02-11
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #12]
+True Code: 10수학01-07
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여기서 $a$, $b$, $c$는 실수이며, $a \neq 0$이어야 합니다.
+True Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10수학01-07
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #74]
+True Code: 9수04-16
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 삼각형의 세 변을 $a$, $b$, $c$라고 할 때, 여기서 $c$는 직각삼각형의 빗변(가장 긴 변)이고, $a$와 $b$는 나머지 두 변입니다.
+True Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9수04-16
+LLM Response: 10수01-09
+------------------------------------------------------------
+[Sample #29]
+True Code: 10수학04-05
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 먼저 정의역을 찾아보면 $ 2x + 4 \geq 0 $이므로, $ x \geq -2 $입니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10수학04-05
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #55]
+True Code: 9수01-05
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 두 수 $a, b$ 에 대하여 $a+b=b+a$ 가 성립한다. 이것을 덧셈의 교환법칙이라고 한다.
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 9수01-05
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #10]
+True Code: 10수학01-07
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여기서 $a$, $b$, $c$는 실수이고, $a \neq 0$입니다.
+True Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10수학01-07
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #70]
+True Code: 9수04-16
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 한 직각삼각형의 두 변 a와 b가 각각 3cm와 4cm이라고 가정해봅시다.
+True Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9수04-16
+LLM Response: 10수01-16
+------------------------------------------------------------
+[Sample #65]
+True Code: 9수02-13
+Pred Code: 10공수1-02-11
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 따라서 구하는 해는 $x=8, y=-1$ 이다.
+True Content: 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-13
+LLM Response: 10공수1-02-1
+------------------------------------------------------------
+[Sample #3]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차부등식 ax²+bx+c<0의 해가 a<0일때 그래프입니다.
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10공수1-02-11
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #73]
+True Code: 9수04-16
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 피타고라스 정리는 직각삼각형에서 사용할 수 있는 중요한 수학법칙입니다.
+True Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9수04-16
+LLM Response: 10수02-13
+------------------------------------------------------------
+[Sample #64]
+True Code: 9수02-12
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 일차부등식을 세울 때: 이상, 이하, ~ 보다 크다, ~보다 작다 등과 같은 표현을 찾아 부등호를 정하고 식을 세운다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+True Code: 9수02-12
+LLM Response: 10수02-01
+------------------------------------------------------------
+[Sample #44]
+True Code: 6수03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: (3) 각 ㄹㄷㄴ의 대응각 $\rightarrow(\quad$ 각 ㅁㅂㅅㅣ $)$
+True Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 6수03-01
+LLM Response: 10수01-09
+------------------------------------------------------------
+[Sample #13]
+True Code: 10수학01-07
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차방정식은 주로 두 개의 해를 가집니다.
+True Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 10수학01-07
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #59]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 정수와 유리수의 덧셈과 뺄셈
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+True Code: 9수01-05
+LLM Response: 10수01-09
+------------------------------------------------------------
+[Sample #26]
+True Code: 10수학04-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 만약 $ a < 0 $이라면, 그래프는 왼쪽으로 감소하게 됩니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: INVALID
+True Code: 10수학04-05
+LLM Response: 10수01-07
+------------------------------------------------------------
+[Sample #8]
+True Code: 10수학01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 다항식 $ g(x) = x^4 - 2x^3 + x - 5 $를 $ x + 2 $로 나누었을 때의 나머지를 찾으세요.
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+True Code: 10수학01-03
+LLM Response: 10수01-09
+------------------------------------------------------------
+[Sample #66]
+True Code: 9수02-13
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $\left\{\begin{array}{ll}5 x+2 y=18 & \cdots \cdots \cdot(1) \\ x+y=6 & \cdots \cdots \cdot(2)\end{array}\right.$
+True Content: 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+True Code: 9수02-13
+LLM Response: 10수02-13
+------------------------------------------------------------
+[Sample #58]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 곱셈: 양수와 음수의 곱은 절댓값의 곱에 음의 부호를 붙인 것 이다.
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+True Code: 9수01-05
+LLM Response: 10수01-07
+------------------------------------------------------------
+[Sample #63]
+True Code: 9수02-12
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $4 x-7>5,4 x>5+7$ 에서 $4 x>12 \quad$ 따라서 $x>3$ 이다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-12
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #52]
+True Code: 6수05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 그림그래프는 실생활에서 수집한 자료를 쉽게 이해하기 위해 그림이나 아이콘을 사용하여 나타내는 그래프입니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: INVALID
+True Code: 6수05-02
+LLM Response: 10수05-02
+------------------------------------------------------------
+[Sample #62]
+True Code: 9수02-12
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 수직선 위에 $x>-2$가 그려져있다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-12
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #40]
+True Code: 6수03-01
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 두 꼭짓점이 점선으로 이어져 있는 사각형이다.
+True Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 6수03-01
+LLM Response: 4수01-10
+------------------------------------------------------------
+[Sample #49]
+True Code: 6수03-13
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 파란색 테두리 안에 여러 개의 직사각형으로 나뉜 도형이 있으며, 일부 변에는 화살표와 점선이 표시되어 있습니다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: INVALID
+True Code: 6수03-13
+LLM Response: 10수01-16
+------------------------------------------------------------
+[Sample #33]
+True Code: 4수01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 지역별 사과 생산량 \begin{tabular}{|c|cccc|} \hline 지역 & 경기도 & 강원도 & 충청북도 & 전라북도 \\ \hline 갱산량상 $(\mathrm{kg})$ & 1699000 & 10486000 & 52376000 & 40020000 \\ 3858085000 \\ \hline \end{tabular}
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: INVALID
+True Code: 4수01-02
+LLM Response: 10수01-16
+------------------------------------------------------------
+[Sample #22]
+True Code: 10수학01-16
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차함수의 그래프에 따라 해의 범위를 결정합니다.
+True Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 10수학01-16
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #32]
+True Code: 4수01-02
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: (8자리 수) $>$ (7자리 수)
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 4수01-02
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #21]
+True Code: 10수학01-16
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 근의 공식은 $ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $입니다.
+True Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-16
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #30]
+True Code: 4수01-02
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자릿수가 다를 때: 자릿수가 많은 수가 더 큰 수입니다.
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 4수01-02
+LLM Response: 4수01-10
+------------------------------------------------------------
+[Sample #67]
+True Code: 9수02-13
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 계수가 소수나 분수인 연립방정식 풀기
+True Content: 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-13
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #68]
+True Code: 9수02-13
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서 구하는 해는 $x=5, y=2$ 이다.
+True Content: 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수02-13
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #4]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 부등식 $f(x)<0$ 의 해를 이용하여 부등식 $f(a x+b)<0$ 의 해 구하기
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10공수1-02-11
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #25]
+True Code: 10수학04-05
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 함수의 증가 및 감소를 확인하여 전체적인 형태를 파악합니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+True Code: 10수학04-05
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #6]
+True Code: 10수학01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $= 2(8) - 3(4) + 8 - 5
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+True Code: 10수학01-03
+LLM Response: 10수01-16
+------------------------------------------------------------
+[Sample #7]
+True Code: 10수학01-03
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서, $ f(x) $를 $ x - 2 $로 나누었을 때의 나머지는 $ 7 $입니다.
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+True Code: 10수학01-03
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #56]
+True Code: 9수01-05
+Pred Code: 10공수1-02-11
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 따라서 일교차가 가장 큰 요일은 수요일이다.
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 9수01-05
+LLM Response: 10공수1-02-1
+------------------------------------------------------------
+[Sample #45]
+True Code: 6수03-13
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: ㄷ자를 눕힌 모양의 도형이 있으며, 밑변의 길이는 18cm이고, 옆변의 길이는 10cm이고, 윗변의 한쪽은 8cm이고, 가운데 파인 부분은 4cm이다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 6수03-13
+LLM Response: 4수01-10
+------------------------------------------------------------
+[Sample #71]
+True Code: 9수04-16
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 피타고라스 정리는 건축, 공학, 기하학 등 다양한 분야에서 활용됩니다.
+True Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9수04-16
+LLM Response: 10수04-16
+------------------------------------------------------------
+[Sample #28]
+True Code: 10수학04-05
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, $ a > 0 $인 경우에는 다음과 같은 부등식을 풀어야 합니다:
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+True Code: 10수학04-05
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #31]
+True Code: 4수01-02
+Pred Code: 4수01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $\begin{aligned} \text { 팔천이백삼십칠억 } & \Rightarrow 823700000000 \\ & \Rightarrow 0 \text { 이 } 8 \text { 개 }\end{aligned}$
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: 단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.
+True Code: 4수01-02
+LLM Response: 4수01-10
+------------------------------------------------------------

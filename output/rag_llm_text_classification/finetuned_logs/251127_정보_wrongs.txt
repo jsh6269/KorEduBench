@@ -1,0 +1,1102 @@
+Total wrong samples: 142
+
+[Sample #21]
+True Code: 12정05-01
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우주 측량 프로젝트(SDSS)
+True Content: 디지털 기술이 사회에 미치는 영향력을 분석하고 발전 방향을 예측하여 진로를 설계한다.
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #11]
+True Code: 12정03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사람은 여러 가지 문자를 사용한 자연어로 의사소통을 하기 때문에 컴퓨터와 사람은 각자의 언어로는 의사소통이 어렵다.
+True Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #131]
+True Code: 12정보05-02
+Pred Code: 12정01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 저렴한 비용: 장비 구매 외에는 추가적인 설치 비용이 적다.
+True Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+Pred Content: 유무선 네트워크의 특성을 이해하고, 컴퓨팅 시스템 간 공유, 협력, 소통을 위한 네트워크 환경을 구성한다.
+LLM Response: 12정01-01
+------------------------------------------------------------
+[Sample #22]
+True Code: 12정05-01
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정보 전달 사례) 정보 과학이 발달하기 이전에는 많은 사람들에게 정보를 전달하려면 같은 시간 같은 장소에 모여야 했다.
+True Content: 디지털 기술이 사회에 미치는 영향력을 분석하고 발전 방향을 예측하여 진로를 설계한다.
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #189]
+True Code: 9정04-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이 시스템은 기온, 날씨, 사용자 취향 등의 데이터를 분석하여 가장 적합한 옷을 추천해 줄 것입니다.
+True Content: 인공지능 시스템으로 해결 가능한 문제를 발견하고, 문제 해결에 적합한 인공지능 시스템을 적용한다.
+Pred Content: INVALID
+LLM Response: 92-04-04
+------------------------------------------------------------
+[Sample #86]
+True Code: 12정보04-01
+Pred Code: 12정보02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 언어는 사람에게 읽기 쉽고, 컴퓨터가 해석할 수 있는 형식으로 변환될 수 있습니다.
+True Content: 텍스트 기반 프로그래밍 언어의 개발 환경 및 특성을 이해 한다.
+Pred Content: 컴퓨팅 환경에서 생산되는 방대하고 복잡한 종류의 자료 들을 수집, 분석, 활용하기 위한 컴퓨팅 기술의 역할과 중요성을 이해한다
+LLM Response: 12정보02-02
+------------------------------------------------------------
+[Sample #106]
+True Code: 12정보04-06
+Pred Code: 12정보04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아래는 3x3 매트릭스의 값을 출력하는 프로그램입니다.
+True Content: 중첩 제어 구조를 활용한 프로그램을 작성한다.
+Pred Content: 배열의 개념을 이해하고 배열을 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-07
+------------------------------------------------------------
+[Sample #181]
+True Code: 9정04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 추천 시스템: 사용자 데이터를 기반으로 취향을 분석하고 최적의 선택을 제안합니다.
+True Content: 인공지능의 개념과 특성을 설명하고 인공지능 소프트웨어를 구별한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #77]
+True Code: 12정보03-04
+Pred Code: 12정보04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 순차 구조는 프로그램이 작성된 순서대로 명령어를 실행하는 구조입니다.
+True Content: 순차 구조, 선택 구조, 반복 구조 등의 제어 구조를 활용하 여 논리적이고 효율적인 알고리즘을 설계한다.
+Pred Content: 순차, 선택, 반복 구조를 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-05
+------------------------------------------------------------
+[Sample #51]
+True Code: 12정보02-01
+Pred Code: 12정보02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이미지: 시각적인 정보 전달이 용이하여, 그래픽이나 사진을 통해 감정이나 분위기를 효과적으로 전달할 수 있습니다.
+True Content: 동일한 정보가 다양한 방법으로 디지털로 변환되어 표 현될 수 있음을 이해하고 정보 활용 목적에 따라 보다 효율적인 방법을 선 택한다.
+Pred Content: 컴퓨팅 환경에서 생산되는 방대하고 복잡한 종류의 자료 들을 수집, 분석, 활용하기 위한 컴퓨팅 기술의 역할과 중요성을 이해한다
+LLM Response: 12정보02-02
+------------------------------------------------------------
+[Sample #176]
+True Code: 9정03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 문제 정의: 소풍을 가기 위해 몇 명이 참석할지 확인하고, 필요한 물품을 준비해야 한다.
+True Content: 사례를 중심으로 문제 해결에 적합한 전략을 선택하여 알고리즘을 설계한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #89]
+True Code: 12정보04-02
+Pred Code: 12정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 마지막으로, 입력된 이름과 나이를 출력하는 문장이 실행됩니다.
+True Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+Pred Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+LLM Response: 12정03-04
+------------------------------------------------------------
+[Sample #195]
+True Code: 9정05-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 소프트웨어가 사람의 일을 대신해 주기 때문이다.
+True Content: 디지털 사회의 특성을 탐구하고, 사회 변화에 따른 직업의 변화를 탐구한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #158]
+True Code: 9정02-03
+Pred Code: 9정02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 표는 데이터를 행과 열로 나누어 정리하는 가장 기본적인 방법입니다.
+True Content: 실생활의 데이터를 표, 다이어그램 등 다양한 형태로 구조화한다.
+Pred Content: 실생활의 데이터가 디지털 형태로 변환되어 활용되는 긍정적 가치를 탐색하고, 다양한 데이터를 디지털 형태로 표현한다.
+LLM Response: 9정02-01
+------------------------------------------------------------
+[Sample #70]
+True Code: 12정보03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 요소 분석: 문제에 필요한 요소와 불필요한 요소를 분석합니다.
+True Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+Pred Content: INVALID
+LLM Response: 12정보04-06
+------------------------------------------------------------
+[Sample #15]
+True Code: 12정03-05
+Pred Code: 12정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: >>> print("Hyewon's favorite animal is a dog") Hyewon's favorite animal is a dog >>> print('Hyewon's favorite animal is a dog') SyntaxError: invalid syntax
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+LLM Response: 12정03-04
+------------------------------------------------------------
+[Sample #183]
+True Code: 9정04-02
+Pred Code: 9정01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아래는 몇 가지 예시입니다:
+True Content: 인공지능 학습에서 데이터의 중요성을 이해하고, 학습에 필요한 데이터를 수집하여 분류한다.
+Pred Content: 피지컬 컴퓨팅의 개념을 이해하고, 생활 속에서 적용된 사례 조사를 통해 컴퓨팅 시스템의 필요성과 가치를 판단한다.
+LLM Response: 9정01-02
+------------------------------------------------------------
+[Sample #197]
+True Code: 9정05-02
+Pred Code: 9정04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자율성: 누구나 자율적으로 참여할 수 있다.
+True Content: 디지털 사회의 구성원으로서 편리하고 안전한 생활을 위한 규칙에 대해 민주적으로 논의하고 실천 방안을 수립한다.
+Pred Content: 인공지능 학습에 필요한 데이터의 수집과 활용에서 발생하는 윤리적인 문제의 해결 방안을 구상한다.
+LLM Response: 9정04-05
+------------------------------------------------------------
+[Sample #78]
+True Code: 12정보03-04
+Pred Code: 12정보04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 두 숫자 A, B와 연산자(+, , , /)를 입력받아 결과를 출력합니다.
+True Content: 순차 구조, 선택 구조, 반복 구조 등의 제어 구조를 활용하 여 논리적이고 효율적인 알고리즘을 설계한다.
+Pred Content: 다양한 연산자를 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-03
+------------------------------------------------------------
+[Sample #67]
+True Code: 12정보03-01
+Pred Code: 12정보03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 원인을 파악하면 문제 해결의 방향이 정해집니다.
+True Content: 복잡한 문제 상황에서 문제의 현재 상태, 목표 상태를 이 해하고 목표 상태에 도달하기 위해 수행해야 할 작업을 분석한다.
+Pred Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+LLM Response: 12정보03-02
+------------------------------------------------------------
+[Sample #191]
+True Code: 9정04-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 투명한 데이터 수집: 데이터를 수집할 때는 반드시 사용자에게 설명하고 동의를 받아야 합니다.
+True Content: 인공지능 학습에 필요한 데이터의 수집과 활용에서 발생하는 윤리적인 문제의 해결 방안을 구상한다.
+Pred Content: INVALID
+LLM Response: 92-04-05
+------------------------------------------------------------
+[Sample #75]
+True Code: 12정보03-03
+Pred Code: 12정03-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 출력하기: 결과를 화면에 출력한다.
+True Content: 복잡하고 어려운 문제를 해결 가능한 작은 단위의 문제로 분해하고 모델링 한다.
+Pred Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+LLM Response: 12정03-05
+------------------------------------------------------------
+[Sample #84]
+True Code: 12정보04-01
+Pred Code: 9정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 일반적으로 포함되는 요소는 다음과 같습니다.
+True Content: 텍스트 기반 프로그래밍 언어의 개발 환경 및 특성을 이해 한다.
+Pred Content: 사례를 중심으로 문제 해결에 적합한 전략을 선택하여 알고리즘을 설계한다.
+LLM Response: 9정03-04
+------------------------------------------------------------
+[Sample #164]
+True Code: 9정02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 시계열 데이터의 평가 꺾은선 차트, 스파크 라인, 바코드 차트, 영역 차트, 수평선 차트, 누적 영역 차트, 캔들 차트, 플로우 맵 등을 이용할 수 있다.
+True Content: 여러 학문 분야의 사례를 중심으로 데이터를 수집 분석하여 융합적으로 문제를 해결한다.
+Pred Content: INVALID
+LLM Response: 92-05-03
+------------------------------------------------------------
+[Sample #142]
+True Code: 9정01-01
+Pred Code: 12정보05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 여러 작업이 동시에 원활하게 수행될 수 있도록 합니다.
+True Content: 컴퓨팅 시스템의 구성요소와 동작 원리를 이해하고, 운영 체제의 기능을 분석한다.
+Pred Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+LLM Response: 12정보05-02
+------------------------------------------------------------
+[Sample #9]
+True Code: 12정03-04
+Pred Code: 12정보04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 파이선 통합 개발 환경의 셸 창에서 age를 만들고 등호(=)를 쓴 다음 18 이 라는 숫자를 입력한다.
+True Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+Pred Content: 텍스트 기반 프로그래밍 언어의 개발 환경 및 특성을 이해 한다.
+LLM Response: 12정보04-01
+------------------------------------------------------------
+[Sample #133]
+True Code: 12정보05-03
+Pred Code: 12정보05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제를 해결하기 위해 적절한 하드웨어를 선택하는 과정은 다음과 같은 기준에 따라 이루어질 수 있습니다:
+True Content: 문제 해결에 적합한 하드웨어를 선택하여 컴퓨팅 장치를 구성한다.
+Pred Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+LLM Response: 12정보05-02
+------------------------------------------------------------
+[Sample #129]
+True Code: 12정보05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 인터넷 속도가 느릴 경우, 케이블 연결을 점검하거나 라우터를 재부팅합니다.
+True Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+Pred Content: INVALID
+LLM Response: 12정보04-02
+------------------------------------------------------------
+[Sample #128]
+True Code: 12정보05-02
+Pred Code: 12정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 앞으로 이 내용을 바탕으로 다양한 네트워크 환경을 설정하고 관리해보세요!
+True Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+Pred Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+LLM Response: 12정03-04
+------------------------------------------------------------
+[Sample #182]
+True Code: 9정04-02
+Pred Code: 9정04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이들 시스템은 많은 데이터를 바탕으로 학습하여 더욱 똑똑한 결정을 내릴 수 있습니다.
+True Content: 인공지능 학습에서 데이터의 중요성을 이해하고, 학습에 필요한 데이터를 수집하여 분류한다.
+Pred Content: 인공지능의 개념과 특성을 설명하고 인공지능 소프트웨어를 구별한다.
+LLM Response: 9정04-01
+------------------------------------------------------------
+[Sample #10]
+True Code: 12정03-04
+Pred Code: 9정05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리가 컴퓨터에게 명령을 내릴 때 컴퓨터가 사람의 언어를 바로 이해할 수 없다.
+True Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+Pred Content: 디지털 사회의 특성을 탐구하고, 사회 변화에 따른 직업의 변화를 탐구한다.
+LLM Response: 9정05-01
+------------------------------------------------------------
+[Sample #74]
+True Code: 12정보03-03
+Pred Code: 12정보03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제를 해결하는 기본적인 단계는 다음과 같습니다:
+True Content: 복잡하고 어려운 문제를 해결 가능한 작은 단위의 문제로 분해하고 모델링 한다.
+Pred Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+LLM Response: 12정보03-02
+------------------------------------------------------------
+[Sample #171]
+True Code: 9정03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 문제를 해결한다는 것은 문제 상황에서 문제의 현재 상태와 목표 상태를 파악하고 해결 방법과 과정을 탐색한 뒤 실천을 통해 해답을 찾는 것이다.
+True Content: 문제 해결을 위한 추상화의 중요성을 이해하고, 핵심요소를 중심으로 알고리즘을 표현한다.
+Pred Content: INVALID
+LLM Response: 12정03-02
+------------------------------------------------------------
+[Sample #64]
+True Code: 12정보03-01
+Pred Code: 9정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 복잡한 문제를 해결하기 위해 여러 가지 전략을 사용할 수 있습니다.
+True Content: 복잡한 문제 상황에서 문제의 현재 상태, 목표 상태를 이 해하고 목표 상태에 도달하기 위해 수행해야 할 작업을 분석한다.
+Pred Content: 사례를 중심으로 문제 해결에 적합한 전략을 선택하여 알고리즘을 설계한다.
+LLM Response: 9정03-04
+------------------------------------------------------------
+[Sample #154]
+True Code: 9정02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 3. 정보의 가치는 상대적이다.
+True Content: 실생활의 데이터가 디지털 형태로 변환되어 활용되는 긍정적 가치를 탐색하고, 다양한 데이터를 디지털 형태로 표현한다.
+Pred Content: INVALID
+LLM Response: 92-04-05
+------------------------------------------------------------
+[Sample #17]
+True Code: 12정03-07
+Pred Code: 12정보04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아래 프로그램은 터틀 모듈에서 지원하는 모 든 명령을 불러와 터틀이 현재 위치에서 앞으로 100 픽셀만큼 이동하도록 한다.
+True Content: 다양한 제어 구조를 복합적으로 활용한 프로그램을 작성한다.
+Pred Content: 순차, 선택, 반복 구조를 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-05
+------------------------------------------------------------
+[Sample #46]
+True Code: 12정보01-06
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 오늘날 우리는 인터넷과 다양한 디지털 기기를 통해 연결되어 있습니다.
+True Content: 사이버 공간에서 발생하는 사회적 문제를 예방하기 위한 제도를 이해하고 사이버 윤리를 실천한다.
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #34]
+True Code: 12정보01-03
+Pred Code: 12정보01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 개인정보 보호법은 개인의 개인정보를 보호하기 위해 제정된 법률입니다.
+True Content: 정보보호 제도 및 방법에 따라 올바르게 정보를 공유하는 방법을 실천한다.
+Pred Content: 정보보안의 필요성을 이해하고 암호 설정, 접근 권한 관리 등 정보보안을 실천한다.
+LLM Response: 12정보01-04
+------------------------------------------------------------
+[Sample #186]
+True Code: 9정04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 모델 적용: 검증된 모델을 실제 문제에 적용하여 서비스를 제공합니다.
+True Content: 다양한 데이터를 활용하여 인공지능 시스템을 구성하고 적용한다.
+Pred Content: INVALID
+LLM Response: 92-04-03
+------------------------------------------------------------
+[Sample #100]
+True Code: 12정보04-05
+Pred Code: 12정보04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: score3 = 92
+True Content: 순차, 선택, 반복 구조를 활용한 프로그램을 작성한다.
+Pred Content: 중첩 제어 구조를 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-06
+------------------------------------------------------------
+[Sample #82]
+True Code: 12정보03-05
+Pred Code: 12정보04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여러 가지 최적화 문제 해결에서 종종 나타납니다.
+True Content: 다양한 알고리즘의 성능을 수행시간의 관점에서 분석하고 비교한다.
+Pred Content: 배열의 개념을 이해하고 배열을 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-07
+------------------------------------------------------------
+[Sample #199]
+True Code: 9정05-02
+Pred Code: 12정보01-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 학교나 지역 사회에서 디지털 안전에 관한 주제로 토론을 진행합니다.
+True Content: 디지털 사회의 구성원으로서 편리하고 안전한 생활을 위한 규칙에 대해 민주적으로 논의하고 실천 방안을 수립한다.
+Pred Content: 사이버 공간에서 발생하는 사회적 문제를 예방하기 위한 제도를 이해하고 사이버 윤리를 실천한다.
+LLM Response: 12정보01-06
+------------------------------------------------------------
+[Sample #187]
+True Code: 9정04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 학습 및 테스트: 수집된 데이터를 통해 모델을 훈련하고, 성능을 테스트합니다.
+True Content: 다양한 데이터를 활용하여 인공지능 시스템을 구성하고 적용한다.
+Pred Content: INVALID
+LLM Response: 92정04-03
+------------------------------------------------------------
+[Sample #31]
+True Code: 12정보01-02
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주요 업무: 기업이나 기관의 데이터를 보호하기 위해 보안 시스템을 설계하고 관리합니다.
+True Content: 정보과학 분야의 직업과 진로를 탐색한다
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #55]
+True Code: 12정보02-02
+Pred Code: 12정보02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 소셜 미디어에서는 사용자가 올리는 글이나 사진, 스트리밍 서비스에서는 동영상 콘텐츠 등이 이에 해당합니다.
+True Content: 컴퓨팅 환경에서 생산되는 방대하고 복잡한 종류의 자료 들을 수집, 분석, 활용하기 위한 컴퓨팅 기술의 역할과 중요성을 이해한다
+Pred Content: 동일한 정보가 다양한 방법으로 디지털로 변환되어 표 현될 수 있음을 이해하고 정보 활용 목적에 따라 보다 효율적인 방법을 선 택한다.
+LLM Response: 12정보02-01
+------------------------------------------------------------
+[Sample #173]
+True Code: 9정03-03
+Pred Code: 12정보04-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 알고리즘에 대한 이해를 바탕으로 프로그래밍 실력을 더욱 발전시킬 수 있습니다!
+True Content: 알고리즘의 중요성을 이해하고, 문제를 해결하는 다양한 알고리즘을 비교 분석한다.
+Pred Content: 다양한 학문 분야의 문제 해결을 위한 알고리즘을 협력하여 설계한다.
+LLM Response: 12정보04-09
+------------------------------------------------------------
+[Sample #159]
+True Code: 9정02-03
+Pred Code: 9정02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 표는 데이터를 체계적으로 정리할 수 있는 방법입니다.
+True Content: 실생활의 데이터를 표, 다이어그램 등 다양한 형태로 구조화한다.
+Pred Content: 실생활의 데이터가 디지털 형태로 변환되어 활용되는 긍정적 가치를 탐색하고, 다양한 데이터를 디지털 형태로 표현한다.
+LLM Response: 9정02-01
+------------------------------------------------------------
+[Sample #12]
+True Code: 12정03-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사용 자에게 인사를 하는 메시지를 출력하기 위해서 print( ) 함수를 이용한다.
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: INVALID
+LLM Response: 12정보02-06
+------------------------------------------------------------
+[Sample #80]
+True Code: 12정보03-05
+Pred Code: 12정보04-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 경우, 합병 정렬과 퀵 정렬은 성능이 우수하여 큰 입력 크기에서도 빠른 결과를 제공합니다.
+True Content: 다양한 알고리즘의 성능을 수행시간의 관점에서 분석하고 비교한다.
+Pred Content: 다양한 학문 분야의 문제 해결을 위한 알고리즘을 협력하여 설계한다.
+LLM Response: 12정보04-09
+------------------------------------------------------------
+[Sample #104]
+True Code: 12정보04-06
+Pred Code: 12정보04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 학생의 성적을 평가하는 프로그램을 작성한다고 가정해 봅시다.
+True Content: 중첩 제어 구조를 활용한 프로그램을 작성한다.
+Pred Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+LLM Response: 12정보04-02
+------------------------------------------------------------
+[Sample #166]
+True Code: 9정02-05
+Pred Code: 9정02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 국가통계포털을 나타낸 그림이다. 기상에 관한 표와 그래프가 나타나 있다.
+True Content: 여러 학문 분야의 사례를 중심으로 데이터를 수집 분석하여 융합적으로 문제를 해결한다.
+Pred Content: 실생활의 데이터가 디지털 형태로 변환되어 활용되는 긍정적 가치를 탐색하고, 다양한 데이터를 디지털 형태로 표현한다.
+LLM Response: 9정02-01
+------------------------------------------------------------
+[Sample #170]
+True Code: 9정03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 어두운 색의 옷은 야간에 운전자가 인식하기 어렵다.
+True Content: 문제 해결을 위한 추상화의 중요성을 이해하고, 핵심요소를 중심으로 알고리즘을 표현한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #168]
+True Code: 9정03-01
+Pred Code: 12정보03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제의 본질: 문제가 무엇인지 상태를 정확히 파악해야 합니다.
+True Content: 문제의 상태를 정의하고 수행 가능한 형태로 구조화한다.
+Pred Content: 복잡한 문제 상황에서 문제의 현재 상태, 목표 상태를 이 해하고 목표 상태에 도달하기 위해 수행해야 할 작업을 분석한다.
+LLM Response: 12정보03-01
+------------------------------------------------------------
+[Sample #103]
+True Code: 12정보04-05
+Pred Code: 12정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아래는 간단한 프로그램의 예입니다.
+True Content: 순차, 선택, 반복 구조를 활용한 프로그램을 작성한다.
+Pred Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+LLM Response: 12정03-04
+------------------------------------------------------------
+[Sample #4]
+True Code: 12정03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 모델은 반드시 문제 분해 과정의 결과로 도출되는 것은 아니며, 문제 분해 과정이 필요하지 않더라도 모델을 필요로 하기도 한다.
+True Content: 복잡한 문제를 해결 가능한 작은 문제로 분해하고 모델링한다.
+Pred Content: INVALID
+LLM Response: 12
+------------------------------------------------------------
+[Sample #14]
+True Code: 12정03-05
+Pred Code: 12정보04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 스페이스 키를 눌렀을 때 스프라이트가 자신을 소개하는 동작을 프로그래밍하려면 스페이스 키의 신호를 입력으로 받아서 처리한다.
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+LLM Response: 12정보04-02
+------------------------------------------------------------
+[Sample #44]
+True Code: 12정보01-06
+Pred Code: 12정보01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정보 보호 법률: 개인정보를 보호하고 유출을 방지하기 위한 법률이 존재합니다.
+True Content: 사이버 공간에서 발생하는 사회적 문제를 예방하기 위한 제도를 이해하고 사이버 윤리를 실천한다.
+Pred Content: 정보보안의 필요성을 이해하고 암호 설정, 접근 권한 관리 등 정보보안을 실천한다.
+LLM Response: 12정보01-04
+------------------------------------------------------------
+[Sample #29]
+True Code: 12정보01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Excel, SQL 등의 도구를 사용할 수 있어야 합니다.
+True Content: 정보과학 분야의 직업과 진로를 탐색한다
+Pred Content: INVALID
+LLM Response: 12정보02-02
+------------------------------------------------------------
+[Sample #174]
+True Code: 9정03-03
+Pred Code: 12정보04-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 친구 집에 가기 위해 빠른 길을 찾는 방법이나, 요리를 하기 위해 레시피를 따르는 것도 하나의 알고리즘입니다.
+True Content: 알고리즘의 중요성을 이해하고, 문제를 해결하는 다양한 알고리즘을 비교 분석한다.
+Pred Content: 다양한 학문 분야의 문제 해결을 위한 알고리즘을 협력하여 설계한다.
+LLM Response: 12정보04-09
+------------------------------------------------------------
+[Sample #188]
+True Code: 9정04-04
+Pred Code: 9정01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 다음과 같은 문제들이 있습니다:
+True Content: 인공지능 시스템으로 해결 가능한 문제를 발견하고, 문제 해결에 적합한 인공지능 시스템을 적용한다.
+Pred Content: 문제 해결 목적에 맞는 피지컬 컴퓨팅 구성요소를 선택하여 시스템을 구상한다.
+LLM Response: 9정01-03
+------------------------------------------------------------
+[Sample #88]
+True Code: 12정보04-02
+Pred Code: 12정보04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예: 1, 3, 42
+True Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+Pred Content: 배열의 개념을 이해하고 배열을 활용한 프로그램을 작성한다.
+LLM Response: 12정보04-07
+------------------------------------------------------------
+[Sample #39]
+True Code: 12정보01-04
+Pred Code: 12정보05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 활성화하여 시스템 보호를 강화해야 합니다.
+True Content: 정보보안의 필요성을 이해하고 암호 설정, 접근 권한 관리 등 정보보안을 실천한다.
+Pred Content: 유무선 네트워크의 특성을 이해하고 사용하는 컴퓨팅 시스 템의 네트워크 환경을 설정한다.
+LLM Response: 12정보05-02
+------------------------------------------------------------
+[Sample #172]
+True Code: 9정03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 명확성: 라면을 끓일 때 필요한 물의 양 550ml, 라면이 익을 때 까지 끓여야 하는 시간 4분 등은 라면을 완성할 수 있도록 명확하게 제시된다.
+True Content: 문제 해결을 위한 추상화의 중요성을 이해하고, 핵심요소를 중심으로 알고리즘을 표현한다.
+Pred Content: INVALID
+LLM Response: 92-05-16-03
+------------------------------------------------------------
+[Sample #165]
+True Code: 9정02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: [Create a new schema in the connected server] 단추를 클릭한 후 [Name] 항목에 ‘학생정보’를 입력한다.
+True Content: 여러 학문 분야의 사례를 중심으로 데이터를 수집 분석하여 융합적으로 문제를 해결한다.
+Pred Content: INVALID
+LLM Response: 9정02-01
+------------------------------------------------------------
+[Sample #192]
+True Code: 9정04-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이러한 노력은 AI 기술 발전에 반드시 필요하며, 더 나은 사회를 만드는 데 기여할 것입니다.
+True Content: 인공지능 학습에 필요한 데이터의 수집과 활용에서 발생하는 윤리적인 문제의 해결 방안을 구상한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #185]
+True Code: 9정04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 시스템 테스트: 학습한 모델에 새로운 얼굴 사진을 입력하여 인식 여부를 테스트합니다.
+True Content: 다양한 데이터를 활용하여 인공지능 시스템을 구성하고 적용한다.
+Pred Content: INVALID
+LLM Response: 92-04-03
+------------------------------------------------------------
+[Sample #2]
+True Code: 12정01-01
+Pred Code: 9정01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 일상생활에서 센서가 사용되는 다양한 것들 을 볼 수 있다.
+True Content: 유무선 네트워크의 특성을 이해하고, 컴퓨팅 시스템 간 공유, 협력, 소통을 위한 네트워크 환경을 구성한다.
+Pred Content: 피지컬 컴퓨팅의 개념을 이해하고, 생활 속에서 적용된 사례 조사를 통해 컴퓨팅 시스템의 필요성과 가치를 판단한다.
+LLM Response: 9정01-02
+------------------------------------------------------------
+[Sample #71]
+True Code: 12정보03-02
+Pred Code: 9정04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제를 해결하기 위한 여러 대안을 제안합니다.
+True Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+Pred Content: 인공지능 시스템으로 해결 가능한 문제를 발견하고, 문제 해결에 적합한 인공지능 시스템을 적용한다.
+LLM Response: 9정04-04
+------------------------------------------------------------
+[Sample #190]
+True Code: 9정04-04
+Pred Code: 12정보03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 1단계: 문제 정의하기
+True Content: 인공지능 시스템으로 해결 가능한 문제를 발견하고, 문제 해결에 적합한 인공지능 시스템을 적용한다.
+Pred Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+LLM Response: 12정보03-02
+------------------------------------------------------------
+[Sample #83]
+True Code: 12정보03-05
+Pred Code: 12정보03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 퀵 정렬 (O(n log n)): 피벗을 정해 기준으로 나눈 후 각각 정렬하는 방식으로, 현실에서 많이 사용되는 알고리즘입니다.
+True Content: 다양한 알고리즘의 성능을 수행시간의 관점에서 분석하고 비교한다.
+Pred Content: 순차 구조, 선택 구조, 반복 구조 등의 제어 구조를 활용하 여 논리적이고 효율적인 알고리즘을 설계한다.
+LLM Response: 12정보03-04
+------------------------------------------------------------
+[Sample #57]
+True Code: 12정보02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이러한 결론은 논리적으로 뒷받침되어야 하며 자료에 근거해야 합니다.
+True Content: 인터넷, 응용 소프트웨어 등 컴퓨팅 도구를 활용하여 문제 해결을 위한 자료를 수집하고 분석한다.
+Pred Content: INVALID
+LLM Response: 12정보02-06
+------------------------------------------------------------
+[Sample #150]
+True Code: 9정01-03
+Pred Code: 9정01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 피지컬 컴퓨팅은 전자기기와 컴퓨터 사이의 상호작용을 통해 물리적인 세상과 디지털 세상을 연결하는 것입니다.
+True Content: 문제 해결 목적에 맞는 피지컬 컴퓨팅 구성요소를 선택하여 시스템을 구상한다.
+Pred Content: 피지컬 컴퓨팅의 개념을 이해하고, 생활 속에서 적용된 사례 조사를 통해 컴퓨팅 시스템의 필요성과 가치를 판단한다.
+LLM Response: 9정01-02
+------------------------------------------------------------
+[Sample #167]
+True Code: 9정03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 원하는 결과: 두 사람 모두 즐길 수 있는 게임을 선택.
+True Content: 문제의 상태를 정의하고 수행 가능한 형태로 구조화한다.
+Pred Content: INVALID
+LLM Response: 92-05-07
+------------------------------------------------------------
+[Sample #25]
+True Code: 12정보01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 정보 접근성: 인터넷과 모바일 기기의 발달로 인해 누구나 손쉽게 정보에 접근할 수 있는 환경이 조성되었습니다.
+True Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+Pred Content: INVALID
+LLM Response: 12정03-01
+------------------------------------------------------------
+[Sample #155]
+True Code: 9정02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 우리는 네이버, 구글, 다음 등 다양한 검색 엔진을 사용한다.
+True Content: 문제 해결에 적합한 데이터를 수집하고, 목적에 맞게 구분하여 관리한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #58]
+True Code: 12정보02-03
+Pred Code: 12정보02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 컴퓨터, 스마트폰, 노트북 등 여러 디지털 기기는 인터넷과 응용 소프트웨어를 통해 문제를 해결하는 데 중요한 역할을 합니다.
+True Content: 인터넷, 응용 소프트웨어 등 컴퓨팅 도구를 활용하여 문제 해결을 위한 자료를 수집하고 분석한다.
+Pred Content: 동일한 정보가 다양한 방법으로 디지털로 변환되어 표 현될 수 있음을 이해하고 정보 활용 목적에 따라 보다 효율적인 방법을 선 택한다.
+LLM Response: 12정보02-01
+------------------------------------------------------------
+[Sample #126]
+True Code: 12정보05-01
+Pred Code: 9정01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이것은 그래픽 사용자 인터페이스(GUI) 혹은 명령줄 인터페이스(CLI) 형태로 제공되어, 사용자가 컴퓨터와 쉽게 소통할 수 있게 합니다.
+True Content: 운영체제의 개념과 기능을 이해하고 운영체제를 활용하 여 컴퓨팅 시스템의 자원을 효율적으로 관리한다.
+Pred Content: 컴퓨팅 시스템의 구성요소와 동작 원리를 이해하고, 운영 체제의 기능을 분석한다.
+LLM Response: 9정01-01
+------------------------------------------------------------
+[Sample #123]
+True Code: 12정보04-10
+Pred Code: 12정보03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제 해결 과정은 다음과 같은 단계로 이루어집니다:
+True Content: 다양한 학문 분야의 문제 해결을 위해 설계한 알고리즘을 프로그램으로 구현하고 효율성을 비교·분석한다.
+Pred Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+LLM Response: 12정보03-02
+------------------------------------------------------------
+[Sample #96]
+True Code: 12정보04-04
+Pred Code: 12정보04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 위의 코드는 `data.txt` 파일을 읽기 모드로 엽니다.
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+LLM Response: 12정보04-02
+------------------------------------------------------------
+[Sample #69]
+True Code: 12정보03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 필요한 요소를 추출하는 방법은 다음과 같습니다:
+True Content: 복잡한 문제 상황에서 문제 해결에 불필요한 요소를 제거하 거나 필요한 요소를 추출한다.
+Pred Content: INVALID
+LLM Response: 99byss03-02
+------------------------------------------------------------
+[Sample #28]
+True Code: 12정보01-02
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 보안 시스템을 설계하고 관리하며, 정보 유출을 방지하는 정책을 수립합니다.
+True Content: 정보과학 분야의 직업과 진로를 탐색한다
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #6]
+True Code: 12정03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 우주는 태양을 중심으로 주변에는 지구와 화성이 있다.
+True Content: 복잡한 문제를 해결 가능한 작은 문제로 분해하고 모델링한다.
+Pred Content: INVALID
+LLM Response: 12정03-02
+------------------------------------------------------------
+[Sample #194]
+True Code: 9정05-01
+Pred Code: 12정05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정보 사회 이전까지 사람들은 특정 공간에서 모임을 통한 면대면 방식이나 유선 전화를 활용한 의사소통을 했다.
+True Content: 디지털 사회의 특성을 탐구하고, 사회 변화에 따른 직업의 변화를 탐구한다.
+Pred Content: 디지털 기술이 사회에 미치는 영향력을 분석하고 발전 방향을 예측하여 진로를 설계한다.
+LLM Response: 12정05-01
+------------------------------------------------------------
+[Sample #98]
+True Code: 12정보04-04
+Pred Code: 12정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 출력할 때는 `print()` 함수를 사용합니다.
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+LLM Response: 12정03-04
+------------------------------------------------------------
+[Sample #132]
+True Code: 12정보05-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 입출력 장치: 사용자가 컴퓨터와 상호작용하기 위해 사용하는 장치입니다.
+True Content: 문제 해결에 적합한 하드웨어를 선택하여 컴퓨팅 장치를 구성한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #48]
+True Code: 12정보02-01
+Pred Code: 12정03-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 비디오: 움직이는 이미지와 소리로 정보를 전달하는 형태입니다.
+True Content: 동일한 정보가 다양한 방법으로 디지털로 변환되어 표 현될 수 있음을 이해하고 정보 활용 목적에 따라 보다 효율적인 방법을 선 택한다.
+Pred Content: 다양한 제어 구조를 복합적으로 활용한 프로그램을 작성한다.
+LLM Response: 12정03-07
+------------------------------------------------------------
+[Sample #141]
+True Code: 9정01-01
+Pred Code: 12정보05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 컴퓨팅 시스템은 다양한 구성요소로 이루어져 있습니다.
+True Content: 컴퓨팅 시스템의 구성요소와 동작 원리를 이해하고, 운영 체제의 기능을 분석한다.
+Pred Content: 문제 해결에 적합한 하드웨어를 선택하여 컴퓨팅 장치를 구성한다.
+LLM Response: 12정보05-03
+------------------------------------------------------------
+[Sample #118]
+True Code: 12정보04-09
+Pred Code: 12정보03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제를 해결하기 위한 단계적인 절차를 설계합니다.
+True Content: 다양한 학문 분야의 문제 해결을 위한 알고리즘을 협력하여 설계한다.
+Pred Content: 복잡하고 어려운 문제를 해결 가능한 작은 단위의 문제로 분해하고 모델링 한다.
+LLM Response: 12정보03-03
+------------------------------------------------------------
+[Sample #13]
+True Code: 12정03-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 장치에 저장되는 파일은 이름, 유형, 저장 경로, 크기 등에 대한 정보를 갖고 있다.
+True Content: 표준입출력과 파일입출력을 활용한 프로그램을 작성한다.
+Pred Content: INVALID
+LLM Response: 92-05-01
+------------------------------------------------------------
+[Sample #146]
+True Code: 9정01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 로봇: 로봇을 만들 때도 피지컬 컴퓨팅의 원리를 활용합니다.
+True Content: 피지컬 컴퓨팅의 개념을 이해하고, 생활 속에서 적용된 사례 조사를 통해 컴퓨팅 시스템의 필요성과 가치를 판단한다.
+Pred Content: INVALID
+LLM Response: 92-04-05
+------------------------------------------------------------
+[Sample #163]
+True Code: 9정02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: MIDI 파일은 실제 오디오의 녹음 파일이 아니라 악기 명령의 모임이다.
+True Content: 사례를 중심으로 데이터 간의 관계를 파악하고, 데이터에 기반하여 의미를 해석한다.
+Pred Content: INVALID
+LLM Response: 92-05-03
+------------------------------------------------------------
+[Sample #8]
+True Code: 12정03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 컴퓨터는 종이에 적는 일을 하지 못하기 때문에 "변수"라는 공간에 저장한다.
+True Content: 자료형의 종류와 특성을 알고, 적합한 자료형을 선택하여 프로그램을 작성한다.
+Pred Content: INVALID
+LLM Response: 12정03-01
+------------------------------------------------------------
+[Sample #169]
+True Code: 9정03-01
+Pred Code: 9정04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문제를 올바르게 정의하는 것은 해결책을 찾는 데 매우 중요한 첫 번째 단계입니다.
+True Content: 문제의 상태를 정의하고 수행 가능한 형태로 구조화한다.
+Pred Content: 인공지능 시스템으로 해결 가능한 문제를 발견하고, 문제 해결에 적합한 인공지능 시스템을 적용한다.
+LLM Response: 9정04-04
+------------------------------------------------------------
+[Sample #7]
+True Code: 12정03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 을 바라본 장면은 어떻게 표현할 것인지에 대하여 모델을 구축한다.
+True Content: 복잡한 문제를 해결 가능한 작은 문제로 분해하고 모델링한다.
+Pred Content: INVALID
+LLM Response: 12정보04-03
+------------------------------------------------------------
+[Sample #59]
+True Code: 12정보02-03
+Pred Code: 12정보02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음은 인터넷에서 자료를 수집하는 과정입니다.
+True Content: 인터넷, 응용 소프트웨어 등 컴퓨팅 도구를 활용하여 문제 해결을 위한 자료를 수집하고 분석한다.
+Pred Content: 컴퓨팅 환경에서 생산되는 방대하고 복잡한 종류의 자료 들을 수집, 분석, 활용하기 위한 컴퓨팅 기술의 역할과 중요성을 이해한다
+LLM Response: 12정보02-02
+------------------------------------------------------------
+[Sample #121]
+True Code: 12정보04-10
+Pred Code: 9정03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 숫자 목록을 받아온다.
+True Content: 다양한 학문 분야의 문제 해결을 위해 설계한 알고리즘을 프로그램으로 구현하고 효율성을 비교·분석한다.
+Pred Content: 사례를 중심으로 문제 해결에 적합한 전략을 선택하여 알고리즘을 설계한다.
+LLM Response: 9정03-04
+------------------------------------------------------------
+[Sample #162]
+True Code: 9정02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: ASCII(American Standard Code for Information Interchange) 7비트 크기로, 128개의 문자를 표현할 수 있다.
+True Content: 사례를 중심으로 데이터 간의 관계를 파악하고, 데이터에 기반하여 의미를 해석한다.
+Pred Content: INVALID
+LLM Response: 92정02-04
+------------------------------------------------------------
+[Sample #19]
+True Code: 12정03-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 여 조건이 참인 경우 elif 아래의 명령을 수행한다. 거짓 인 경우에는 else에 포함된 명령을 수행한다.
+True Content: 다양한 제어 구조를 복합적으로 활용한 프로그램을 작성한다.
+Pred Content: INVALID
+LLM Response: 12정보04-02
+------------------------------------------------------------
+[Sample #35]
+True Code: 12정보01-03
+Pred Code: 12정보01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 개인정보 보호법: 개인의 정보를 수집, 저장, 처리하는 과정에서 지켜야 할 법적 기준을 제공합니다.
+True Content: 정보보호 제도 및 방법에 따라 올바르게 정보를 공유하는 방법을 실천한다.
+Pred Content: 정보사회에서 정보과학의 지식과 기술이 활용되는 분야 를 탐색하고 영향력을 평가한다.
+LLM Response: 12정보01-01
+------------------------------------------------------------
+[Sample #91]
+True Code: 12정보04-02
+Pred Code: 12정보04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자료형은 변수에 저장할 수 있는 데이터의 종류를 의미합니다.
+True Content: 자료형에 적합한 변수를 정의하고 이를 활용한 프로그램 을 작성한다.
+Pred Content: 텍스트 기반 프로그래밍 언어의 개발 환경 및 특성을 이해 한다.
+LLM Response: 12정보04-01
+------------------------------------------------------------

@@ -1,0 +1,962 @@
+Total wrong samples: 80
+
+[Sample #58]
+True Code: 4국03-02
+Pred Code: 9국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 쓸 내용을 떠올릴 때에는 글을 쓰게 된 상황이나 목 적 을 생각합니다.
+True Content: 절차와 결과가 드러나게 정확한 표현으로 보고하는 글을 쓴다.
+Pred Content: 독자의 배경지식과 글에 나타난 정보 등을 활용하여 글에 드러나지 않은 의도나 관점을 추론하며 읽는다.
+True Code: 4국03-02
+LLM Response: 9국02-03
+------------------------------------------------------------
+[Sample #64]
+True Code: 6국01-03
+Pred Code: 9국04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 한국 전통 음식이나 세계 여러 나라의 음식을 급식으로 제공한다면, 외국 문화에 대해서도 배우는 좋은 기회가 될 것 같아요.
+True Content: 절차와 규칙을 지키고 근거를 제시하며 토론한다.
+Pred Content: 세대⋅분야⋅매체에 따른 어휘의 양상과 쓰임을 분석하고 다양한 집단과 사회의 언어에 관용적 태도를 지닌다.
+True Code: 6국01-03
+LLM Response: 9국04-07
+------------------------------------------------------------
+[Sample #32]
+True Code: 09-9국05-01
+Pred Code: 6국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, '비'는 슬픔을 상징할 수 있습니다.
+True Content: 비유, 운율, 상징 등의 표현 방식을 바탕으로 작품을 이해하고 표현한다.
+Pred Content: 작가의 의도를 생각하며 작품을 읽는다.
+True Code: 09-9국05-01
+LLM Response: 6국05-01
+------------------------------------------------------------
+[Sample #44]
+True Code: 10국02-02
+Pred Code: 09-9국01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 우리는 다양한 시각을 이해하고, 나아가 우리 자신의 의견을 형성하는 데 도움을 받을 수 있습니다.
+True Content: 매체에 드러난 필자의 관점이나 표현 방법의 적절성을 평가하며 읽는다.
+Pred Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+True Code: 10국02-02
+LLM Response: 09-9국01-03
+------------------------------------------------------------
+[Sample #4]
+True Code: 09-10국03-10
+Pred Code: 4국03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 상대방을 존중하는 표현을 사용하도록 합니다.
+True Content: 폭력적인 글이 독자에게 미치는 영향을 인식하고, 독자를 존중하고 배려하며 글을 쓴다.
+Pred Content: 목적과 주제를 고려하여 독자에게 마음을 전하는 글을 쓴다.
+True Code: 09-10국03-10
+LLM Response: 4국03-04
+------------------------------------------------------------
+[Sample #14]
+True Code: 09-9국01-04
+Pred Code: 9국02-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 광고는 제품이나 서비스를 판매하기 위해 정보를 제공하는 매체의 한 형태입니다.
+True Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+Pred Content: 글에 사용된 다양한 설명 방법과 논증 방법을 파악하고, 그 타당성을 평가하며 읽는다.
+True Code: 09-9국01-04
+LLM Response: 9국02-05
+------------------------------------------------------------
+[Sample #87]
+True Code: 9국03-02
+Pred Code: 09-9국01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 여러분의 주제를 "안경"이라고 가정해보겠습니다.
+True Content: 대상의 특성에 맞는 설명 방법을 사용하여 글을 쓴다.
+Pred Content: 대화의 상황과 맥락을 이해하고 상대의 이야기에 공감하며 듣고 말한다.
+True Code: 9국03-02
+LLM Response: 09-9국01-07
+------------------------------------------------------------
+[Sample #99]
+True Code: 9국05-06
+Pred Code: 4국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 죽을 힘을 다해 싸우면 전장에서 살아남을 수 있으나 그렇지 않으면 적에게 목숨을 잃을 것 이다.
+True Content: 자신의 경험을 개성적인 발상과 표현으로 형상화한다.
+Pred Content: 중요한 내용과 주제를 파악하며 듣고 그 내용을 요약한다.
+True Code: 9국05-06
+LLM Response: 4국01-01
+------------------------------------------------------------
+[Sample #80]
+True Code: 9국01-03
+Pred Code: 09-9국01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어 평소 친한 친구 라면 가족 이야기, 학업 성적 이야기와 같은 개인적인 이야기를 할 수 있다.
+True Content: 담화 공동체에 따른 듣기ㆍ말하기 방식의 다양성을 고려하여 듣고 말한다.
+Pred Content: 화법의 다양성을 이해하고 서로 다른 집단 간의 소통의 중요성을 안다.
+True Code: 9국01-03
+LLM Response: 09-9국01-10
+------------------------------------------------------------
+[Sample #0]
+True Code: 09-10국02-06
+Pred Code: 9국02-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리가 책을 읽는 이유는 다양합니다.
+True Content: 독서의 목적과 상황, 독자의 흥미나 가치관 등을 고려하여 글을 스스로 선택하여 읽는 태도를 기른다.
+Pred Content: 자신의 읽기 과정을 점검하고 효과적으로 조정하며 읽는다.
+True Code: 09-10국02-06
+LLM Response: 9국02-09
+------------------------------------------------------------
+[Sample #57]
+True Code: 4국02-04
+Pred Code: 09-9국02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자신이 생각하는 즐겁고 행복한 학교의 모습을 떠올려 봅니다.
+True Content: 글에 나타난 사실과 의견을 구분하고 필자와 자신의 의견을 비교한다.
+Pred Content: 읽기의 가치와 중요성을 깨닫고, 읽기를 생활화하려는 태도를 지닌다.
+True Code: 4국02-04
+LLM Response: 09-9국02-11
+------------------------------------------------------------
+[Sample #85]
+True Code: 9국02-04
+Pred Code: 10국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 단원을 배우고 나서 여러분은 글과 매체에 나타난 자료를 비판적으로 읽는 자세를 습득하게 될 것이다.
+True Content: 복합양식으로 구성된 글이나 자료의 내용 타당성과 신뢰성, 표현 방법의 적절성을 평가하며 읽는다.
+Pred Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+True Code: 9국02-04
+LLM Response: 10국02-01
+------------------------------------------------------------
+[Sample #15]
+True Code: 09-9국01-07
+Pred Code: 4국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 대화를 나누면서 적절한 곳에서 고개를 끄덕이거나 "그렇구나"라고 말하는 것은 상대방에게 내가 그 말을 잘 듣고 있다는 신호를 보낼 수 있습니다.
+True Content: 대화의 상황과 맥락을 이해하고 상대의 이야기에 공감하며 듣고 말한다.
+Pred Content: 상황과 상대의 입장을 이해하고 예의를 지키며 대화한다.
+True Code: 09-9국01-07
+LLM Response: 4국01-04
+------------------------------------------------------------
+[Sample #19]
+True Code: 09-9국01-12
+Pred Code: 09-9국04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여러분은 어떻게 생각하나요?
+True Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+Pred Content: 문장의 구조를 탐구하고 자신의 생각을 다양한 구조의 문장으로 표현할 수 있다.
+True Code: 09-9국01-12
+LLM Response: 09-9국04-07
+------------------------------------------------------------
+[Sample #54]
+True Code: 12화언01-05
+Pred Code: 9국01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 국어의 부정 표현은 의미에 차이가 있다.
+True Content: 담화의 맥락에 적절한 어휘와 문법 요소를 선택하여 화자의 태도를 드러낸다.
+Pred Content: 설득 전략을 비판적으로 분석하며 듣는다.
+True Code: 12화언01-05
+LLM Response: 9국01-09
+------------------------------------------------------------
+[Sample #72]
+True Code: 6국03-04
+Pred Code: 6국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 얼굴을 보고 대화하지 않습니다.
+True Content: 독자와 매체를 고려하여 내용을 생성하고 표현하며 글을 쓴다.
+Pred Content: 대화에서 생략된 내용을 추론하며 듣는다.
+True Code: 6국03-04
+LLM Response: 6국01-01
+------------------------------------------------------------
+[Sample #45]
+True Code: 10국02-03
+Pred Code: 6국05-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 중재자 찾기: 믿을 수 있는 친구나 선생님에게 도움을 요청할 수 있습니다.
+True Content: 삶의 문제에 대한 해결 방안이나 필자의 생각에 대한 대안을 찾으며 읽는다.
+Pred Content: 인상적인 부분을 중심으로 작품에 대한 의견을 나눈다.
+True Code: 10국02-03
+LLM Response: 6국05-04
+------------------------------------------------------------
+[Sample #25]
+True Code: 09-9국03-05
+Pred Code: 10국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 분리 배출 교육 학교나 지역 사회에서 쓰레기 분리 배출에 대한 교육을 실시해야 합니다.
+True Content: 학교나 지역 사회에서 일어난 일에 대해 문제 해결 방안이나 요구 사항을 담은 글을 쓴다.
+Pred Content: 개인이나 집단에 따라 듣기와 말하기의 방법이 다양함을 이해하고 듣기·말하기 활동을 한다
+True Code: 09-9국03-05
+LLM Response: 10국01-01
+------------------------------------------------------------
+[Sample #88]
+True Code: 9국03-03
+Pred Code: 9국03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자신의 의견이나 관점을 명확히 세워야 한다.
+True Content: 주장을 뒷받침할 수 있는 타당한 근거를 들고 적절한 표현을 사용하여 주장하는 글을 쓴다.
+Pred Content: 대상의 특성에 적합한 설명 방법을 활용하여 글을 쓴다.
+True Code: 9국03-03
+LLM Response: 9국03-01
+------------------------------------------------------------
+[Sample #66]
+True Code: 6국02-01
+Pred Code: 9국04-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 도서관의 책은 일정한 과정을 거치면 빌릴 수 있는데 도서관에서 책을 빌리는 과정은 다음과 같다.
+True Content: 글의 구조를 고려하며 주제나 주장을 파악하고 글 내용을 요약한다.
+Pred Content: 자신과 주변의 다양한 국어 실천 양상을 비판적으로 분석하여 언어와 자아 및 세계 사이의 관계를 인식한다.
+True Code: 6국02-01
+LLM Response: 9국04-08
+------------------------------------------------------------
+[Sample #52]
+True Code: 12화언01-02
+Pred Code: 10국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: ㄴ과 같은 일이 일어나는 이유를 국어의 단모음 체계와 관련지어 설명해 보자.
+True Content: 표준 발음을 이해하고 정확하게 발음하는 국어생활을 한다.
+Pred Content: 문법 요소의 특징을 탐구하고 상황에 맞게 사용한다
+True Code: 12화언01-02
+LLM Response: 10국04-03
+------------------------------------------------------------
+[Sample #36]
+True Code: 09-9국05-09
+Pred Code: 09-9국04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 가끔은 사소한 일도 특별하게 느껴질 때가 있습니다.
+True Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+Pred Content: 언어의 본질과 기능을 이해한다.
+True Code: 09-9국05-09
+LLM Response: 09-9국04-01
+------------------------------------------------------------
+[Sample #55]
+True Code: 4국01-04
+Pred Code: 09-9국01-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 오늘 아침 민수네 교실에서 있었던 일
+True Content: 상황과 상대의 입장을 이해하고 예의를 지키며 대화한다.
+Pred Content: 목적과 상대에 따라 말하기 방식의 차이를 고려하며 대화를 나눈다.
+True Code: 4국01-04
+LLM Response: 09-9국01-08
+------------------------------------------------------------
+[Sample #31]
+True Code: 09-9국04-10
+Pred Code: 6국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아빠는 어때요?”라는 식으로 말해볼 수 있습니다.
+True Content: 담화의 개념과 특성을 이해하고 담화 상황에 적합한 국어 생활을 한다.
+Pred Content: 대화에서 생략된 내용을 추론하며 듣는다.
+True Code: 09-9국04-10
+LLM Response: 6국01-01
+------------------------------------------------------------
+[Sample #23]
+True Code: 09-9국03-03
+Pred Code: 9국05-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그리고 친구에게 물어보니, 그 반지는 실제로 금이 아닌 금속과 플라스틱으로 만들어진 모조품이라고 했습니다.
+True Content: 관찰, 조사, 실험한 내용을 절차와 결과가 드러나게 보고하는 글을 쓴다.
+Pred Content: 근거를 바탕으로 작품을 해석하고, 다른 해석들과 비교하여 자신의 해석을 평가한다.
+True Code: 09-9국03-03
+LLM Response: 9국05-08
+------------------------------------------------------------
+[Sample #51]
+True Code: 12화언01-01
+Pred Code: 4국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 의미를 전달하 는 수단에는 손짓, 발짓도 있고 부호나 그림도 있다.
+True Content: 언어를 인간의 삶과 관련지어 이해하고, 국어와 국어생활이 시간의 흐름에 따라 변화 하는 양상을 분석한다.
+Pred Content: 절차와 결과가 드러나게 정확한 표현으로 보고하는 글을 쓴다.
+True Code: 12화언01-01
+LLM Response: 4국03-02
+------------------------------------------------------------
+[Sample #79]
+True Code: 6국06-03
+Pred Code: 9국02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 매체 자료 활용의 이점
+True Content: 적합한 양식과 수용자의 반응을 고려하여 복합양식 매체 자료를 제작하고 공유한다.
+Pred Content: 복합양식으로 구성된 글이나 자료의 내용 타당성과 신뢰성, 표현 방법의 적절성을 평가하며 읽는다.
+True Code: 6국06-03
+LLM Response: 9국02-04
+------------------------------------------------------------
+[Sample #8]
+True Code: 09-10국05-16
+Pred Code: 09-9국05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다양한 시대와 문화에서 생산된 문학 작품을 통해 우리는 과거와 현재를 잇는 대화를 나눌 수 있습니다.
+True Content: 문학은 가치 있는 내용을 언어로 형상화한 예술이며 사회적 소통 활동임을 이해한다.
+Pred Content: 다양한 관점과 방법으로 작품을 해석한다.
+True Code: 09-10국05-16
+LLM Response: 09-9국05-03
+------------------------------------------------------------
+[Sample #73]
+True Code: 6국03-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 수집한 자료를 활용하여 쓴 한 편의 글을 읽으며 글의 주제 에서 벗어난 내용이 없는지 찾아보도록 지도한다.
+True Content: 쓰기 과정을 점검ㆍ조정하며 글을 쓰고, 글 전체를 대상으로 통일성 있게 고쳐 쓴다.
+Pred Content: INVALID
+True Code: 6국03-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #3]
+True Code: 09-10국03-09
+Pred Code: 10국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 효과적인 매체 활용: 인스타그램을 활용해 캠페인 포스터를 만들고, 해시태그 운동을 통해 사람들의 관심을 끌 수 있습니다.
+True Content: 글의 전달과 사회적 파급력과 연관된 매체의 효과와 특성을 고려하여 내용을 선정하고 조직하여 책임감 있게 인터넷상의 글쓰기를 한다.
+Pred Content: 주제, 독자에 대한 분석을 바탕으로 타당한 근거를 들어 설득하는 글을 쓴다
+True Code: 09-10국03-09
+LLM Response: 10국03-02
+------------------------------------------------------------
+[Sample #89]
+True Code: 9국03-07
+Pred Code: 9국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, "나는 기쁘다" 대신 "나는 친구와 함께 축제를 준비하면서 너무 즐거웠다"라고 쓸 수 있습니다.
+True Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+Pred Content: 독자의 배경지식과 글에 나타난 정보 등을 활용하여 글에 드러나지 않은 의도나 관점을 추론하며 읽는다.
+True Code: 9국03-07
+LLM Response: 9국02-03
+------------------------------------------------------------
+[Sample #42]
+True Code: 10국01-05
+Pred Code: 10공국1-04-02
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 올바른 의사소통은 서로의 이해를 돕고 갈등을 해소하는 데 큰 역할을 합니다.
+True Content: 의사소통 과정을 점검하고 조정하며 듣고 말한다
+Pred Content: 음운 변동을 탐구하여 발음과 표기에 올바르게 적용한다.
+True Code: 10국01-05
+LLM Response: 10공국1-04-0
+------------------------------------------------------------
+[Sample #41]
+True Code: 10국01-03
+Pred Code: 09-10국05-13
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 정보 접근의 용이성
+True Content: 논제에 따라 쟁점별로 논증을 구성하여 토론에 참여한다.
+Pred Content: 전승 과정에 유의하여 한국 문학의 흐름을 이해한다.
+True Code: 10국01-03
+LLM Response: 09-10국05-1
+------------------------------------------------------------
+[Sample #86]
+True Code: 9국02-05
+Pred Code: 4국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 구체적이고 친근한 예를 드는 설명 방법 예시
+True Content: 글에 사용된 다양한 설명 방법과 논증 방법을 파악하고, 그 타당성을 평가하며 읽는다.
+Pred Content: 절차와 결과가 드러나게 정확한 표현으로 보고하는 글을 쓴다.
+True Code: 9국02-05
+LLM Response: 4국03-02
+------------------------------------------------------------
+[Sample #65]
+True Code: 6국01-06
+Pred Code: 10국02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이번에는 ' 주장과 근거'에 대해 알아보도록 할게요.
+True Content: 드러나지 않거나 생략된 내용을 추론하며 듣는다
+Pred Content: 매체에 드러난 필자의 관점이나 표현 방법의 적절성을 평가하며 읽는다.
+True Code: 6국01-06
+LLM Response: 10국02-02
+------------------------------------------------------------
+[Sample #26]
+True Code: 09-9국03-09
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이번 글에서는 매체의 특성이 글쓰기에 어떤 영향을 미치는지 알아보고, 효과적으로 글을 쓰기 위한 방법에 대해 이야기해 보겠습니다.
+True Content: 매체의 특성이 쓰기의 내용과 형식에 미치는 영향을 고려하여 글을 효과적으로 쓴다.
+Pred Content: INVALID
+True Code: 09-9국03-09
+LLM Response: 09-10국03-0
+------------------------------------------------------------
+[Sample #59]
+True Code: 4국03-04
+Pred Code: 9국03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 상황 카드를 그림이 보이지 않게 책상 위에 뒤집어 놓는다.
+True Content: 목적과 주제를 고려하여 독자에게 마음을 전하는 글을 쓴다.
+Pred Content: 주장을 뒷받침할 수 있는 타당한 근거를 들고 적절한 표현을 사용하여 주장하는 글을 쓴다.
+True Code: 4국03-04
+LLM Response: 9국03-03
+------------------------------------------------------------
+[Sample #49]
+True Code: 10국04-05
+Pred Code: 10국01-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 좋은 시나 문장을 읽을 때 느끼는 감동이나, 나만의 글을 쓰며 표현의 즐거움을 찾는 것이죠.
+True Content: 국어를 사랑하고 국어 발전에 참여하는 태도를 지닌다.
+Pred Content: 언어 공동체의 담화 관습을 성찰하고 바람직한 의사소통 문화 발전에 기여하는 태도를 지닌다.
+True Code: 10국04-05
+LLM Response: 10국01-06
+------------------------------------------------------------
+[Sample #70]
+True Code: 6국03-01
+Pred Code: 9국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 무엇을 설명하는 글이었나요?
+True Content: 알맞은 내용을 선정하여 대상의 특성이 나타나게 설명하는 글을 쓴다.
+Pred Content: 대상의 특성에 맞는 설명 방법을 사용하여 글을 쓴다.
+True Code: 6국03-01
+LLM Response: 9국03-02
+------------------------------------------------------------
+[Sample #56]
+True Code: 4국02-02
+Pred Code: 4국04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 소개하는 글을 쓸 때에는 읽는 사람이 궁금해할 만한 내용으로 쓰는 것이 좋습니다.
+True Content: 문단과 글에서 중심 생각을 파악하고 내용을 간추린다.
+Pred Content: 언어가 의사소통과 관계 형성의 수단임을 이해하고 국어를 소중히 여기는 태도를 지닌다.
+True Code: 4국02-02
+LLM Response: 4국04-05
+------------------------------------------------------------
+[Sample #27]
+True Code: 09-9국03-09
+Pred Code: 6국05-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 형식에 따른 표현 방법: 신문 기사는 객관적이고 사실적인 정보를 중시하지만, 광고는 감정적인 호소가 중요합니다.
+True Content: 매체의 특성이 쓰기의 내용과 형식에 미치는 영향을 고려하여 글을 효과적으로 쓴다.
+Pred Content: 인상적인 부분을 중심으로 작품에 대한 의견을 나눈다.
+True Code: 09-9국03-09
+LLM Response: 6국05-04
+------------------------------------------------------------
+[Sample #28]
+True Code: 09-9국03-10
+Pred Code: 09-9국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글은 항상 사실에 근거해야 합니다.
+True Content: 쓰기 윤리의 중요성을 인식하고 책임감 있는 태도로 글을 쓴다.
+Pred Content: 어문 규범의 기본 원리와 내용을 이해한다.
+True Code: 09-9국03-10
+LLM Response: 09-9국04-03
+------------------------------------------------------------
+[Sample #74]
+True Code: 6국03-05
+Pred Code: 9국01-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정리한 자료를 건우가 구체적으로 어떻게 활용할지 생각해 보세요.
+True Content: 쓰기 과정을 점검ㆍ조정하며 글을 쓰고, 글 전체를 대상으로 통일성 있게 고쳐 쓴다.
+Pred Content: 언어폭력의 문제점을 인식하고 상대를 배려하며 말하는 태도를 지닌다.
+True Code: 6국03-05
+LLM Response: 9국01-12
+------------------------------------------------------------
+[Sample #67]
+True Code: 6국02-01
+Pred Code: 12화언01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 의사나 간호사는 보통 흰색 옷을 입는다.
+True Content: 글의 구조를 고려하며 주제나 주장을 파악하고 글 내용을 요약한다.
+Pred Content: 다양한 유형의 담화와 매체를 대상으로 언어의 공공성을 이해하고 평가한다.
+True Code: 6국02-01
+LLM Response: 12화언01-07
+------------------------------------------------------------
+[Sample #46]
+True Code: 10국02-03
+Pred Code: 09-9국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이는 경제적 불안정은 물론, 정신적 스트레스를 유발하기도 합니다.
+True Content: 삶의 문제에 대한 해결 방안이나 필자의 생각에 대한 대안을 찾으며 읽는다.
+Pred Content: 비유, 운율, 상징 등의 표현 방식을 바탕으로 작품을 이해하고 표현한다.
+True Code: 10국02-03
+LLM Response: 09-9국05-01
+------------------------------------------------------------
+[Sample #77]
+True Code: 6국06-01
+Pred Code: 4국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 알맞은 방법으로 매체 자료를 읽고 주요 내용 정리 하기
+True Content: 정보 검색 도구를 활용하여 자신의 목적에 맞는 매체 자료를 찾는다.
+Pred Content: 목적과 주제에 알맞게 자료를 정리하여 자신감 있게 발표한다.
+True Code: 6국06-01
+LLM Response: 4국01-05
+------------------------------------------------------------
+[Sample #1]
+True Code: 09-10국03-08
+Pred Code: 09-9국03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 하지만 이로 인해 잘못된 정보도 함께 퍼질 위험이 있다.
+True Content: 작문 맥락에 대한 분석을 바탕으로 여러 가지 타당한 근거를 제시하여 주장하는 글을 쓴다.
+Pred Content: 주제, 목적, 독자를 고려하여 쓰기 과정을 계획하고, 점검하고 조정한다
+True Code: 09-10국03-08
+LLM Response: 09-9국03-01
+------------------------------------------------------------
+[Sample #96]
+True Code: 9국04-09
+Pred Code: 09-9국02-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 세미나나 강연 참여하기: 통일 관련 세미나나 강연에 참여하여 전문가의 이야기를 듣고, 다양한 의견을 나누어 볼 수 있습니다.
+True Content: 통일 시대의 국어에 관심을 가지는 태도를 지닌다.
+Pred Content: 자신의 삶과 관련지으며 글의 의미를 해석하고 독자의 정체성을 형성한다.
+True Code: 9국04-09
+LLM Response: 09-9국02-09
+------------------------------------------------------------
+[Sample #90]
+True Code: 9국03-07
+Pred Code: 10국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음 주제 중 하나를 선택해서 글을 작성해보세요:
+True Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+Pred Content: 삶의 문제에 대한 해결 방안이나 필자의 생각에 대한 대안을 찾으며 읽는다.
+True Code: 9국03-07
+LLM Response: 10국02-03
+------------------------------------------------------------
+[Sample #5]
+True Code: 09-10국04-10
+Pred Code: 4국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주제의 명확성: 담화의 주제가 명확해야 합니다.
+True Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+Pred Content: 중요한 내용과 주제를 파악하며 듣고 그 내용을 요약한다.
+True Code: 09-10국04-10
+LLM Response: 4국01-01
+------------------------------------------------------------
+[Sample #2]
+True Code: 09-10국03-08
+Pred Code: 09-9국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음 주제를 가지고 여러분의 주장을 작성해 봅시다.
+True Content: 작문 맥락에 대한 분석을 바탕으로 여러 가지 타당한 근거를 제시하여 주장하는 글을 쓴다.
+Pred Content: 지식과 경험, 글의 정보, 읽기 맥락을 토대로 내용을 예측하며 글을 읽는다.
+True Code: 09-10국03-08
+LLM Response: 09-9국02-01
+------------------------------------------------------------
+[Sample #75]
+True Code: 6국04-05
+Pred Code: 12화언01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 마침표(.)나 쉼표(,) 뒤에 오는 말은 띄어 씁니다.
+True Content: 글과 담화에 쓰인 시간 표현을 이해하고 상황에 맞게 표현한다.
+Pred Content: 품사와 문장 구조에 대한 지식을 활용하여 언어 자료를 분석하고 설명한다.
+True Code: 6국04-05
+LLM Response: 12화언01-03
+------------------------------------------------------------
+[Sample #47]
+True Code: 10국02-04
+Pred Code: 09-10국01-01
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 먼저, 독서를 시작하기 전에 목적을 명확히 설정하세요.
+True Content: 읽기 목적을 고려하여 자신의 읽기 방법을 점검하고 조정하며 읽는다
+Pred Content: 대화의 원리를 이해하고 상황과 대상에 맞게 언어 예절을 갖추어 말한다.
+True Code: 10국02-04
+LLM Response: 10국01-01
+------------------------------------------------------------
+[Sample #53]
+True Code: 12화언01-04
+Pred Code: 09-9국01-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그래서 '총각’ 은 하의어로서 상의어 '남자' 를 함의하고 있다고 한다.
+True Content: 단어의 짜임과 의미, 단어 간의 의미 관계를 중심으로 어휘를 이해하고 담화에 적절히 활용한다.
+Pred Content: 화법의 다양성을 이해하고 서로 다른 집단 간의 소통의 중요성을 안다.
+True Code: 12화언01-04
+LLM Response: 09-9국01-10
+------------------------------------------------------------
+[Sample #29]
+True Code: 09-9국04-02
+Pred Code: 10국02-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 소리들이 조합되어 여러 가지 단어가 만들어집니다.
+True Content: 음운 체계를 탐구하고 그 특징을 이해한다.
+Pred Content: 자신의 진로나 관심사와 관련된 글을 자발적으로 찾아 읽는 태도를 지닌다.
+True Code: 09-9국04-02
+LLM Response: 10국02-05
+------------------------------------------------------------
+[Sample #7]
+True Code: 09-10국05-13
+Pred Code: 09-9국05-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 한국 문학은 오랜 역사와 전통을 가지고 있으며, 시대에 따라 다양한 변화와 발전을 거쳐왔습니다.
+True Content: 전승 과정에 유의하여 한국 문학의 흐름을 이해한다.
+Pred Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+True Code: 09-10국05-13
+LLM Response: 09-9국05-09
+------------------------------------------------------------
+[Sample #84]
+True Code: 9국01-12
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 우리는 언어의 힘을 잘 알고, 언어폭력의 문제점을 인식하여 더 나은 소통을 할 수 있어야 합니다.
+True Content: 언어폭력의 문제점을 인식하고 상대를 배려하며 말하는 태도를 지닌다.
+Pred Content: INVALID
+True Code: 9국01-12
+LLM Response: 9국03-02
+------------------------------------------------------------
+[Sample #81]
+True Code: 9국01-04
+Pred Code: 09-9국01-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 말할 내용이 풍부해집니다.
+True Content: 상대의 말을 경청하고 상대의 감정과 입장에 공감하는 반응을 보이며 대화한다.
+Pred Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+True Code: 9국01-04
+LLM Response: 09-9국01-12
+------------------------------------------------------------
+[Sample #30]
+True Code: 09-9국04-06
+Pred Code: 6국02-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "나는 빨리 달린다."에서 '빨리'는 속도를 설명합니다.
+True Content: 품사의 개념과 특성을 이해하고 단어를 적절하게 사용한다.
+Pred Content: 긍정적인 읽기 동기를 형성하고 적극적으로 읽기에 참여하는 태도를 기른다.
+True Code: 09-9국04-06
+LLM Response: 6국02-05
+------------------------------------------------------------
+[Sample #62]
+True Code: 4국06-02
+Pred Code: 4국02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 공식적인 말하기 상황에서 말하는 내용을 구체적으로 보여 주려면 어떤 자료를 활용할 수 있을까요?
+True Content: 매체를 활용하여 간단한 발표 자료를 만든다.
+Pred Content: 문단과 글에서 중심 생각을 파악하고 내용을 간추린다.
+True Code: 4국06-02
+LLM Response: 4국02-02
+------------------------------------------------------------
+[Sample #78]
+True Code: 6국06-03
+Pred Code: 9국01-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 발표 내용에 매체가 적절한지, 매체를 활용할 수 있는 기기가 준비되어 있는지, 기기를 다룰 수 있는지, 청중들의 관심과 흥미를 유발하는 데 도움이 되는지 등을 고 려해서 선정해야 함
+True Content: 적합한 양식과 수용자의 반응을 고려하여 복합양식 매체 자료를 제작하고 공유한다.
+Pred Content: 다양한 자료를 재구성하여 내용을 체계적으로 조직하고 청중이 이해하기 쉽게 발표한다.
+True Code: 6국06-03
+LLM Response: 9국01-06
+------------------------------------------------------------
+[Sample #48]
+True Code: 10국03-03
+Pred Code: 6국05-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 순간을 통해 나는 나의 꿈에 대해 다시 한번 생각해보게 되었고, 사람들과의 소중한 만남이 얼마나 중요한지를 깨달았다.
+True Content: 자신의 경험과 성찰을 담아 정서를 표현하는 글을 쓴다
+Pred Content: 인상적인 부분을 중심으로 작품에 대한 의견을 나눈다.
+True Code: 10국03-03
+LLM Response: 6국05-04
+------------------------------------------------------------
+[Sample #24]
+True Code: 09-9국03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 주장을 할 때 사용하는 근거는 여러 종류가 있습니다.
+True Content: 의견의 차이가 드러나는 문제에 대해 타당한 근거를 들어 주장하는 글을 쓴다.
+Pred Content: INVALID
+True Code: 09-9국03-04
+LLM Response: 09-9국03-07
+------------------------------------------------------------
+[Sample #17]
+True Code: 09-9국01-12
+Pred Code: 12화언01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문자 메시지는 때로는 상대방의 감정을 온전히 전달하기 어렵고, 오해를 불러일으킬 수 있습니다.
+True Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+Pred Content: 다양한 유형의 담화와 매체를 대상으로 언어의 공공성을 이해하고 평가한다.
+True Code: 09-9국01-12
+LLM Response: 12화언01-07
+------------------------------------------------------------
+[Sample #39]
+True Code: 10공국1-05-03
+Pred Code: 4국05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 새 학년에 올라가서 선생님과 친구들 앞에서 자기를 소개하기, 학교 동아리에 가입하기 위해 자기를 소개하기 등 시시때때로 자기 소개를 해야 할 상황에 놓이게 된다.
+True Content: 작품 구성 요소의 유기적 관계와 맥락에 유의하여 작품을 수용하고 생산한다.
+Pred Content: 작품을 듣거나 읽고 마음에 드는 작품을 소개한다.
+True Code: 10공국1-05-03
+LLM Response: 4국05-03
+------------------------------------------------------------
+[Sample #83]
+True Code: 9국01-11
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 남자는 손바닥을 위로 향하게 한 후 손부채질을 하듯 손가락을 움직이며 '잘 가'라는 표현을 하였지만, 여자는 강아지를 부르듯 본인을 부른다고 오해하고 있는 이미지이다.
+True Content: 듣기ㆍ말하기 과정을 점검하고 듣기ㆍ말하기의 어려움을 효과적으로 조정한다.
+Pred Content: INVALID
+True Code: 9국01-11
+LLM Response: 10국03-08
+------------------------------------------------------------
+[Sample #92]
+True Code: 9국03-09
+Pred Code: 6국01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글쓰기 윤리를 지키지 않으면 다른 사람에게 큰 피해를 입히거나 처벌을 받을 수 있음
+True Content: 언어 공동체의 구성원인 필자로서 자신에 대해 성찰하며, 윤리적 소통 문화를 형성하는 데에 기여한다.
+Pred Content: 대화에서 생략된 내용을 추론하며 듣는다.
+True Code: 9국03-09
+LLM Response: 6국01-01
+------------------------------------------------------------
+[Sample #21]
+True Code: 09-9국02-03
+Pred Code: 09-9국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 핵심 내용: 기후 변화로 인한 평균 온도 상승, 해수면 상승, 기상 변화, 대응 방안 필요성
+True Content: 읽기 목적에 따라 적절한 방법으로 글의 내용을 요약한다
+Pred Content: 음운 체계를 탐구하고 그 특징을 이해한다.
+True Code: 09-9국02-03
+LLM Response: 09-9국04-02
+------------------------------------------------------------
+[Sample #38]
+True Code: 10공국1-04-02
+Pred Code: 6국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 눕히다$\rightarrow$
+True Content: 음운 변동을 탐구하여 발음과 표기에 올바르게 적용한다.
+Pred Content: 매체 자료를 활용하여 내용을 효과적으로 발표한다
+True Code: 10공국1-04-02
+LLM Response: 6국01-05
+------------------------------------------------------------
+[Sample #37]
+True Code: 09-9국05-10
+Pred Code: 09-9국05-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 문학을 통해 우리는 타인의 감정을 이해하고 공감하는 능력을 길러갑니다.
+True Content: 문학이 인간의 삶에 어떤 가치를 지니는지 이해한다.
+Pred Content: 작품의 세계가 누구의 눈을 통해 전달되는지 파악하며 작품을 수용한다.
+True Code: 09-9국05-10
+LLM Response: 09-9국05-05
+------------------------------------------------------------
+[Sample #71]
+True Code: 6국03-02
+Pred Code: 09-10국04-11
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 인터넷입니다.
+True Content: 적절한 근거를 사용하고 인용의 출처를 밝히며 주장하는 글을 쓴다.
+Pred Content: 국어의 변천을 이해하고 국어의 발전 방향을 탐구한다.
+True Code: 6국03-02
+LLM Response: 09-10국04-1
+------------------------------------------------------------
+[Sample #13]
+True Code: 09-9국01-04
+Pred Code: 09-9국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 전문가의 신뢰성: 의사, 셰프 등의 전문가가 등장하여 제품을 추천하는 광고는 소비자에게 신뢰성을 부여합니다.
+True Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+Pred Content: 어문 규범의 기본 원리와 내용을 이해한다.
+True Code: 09-9국01-04
+LLM Response: 09-9국04-03
+------------------------------------------------------------
+[Sample #94]
+True Code: 9국04-07
+Pred Code: 4국03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 대화할 때 상황에 따라 알맞은 어휘를 골라 쓰는 것은 매우 중요하다.
+True Content: 세대⋅분야⋅매체에 따른 어휘의 양상과 쓰임을 분석하고 다양한 집단과 사회의 언어에 관용적 태도를 지닌다.
+Pred Content: 대상에 대한 자신의 의견과 그렇게 생각한 이유가 드러나게 글을 쓴다.
+True Code: 9국04-07
+LLM Response: 4국03-03
+------------------------------------------------------------
+[Sample #68]
+True Code: 6국02-02
+Pred Code: 12화언01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사정이나 형편 등을 어림잡아 헤아림.
+True Content: 글에서 생략된 내용이나 함축된 표현을 문맥을 고려하여 추론한다.
+Pred Content: 다양한 유형의 담화와 매체를 대상으로 언어의 공공성을 이해하고 평가한다.
+True Code: 6국02-02
+LLM Response: 12화언01-07
+------------------------------------------------------------
+[Sample #76]
+True Code: 6국05-04
+Pred Code: 09-10국02-05
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 책을 읽은 뒤에 책을 읽게 된 까닭, 책 내용, 인상 깊은 부분, 읽은 뒤에 든 생각이나 느낌 따위를 쓴 글을 독서 감상문이라고 합니다.
+True Content: 인상적인 부분을 중심으로 작품에 대한 의견을 나눈다.
+Pred Content: 여러 가지 독서 방법을 이해하고 상황에 맞는 독서 방법을 적용하여 글을 읽는다.
+True Code: 6국05-04
+LLM Response: 09-10국02-0
+------------------------------------------------------------
+[Sample #40]
+True Code: 10공국2-01-02
+Pred Code: 9국04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 목표를 명확히 세움.
+True Content: 쟁점과 이해관계를 고려하여 문제를 해결할 수 있는 대안을 탐색하며 협상한다.
+Pred Content: 한글 맞춤법의 기본 원리와 내용을 이해하고 국어생활에 적용한다.
+True Code: 10공국2-01-02
+LLM Response: 9국04-06
+------------------------------------------------------------
+[Sample #95]
+True Code: 9국04-09
+Pred Code: 09-9국05-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 통일이 이루어지면 어떤 변화가 일어날까요?
+True Content: 통일 시대의 국어에 관심을 가지는 태도를 지닌다.
+Pred Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+True Code: 9국04-09
+LLM Response: 09-9국05-09
+------------------------------------------------------------
+[Sample #20]
+True Code: 09-9국02-02
+Pred Code: 9국02-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 신뢰할 수 있는 출처에서 작성된 것인지 평가해 보세요.
+True Content: 글이나 매체에 제시된 다양한 자료의 효과와 적절성을 평가하며 읽는다.
+Pred Content: 글에 사용된 다양한 설명 방법과 논증 방법을 파악하고, 그 타당성을 평가하며 읽는다.
+True Code: 09-9국02-02
+LLM Response: 9국02-05
+------------------------------------------------------------
+[Sample #69]
+True Code: 6국02-05
+Pred Code: 10국04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 읽기에 대한 동기와 흥미를 강화시 키며, 국어과 및 다른 교과 학습에 도움이 되고, 삶의 질을 높여 줌.
+True Content: 긍정적인 읽기 동기를 형성하고 적극적으로 읽기에 참여하는 태도를 기른다.
+Pred Content: 국어를 사랑하고 국어 발전에 참여하는 태도를 지닌다.
+True Code: 6국02-05
+LLM Response: 10국04-05
+------------------------------------------------------------
+[Sample #63]
+True Code: 6국01-01
+Pred Code: 09-10국01-01
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: 친구들 모두가 참여할 수 있도록 하며, 서로 의견이 맞지 않을 때에는 민주적인 절차를 거쳐 역할을 나누어야 합니다.
+True Content: 대화에서 생략된 내용을 추론하며 듣는다.
+Pred Content: 대화의 원리를 이해하고 상황과 대상에 맞게 언어 예절을 갖추어 말한다.
+True Code: 6국01-01
+LLM Response: 09-10국01-0
+------------------------------------------------------------

@@ -1,0 +1,746 @@
+Total wrong samples: 62
+
+[Sample #6]
+True Code: 9도01-02
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 바람직한 자아 정체성의 형성 도덕적 자아상 설정하기
+True Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도01-02
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #14]
+True Code: 9도01-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 도덕적 인물의 좋은 습관을 닮기 위해 노력하기
+True Content: 행복에 관한 심리적, 사회적, 윤리적 접근 등을 통해 행복의 의미를 종합적으로 파악하고, 삶의 목적과 행복의 관계를 정립할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도01-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #15]
+True Code: 9도01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 공동체에 관심을 갖고 다양한 경험하기
+True Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #40]
+True Code: 9도02-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 공감하기: 피해자의 입장에서 생각하고 그들의 감정을 이해하려고 노력합니다.
+True Content: 폭력의 결과를 상상해 보고 그것에 내재한 비도덕성을 지적할 수 있고, 일상생활에서 일어나는 폭력 상황에 민감하게 반응하고 대처하는 능력을 가질 수 있다.
+Pred Content: INVALID
+True Code: 9도02-07
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #49]
+True Code: 9도03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 인권의 특징: 천부성, 불가침성, 평등성, 보편성
+True Content: 인권을 존중해야 하는 도덕적 이유를 정당화하고, 인권 침해 사례에 대한 탐구를 통해 그 원인과 해결 방안을 도출함으로써 인권 감수성을 기른다.
+Pred Content: INVALID
+True Code: 9도03-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #1]
+True Code: 9도01-01
+Pred Code: 9도01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 홉스는 "리바이어던"에서 도덕과 국가의 필요성을 알게 하려고, 도덕과 국가가 없는 상황을 상상해 보라고 한다.
+True Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+Pred Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+True Code: 9도01-01
+LLM Response: 9도01-02
+------------------------------------------------------------
+[Sample #46]
+True Code: 9도03-01
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 역지사지의 자세를 통해 사회적 약자의 어려움을 이해할 수 있어야 함.
+True Content: 인권을 존중해야 하는 도덕적 이유를 정당화하고, 인권 침해 사례에 대한 탐구를 통해 그 원인과 해결 방안을 도출함으로써 인권 감수성을 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-01
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #13]
+True Code: 9도01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이 과정에서 필요한 것이 바로 나쁜 습관을 고치고 좋은 습관을 형성하는 일이다.
+True Content: 행복에 관한 심리적, 사회적, 윤리적 접근 등을 통해 행복의 의미를 종합적으로 파악하고, 삶의 목적과 행복의 관계를 정립할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #57]
+True Code: 9도03-05
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 戒愼乎其所不睹,(계신호기소부도) 남이 보지 않는 곳에서 스스로 경계하고恐摖乎其所不聞.공구호기소불문) 남이 들지 않는 곳에서 스스로 두려워해야 한다.
+True Content: 국가와 시민 사이에서 발생하는 윤리적 쟁점들을 탐구하고, 국가와 시민 사이의 바람직한 관계에 기초하여 국가와 시민의 역할을 재구성할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도03-05
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #53]
+True Code: 9도03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사회 정의의 중요성
+True Content: 정의로운 사회를 상상해보고, 이를 실현할 수 있는 정의의 원칙과 제도에 대한 다양한 의견들을 민주적인 방식으로 종합할 수 있다.
+Pred Content: INVALID
+True Code: 9도03-04
+LLM Response: 10도01-04
+------------------------------------------------------------
+[Sample #56]
+True Code: 9도03-05
+Pred Code: 9도02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 공동체를 유지하고 공동체 속에서 살아가기 위해서
+True Content: 국가와 시민 사이에서 발생하는 윤리적 쟁점들을 탐구하고, 국가와 시민 사이의 바람직한 관계에 기초하여 국가와 시민의 역할을 재구성할 수 있다.
+Pred Content: 이웃의 종류를 구분해 보고, 공동체 속에서 이웃을 배려하고 봉사하기 위해 타인의 관점을 채택해 보고, 이를 실천하기 위한 구체적인 방법을 제시할 수 있다.
+True Code: 9도03-05
+LLM Response: 9도02-04
+------------------------------------------------------------
+[Sample #45]
+True Code: 9도03-01
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 인간 존엄성이란 "인간은 단지 인간이라는 이유로 그 존재 가치가 있으며 마땅히 존중받아야 한다."라는 것을 의미한다.
+True Content: 인권을 존중해야 하는 도덕적 이유를 정당화하고, 인권 침해 사례에 대한 탐구를 통해 그 원인과 해결 방안을 도출함으로써 인권 감수성을 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-01
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #28]
+True Code: 9도02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: '관찰, 느낌, 욕구, 부탁'으로 이루어지는 비폭력 대화 실천 하기
+True Content: 가상공간과 현실 세계에 대한 비교⋅분석을 바탕으로 가상공간에서 발생하는 도덕 문제들의 원인과 해결 방안을 제안하고, 타인을 존중하며 가상공간을 활용하는 태도를 함양한다.
+Pred Content: INVALID
+True Code: 9도02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #72]
+True Code: 9도04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 또한, 친구나 가족과 함께 고민을 나누며 서로의 생각을 이해하는 것도 큰 도움이 됩니다.
+True Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+Pred Content: INVALID
+True Code: 9도04-03
+LLM Response: 10도02-04
+------------------------------------------------------------
+[Sample #34]
+True Code: 9도02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 우리 집 옆이나 앞집에 사는 사람들입니다.
+True Content: 이웃의 종류를 구분해 보고, 공동체 속에서 이웃을 배려하고 봉사하기 위해 타인의 관점을 채택해 보고, 이를 실천하기 위한 구체적인 방법을 제시할 수 있다.
+Pred Content: INVALID
+True Code: 9도02-04
+LLM Response: 9도02-01
+------------------------------------------------------------
+[Sample #48]
+True Code: 9도03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 인권에 민감해진다는 것은 인권 침해 상황에 민감해진다는 것을 의미하고, 이는 사회적 약자들의 인권 현실에 민감해진다는 것을 의미한다.
+True Content: 인권을 존중해야 하는 도덕적 이유를 정당화하고, 인권 침해 사례에 대한 탐구를 통해 그 원인과 해결 방안을 도출함으로써 인권 감수성을 기른다.
+Pred Content: INVALID
+True Code: 9도03-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #18]
+True Code: 9도01-04
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 올바른 도덕적 성찰의 기준
+True Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도01-04
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #0]
+True Code: 9도01-01
+Pred Code: 9도04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 무엇을 해야 할지 혹은 하지 말아야 할지 알면서도 욕구가 없어 행동으로 옮기지 못할 수도 있다.
+True Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+Pred Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+True Code: 9도01-01
+LLM Response: 9도04-03
+------------------------------------------------------------
+[Sample #11]
+True Code: 9도01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 바람직한 가치를 추구하는 자세
+True Content: 행복에 관한 심리적, 사회적, 윤리적 접근 등을 통해 행복의 의미를 종합적으로 파악하고, 삶의 목적과 행복의 관계를 정립할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #29]
+True Code: 9도02-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 해악 금지의 원칙
+True Content: 가상공간과 현실 세계에 대한 비교⋅분석을 바탕으로 가상공간에서 발생하는 도덕 문제들의 원인과 해결 방안을 제안하고, 타인을 존중하며 가상공간을 활용하는 태도를 함양한다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도02-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #22]
+True Code: 9도02-02
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 처한 사정이 같은 고로 지위나 신분에 얽매일 필요 없고 근심하는 바가 같은 고로 서로의 딱한 처지를 잘 이해한 것뿐이지요.
+True Content: 친구의 의미와 가치를 삶의 맥락 속에서 탐구하고, 서로를 인격적으로 존중하는 친구 관계를 상상하며 이를 실현하는 의지를 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도02-02
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #66]
+True Code: 9도03-07
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 과거에는 불치병으로 알려졌던 암과 같은 질병도 새로운 의약품과 의료 기술을 활용하여 치료가 가능해졌으며, 이로써 많은 사람들이 건강한 삶을 누릴 수 있게 되었다.
+True Content: 현대 과학기술과 관련된 윤리적 쟁점의 분석을 통해 과학기술의 유용성과 한계를 인식하고, 과학기술의 바람직한 활용에 관한 관심과 책임 의식을 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-07
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #10]
+True Code: 9도01-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 훌륭한 인격을 형성할 수 있기 때문이다.
+True Content: 행복에 관한 심리적, 사회적, 윤리적 접근 등을 통해 행복의 의미를 종합적으로 파악하고, 삶의 목적과 행복의 관계를 정립할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도01-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #73]
+True Code: 9도04-03
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음의 방법들을 통해 스스로를 성찰해보세요.
+True Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도04-03
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #65]
+True Code: 9도03-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 생명과 관련된 연구를 할 때에는 연구가 미칠 영향에 대해 신중하게 고려해야 한다.
+True Content: 현대 과학기술과 관련된 윤리적 쟁점의 분석을 통해 과학기술의 유용성과 한계를 인식하고, 과학기술의 바람직한 활용에 관한 관심과 책임 의식을 기른다.
+Pred Content: INVALID
+True Code: 9도03-07
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #7]
+True Code: 9도01-02
+Pred Code: 9도04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 어떤 행동이나 상황을 도덕적으로 민감하게 느끼고 반응할 수 있는 마음의 상태를 말함.
+True Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+Pred Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+True Code: 9도01-02
+LLM Response: 9도04-03
+------------------------------------------------------------
+[Sample #74]
+True Code: 9도04-03
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 내가 좋아하는 일, 소중히 여기는 사람들, 그리고 미래의 꿈에 대해 깊이 고민해 보면, 당신에게 가장 중요한 것이 무엇인지 깨달을 수 있습니다.
+True Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도04-03
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #26]
+True Code: 9도02-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정보화 시대의 도덕 문제 정체성 혼란의 문제: 현실에서의 자아 정체성에 혼란을 겸으며 비도덕적 행동을 하고도 책임을 느끼지 못하는 경우가 있음.
+True Content: 가상공간과 현실 세계에 대한 비교⋅분석을 바탕으로 가상공간에서 발생하는 도덕 문제들의 원인과 해결 방안을 제안하고, 타인을 존중하며 가상공간을 활용하는 태도를 함양한다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도02-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #47]
+True Code: 9도03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 퇴직 급여, 시간 외 수당, 유급 휴일 수헤율은 상승하였지만 상여금 수혜율은 하락하였음.
+True Content: 인권을 존중해야 하는 도덕적 이유를 정당화하고, 인권 침해 사례에 대한 탐구를 통해 그 원인과 해결 방안을 도출함으로써 인권 감수성을 기른다.
+Pred Content: INVALID
+True Code: 9도03-01
+LLM Response: 10수01-04
+------------------------------------------------------------
+[Sample #23]
+True Code: 9도02-02
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 선한 것을 가려서 본받고 선하지 않은 것을 고쳐야 합니다.
+True Content: 친구의 의미와 가치를 삶의 맥락 속에서 탐구하고, 서로를 인격적으로 존중하는 친구 관계를 상상하며 이를 실현하는 의지를 기른다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도02-02
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #71]
+True Code: 9도04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이는 여러분이 앞으로의 삶에서 더욱 깊이 있는 선택을 할 수 있도록 도와줄 것입니다.
+True Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+Pred Content: INVALID
+True Code: 9도04-03
+LLM Response: 10도01-04
+------------------------------------------------------------
+[Sample #20]
+True Code: 9도02-02
+Pred Code: 9도02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아무리 친한 친구 사이라도 크고 작은 갈등이 생길 수 있다.
+True Content: 친구의 의미와 가치를 삶의 맥락 속에서 탐구하고, 서로를 인격적으로 존중하는 친구 관계를 상상하며 이를 실현하는 의지를 기른다.
+Pred Content: 이웃의 종류를 구분해 보고, 공동체 속에서 이웃을 배려하고 봉사하기 위해 타인의 관점을 채택해 보고, 이를 실천하기 위한 구체적인 방법을 제시할 수 있다.
+True Code: 9도02-02
+LLM Response: 9도02-04
+------------------------------------------------------------
+[Sample #9]
+True Code: 9도01-02
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 도덕적 모범이 중요한 이유 $\\$ 도덕적 모범의 말과 행동에 감동받을 때, 자신의 모습을 되돌아보면서 반성하고, 그 사람을 따라 하고 싶은 강한 동기를 부여받을 수 있음.
+True Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도01-02
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #27]
+True Code: 9도02-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 특별한 목적 없이 여러 사이트를 돌아다니면서 하루의 대부분을 허비하 는 것, 일상생활에 지장이 있을 정도로 온라인 게임 에 빠지는 것, 온라인 쇼 핑에 지나치게 시간을 허 비하는 것, 온라인 대화방 이나 메신저 혹은 개인 미니 홈페이지 등에 지나 치게 몰입하는 것, 스마트 폰 없이는 한시도 불안하 여 아무것도 못하는 것 등이 대표적인 사이버 중 독 사례에 해당해요.
+True Content: 가상공간과 현실 세계에 대한 비교⋅분석을 바탕으로 가상공간에서 발생하는 도덕 문제들의 원인과 해결 방안을 제안하고, 타인을 존중하며 가상공간을 활용하는 태도를 함양한다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도02-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #69]
+True Code: 9도03-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 과학 기술을 좋은 목적에 사용하도록 노력
+True Content: 현대 과학기술과 관련된 윤리적 쟁점의 분석을 통해 과학기술의 유용성과 한계를 인식하고, 과학기술의 바람직한 활용에 관한 관심과 책임 의식을 기른다.
+Pred Content: INVALID
+True Code: 9도03-07
+LLM Response: 10영03-07
+------------------------------------------------------------
+[Sample #24]
+True Code: 9도02-02
+Pred Code: 9도02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 조언이란 친구를 깎아내리기 위해 잘못을 지적하고 비난하는 것이 아니라, 친구가 바른 방향으로 가도록 신중하게 도와주는 것이다.
+True Content: 친구의 의미와 가치를 삶의 맥락 속에서 탐구하고, 서로를 인격적으로 존중하는 친구 관계를 상상하며 이를 실현하는 의지를 기른다.
+Pred Content: 이웃의 종류를 구분해 보고, 공동체 속에서 이웃을 배려하고 봉사하기 위해 타인의 관점을 채택해 보고, 이를 실천하기 위한 구체적인 방법을 제시할 수 있다.
+True Code: 9도02-02
+LLM Response: 9도02-04
+------------------------------------------------------------
+[Sample #61]
+True Code: 9도03-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 문화적 다양성이 위축되는 문제
+True Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+Pred Content: INVALID
+True Code: 9도03-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #52]
+True Code: 9도03-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사회적 약자에 대한 배려가 있어야 함.
+True Content: 정의로운 사회를 상상해보고, 이를 실현할 수 있는 정의의 원칙과 제도에 대한 다양한 의견들을 민주적인 방식으로 종합할 수 있다.
+Pred Content: INVALID
+True Code: 9도03-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #3]
+True Code: 9도01-01
+Pred Code: 9도04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사회의 구성원으로서 사람들이 말하고 행동하는 모든 것에 관심을 갖고 칭찬과 비난, 승인과 거부, 찬성과 반대 등 좋고(선), 나쁜(악), 옳고(시), 그름(비)등을 표현하는 과정을 통해서 인간성이 형성되기 때문이다.
+True Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+Pred Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+True Code: 9도01-01
+LLM Response: 9도04-03
+------------------------------------------------------------
+[Sample #67]
+True Code: 9도03-07
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 기계 중심의 생산: 인간을 기계 부속품처럼 생각함
+True Content: 현대 과학기술과 관련된 윤리적 쟁점의 분석을 통해 과학기술의 유용성과 한계를 인식하고, 과학기술의 바람직한 활용에 관한 관심과 책임 의식을 기른다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도03-07
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #2]
+True Code: 9도01-01
+Pred Code: 9도03-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 인류는 생존에 불리한 신체적 조건을 극복하기 위해 도구를 제작하고 환경을 개선하기 위해 노력할 수 있었어요.
+True Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+Pred Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+True Code: 9도01-01
+LLM Response: 9도03-06
+------------------------------------------------------------
+[Sample #63]
+True Code: 9도03-06
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 쌀 10만 톤은 밥 한 공기의 양을 120그램으로 계산했을 때, 약 8억3천3백만 명이 한 끼 식사를 할 수 있는 양이다.
+True Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도03-06
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #50]
+True Code: 9도03-04
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 능력이 있는 사람은 경쟁에서 승리하여 많은 것을 얻을 수 있지만 능력이 부족하거나 열악한 환경에서 자란 사람은 경쟁에서 패배하고 심한 경우에는 최소한의 인간다운 삶도 누리기 어려운 지경에 처할 수도 있다.
+True Content: 정의로운 사회를 상상해보고, 이를 실현할 수 있는 정의의 원칙과 제도에 대한 다양한 의견들을 민주적인 방식으로 종합할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도03-04
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #12]
+True Code: 9도01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 자신을 존중하고 타인과 함께 살아갈 때 역경이 닥치더라도 이겨 내고 행복한 삶에 도달할 수 있음.
+True Content: 행복에 관한 심리적, 사회적, 윤리적 접근 등을 통해 행복의 의미를 종합적으로 파악하고, 삶의 목적과 행복의 관계를 정립할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #41]
+True Code: 9도02-07
+Pred Code: 9도02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사람들과의 관계가 나빠지고, 사회에서의 신뢰를 잃을 수 있습니다.
+True Content: 폭력의 결과를 상상해 보고 그것에 내재한 비도덕성을 지적할 수 있고, 일상생활에서 일어나는 폭력 상황에 민감하게 반응하고 대처하는 능력을 가질 수 있다.
+Pred Content: 이웃의 종류를 구분해 보고, 공동체 속에서 이웃을 배려하고 봉사하기 위해 타인의 관점을 채택해 보고, 이를 실천하기 위한 구체적인 방법을 제시할 수 있다.
+True Code: 9도02-07
+LLM Response: 9도02-04
+------------------------------------------------------------
+[Sample #59]
+True Code: 9도03-05
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 애국심이란 나라를 사랑하는 마음으로 나라를 위해 헌신하고 봉사하려는 마음이 바탕이 되어야 한다.
+True Content: 국가와 시민 사이에서 발생하는 윤리적 쟁점들을 탐구하고, 국가와 시민 사이의 바람직한 관계에 기초하여 국가와 시민의 역할을 재구성할 수 있다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-05
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #54]
+True Code: 9도03-04
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 경쟁은 개인뿐만 아니라 기업과 사회에도 혁신적인 기술과 새로운 제도를 가능하게 하여 더욱 발전하게 하는 원동력이 된다.
+True Content: 정의로운 사회를 상상해보고, 이를 실현할 수 있는 정의의 원칙과 제도에 대한 다양한 의견들을 민주적인 방식으로 종합할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도03-04
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #55]
+True Code: 9도03-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 국가의 의미: 일정한 영토와 거기에 사는 사람들로 구성되고, 스스로 통치할 수 있는 주권을 가지고 있는 사회 집단
+True Content: 국가와 시민 사이에서 발생하는 윤리적 쟁점들을 탐구하고, 국가와 시민 사이의 바람직한 관계에 기초하여 국가와 시민의 역할을 재구성할 수 있다.
+Pred Content: INVALID
+True Code: 9도03-05
+LLM Response: 10영03-05
+------------------------------------------------------------
+[Sample #62]
+True Code: 9도03-06
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 문제는 지구 전체의 식량 생산이 부족해서가 아니라 제대로 분배되지 못하기 때문에 발생한 것이다.
+True Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-06
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #39]
+True Code: 9도02-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 성에 대한 균형 잡힌 시각: 생물학적 가치, 쾌락적 가치, 인격적 가치의 조화
+True Content: 청소년기의 바람직한 성윤리를 탐구하여 내면화하고, 사회⋅문화적 차원에서 성의 의미를 파악하여 성에 대한 편견의 문제점을 분석하고 이를 바로잡는 의지를 기른다.
+Pred Content: INVALID
+True Code: 9도02-06
+LLM Response: 10도02-06
+------------------------------------------------------------
+[Sample #5]
+True Code: 9도01-02
+Pred Code: 9도04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 양심에 따르는 도덕적 판단이나 행동이 사회에서 보편적으로 인정받을 수 있는지 확인해야 함.
+True Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+Pred Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+True Code: 9도01-02
+LLM Response: 9도04-03
+------------------------------------------------------------
+[Sample #16]
+True Code: 9도01-04
+Pred Code: 9도04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 도덕적 문제 상황을 분석하거나 자신의 선택이 가져올 결과를 상상해 보는 것과 같은 도덕적 사고와 판단의 능력을 키워야 하는 것이다.
+True Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+Pred Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+True Code: 9도01-04
+LLM Response: 9도04-03
+------------------------------------------------------------
+[Sample #70]
+True Code: 9도04-03
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 성찰하기: 어려운 상황에서 느꼈던 감정과 그 상황을 어떻게 이겨냈는지 돌아보는 것도 좋은 방법입니다.
+True Content: 삶과 죽음의 문제를 도덕적으로 성찰하고 평정심을 추구하며 자신의 삶의 의미를 구성할 수 있다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도04-03
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #60]
+True Code: 9도03-06
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 세계 시민주의란 일반적으로는 모든 인간을 국경을 넘어선 동일한 세계의 동일한 가치와 동일한 권리를 지닌 시민으로 간주하는 견해를 의미한다.
+True Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-06
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #21]
+True Code: 9도02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 정서적 안정감 제공
+True Content: 친구의 의미와 가치를 삶의 맥락 속에서 탐구하고, 서로를 인격적으로 존중하는 친구 관계를 상상하며 이를 실현하는 의지를 기른다.
+Pred Content: INVALID
+True Code: 9도02-02
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #17]
+True Code: 9도01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 좋거나 나쁨, 옳거나 그름 등을 판단함.
+True Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-04
+LLM Response: 10도04-03
+------------------------------------------------------------
+[Sample #37]
+True Code: 9도02-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사랑: 지속적으로 서로를 위하는 마음, 상대를 존중하고 배려하며 자신보다 더 아낌, 정서적 • 정신적 교감을 나누는 전 인격적인 관계
+True Content: 청소년기의 바람직한 성윤리를 탐구하여 내면화하고, 사회⋅문화적 차원에서 성의 의미를 파악하여 성에 대한 편견의 문제점을 분석하고 이를 바로잡는 의지를 기른다.
+Pred Content: INVALID
+True Code: 9도02-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #8]
+True Code: 9도01-02
+Pred Code: 9도01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 칸트: 도덕 법칙을 지키는 것이 우리의 의무라고 주장함
+True Content: 일상에서 발생하는 부도덕한 행동의 여러 원인을 분석하고, 도덕적 인격이 갖추어야 할 특성들을 파악하여 이를 내면화하는 의지를 기른다.
+Pred Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+True Code: 9도01-02
+LLM Response: 9도01-04
+------------------------------------------------------------
+[Sample #35]
+True Code: 9도02-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 성적 욕망과 사랑의 차이를 알고 이를 구별할 수 있어야 하며, 성과 사랑에 대한 바람직한 자세가 필요하다.
+True Content: 청소년기의 바람직한 성윤리를 탐구하여 내면화하고, 사회⋅문화적 차원에서 성의 의미를 파악하여 성에 대한 편견의 문제점을 분석하고 이를 바로잡는 의지를 기른다.
+Pred Content: INVALID
+True Code: 9도02-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #68]
+True Code: 9도03-07
+Pred Code: 9도01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 화석 연료 사용으로 오염 물질 대규모 배출
+True Content: 현대 과학기술과 관련된 윤리적 쟁점의 분석을 통해 과학기술의 유용성과 한계를 인식하고, 과학기술의 바람직한 활용에 관한 관심과 책임 의식을 기른다.
+Pred Content: 자신의 삶과 가치관에 대한 성찰을 통해 자아를 올바로 이해하고, 삶에서 도덕이 필요한 이유에 근거하여 도덕적인 삶에 대한 의지를 기른다.
+True Code: 9도03-07
+LLM Response: 9도01-01
+------------------------------------------------------------
+[Sample #19]
+True Code: 9도01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 도덕적 상상력은 도덕적인 진지성을 가능하게 하는 방법이다.
+True Content: 옳고 그름을 분별할 수 있는 도덕적 기준을 탐구하고, 도덕적 상상력을 바탕으로 일상의 도덕 문제들에 도덕적 추론을 적용할 수 있다.
+Pred Content: INVALID
+True Code: 9도01-04
+LLM Response: 10도01-04
+------------------------------------------------------------
+[Sample #64]
+True Code: 9도03-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 세계 시민으로서 직면하는 도덕 문제
+True Content: 인류의 고통에 공감하며 지구적 차원의 다양한 도덕 문제들을 탐구하고, 해결 방안을 모색하여 실천하는 자세를 갖는다.
+Pred Content: INVALID
+True Code: 9도03-06
+LLM Response: 10영03-04
+------------------------------------------------------------

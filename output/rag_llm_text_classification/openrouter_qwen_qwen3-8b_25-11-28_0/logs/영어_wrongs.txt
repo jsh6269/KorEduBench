@@ -1,0 +1,1202 @@
+Total wrong samples: 167
+
+[Sample #193]
+True Code: 9영02-08
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: For more information, please visit our website. (더 많은 정보를 위해 저희 웹사이트를 방문해 주십시오.)
+True Content: 간단한 일기, 편지, 이메일 등의 글을 쓴다.
+Pred Content: INVALID
+True Code: 9영02-08
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #18]
+True Code: 10영01-02
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Companionship: The feeling of friendship or being close to someone.
+True Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 주제 및 요지를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영01-02
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #79]
+True Code: 4영01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: l
+True Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+Pred Content: INVALID
+True Code: 4영01-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #23]
+True Code: 10영01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Jake: Yeah, I think it’s about using resources in a way that they won't run out.
+True Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+Pred Content: INVALID
+True Code: 10영01-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #11]
+True Code: 10공영1-01-05
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Will John notice the change if you rearrange his stuff?
+True Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10공영1-01-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #107]
+True Code: 4영03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: I write with my pencil.
+True Content: 소리와 철자의 관계를 이해하여 낱말을 읽을 수 있다.
+Pred Content: INVALID
+True Code: 4영03-02
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #27]
+True Code: 10영02-01
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: In the afternoon, my friends and I went to a local fair.
+True Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영02-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #163]
+True Code: 9영01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: My pet is a dog. (나의 애완동물은 강아지이다.)
+True Content: 단어, 어구, 문장을 듣고 연음이나 축약된 소리를 식별한다.
+Pred Content: INVALID
+True Code: 9영01-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #81]
+True Code: 4영01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: When we leave, we use expressions like "Goodbye" or "Bye."
+True Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: INVALID
+True Code: 4영01-05
+LLM Response: 15
+------------------------------------------------------------
+[Sample #92]
+True Code: 4영02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: It's a snake.
+True Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+Pred Content: INVALID
+True Code: 4영02-01
+LLM Response: 12
+------------------------------------------------------------
+[Sample #151]
+True Code: 6영03-03
+Pred Code: 6영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Where are you from?
+True Content: 일상생활 속의 친숙한 주제에 관한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: 그림, 실물, 동작에 관해 한두 문장으로 표현할 수 있다.
+True Code: 6영03-03
+LLM Response: 6영02-01
+------------------------------------------------------------
+[Sample #74]
+True Code: 4영01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Tt
+True Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+Pred Content: INVALID
+True Code: 4영01-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #170]
+True Code: 9영01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: I have to make a speech next week.
+True Content: 친숙한 주제에 관한 담화나 글에서 인물의 기분이나 감정을 추론한다.
+Pred Content: INVALID
+True Code: 9영01-05
+LLM Response: 12
+------------------------------------------------------------
+[Sample #45]
+True Code: 10영03-03
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Animals play a vital role in our daily lives, providing companionship, work, and assistance.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 내용의 논리적 관계를 파악할 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영03-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #178]
+True Code: 9영02-01
+Pred Code: 9영02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: club 클럽, 동호회
+True Content: 연음이나 축약된 소리를 활용하여 단어, 어구, 문장을 말한다.
+Pred Content: 친숙한 주제에 관해 사실적 정보를 설명한다.
+True Code: 9영02-01
+LLM Response: 9영02-03
+------------------------------------------------------------
+[Sample #179]
+True Code: 9영02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Am I on time? (제가 제시간에 맞춰 왔나요?)
+True Content: 연음이나 축약된 소리를 활용하여 단어, 어구, 문장을 말한다.
+Pred Content: INVALID
+True Code: 9영02-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #148]
+True Code: 6영03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: My sister is younger than me.
+True Content: 그림이나 도표에 대한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: INVALID
+True Code: 6영03-02
+LLM Response: 15
+------------------------------------------------------------
+[Sample #83]
+True Code: 4영01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: (악수하듯 손을 잡은 채로 코를 맞대고) Kia ora!
+True Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: INVALID
+True Code: 4영01-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #182]
+True Code: 9영02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: My name is Snow White.
+True Content: 친숙한 주제에 관해 사실적 정보를 설명한다.
+Pred Content: INVALID
+True Code: 9영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #130]
+True Code: 6영01-07
+Pred Code: 10영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Special green lunch
+True Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+True Code: 6영01-07
+LLM Response: 10영01-03
+------------------------------------------------------------
+[Sample #67]
+True Code: 10영04-05
+Pred Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: On Saturday, I went to the art festival in the park.
+True Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+True Code: 10영04-05
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #34]
+True Code: 10영02-03
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: What do you feel when you see animals in the wild?
+True Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 표현할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #177]
+True Code: 9영01-08
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Why don't we meet at 7? (7시에 만나는 게 어떠니?)
+True Content: 적절한 전략을 활용하여 다양한 매체로 표현된 담화나 글을 듣거나 읽는다.
+Pred Content: INVALID
+True Code: 9영01-08
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #136]
+True Code: 6영02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: tall (키가 큰)
+True Content: 주변 사람과 사물에 관해 쉽고 간단한 문장으로 묘사할 수 있다.
+Pred Content: INVALID
+True Code: 6영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #113]
+True Code: 4영03-05
+Pred Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: They have fun talking and playing together.
+True Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+True Code: 4영03-05
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #134]
+True Code: 6영02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: What are the students doing?
+True Content: 실물, 그림, 동작 등을 보고 간단한 단어, 어구, 문장으로 말하거나 쓴다.
+Pred Content: INVALID
+True Code: 6영02-02
+LLM Response: 12
+------------------------------------------------------------
+[Sample #131]
+True Code: 6영01-07
+Pred Code: 10영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Tom: After that, we can meet at the park at 10 AM.
+True Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+True Code: 6영01-07
+LLM Response: 10영01-03
+------------------------------------------------------------
+[Sample #146]
+True Code: 6영03-01
+Pred Code: 6영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "Mia loves Pancakes!"
+True Content: 쉽고 간단한 문장을 강세, 리듬, 억양에 맞게 소리 내어 읽을 수 있다.
+Pred Content: 그림, 실물, 동작에 관해 한두 문장으로 표현할 수 있다.
+True Code: 6영03-01
+LLM Response: 6영02-01
+------------------------------------------------------------
+[Sample #16]
+True Code: 10영01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: What do you think we should do this weekend?
+True Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: INVALID
+True Code: 10영01-01
+LLM Response: 13
+------------------------------------------------------------
+[Sample #35]
+True Code: 10영02-03
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: By understanding their roles and expressing our opinions about them, we can learn to appreciate all living beings.
+True Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 표현할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #198]
+True Code: 9영02-11
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: She added a lot of fun to my trip to Gyeongju. (그녀가 나의 경주 여행에 큰 즐거움을 더해 주었어.)
+True Content: 상대방을 배려하는 태도로 말하거나 쓴다.
+Pred Content: INVALID
+True Code: 9영02-11
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #129]
+True Code: 6영01-05
+Pred Code: 6영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Please read aloud "Jane Goodall" once more at home. Next time, we will do some more reading and writing activities. Have a good day!
+True Content: 일상생활 주제에 관한 담화나 글의 중심 내용을 파악한다.
+Pred Content: 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 소리 내어 읽는다.
+True Code: 6영01-05
+LLM Response: 6영01-02
+------------------------------------------------------------
+[Sample #109]
+True Code: 4영03-03
+Pred Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Pencil PENCIL
+True Content: 쉽고 간단한 낱말이나 어구, 문장을 따라 읽을 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+True Code: 4영03-03
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #37]
+True Code: 10영02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: In our daily lives, there are three basic needs that everyone requires to survive and be healthy.
+True Content: 일상생활이나 친숙한 일반적 주제에 관한 정보를 묻고 답할 수 있다.
+Pred Content: INVALID
+True Code: 10영02-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #84]
+True Code: 4영01-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 직원 : How's the weather?
+True Content: 자기 주변 주제에 관한 담화의 주요 정보를 파악한다.
+Pred Content: INVALID
+True Code: 4영01-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #68]
+True Code: 10영04-05
+Pred Code: 10영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Best regards,
+True Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+True Code: 10영04-05
+LLM Response: 10영04-01
+------------------------------------------------------------
+[Sample #184]
+True Code: 9영02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: I'm not good at singing.
+True Content: 친숙한 주제에 관해 경험이나 계획을 설명한다.
+Pred Content: INVALID
+True Code: 9영02-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #141]
+True Code: 6영02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Go straight two blocks.
+True Content: 주변 장소나 위치, 행동 순서나 방법을 간단한 문장으로 설명한다.
+Pred Content: INVALID
+True Code: 6영02-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #47]
+True Code: 10영03-03
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: It is essential to treat animals with kindness and respect as they play a significant role in our world.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 내용의 논리적 관계를 파악할 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영03-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #173]
+True Code: 9영01-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: B Sorry, he is not here right now. Can I take a message? B Sorry, he is not here right now. Can I take a message?
+True Content: 친숙한 주제에 관한 담화나 글에서 화자나 필자의 의도나 목적을 추론한다.
+Pred Content: INVALID
+True Code: 9영01-06
+LLM Response: 13英02-10
+------------------------------------------------------------
+[Sample #33]
+True Code: 10영02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Do you think wild animals should be kept in zoos?
+True Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 표현할 수 있다.
+Pred Content: INVALID
+True Code: 10영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #157]
+True Code: 6영04-03
+Pred Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Favorite Something you like the most.
+True Content: 구두로 익힌 문장을 쓸 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+True Code: 6영04-03
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #80]
+True Code: 4영01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 책이 8권이 있는 그림과 aeiygiht, eight 라는 단어가 적혀있다.
+True Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+Pred Content: INVALID
+True Code: 4영01-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #43]
+True Code: 10영03-02
+Pred Code: 10영03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Many people have dogs, cats, or other animals at home.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 주제 및 요지를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 세부 정보를 파악할 수 있다.
+True Code: 10영03-02
+LLM Response: 10영03-01
+------------------------------------------------------------
+[Sample #137]
+True Code: 6영02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Review the sentences you wrote.
+True Content: 주변 사람과 사물에 관해 쉽고 간단한 문장으로 묘사할 수 있다.
+Pred Content: INVALID
+True Code: 6영02-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #145]
+True Code: 6영02-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Listen to the dialogs and write the correct numbers on each picture.
+True Content: 일상생활 주제에 관한 담화나 글의 세부 정보를 간단한 문장으로 묻거나 답한다.
+Pred Content: INVALID
+True Code: 6영02-07
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #12]
+True Code: 10공영1-02-04
+Pred Code: 10영03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 애완동물은 우리를 귀엽게 또는 유행에 어울려 보이게 해주는 패션 아이템이 아니다. They are not fashion items meant to make us look cute or trendy.
+True Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 세부 정보를 파악할 수 있다.
+True Code: 10공영1-02-04
+LLM Response: 10영03-01
+------------------------------------------------------------
+[Sample #77]
+True Code: 4영01-02
+Pred Code: 4영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: C c
+True Content: 알파벳 대소문자를 식별하여 읽는다.
+Pred Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+True Code: 4영01-02
+LLM Response: 4영01-01
+------------------------------------------------------------
+[Sample #167]
+True Code: 9영01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: introduce 소개하다
+True Content: 친숙한 주제에 관한 담화나 글의 중심 내용을 파악한다.
+Pred Content: INVALID
+True Code: 9영01-03
+LLM Response: 17
+------------------------------------------------------------
+[Sample #175]
+True Code: 9영01-07
+Pred Code: 10공영1-01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: She is out at the moment. (그녀는 지금 없어요)
+True Content: 단어, 어구, 문장의 함축적 의미를 추론한다.
+Pred Content: 말이나 글의 주제나 요지를 파악한다.
+True Code: 9영01-07
+LLM Response: 10공영1-01-02
+------------------------------------------------------------
+[Sample #135]
+True Code: 6영02-02
+Pred Code: 6영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I'll show you a sentence without a word. Guess the missing word and complete the sentence. Then, write it in your notebook. (교사가 'I will
+True Content: 실물, 그림, 동작 등을 보고 간단한 단어, 어구, 문장으로 말하거나 쓴다.
+Pred Content: 간단한 단어, 어구, 문장의 의미를 이해한다.
+True Code: 6영02-02
+LLM Response: 6영01-03
+------------------------------------------------------------
+[Sample #91]
+True Code: 4영02-01
+Pred Code: 4영01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $\mathrm{r}, / \mathrm{r} /$, run
+True Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+Pred Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+True Code: 4영02-01
+LLM Response: 4영01-04
+------------------------------------------------------------
+[Sample #15]
+True Code: 10영01-01
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: These hobbies bring happiness and meaning to their lives.
+True Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영01-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #8]
+True Code: 10공영1-01-03
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Not to mention animal harm and human health effects, including diseases and increasing antibiotic resistance in bacteria.
+True Content: 말이나 글의 분위기나 화자나 인물의 심정 및 의도 등을 추론한다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10공영1-01-03
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #106]
+True Code: 4영03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: The sound of pencil starts with the /p/ sound.
+True Content: 소리와 철자의 관계를 이해하여 낱말을 읽을 수 있다.
+Pred Content: INVALID
+True Code: 4영03-02
+LLM Response: 11
+------------------------------------------------------------
+[Sample #90]
+True Code: 4영02-01
+Pred Code: 4영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: ZOO
+True Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+Pred Content: 알파벳 대소문자를 식별하여 읽는다.
+True Code: 4영02-01
+LLM Response: 4영01-02
+------------------------------------------------------------
+[Sample #133]
+True Code: 6영02-01
+Pred Code: 6영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I bought it from a store in my town."
+True Content: 그림, 실물, 동작에 관해 한두 문장으로 표현할 수 있다.
+Pred Content: 구두로 익힌 문장을 쓸 수 있다.
+True Code: 6영02-01
+LLM Response: 6영04-03
+------------------------------------------------------------
+[Sample #2]
+True Code: 10공영1-01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: When Fayola got to the edge, Aunt Imani lifted her effortlessly with her trunk. Fayola가 가장자리에 이르자 Imani 이모가 코를 써서 손쉽게 그 애를 들어 올렸다.
+True Content: 말이나 글에 포함된 세부 정보를 파악한다.
+Pred Content: INVALID
+True Code: 10공영1-01-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #14]
+True Code: 10공영1-02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: go back to the past
+True Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+Pred Content: INVALID
+True Code: 10공영1-02-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #122]
+True Code: 6영01-02
+Pred Code: 4영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: three
+True Content: 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 소리 내어 읽는다.
+Pred Content: 알파벳 대소문자를 식별하여 읽는다.
+True Code: 6영01-02
+LLM Response: 4영01-02
+------------------------------------------------------------
+[Sample #42]
+True Code: 10영03-02
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: By appreciating and caring for animals, we can create a better world for both us and them.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 주제 및 요지를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영03-02
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #31]
+True Code: 10영02-02
+Pred Code: 10영04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Each song can bring back memories that make my life even more colorful.
+True Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 중심 내용을 말할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관한 그림, 도표 등을 설명하는 글을 쓸 수 있다
+True Code: 10영02-02
+LLM Response: 10영04-06
+------------------------------------------------------------
+[Sample #72]
+True Code: 4영01-01
+Pred Code: 4영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: JUMP jump
+True Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+Pred Content: 알파벳 대소문자를 식별하여 읽는다.
+True Code: 4영01-01
+LLM Response: 4영01-02
+------------------------------------------------------------
+[Sample #181]
+True Code: 9영02-02
+Pred Code: 9영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: laugh 웃다
+True Content: 대상이나 인물의 감정을 묘사한다.
+Pred Content: 친숙한 주제에 관한 담화나 글에서 세부 정보를 파악한다.
+True Code: 9영02-02
+LLM Response: 9영01-02
+------------------------------------------------------------
+[Sample #82]
+True Code: 4영01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: What did Moni say to the magician?
+True Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: INVALID
+True Code: 4영01-05
+LLM Response: 15
+------------------------------------------------------------
+[Sample #165]
+True Code: 9영01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: She's from Singapore.
+True Content: 친숙한 주제에 관한 담화나 글에서 세부 정보를 파악한다.
+Pred Content: INVALID
+True Code: 9영01-02
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #71]
+True Code: 10영04-06
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Every subject, from math to English, adds a unique color to my life.
+True Content: 일상생활이나 친숙한 일반적 주제에 관한 그림, 도표 등을 설명하는 글을 쓸 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영04-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #10]
+True Code: 10공영1-01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: First, eat more vegetables. Second, choose foods that have a lot of protein. Third, do not put too much salt in your food.
+True Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+Pred Content: INVALID
+True Code: 10공영1-01-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #172]
+True Code: 9영01-06
+Pred Code: 10공영1-01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: You can read books here, 이곳에서 책을 읽을 수 있습니다.
+True Content: 친숙한 주제에 관한 담화나 글에서 화자나 필자의 의도나 목적을 추론한다.
+Pred Content: 말이나 글의 분위기나 화자나 인물의 심정 및 의도 등을 추론한다.
+True Code: 9영01-06
+LLM Response: 10공영1-01-03
+------------------------------------------------------------
+[Sample #161]
+True Code: 6영04-05
+Pred Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Let’s celebrate this weekend!
+True Content: 예시문을 참고하여 간단한 초대, 감사, 축하 등의 글을 쓸 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+True Code: 6영04-05
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #1]
+True Code: 10공영1-01-01
+Pred Code: 10공영1-01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Chidi는 엄마를 올려다보며 말했다. "Dalia 이모는 늘 우리에게 코가 없다면, 우리가 많은 위험에 처할 거라고 말해요!" Chidi looked up at his mom and said, "Aunt Dalia always says if we didn't have our trunks, we would be in a lot of danger!"
+True Content: 말이나 글에 포함된 세부 정보를 파악한다.
+Pred Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+True Code: 10공영1-01-01
+LLM Response: 10공영1-01-05
+------------------------------------------------------------
+[Sample #191]
+True Code: 9영02-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: School ends at 2:40, and then the students clean the classroom.
+True Content: 친숙한 주제에 관해 듣거나 읽고 내용을 요약한다.
+Pred Content: INVALID
+True Code: 9영02-07
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #185]
+True Code: 9영02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 많은 옷과 신발이 있었다. There were many clothes and shoes.
+True Content: 친숙한 주제에 관해 경험이나 계획을 설명한다.
+Pred Content: INVALID
+True Code: 9영02-04
+LLM Response: 10英03-04
+------------------------------------------------------------
+[Sample #197]
+True Code: 9영02-10
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: juice 주스
+True Content: 적절한 전략을 활용하여 상황이나 목적에 맞게 말하거나 쓴다.
+Pred Content: INVALID
+True Code: 9영02-10
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #51]
+True Code: 10영03-06
+Pred Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Each color has a story to tell, reflecting who we are and how we feel.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+True Code: 10영03-06
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #187]
+True Code: 9영02-05
+Pred Code: 10공영1-01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그들 뇌의 절반은 잠자지 않기 때문에 그들은 숨 쉬러 물 표면으로 올라갈 수 있다. Half of their brain doesn't sleep so they can go up to the surface to breathe.
+True Content: 친숙한 주제에 관해 일이나 사건의 논리적 관계를 설명한다.
+Pred Content: 말이나 글의 주제나 요지를 파악한다.
+True Code: 9영02-05
+LLM Response: 10공영1-01-02
+------------------------------------------------------------
+[Sample #112]
+True Code: 4영03-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Draw a picture of you waiting in line with your friends.
+True Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+Pred Content: INVALID
+True Code: 4영03-05
+LLM Response: 20
+------------------------------------------------------------
+[Sample #189]
+True Code: 9영02-06
+Pred Code: 9영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Thank you. 고마워.
+True Content: 친숙한 주제에 관해 자신의 의견을 주장한다.
+Pred Content: 연음이나 축약된 소리를 활용하여 단어, 어구, 문장을 말한다.
+True Code: 9영02-06
+LLM Response: 9영02-01
+------------------------------------------------------------
+[Sample #199]
+True Code: 9영02-11
+Pred Code: 9영02-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: How nice (of you)! (넌 참 친절하구나!)
+True Content: 상대방을 배려하는 태도로 말하거나 쓴다.
+Pred Content: 간단한 일기, 편지, 이메일 등의 글을 쓴다.
+True Code: 9영02-11
+LLM Response: 9영02-08
+------------------------------------------------------------
+[Sample #180]
+True Code: 9영02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: nervous 초조한, 긴장되는
+True Content: 대상이나 인물의 감정을 묘사한다.
+Pred Content: INVALID
+True Code: 9영02-02
+LLM Response: 13
+------------------------------------------------------------
+[Sample #28]
+True Code: 10영02-01
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: We sit together for dinner, sharing stories and laughter.
+True Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영02-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #176]
+True Code: 9영01-08
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: What's up? What's up?은 상대방의 상태가 어떠한지 혹은 상대방에게 무슨 일이 있는 지를 묻는 표현으로 ‘무슨 일이니?'라고 해석할 수 있다.
+True Content: 적절한 전략을 활용하여 다양한 매체로 표현된 담화나 글을 듣거나 읽는다.
+Pred Content: INVALID
+True Code: 9영01-08
+LLM Response: 14
+------------------------------------------------------------
+[Sample #52]
+True Code: 10영03-06
+Pred Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Friends can make us laugh, support us in tough times, and create cherished memories.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+True Code: 10영03-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #127]
+True Code: 6영01-04
+Pred Code: 10영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I want chicken salad with coffee.
+True Content: 일상생활 주제에 관한 담화나 글의 세부 정보를 파악한다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+True Code: 6영01-04
+LLM Response: 10영04-01
+------------------------------------------------------------
+[Sample #125]
+True Code: 6영01-03
+Pred Code: 6영02-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I'll say a sentence about what I'll do during winter vacation. If you'll do the same thing, raise your hand. I'll read science books during
+True Content: 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: 자신의 감정이나 의견, 경험이나 계획을 간단한 문장으로 표현한다.
+True Code: 6영01-03
+LLM Response: 6영02-06
+------------------------------------------------------------
+[Sample #95]
+True Code: 4영02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 파란색 크래파스 그림이다. 파란색의 영단어 blue이다.
+True Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 단어를 쓴다.
+Pred Content: INVALID
+True Code: 4영02-03
+LLM Response: 16
+------------------------------------------------------------
+[Sample #149]
+True Code: 6영03-02
+Pred Code: 10영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Lily's eyes are blue, and she always smiles brightly.
+True Content: 그림이나 도표에 대한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 주제 및 요지를 파악할 수 있다.
+True Code: 6영03-02
+LLM Response: 10영01-02
+------------------------------------------------------------
+[Sample #105]
+True Code: 4영03-01
+Pred Code: 4영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Cat (C, c)
+True Content: 알파벳 대소문자를 식별하여 읽을 수 있다.
+Pred Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+True Code: 4영03-01
+LLM Response: 4영01-01
+------------------------------------------------------------
+[Sample #56]
+True Code: 10영04-01
+Pred Code: 10영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Jake: Yeah, but don’t you think we should spend less time on our phones?
+True Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+True Code: 10영04-01
+LLM Response: 10영01-03
+------------------------------------------------------------
+[Sample #102]
+True Code: 4영02-08
+Pred Code: 4영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Dad: Hi!
+True Content: 자기 주변 주제에 관한 담화의 주요 정보를 묻거나 답한다.
+Pred Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+True Code: 4영02-08
+LLM Response: 4영02-01
+------------------------------------------------------------
+[Sample #139]
+True Code: 6영02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Emily, here is your textbook.
+True Content: 주변 사람이나 사물을 간단한 문장으로 소개하거나 묘사한다.
+Pred Content: INVALID
+True Code: 6영02-04
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #104]
+True Code: 4영03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Show me both for "m".
+True Content: 알파벳 대소문자를 식별하여 읽을 수 있다.
+Pred Content: INVALID
+True Code: 4영03-01
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #128]
+True Code: 6영01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Listen to the dialogs and write the correct numbers on each picture.
+True Content: 일상생활 주제에 관한 담화나 글의 중심 내용을 파악한다.
+Pred Content: INVALID
+True Code: 6영01-05
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #85]
+True Code: 4영01-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: It's fast.
+True Content: 자기 주변 주제에 관한 담화의 주요 정보를 파악한다.
+Pred Content: INVALID
+True Code: 4영01-06
+LLM Response: 10
+------------------------------------------------------------
+[Sample #88]
+True Code: 4영01-07
+Pred Code: 10영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Teacher: Who can tell me some chicken dishes?
+True Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+True Code: 4영01-07
+LLM Response: 10영01-03
+------------------------------------------------------------
+[Sample #30]
+True Code: 10영02-02
+Pred Code: 10영04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: In conclusion, my life is colorful because of my hobbies, my friends, and my experiences.
+True Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 중심 내용을 말할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관한 그림, 도표 등을 설명하는 글을 쓸 수 있다
+True Code: 10영02-02
+LLM Response: 10영04-06
+------------------------------------------------------------
+[Sample #98]
+True Code: 4영02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Listen to the chant again and repeat it line by line.
+True Content: 자신, 주변 사람이나 사물의 소개나 묘사를 쉽고 간단한 문장으로 말하거나 보고 쓴다.
+Pred Content: INVALID
+True Code: 4영02-05
+LLM Response: 12
+------------------------------------------------------------
+[Sample #86]
+True Code: 4영01-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: How many Rs?
+True Content: 자기 주변 주제에 관한 담화의 주요 정보를 파악한다.
+Pred Content: INVALID
+True Code: 4영01-06
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #13]
+True Code: 10공영1-02-04
+Pred Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Writing an opinion column
+True Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+True Code: 10공영1-02-04
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #155]
+True Code: 6영04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: Listen: “Our teacher helps us learn.”
+True Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 낱말이나 어구를 듣고 쓸 수 있다.
+Pred Content: INVALID
+True Code: 6영04-01
+LLM Response: 10영03-04
+------------------------------------------------------------

@@ -1,0 +1,222 @@
+Total correct samples: 20
+
+[Sample #50]
+Code: 10국05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 갈래의 특성과 형상화 방법을 이해하고 작품을 감상함으로써, 우리는 더 풍부한 문학적 경험을 할 수 있습니다.
+Content: 갈래의 특성에 따른 형상화 방법을 중심으로 작품을 감상한다.
+True Content: 갈래의 특성에 따른 형상화 방법을 중심으로 작품을 감상한다.
+Pred Content: 갈래의 특성에 따른 형상화 방법을 중심으로 작품을 감상한다.
+LLM Response: 10국05-02
+------------------------------------------------------------
+[Sample #34]
+Code: 09-9국05-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 작품의 창작 의도와 소통 맥락을 파악하면, 그 작품이 우리에게 주는 메시지를 더욱 깊이 이해할 수 있습니다.
+Content: 작품의 창작 의도와 소통 맥락을 고려하며 작품을 수용한다.
+True Content: 작품의 창작 의도와 소통 맥락을 고려하며 작품을 수용한다.
+Pred Content: 작품의 창작 의도와 소통 맥락을 고려하며 작품을 수용한다.
+LLM Response: 09-9국05-07
+------------------------------------------------------------
+[Sample #60]
+Code: 4국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: ("목화 장수들이 / 목화 장수들은 / 목화 장수들은"에서 나누어야 합니다.)
+Content: 기본적인 문장의 짜임을 이해하고 적절하게 사용한다.
+True Content: 기본적인 문장의 짜임을 이해하고 적절하게 사용한다.
+Pred Content: 기본적인 문장의 짜임을 이해하고 적절하게 사용한다.
+LLM Response: 4국04-03
+------------------------------------------------------------
+[Sample #18]
+Code: 09-9국01-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 전통적인 소통의 장점은 무엇인가?
+Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+True Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+Pred Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+LLM Response: 09-9국01-12
+------------------------------------------------------------
+[Sample #91]
+Code: 9국03-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 앞으로도 이런 특별한 순간들을 많이 만들고 싶다.
+Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+True Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+Pred Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+LLM Response: 9국03-07
+------------------------------------------------------------
+[Sample #43]
+Code: 10국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리가 글을 읽을 때, 주어진 내용을 이해하고 받아들이는 것뿐만 아니라, 그 글에 대한 자신의 생각을 정리하고, 작가와의 대화에 참여하는 것입니다.
+Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+True Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+Pred Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+LLM Response: 10국02-01
+------------------------------------------------------------
+[Sample #11]
+Code: 09-9국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 광고를 접할 때마다 어떤 전략이 사용되었는지를 생각해보고, 그 전략이 소비자에게 미치는 영향을 평가해보는 것이 좋은 연습이 될 것입니다.
+Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+True Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+Pred Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+LLM Response: 09-9국01-04
+------------------------------------------------------------
+[Sample #16]
+Code: 09-9국01-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이런 표현은 친구의 감정을 존중하면서도 편하게 이야기를 나눌 수 있는 분위기를 만듭니다.
+Content: 목적과 상대에 따라 말하기 방식의 차이를 고려하며 대화를 나눈다.
+True Content: 목적과 상대에 따라 말하기 방식의 차이를 고려하며 대화를 나눈다.
+Pred Content: 목적과 상대에 따라 말하기 방식의 차이를 고려하며 대화를 나눈다.
+LLM Response: 09-9국01-08
+------------------------------------------------------------
+[Sample #61]
+Code: 4국04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 전화할 때의 바른 대화 예절 알기
+Content: 글과 담화에 쓰인 높임 표현과 지시ㆍ접속 표현을 이해하고 상황에 맞게 표현한다.
+True Content: 글과 담화에 쓰인 높임 표현과 지시ㆍ접속 표현을 이해하고 상황에 맞게 표현한다.
+Pred Content: 글과 담화에 쓰인 높임 표현과 지시ㆍ접속 표현을 이해하고 상황에 맞게 표현한다.
+LLM Response: 4국04-04
+------------------------------------------------------------
+[Sample #82]
+Code: 9국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리가 일상에서 자주 접하는 문제에 대해 다양한 시각을 가지고 논의하는 것은 매우 중요합니다.
+Content: 토론에서 타당한 근거를 들어 논박한다.
+True Content: 토론에서 타당한 근거를 들어 논박한다.
+Pred Content: 토론에서 타당한 근거를 들어 논박한다.
+LLM Response: 9국01-05
+------------------------------------------------------------
+[Sample #10]
+Code: 09-9국01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이제 여러분도 친구나 좋아하는 인물을 소개하는 글을 작성해 보세요.
+Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+True Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+Pred Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+LLM Response: 09-9국01-03
+------------------------------------------------------------
+[Sample #93]
+Code: 9국04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 어휘는 여러 가지 방식으로 나눌 수 있습니다.
+Content: 어휘의 체계와 양상을 탐구하고 활용한다.
+True Content: 어휘의 체계와 양상을 탐구하고 활용한다.
+Pred Content: 어휘의 체계와 양상을 탐구하고 활용한다.
+LLM Response: 9국04-05
+------------------------------------------------------------
+[Sample #6]
+Code: 09-10국04-10
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: Interrogative (의문문): 질문을 하여 정보나 대답을 요구합니다.
+Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+True Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+Pred Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+LLM Response: 09-10국04-1
+------------------------------------------------------------
+[Sample #9]
+Code: 09-9국01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 건의는 특정 상황이나 문제에 대해 자신의 의견이나 해결책을 제안하는 것입니다.
+Content: 공식적인 상황에서 상대의 말을 정리하며 듣고, 자신의 의견을 조리 있게 말한다.
+True Content: 공식적인 상황에서 상대의 말을 정리하며 듣고, 자신의 의견을 조리 있게 말한다.
+Pred Content: 공식적인 상황에서 상대의 말을 정리하며 듣고, 자신의 의견을 조리 있게 말한다.
+LLM Response: 09-9국01-02
+------------------------------------------------------------
+[Sample #12]
+Code: 09-9국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 설득이란 상대방에게 어떤 생각이나 행동을 받아들이도록 유도하는 과정을 말합니다.
+Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+True Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+Pred Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+LLM Response: 09-9국01-04
+------------------------------------------------------------
+[Sample #33]
+Code: 09-9국05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사회적 이슈나 제도와 관련된 갈등입니다.
+Content: 갈등의 진행과 해결 과정을 파악하며 작품을 이해한다.
+True Content: 갈등의 진행과 해결 과정을 파악하며 작품을 이해한다.
+Pred Content: 갈등의 진행과 해결 과정을 파악하며 작품을 이해한다.
+LLM Response: 09-9국05-02
+------------------------------------------------------------
+[Sample #97]
+Code: 9국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 비유와 상징의 표현 효과를 바탕으로 작품을 수용하고 생산할 수 있다.
+Content: 운율, 비유, 상징의 특성과 효과에 유의하며 작품을 감상하고 창작한다.
+True Content: 운율, 비유, 상징의 특성과 효과에 유의하며 작품을 감상하고 창작한다.
+Pred Content: 운율, 비유, 상징의 특성과 효과에 유의하며 작품을 감상하고 창작한다.
+LLM Response: 9국05-01
+------------------------------------------------------------
+[Sample #35]
+Code: 09-9국05-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 일기 쓰기: 하루 동안 있었던 일 중 가장 기억에 남는 사건에 대해 일기로 써보세요.
+Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+True Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+Pred Content: 자신의 일상에서 의미 있는 경험을 찾아 다양한 작품으로 표현한다.
+LLM Response: 09-9국05-09
+------------------------------------------------------------
+[Sample #22]
+Code: 09-9국02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 설명하는 글에서는 여러 가지 방식으로 내용을 전달할 수 있습니다.
+Content: 설명 방식을 파악하며 설명하는 글을 읽는다.
+True Content: 설명 방식을 파악하며 설명하는 글을 읽는다.
+Pred Content: 설명 방식을 파악하며 설명하는 글을 읽는다.
+LLM Response: 09-9국02-04
+------------------------------------------------------------
+[Sample #98]
+Code: 9국05-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 경험은 창작 활동의 샘이다
+Content: 자신의 경험을 개성적인 발상과 표현으로 형상화한다.
+True Content: 자신의 경험을 개성적인 발상과 표현으로 형상화한다.
+Pred Content: 자신의 경험을 개성적인 발상과 표현으로 형상화한다.
+LLM Response: 9국05-06
+------------------------------------------------------------

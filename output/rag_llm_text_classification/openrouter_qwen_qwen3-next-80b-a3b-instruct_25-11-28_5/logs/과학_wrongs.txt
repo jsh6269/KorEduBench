@@ -1,0 +1,890 @@
+Total wrong samples: 74
+
+[Sample #27]
+True Code: 4과01-03
+Pred Code: 9과02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 무게에 따라 용수철이 일정하게 늘어나는 성질을 이용한다면 용수철이 필요합니다.
+True Content: 무게를 정확히 비교하기 위해서는 저울이 필요함을 알고 저울을 사용해 무게를 비교할 수 있다.
+Pred Content: 기체나 액체 속에 있는 물체에 부력이 작용함을 알고 용수철저울을 사용하여 부력의 크기를 측정할 수 있다.
+True Code: 4과01-03
+LLM Response: 9과02-04
+------------------------------------------------------------
+[Sample #23]
+True Code: 10과탐03-01
+Pred Code: 9과24-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서, 이러한 기술은 교통사고를 줄이고, 보다 안전한 교통 환경을 만드는 데 기여하고 있습니다.
+True Content: 첨단 과학기술 속의 과학 원리를 찾아내는 탐구 활동을 통해 과학 지식이 활용된 사례를 추론할 수 있다.
+Pred Content: 과학을 활용하여 우리 생활을 보다 편리하게 만드는 방안을 고안하고 그 유용성에 대해 토론할 수 있다.
+True Code: 10과탐03-01
+LLM Response: 9과24-02
+------------------------------------------------------------
+[Sample #68]
+True Code: 4과17-02
+Pred Code: 4과04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 또한, 나무나 꽃에 물을 줄 때는 아침이나 저녁에 주는 것이 좋습니다.
+True Content: 물의 중요성을 알고 물 부족 현상을 해결하기 위해 창의적 방법을 활용한 사례를 조사할 수 있다.
+Pred Content: 식물이 자라는 데 필요한 조건을 찾는 실험을 설계하여 수행할 수 있다.
+True Code: 4과17-02
+LLM Response: 4과04-02
+------------------------------------------------------------
+[Sample #26]
+True Code: 4과01-02
+Pred Code: 4과01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사람마다 느끼는 물체의 무게는 다르다.
+True Content: 수평잡기 활동을 통해 물체의 무게를 비교할 수 있다.
+Pred Content: 서로 다른 물질로 만들어진 물체들을 비교하여 물체의 기능과 물질의 성질을 관련지을 수 있다.
+True Code: 4과01-02
+LLM Response: 4과01-01
+------------------------------------------------------------
+[Sample #12]
+True Code: 10과탐02-03
+Pred Code: 9과17-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 식초와 베이킹소다의 반응으로 발생하는 이산화탄소 기체가 폭발을 일으키는 원리를 설명해 보세요.
+True Content: 과학 원리를 활용한 놀이 체험을 통해 과학의 즐거움을 느낄 수 있다.
+Pred Content: 화학 반응에서 에너지의 출입을 이해하고, 이를 활용한 장치를 설계할 수 있다.
+True Code: 10과탐02-03
+LLM Response: 9과17-06
+------------------------------------------------------------
+[Sample #89]
+True Code: 6과08-03
+Pred Code: 9과22-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 높이 던져 올린 공은 위치 에너지를 가지고 있습니다. 그 공이 다시 떨어지는 과정에서 위치 에너지는 운동 에너지로 전환됩니다.
+True Content: 자원과 에너지의 효율적인 이용 방법에 대해 탐색하고, 생활 속에서 실천할 수 있는 다양한 사례를 공유할 수 있다.
+Pred Content: 위로 던져 올린 물체와 자유 낙하 물체의 운동에서 위치 에너지와 운동 에너지의 변화를 역학적 에너지 전환과 역학적 에너지 보존으로 예측할 수 있다.
+True Code: 6과08-03
+LLM Response: 9과22-01
+------------------------------------------------------------
+[Sample #184]
+True Code: 9과20-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 뉴런의 구조 뉴런은 신경세포로, 세포체, 축삭, 가지돌기가 있다. 자극이 전달되어 신경 임계값에 도달하면 전기 신호가 발생한다. 전구를 켜는 반응 실험 신경계의 기능 신경계는 자극을 받고, 분석하고, 적절한 반응을 결정한다. 감각 신경 → 중추 신경 → 운동 신경의 순서로 정보가 처리된다. 촉각 자극에 대한 반응 실험 자극의 종류 물리적, 화학적, 감각적 자극이 있다. 각 자극에 따라 반응의 종류가 다르게 나타난다. 냉온수의 자극 실험 반응의 과정 자극 → 신경 전달 → 반응 발생 신경 회로의 반응 속도를 측정할 수 있다. 반응 시간 측정 실험
+True Content: 뉴런과 신경계의 구조와 기능을 이해하고 자극에 대한 반응 실험을 통해 자극의 종류에 따라 자극에서 반응이 일어나기까지의 과정을 표현할 수 있다.
+Pred Content: INVALID
+True Code: 9과20-02
+LLM Response: 
+------------------------------------------------------------
+[Sample #161]
+True Code: 9과13-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 일반적으로 밀도가 낮은 물질은 위에 떠오르고, 밀도가 높은 물질은 아래로 가라앉는 성질을 가지고 있습니다.
+True Content: 밀도 차를 이용하여 고체 혼합물 또는 섞이지 않는 액체 혼합물을 분리하는 방법을 이해하고, 우리 주변에서 사용되는 예를 찾아 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과13-04
+LLM Response: 
+------------------------------------------------------------
+[Sample #69]
+True Code: 6과01-01
+Pred Code: 4과01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 수평 물체가 어느 한쪽으로 기울지 않고 평평한 상태
+True Content: 지층의 특징을 알고, 지층의 형성 과정을 모형으로 표현할 수 있다.
+Pred Content: 수평잡기 활동을 통해 물체의 무게를 비교할 수 있다.
+True Code: 6과01-01
+LLM Response: 4과01-02
+------------------------------------------------------------
+[Sample #77]
+True Code: 6과03-03
+Pred Code: 4과12-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 '용해'라고 합니다.
+True Content: 물의 온도에 따라 용질의 녹는 양이 달라짐을 실험할 수 있다.
+Pred Content: 물을 증발시켜 물에 녹아 있는 고체 물질을 분리할 수 있다.
+True Code: 6과03-03
+LLM Response: 4과12-04
+------------------------------------------------------------
+[Sample #153]
+True Code: 9과12-02
+Pred Code: 9과12-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 과정을 잘 이해하면, 우리 몸이 에너지를 어떻게 얻는지 더 명확하게 알 수 있습니다.
+True Content: 음식물이 소화되어 영양소가 흡수되는 과정을 소화 효소의 작용과 관련지어 설명할 수 있다.
+Pred Content: 동물이 세포 호흡을 통해 에너지를 얻는 과정을 소화, 순환, 호흡, 배설과 관련지어 설명할 수 있다.
+True Code: 9과12-02
+LLM Response: 9과12-06
+------------------------------------------------------------
+[Sample #32]
+True Code: 4과03-02
+Pred Code: 4과03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 줄기를 만져 보면 거칠다.
+True Content: 다양한 환경에 서식하는 식물을 조사하여 식물의 생김새와 생활 방식이 환경과 관련되어 있음을 설명할 수 있다.
+Pred Content: 여러 가지 식물을 관찰하여 특징에 따라 식물을 분류할 수 있다.
+True Code: 4과03-02
+LLM Response: 4과03-01
+------------------------------------------------------------
+[Sample #75]
+True Code: 6과02-03
+Pred Code: 6과11-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 볼록 렌즈를 앞에서 보면 둥글고 옆에서 보면 가장 자리보다 가운데 부분이 두껍습니다.
+True Content: 거울과 렌즈의 쓰임새를 조사하고 거울이나 렌즈를 이용한 장치를 창의적으로 만들 수 있다.
+Pred Content: 볼록 렌즈를 이용하여 물체의 모습을 관찰하고 볼록 렌즈의 쓰임새를 조사할 수 있다.
+True Code: 6과02-03
+LLM Response: 6과11-03
+------------------------------------------------------------
+[Sample #175]
+True Code: 9과17-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 반응하는 동안 느껴지는 온도 변화를 관찰하세요.
+True Content: 화학 반응에서 에너지의 출입을 이해하고, 이를 활용한 장치를 설계할 수 있다.
+Pred Content: INVALID
+True Code: 9과17-06
+LLM Response: 
+------------------------------------------------------------
+[Sample #94]
+True Code: 6과11-02
+Pred Code: 9과11-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리가 먹는 과일은 대부분 열매에 양분이 많이 저장된 것입니다.
+True Content: 식물의 각 기관의 구조를 관찰하고, 기능을 알아보는 실험을 수행하여 식물 각 기관의 구조와 기능을 설명할 수 있다.
+Pred Content: 광합성 산물의 생성, 저장, 사용 과정을 모형으로 표현할 수 있다.
+True Code: 6과11-02
+LLM Response: 9과11-04
+------------------------------------------------------------
+[Sample #130]
+True Code: 9과06-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 빛은 우리가 세상을 보고 느끼는 데 매우 중요한 역할을 합니다.
+True Content: 물체의 색이 빛의 삼원색으로 합성됨을 관찰하고, 영상 장치에서 색이 표현되는 원리를 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과06-02
+LLM Response: 
+------------------------------------------------------------
+[Sample #79]
+True Code: 6과04-02
+Pred Code: 10과탐03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 홍보물을 만들 때 너무 어려운 용어를 사용하지 않는다.
+True Content: 소화, 순환, 호흡, 배설 기관의 구조와 기능을 알아보고, 우리 몸의 여러 기관이 서로 관련되어 있음을 설명할 수 있다.
+Pred Content: 첨단 과학기술 및 과학 원리가 적용된 과학 탐구 활동의 산출물을 공유하고 확산하기 위해 발표 및 홍보할 수 있다.
+True Code: 6과04-02
+LLM Response: 10과탐03-02
+------------------------------------------------------------
+[Sample #131]
+True Code: 9과06-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 평면 거울 격자 상 거울의 뒤쪽 실제 크기와 같음 바로 뒤집힘 오목 거울 실상/허상 (거리 따라 다름) 거울의 뒤쪽 (실상), 평면 앞쪽 (허상) 거리 따라 다름 (실상 커짐, 허상 작아짐) 실상은 뒤집히고, 허상은 그대로 볼록 거울 허상 거울의 뒤쪽 항상 작음 그대로 오목 렌즈 허상 관찰자와 렌즈 사이 항상 작음 그대로 볼록 렌즈 실상/허상 (거리 따라 다름) 렌즈의 반대쪽 (실상), 관찰자와 렌즈 사이 (허상) 거리 따라 다름 (실상 크기 커짐, 허상 작음) 실상은 뒤집힐 수 있음, 허상은 그대로
+True Content: 여러 가지 거울과 렌즈를 통해 나타나는 상을 관찰하여 상의 특징을 비교하고, 평면거울에서 상이 생기는 원리를 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과06-03
+LLM Response: 
+------------------------------------------------------------
+[Sample #163]
+True Code: 9과14-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 해수의 분포 지구 표면의 약 71%가 해수로 덮여 있으며, 태평양, 대서양, 인도양 등의 큰 바다로 나뉘어 있습니다. 담수의 분포 지구의 담수는 전체 수자원의 약 2.5%에 불과하며, 그 중 대부분은 빙하와 극지방에 존재합니다. 빙하의 분포 빙하는 지구의 약 1.7%를 차지하며, 대부분은 북극과 남극 지역, 그리고 높은 산 지역에 위치해 있습니다. 해수의 활용 사례 해수는 염분을 활용하여 소금으로 가공되고, 해양 생물 자원 또한 중요하게 활용됩니다. 담수의 활용 사례 담수는 식수와 농업용수, 산업용수 등으로 사용되며, 생명 유지에 필수적입니다. 빙하의 활용 사례 빙하는 담수의 중요한 저장고로, 기후 변화에 따라 담수의 공급에 영향을 미칩니다. 물의 가치 물은 생명 유지에 필수적이며, 농업, 산업, 에너지 등 여러 분야에서 불가결한 자원입니다.
+True Content: 수권에서 해수, 담수, 빙하의 분포와 활용 사례를 조사하고, 자원으로서 물의 가치에 대해 토론할 수 있다.
+Pred Content: INVALID
+True Code: 9과14-01
+LLM Response: 
+------------------------------------------------------------
+[Sample #35]
+True Code: 4과04-03
+Pred Code: 4과04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 난태생 동물에는 살모사, 가오리, 구피, 논우렁이 등이 있습니다.
+True Content: 생물의 한살이 과정을 조사하여 생물에 따라 한살이의 유형이 다양함을 소개하는 자료를 만들어 공유할 수 있다.
+Pred Content: 동물의 한살이를 직접 관찰하고, 관찰한 내용을 글과 그림으로 표현할 수 있다.
+True Code: 4과04-03
+LLM Response: 4과04-01
+------------------------------------------------------------
+[Sample #102]
+True Code: 6과15-03
+Pred Code: 4과09-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: N극과 S극이 일정합니다.
+True Content: 전자석을 만들어 전자석의 성질을 탐색하고 전자석이 사용되는 예를 조사할 수 있다.
+Pred Content: 자석과 자석을 가까이했을 때 나타나는 현상을 관찰하여 그 특징을 자석의 극과 관련지어 설명할 수 있다.
+True Code: 6과15-03
+LLM Response: 4과09-02
+------------------------------------------------------------
+[Sample #128]
+True Code: 9과05-04
+Pred Code: 9과05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이렇게 상태 변화는 크게 두 가지가 있습니다.
+True Content: 상태 변화와 열에너지의 관계를 이해하고, 상태 변화 과정에서 출입하는 열에너지가 생활에 이용되는 사례를 찾고 설명할 수 있다.
+Pred Content: 여러 가지 물질의 상태 변화를 관찰하고, 상태 변화 시 나타나는 현상을 입자 모형으로 설명할 수 있다.
+True Code: 9과05-04
+LLM Response: 9과05-02
+------------------------------------------------------------
+[Sample #104]
+True Code: 6과16-02
+Pred Code: 9과12-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 배설 기관에는 신장, 요관, 방광, 요도가 포함됩니다.
+True Content: 소화, 순환, 호흡, 배설 기관의 종류, 위치, 생김새, 기능을 설명할 수 있다.
+Pred Content: 배설 기관의 구조와 기능을 알고, 노폐물이 배설되는 과정을 표현할 수 있다.
+True Code: 6과16-02
+LLM Response: 9과12-05
+------------------------------------------------------------
+[Sample #62]
+True Code: 4과15-04
+Pred Code: 6과02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 안전하게 운전할 수 있어요.
+True Content: 일상생활에서 거울을 이용하는 예를 조사하고 거울의 성질과 관련지어 그 기능을 설명할 수 있다.
+Pred Content: 거울과 렌즈의 쓰임새를 조사하고 거울이나 렌즈를 이용한 장치를 창의적으로 만들 수 있다.
+True Code: 4과15-04
+LLM Response: 6과02-03
+------------------------------------------------------------
+[Sample #31]
+True Code: 4과03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 가장자리 둘레나 끝에 해당되는 부분
+True Content: 여러 가지 식물을 관찰하여 특징에 따라 식물을 분류할 수 있다.
+Pred Content: INVALID
+True Code: 4과03-01
+LLM Response: None of the provided achievement standards match the textbook text "가장자리 둘레나
+------------------------------------------------------------
+[Sample #22]
+True Code: 10과탐02-09
+Pred Code: 9과17-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 물질의 상태 변화 고체, 액체, 기체의 특성 이해 온도 조절을 통한 상태 변화 문제 해결 온도를 측정할 수 있는 간단한 온도계 제작 에너지 전환 에너지 보존의 법칙 태양광 패널을 활용한 전기 생산 태양열이용 온수기 간단히 설계하기 식물의 생장 조건 광합성과 식물의 생장 이해 식물 성장에 영향을 미치는 환경 요소 조사 미니 온실 설계 및 제작 기후 변화 온실가스와 지구 온난화 일상 속 온실가스 줄이는 방법 모색 가정에서 사용할 수 있는 에너지 절약 설계 화학 반응 화학 반응의 원리와 에너지 변화 일상 생활 속 화학 반응 활용 (예: 청소용품) 화학 반응을 활용한 간단한 세정제 제작
+True Content: 과학의 핵심 개념을 적용하여 실생활 문제를 해결하거나, 탐구에 필요한 도구를 창의적으로 설계하고 제작할 수 있다.
+Pred Content: 화학 반응에서 에너지의 출입을 이해하고, 이를 활용한 장치를 설계할 수 있다.
+True Code: 10과탐02-09
+LLM Response: 9과17-06
+------------------------------------------------------------
+[Sample #99]
+True Code: 6과13-04
+Pred Code: 9과09-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 전선에 전류가 흐르면, 그 주위에 자기장이 생기고 이를 통해 철심 등의 물체가 자석처럼 됩니다.
+True Content: 전자석을 만들어 영구 자석과 전자석을 비교하여 일상생활에서 전자석이 사용되는 예를 조사할 수 있다.
+Pred Content: 전류의 자기 작용을 관찰하고 자기장 안에 놓인 전류가 흐르는 코일이 받는 힘을 이용하여 전동기의 원리를 설명할 수 있다.
+True Code: 6과13-04
+LLM Response: 9과09-04
+------------------------------------------------------------
+[Sample #165]
+True Code: 9과14-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 한류 차가운 물이 흐르며 해양 생태계에 영향을 준다. 북쪽에서 남쪽으로 흐름 조류, 바람, 지구의 자전 난류 따뜻한 물이 흐르며 기후를 온화하게 한다. 남쪽에서 북쪽으로 흐름 조류, 바람, 지구의 자전 수온 차이에 따른 흐름 온도가 높은 곳에서 낮은 곳으로 이동한다. 등온선을 따라 흐름 기온 변화, 계절 변화
+True Content: 우리나라 주변 해류의 종류와 특성을 알고 조석 현상에 대한 자료를 해석할 수 있다.
+Pred Content: INVALID
+True Code: 9과14-03
+LLM Response: 
+------------------------------------------------------------
+[Sample #64]
+True Code: 4과16-02
+Pred Code: 4과06-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 기온과 날씨: 육지는 지역에 따라 기온과 날씨가 다를 수 있어요.
+True Content: 육지와 비교하여 바다의 특징을 설명할 수 있다.
+Pred Content: 지구가 대기로 둘러싸여 있음을 알고, 지구 표면을 구성하는 육지와 바다의 특징을 비교할 수 있다.
+True Code: 4과16-02
+LLM Response: 4과06-01
+------------------------------------------------------------
+[Sample #49]
+True Code: 4과10-01
+Pred Code: 4과17-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이글루를 만든다.
+True Content: 물이 세 가지 상태로 변할 수 있음을 알고, 우리 주변에서 예를 찾을 수 있다.
+Pred Content: 물이 이동하거나 상태가 변하면서 순환하는 과정을 생명체, 지표면, 공기 사이에서 일어나는 다양한 현상과 관련지어 설명할 수 있다.
+True Code: 4과10-01
+LLM Response: 4과17-01
+------------------------------------------------------------
+[Sample #93]
+True Code: 6과10-02
+Pred Code: 6과10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 물체가 빠 르게 운동하면 타점의 간격이 커집니다.
+True Content: 물체의 이동 거리와 걸린 시간을 측정하여 속력을 구하고 빠르기를 비교할 수 있다.
+Pred Content: 운동하는 물체는 시간에 따라 위치가 변화함을 알고 그 변화를 표현할 수 있다.
+True Code: 6과10-02
+LLM Response: 6과10-01
+------------------------------------------------------------
+[Sample #108]
+True Code: 6과17-02
+Pred Code: 9과15-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 열에너지는 따뜻한 물이나 태양빛에서 느낄 수 있는 에너지입니다.
+True Content: 자연 현상이나 일상생활의 예를 통해 에너지의 형태가 전환됨을 알고, 에너지를 효율적으로 사용하는 방법을 토의할 수 있다.
+Pred Content: 물체의 온도 차이를 구성 입자의 운동 모형으로 이해하고, 열의 이동 방법과 냉난방 기구의 효율적 사용에 대하여 조사하고 토의할 수 있다.
+True Code: 6과17-02
+LLM Response: 9과15-01
+------------------------------------------------------------
+[Sample #181]
+True Code: 9과19-02
+Pred Code: 9과19-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 우리는 중력의 영향을 이해하고, 다양한 상황에서 낙하 운동을 예측할 수 있는 근거를 가지게 됩니다.
+True Content: 물체의 자유 낙하 운동을 분석하여 시간에 따른 속력의 변화가 일정함을 설명할 수 있다.
+Pred Content: 일의 의미를 알고, 자유 낙하하는 물체의 운동에서 중력이 한 일을 위치 에너지와 운동 에너지로 표현할 수 있다.
+True Code: 9과19-02
+LLM Response: 9과19-03
+------------------------------------------------------------
+[Sample #10]
+True Code: 10과탐02-02
+Pred Code: 6과10-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 거리를 측정하여 비교합니다.
+True Content: 영화, 건축, 요리, 스포츠, 미디어 등 생활과 관련된 다양한 분야에 적용된 과학 원리를 알아보는 실험을 통해 과학의 유용성을 설명할 수 있다.
+Pred Content: 물체의 이동 거리와 걸린 시간을 측정하여 속력을 구하고 빠르기를 비교할 수 있다.
+True Code: 10과탐02-02
+LLM Response: 6과10-02
+------------------------------------------------------------
+[Sample #96]
+True Code: 6과12-01
+Pred Code: 9과10-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 지구가 남극과 북극을 이은 가상의 직선인 자전축을 중심으로 하루에 한 바퀴씩 회전하는 것입니다..
+True Content: 하루 동안 태양과 별을 관찰하여 위치 변화의 규칙성을 찾을 수 있다.
+Pred Content: 지구 자전에 의한 천체의 겉보기 운동과 지구 공전에 의한 별자리 변화를 설명할 수 있다.
+True Code: 6과12-01
+LLM Response: 9과10-02
+------------------------------------------------------------
+[Sample #83]
+True Code: 6과06-03
+Pred Code: 9과18-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 밤: 바람은 육지 쪽에서 바다 쪽으로 붑니다. (육풍)
+True Content: 고기압과 저기압의 분포에 따른 날씨의 특징을 기상 요소로 표현할 수 있다.
+Pred Content: 기압의 개념을 알고, 바람이 부는 이유를 설명할 수 있다.
+True Code: 6과06-03
+LLM Response: 9과18-03
+------------------------------------------------------------
+[Sample #58]
+True Code: 4과13-03
+Pred Code: 6과12-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 가급적 주변이 탁 트이고 주변에 밝은 곳이 없는 곳이 별을 관측하기 적당합니다.
+True Content: 별의 정의를 알고, 북극성 주변의 별자리를 관찰할 수 있다.
+Pred Content: 하루 동안 태양과 별을 관찰하여 위치 변화의 규칙성을 찾을 수 있다.
+True Code: 4과13-03
+LLM Response: 6과12-01
+------------------------------------------------------------
+[Sample #48]
+True Code: 4과09-04
+Pred Code: 4과01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 무게를 정확히 측정할 수 있었나요?
+True Content: 간단한 저울을 설계하여 제작하고 그 결과물을 평가할 수 있다.
+Pred Content: 무게를 정확히 비교하기 위해서는 저울이 필요함을 알고 저울을 사용해 무게를 비교할 수 있다.
+True Code: 4과09-04
+LLM Response: 4과01-03
+------------------------------------------------------------
+[Sample #82]
+True Code: 6과06-02
+Pred Code: 4과10-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $\cdot$ 조각 얼음을 페트리 접시에 담습니다.
+True Content: 이슬, 안개, 구름을 관찰하고, 공통점과 차이점을 찾을 수 있다.
+Pred Content: 물이 얼 때, 얼음이 녹을 때, 물이 증발할 때와 끓을 때, 수증기가 응결할 때의 변화를 관찰할 수 있다.
+True Code: 6과06-02
+LLM Response: 4과10-02
+------------------------------------------------------------
+[Sample #126]
+True Code: 9과05-02
+Pred Code: 4과14-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 물이 뜨거운 주전자에서 증발하여 수증기가 되는 것입니다.
+True Content: 여러 가지 물질의 상태 변화를 관찰하고, 상태 변화 시 나타나는 현상을 입자 모형으로 설명할 수 있다.
+Pred Content: 물이 증발할 때와 끓을 때의 변화를 관찰하여 차이점을 알고, 이와 관련된 예를 우리 주변에서 찾을 수 있다.
+True Code: 9과05-02
+LLM Response: 4과14-02
+------------------------------------------------------------
+[Sample #101]
+True Code: 6과14-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 빛이 나 주변이 밝아집니다.
+True Content: 물질이 연소할 때 나타나는 공통적인 현상을 관찰하고, 연소의 조건을 찾을 수 있다.
+Pred Content: INVALID
+True Code: 6과14-02
+LLM Response: 16과15-01
+------------------------------------------------------------
+[Sample #74]
+True Code: 6과02-02
+Pred Code: 4과15-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 물체를 거울에 비추어 보면 물체의 상하는 바뀌어 보이지 않고 좌우만 바뀌어 보입니다.
+True Content: 빛이 나아가는 현상을 관찰하여 빛이 직진, 반사, 굴절하는 성질이 있음을 말할 수 있다.
+Pred Content: 일상생활에서 거울을 이용하는 예를 조사하고 거울의 성질과 관련지어 그 기능을 설명할 수 있다.
+True Code: 6과02-02
+LLM Response: 4과15-04
+------------------------------------------------------------
+[Sample #67]
+True Code: 4과17-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 식물은 물을 통해 영양분을 흡수하고, 동물은 물을 마시고 생존해요.
+True Content: 물이 이동하거나 상태가 변하면서 순환하는 과정을 생명체, 지표면, 공기 사이에서 일어나는 다양한 현상과 관련지어 설명할 수 있다.
+Pred Content: INVALID
+True Code: 4과17-01
+LLM Response: 8과11-02
+------------------------------------------------------------
+[Sample #174]
+True Code: 9과17-05
+Pred Code: 9과04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 준비물: 고무 풍선, 주사기, 압력계
+True Content: 기체 반응 법칙을 이해하고, 이를 실험을 통해 확인할 수 있다.
+Pred Content: 기체의 압력과 부피의 관계를 입자 모형으로 해석하고, 이와 관련된 실생활의 예를 찾을 수 있다.
+True Code: 9과17-05
+LLM Response: 9과04-03
+------------------------------------------------------------
+[Sample #155]
+True Code: 9과12-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 코, 기관, 기관지, 폐 1. 공기를 외부에서 내부로 들여온다. 2. 산소를 혈액으로 전달하고, 이산화탄소를 제거한다. 1. 흡기: 횡격막이 내려가고, 흉곽이 확장되어 공기가 폐로 들어간다. 2. 호기: 횡격막이 올라가고, 흉곽이 수축되어 폐에서 공기가 배출된다.
+True Content: 호흡 기관의 구조와 기능을 이해하고, 호흡 운동의 원리를 모형을 사용하여 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과12-04
+LLM Response: 
+------------------------------------------------------------
+[Sample #14]
+True Code: 10과탐02-04
+Pred Code: 10과탐02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 과학은 단순히 교과서에 있는 지식이 아니라, 우리가 매일 경험하는 것들과 밀접한 관계가 있습니다.
+True Content: 흥미와 호기심을 갖고 과학 탐구에 참여하고, 분야 간 협동 연구 등을 통해 협력적 탐구 활동을 수행하며, 도출한 결과를 증거에 근거하여 해석하고 평가할 수 있다.
+Pred Content: 생활 제품 속에 담긴 과학 원리를 파악할 수 있는 실험을 통해 실생활에 적용되는 과학 원리를 설명할 수 있다.
+True Code: 10과탐02-04
+LLM Response: 10과탐02-01
+------------------------------------------------------------
+[Sample #150]
+True Code: 9과11-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이 에너지를 얻기 위해 식물은 '호흡'이라는 과정을 수행합니다.
+True Content: 식물의 호흡을 이해하고, 광합성과의 관계를 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과11-03
+LLM Response: 
+------------------------------------------------------------
+[Sample #34]
+True Code: 4과04-02
+Pred Code: 4과10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 화분 바닥에 있는 물 빠짐 구멍을 망이나 작은 돌로 막아야 해.
+True Content: 식물이 자라는 데 필요한 조건을 찾는 실험을 설계하여 수행할 수 있다.
+Pred Content: 물이 세 가지 상태로 변할 수 있음을 알고, 우리 주변에서 예를 찾을 수 있다.
+True Code: 4과04-02
+LLM Response: 4과10-01
+------------------------------------------------------------
+[Sample #182]
+True Code: 9과19-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 물체를 오른쪽으로 끌 때 힘과 이동 방향이 같다면 θ는 0도가 되어 일을 쉽게 계산할 수 있습니다.
+True Content: 일의 의미를 알고, 자유 낙하하는 물체의 운동에서 중력이 한 일을 위치 에너지와 운동 에너지로 표현할 수 있다.
+Pred Content: INVALID
+True Code: 9과19-03
+LLM Response: 
+------------------------------------------------------------
+[Sample #6]
+True Code: 10과탐01-04
+Pred Code: 10과탐02-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 실험 계획: 실험 방법과 필요한 재료를 준비하세요.
+True Content: 가설 설정을 포함한 과학사의 대표적인 탐구 실험을 수행하고, 연역적 탐구 방법의 특징을 설명할 수 있다.
+Pred Content: 생활 속에서 발견한 문제 상황 해결을 위한 과학 탐구 활동 계획을 수립하고 탐구 활동을 수행할 수 있다.
+True Code: 10과탐01-04
+LLM Response: 10과탐02-07
+------------------------------------------------------------
+[Sample #147]
+True Code: 9과10-05
+Pred Code: 6과02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 태양은 태양계를 구성하는 가장 큰 천체로, 지구와는 다른 여러 가지 특징을 가지고 있습니다.
+True Content: 태양 표면과 대기의 특징을 알고, 태양의 활동이 지구에 미치는 영향에 대해 설명할 수 있다.
+Pred Content: 태양이 지구의 에너지원임을 이해하고 태양계를 구성하는 태양과 행성을 조사할 수 있다.
+True Code: 9과10-05
+LLM Response: 6과02-01
+------------------------------------------------------------
+[Sample #37]
+True Code: 4과05-02
+Pred Code: 9과04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 실험 방법 1: 셀로판테이프로 페트병의 구멍을 막고 풍선을 끼운 후 공기를 넣습니다. → 풍선이 부풀어 오르지 않습니다.
+True Content: 물질의 세 가지 상태인 고체, 액체, 기체의 성질을 관찰하여 비교할 수 있다.
+Pred Content: 기체의 압력을 입자의 운동으로 설명할 수 있다.
+True Code: 4과05-02
+LLM Response: 9과04-02
+------------------------------------------------------------
+[Sample #81]
+True Code: 6과05-03
+Pred Code: 9과03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 쓰레기 줄이기: 일회용 플라스틱 사용을 줄이고, 재활용하는 습관을 기릅시다.
+True Content: 생태계 보전의 필요성을 인식하고 생태계 보전을 위해 우리가 할 수 있는 일에 대해 토의할 수 있다.
+Pred Content: 생물다양성 보전의 필요성을 이해하고, 생물다양성 유지를 위한 활동 사례를 조사하여 발표할 수 있다.
+True Code: 6과05-03
+LLM Response: 9과03-03
+------------------------------------------------------------
+[Sample #2]
+True Code: 10과탐01-02
+Pred Code: 9과17-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 식초와 베이킹 소다를 혼합하여 거품이 발생하는 모습을 관찰합니다.
+True Content: 과학사에서 우연한 발견으로 이루어진 탐구 실험을 수행하고, 그 과정에서 발견되는 과학의 본성을 설명할 수 있다.
+Pred Content: 간단한 화학 반응을 화학 반응식으로 표현하고, 화학 반응식에서 계수의 비를 입자 수의 비로 해석할 수 있다.
+True Code: 10과탐01-02
+LLM Response: 9과17-02
+------------------------------------------------------------
+[Sample #92]
+True Code: 6과10-01
+Pred Code: 6과10-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $80 \mathrm{~km} / \mathrm{h}$ 의 의미와 읽기
+True Content: 운동하는 물체는 시간에 따라 위치가 변화함을 알고 그 변화를 표현할 수 있다.
+Pred Content: 물체의 이동 거리와 걸린 시간을 측정하여 속력을 구하고 빠르기를 비교할 수 있다.
+True Code: 6과10-01
+LLM Response: 6과10-02
+------------------------------------------------------------
+[Sample #0]
+True Code: 10과탐01-01
+Pred Code: 10과탐01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 변화는 특정한 사건이나 발견에 의해 촉발됩니다.
+True Content: 과학사에서 패러다임의 전환을 가져온 결정적 실험을 따라해 보고, 과학의 발전 과정에 대해 설명할 수 있다.
+Pred Content: 과학사에서 우연한 발견으로 이루어진 탐구 실험을 수행하고, 그 과정에서 발견되는 과학의 본성을 설명할 수 있다.
+True Code: 10과탐01-01
+LLM Response: 10과탐01-02
+------------------------------------------------------------
+[Sample #56]
+True Code: 4과13-01
+Pred Code: 6과10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 충돌 움직이는 물체가 부딪히는 것
+True Content: 달의 모양과 표면, 달의 위상변화를 관찰하여 밤하늘 관찰에 흥미를 가질 수 있다.
+Pred Content: 운동하는 물체는 시간에 따라 위치가 변화함을 알고 그 변화를 표현할 수 있다.
+True Code: 4과13-01
+LLM Response: 6과10-01
+------------------------------------------------------------
+[Sample #80]
+True Code: 6과05-01
+Pred Code: 6과01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그림 표면에 작은 알갱이가 있습니다.
+True Content: 알갱이의 크기가 다른 고체 혼합물과 골고루 섞이지 않는 액체 혼합물을 분리할 수 있다.
+Pred Content: 지층이 퇴적암으로 이루어짐을 알고, 퇴적암을 알갱이의 크기에 따라 분류할 수 있다.
+True Code: 6과05-01
+LLM Response: 6과01-02
+------------------------------------------------------------
+[Sample #70]
+True Code: 6과01-02
+Pred Code: 9과01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 암석의 단단한 정도를 알아본다.
+True Content: 지층이 퇴적암으로 이루어짐을 알고, 퇴적암을 알갱이의 크기에 따라 분류할 수 있다.
+Pred Content: 조암 광물의 주요 특성을 관찰하고, 암석이 다양한 광물로 구성되어 있음을 설명할 수 있다.
+True Code: 6과01-02
+LLM Response: 9과01-03
+------------------------------------------------------------
+[Sample #160]
+True Code: 9과13-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 주제 끓는점 차를 이용한 증류 증류의 개념 증류는 두 가지 이상의 액체 혼합물을 끓는점을 이용해 분리하는 방법입니다. 증류의 원리 혼합물을 가열하여 특정 성분이 끓어서 기체로 변한 후, 이를 냉각시켜 다시 액체로 만든다. 끓는점 차 끓는점 차가 클수록 증류가 용이하다. 예를 들어, 물의 끓는점은 100도, 에탄올의 끓는점은 78.5도이다. 증류의 과정 1. 혼합물 가열 2. 성분이 끓어 기체가 됨 3. 기체가 냉각되어 다시 액체가 됨 4. 분리된 액체 수집 주변에서의 사용 예 - 소주와 같은 알코올 음료의 생산 - 해수의 담수화 과정 - 정제된 화학물질의 생산 학습 목표 증류의 방법을 이해하고 주변에서의 사용 예를 설명할 수 있다.
+True Content: 끓는점 차를 이용한 증류의 방법을 이해하고, 우리 주변에서 사용되는 예를 찾아 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과13-03
+LLM Response: 
+------------------------------------------------------------
+[Sample #36]
+True Code: 4과05-01
+Pred Code: 4과01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 고유 본래부터 가지고 있는 특유한 것
+True Content: 물체를 이루는 여러 가지 물질의 성질을 비교하고, 물질의 종류에 따라 물체를 분류할 수 있다.
+Pred Content: 서로 다른 물질로 만들어진 물체들을 비교하여 물체의 기능과 물질의 성질을 관련지을 수 있다.
+True Code: 4과05-01
+LLM Response: 4과01-01
+------------------------------------------------------------
+[Sample #87]
+True Code: 6과08-01
+Pred Code: 6과15-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 반으로 자른 귤 두 개에 각각 구리판과 아연판을 하나씩 꽂는다.
+True Content: 우리가 생활에서 이용하는 다양한 자원을 조사하고, 자원의 유한함을 설명할 수 있다.
+Pred Content: 전자석을 만들어 전자석의 성질을 탐색하고 전자석이 사용되는 예를 조사할 수 있다.
+True Code: 6과08-01
+LLM Response: 6과15-03
+------------------------------------------------------------
+[Sample #146]
+True Code: 9과10-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 수성 지구형행성 가장 작은 행성이며, 대기가 거의 없어 낮과 밤의 온도 차이가 큽니다. 금성 지구형행성 지구와 비슷한 크기를 가지고 있으며, 두꺼운 대기로 인해 온실효과가 심해 따뜻한 온도를 유지합니다. 지구 지구형행성 생명체가 존재하는 유일한 행성이며, 적당한 대기와 온도가 있습니다. 화성 지구형행성 붉은 행성으로 불리며, 물의 흔적이 있는 곳으로 탐사 활동이 활발히 진행되고 있습니다. 목성 목성형행성 태양계에서 가장 큰 행성이며, 매우 강한 자력과 화려한 대적반이 특징입니다. 토성 목성형행성 아름다운 고리로 유명하며, 많은 위성을 가지고 있습니다. 천왕성 목성형행성 측면으로 회전하는 독특한 자전을 하며, 푸른색으로 보이는 이유는 메테인 가스가 포함되어 있기 때문입니다. 해왕성 목성형행성 태양계의 가장 바깥쪽에 위치한 행성으로, 강한 바람과 깊은 대기를 가지고 있습니다.
+True Content: 태양계를 구성하는 행성의 특징을 알고, 목성형 행성과 지구형 행성으로 구분할 수 있다.
+Pred Content: INVALID
+True Code: 9과10-04
+LLM Response: 
+------------------------------------------------------------
+[Sample #54]
+True Code: 4과12-01
+Pred Code: 4과11-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 뿌리, 줄기, 잎 등이 있습니다.
+True Content: 균류⋅원생생물⋅세균을 관찰하여 특징과 사는 곳을 설명할 수 있다.
+Pred Content: 흐르는 물의 작용과 강 주변 지형의 특징을 관련지을 수 있다.
+True Code: 4과12-01
+LLM Response: 4과11-01
+------------------------------------------------------------
+[Sample #38]
+True Code: 4과06-01
+Pred Code: 4과14-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 나무를 많이 심고 가꾼다.
+True Content: 지구가 대기로 둘러싸여 있음을 알고, 지구 표면을 구성하는 육지와 바다의 특징을 비교할 수 있다.
+Pred Content: 생태계의 구성 요소를 조사하여 생물 요소와 비생물 요소로 분류할 수 있다.
+True Code: 4과06-01
+LLM Response: 4과14-01
+------------------------------------------------------------
+[Sample #44]
+True Code: 4과08-03
+Pred Code: 4과08-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 고체: 나무나 금속 같은 고체에서도 진동이 전달되어 소리를 만들 수 있어요.
+True Content: 여러 가지 물체를 통하여 소리가 전달되거나 반사됨을 관찰하고 소음을 줄이는 방법을 토의할 수 있다.
+Pred Content: 여러 가지 물체에서 소리가 나는 현상을 관찰하여 소리가 나는 물체는 떨림이 있음을 설명할 수 있다.
+True Code: 4과08-03
+LLM Response: 4과08-01
+------------------------------------------------------------
+[Sample #28]
+True Code: 4과01-04
+Pred Code: 4과01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 종이 부드럽고 가벼움 쉽게 구할 수 있고, 재사용 가능 물에 약하고 쉽게 찢어짐 종이배, 종이접기 장난감 플라스틱 가볍고 강함 내구성이 좋고 다양한 형태로 만들 수 있음 분해가 잘 되지 않아 환경오염의 원인 장난감, 화장품 용기 금속 단단하고 무거움 강도가 높아 내구성이 뛰어남 녹슬거나 무겁기 쉬움 자전거, 자동차 부품 유리 투명하고 깨지기 쉬움 아름답고 다양한 디자인 가능 쉽게 깨지며 무거움 컵, 창문 고무 신축성이 좋음 충격을 흡수하고 방수 기능이 있음 내구성이 떨어질 수 있음 풍선, 고무장갑
+True Content: 여러 가지 물질을 선택하여 다양한 물체를 설계하고 장단점을 토의할 수 있다.
+Pred Content: 서로 다른 물질로 만들어진 물체들을 비교하여 물체의 기능과 물질의 성질을 관련지을 수 있다.
+True Code: 4과01-04
+LLM Response: 4과01-01
+------------------------------------------------------------
+[Sample #164]
+True Code: 9과14-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 0 - 50 24 - 30 표층은 따뜻합니다. 50 - 200 10 - 24 수온이 급격히 낮아집니다. 200 - 1000 4 - 10 차가운 심층수에 해당합니다. 1000 이상 0 - 4 극히 차가운 수온입니다.
+True Content: 해수의 연직 수온 분포와 염분비 일정 법칙을 통해 해수의 특성을 설명할 수 있다.
+Pred Content: INVALID
+True Code: 9과14-02
+LLM Response: 
+------------------------------------------------------------
+[Sample #30]
+True Code: 4과02-02
+Pred Code: 4과03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: (1) 사막의 환경
+True Content: 다양한 환경에 서식하는 동물을 조사하여 동물의 생김새와 생활 방식이 환경과 관련되어 있음을 설명할 수 있다.
+Pred Content: 다양한 환경에 서식하는 식물을 조사하여 식물의 생김새와 생활 방식이 환경과 관련되어 있음을 설명할 수 있다.
+True Code: 4과02-02
+LLM Response: 4과03-02
+------------------------------------------------------------
+[Sample #91]
+True Code: 6과09-03
+Pred Code: 6과08-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 산성 용액 달걀 껍데기와 대리석 조각을 녹인다.
+True Content: 우리 주변에서 산성 용액과 염기성 용액을 이용하는 예를 찾아서 설명할 수 있다.
+Pred Content: 지시약을 이용하여 여러 가지 용액을 산성 용액과 염기성 용액으로 분류할 수 있다.
+True Code: 6과09-03
+LLM Response: 6과08-02
+------------------------------------------------------------
+[Sample #151]
+True Code: 9과11-04
+Pred Code: 9과21-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 모형 제작 방법:
+True Content: 광합성 산물의 생성, 저장, 사용 과정을 모형으로 표현할 수 있다.
+Pred Content: 수정란으로부터 개체가 발생되는 과정을 모형으로 표현할 수 있다.
+True Code: 9과11-04
+LLM Response: 9과21-03
+------------------------------------------------------------
+[Sample #47]
+True Code: 4과09-03
+Pred Code: 4과09-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 막대자석을 물에 띄우거나 공중에 매달면 북쪽과 남쪽을 가리킵니다.
+True Content: 자석을 이용하여 일상생활을 편리하게 하는 장치를 설계할 수 있다.
+Pred Content: 자석과 자석을 가까이했을 때 나타나는 현상을 관찰하여 그 특징을 자석의 극과 관련지어 설명할 수 있다.
+True Code: 4과09-03
+LLM Response: 4과09-02
+------------------------------------------------------------
+[Sample #105]
+True Code: 6과16-03
+Pred Code: 9과20-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 감지된 정보를 신경 신호로 변환하여 뇌로 보냅니다.
+True Content: 감각 기관의 종류, 위치, 생김새, 기능을 알고 자극이 전달되는 과정을 설명할 수 있다.
+Pred Content: 눈, 귀, 코, 혀, 피부 감각기의 구조와 기능을 이해하고 자극의 종류에 따라 감각기를 통해 뇌로 전달되는 과정을 설명할 수 있다.
+True Code: 6과16-03
+LLM Response: 9과20-01
+------------------------------------------------------------
+[Sample #73]
+True Code: 6과02-01
+Pred Code: 4과13-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 태양계는 태양을 중심으로 그 주위에서 돌고 있는 여러 행성과 다른 천체들로 구성되어 있습니다.
+True Content: 태양이 지구의 에너지원임을 이해하고 태양계를 구성하는 태양과 행성을 조사할 수 있다.
+Pred Content: 태양계 구성원을 알고, 태양과 행성을 조사할 수 있다.
+True Code: 6과02-01
+LLM Response: 4과13-02
+------------------------------------------------------------

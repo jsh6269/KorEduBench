@@ -1,0 +1,1102 @@
+Total wrong samples: 107
+
+[Sample #13]
+True Code: 10수학01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $= 2(8) - 3(4) + 8 - 5
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+LLM Response: 6수02-001
+------------------------------------------------------------
+[Sample #59]
+True Code: 4수02-11
+Pred Code: 4수03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정사각형: 모든 변의 길이가 같고, 모든 각이 90도인 사각형입니다.
+True Content: 다각형과 정다각형의 의미를 안다.
+Pred Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+LLM Response: 4수03-10
+------------------------------------------------------------
+[Sample #57]
+True Code: 4수02-11
+Pred Code: 4수03-25
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정사각형이나 정삼각형이 좋은 예입니다.
+True Content: 다각형과 정다각형의 의미를 안다.
+Pred Content: 여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.
+LLM Response: 4수03-25
+------------------------------------------------------------
+[Sample #100]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 따라서 일교차가 가장 큰 요일은 수요일이다.
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수04-001
+------------------------------------------------------------
+[Sample #38]
+True Code: 10수학04-03
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이전 단계에서 교환한 식을 $ x $에 대해 풀어서 $ y $를 얻게 됩니다.
+True Content: 역함수의 의미를 이해하고, 주어진 함수의 역함수를 구할 수 있다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #5]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차함수 $y=a x^{2}+b x+c$ 의 그래프가 $x$ 축과 서로 다른 두 점에서 만날 때, 이차방정식 $a x^{2}+b x+c=0$ 의 판별식 $D$ 는 $D>0$ 이다.
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #122]
+True Code: 9수02-22
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $y=2 x^{2}$ 의 그래프를 $x$ 축의 방향으로 -3 만큼, $y$ 축의 방향으로 2 만큼 평행이동한 그래프의 식은 $y=2(x+3)^{2}+2$
+True Content: 이차함수의 그래프를 그릴 수 있고, 그 성질을 설명할 수 있다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #77]
+True Code: 6수02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: \[ \mathbf{◀}=1 \text { 일 때 } \mathbf{\square}=4, \boldsymbol{◀}=2 \text { 일 때 } \boldsymbol{\square}=8, \boldsymbol{◀}=3 \text { 일 때 } \boldsymbol{\square}=12 \] ◀에 4를 곱하면 ■와 같습니다.
+True Content: 한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.
+Pred Content: INVALID
+LLM Response: 6수02-001
+------------------------------------------------------------
+[Sample #91]
+True Code: 6수03-16
+Pred Code: 6수03-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 88㎠
+True Content: 원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 넓이 단위 1cm², 1m², 1km²를 알며, 그 관계를 이해한다.
+LLM Response: 6수03-12
+------------------------------------------------------------
+[Sample #16]
+True Code: 10수학01-04
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 특정 다항식은 완전제곱식으로도 표현할 수 있습니다.
+True Content: 다항식의 인수분해를 할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #62]
+True Code: 4수02-12
+Pred Code: 4수03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다양한 크기의 정사각형과 삼각형을 그려보세요.
+True Content: 주어진 도형을 이용하여 여러 가지 모양을 만들거나 채울 수 있다.
+Pred Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+LLM Response: 4수03-10
+------------------------------------------------------------
+[Sample #10]
+True Code: 10공수1-03-03
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 조합: 서로 다른 $n$ 개에서 순서를 생각하지 않고 $r(0 \leq r \leq n)$ 개를 택하는 것을 $n$ 개에서 $r$ 개를 택하 는 조합이라고 하며, 기호로 ${ }_{n} \mathrm{C}_{r}$ ㄷ 나타낸다.
+True Content: 조합의 개념을 이해하고, 조합의 수를 구하는 방법을 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #93]
+True Code: 6수05-02
+Pred Code: 4수04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 각 그림이나 기호는 일정한 양의 자료를 나타냅니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: 자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.
+LLM Response: 4수04-01
+------------------------------------------------------------
+[Sample #44]
+True Code: 10수학04-05
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 무리 함수가 정의되기 위해서는 $ ax + b \geq 0 $이어야 합니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #103]
+True Code: 9수01-10
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 곱셈 공 식 $(a+b)(a-b)=a^{2}-b^{2}$ 을 이용하여 분모에 근호가 있는 부ㄴㅜㅜㅇㅢ 분모를 유리화할 수 있다.
+True Content: 근호를 포함한 식의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #102]
+True Code: 9수01-10
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $\pi \times 3^{2} \times \sqrt{21}=9 \sqrt{21 \pi\left(\mathrm{~cm}^{3}\right)}$
+True Content: 근호를 포함한 식의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #60]
+True Code: 4수02-12
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다각형은 여러 개의 선분으로 이루어진 도형으로, 선분들이 서로 연결되어 폐곡선을 이룹니다.
+True Content: 주어진 도형을 이용하여 여러 가지 모양을 만들거나 채울 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #96]
+True Code: 6수05-05
+Pred Code: 9수05-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서, 이 세 점수의 평균은 80점입니다.
+True Content: 실생활에서 가능성과 관련된 상황을 ‘불가능하다’, ‘~아닐 것 같다’, ‘반반이다’, ‘~일 것 같다’, ‘확실하다’ 등으로 나타낼 수 있다.
+Pred Content: 중앙값, 최빈값, 평균의 의미를 이해하고, 이를 구할 수 있다.
+LLM Response: 9수05-06
+------------------------------------------------------------
+[Sample #27]
+True Code: 10수학02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 문제 1: 직선 $ y = 2x + 3 $와 $ y = 2x - 1 $의 관계를 설명하시오.
+True Content: 두 직선의 평행 조건과 수직 조건을 이해한다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #8]
+True Code: 10공수1-03-02
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 세 다항식 $A=x^{2}-2 x+3, B=2 x^{2}+7 x-1, C=-x^{2}+2 x-4$ 에 대하여 \[\begin{array}{l}A+B=\left(x^{2}-2 x+3\right)+\left(2 x^{2}+7 x-1\right)=3 x^{2}+5 x+2, \\B+A=\left(2 x^{2}+7 x-1\right)+\left(x^{2}-2 x+3\right)=3 x^{2}+5 x+2\end{array}\]이므로 $A+B=B+A$ 가 성립한다.
+True Content: 순열의 개념을 이해하고, 순열의 수를 구하는 방법을 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #132]
+True Code: 9수04-12
+Pred Code: 4수03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 대각선이 서로 같고, 각 대각선도 서로 수직으로 교차합니다.
+True Content: 사각형의 성질을 이해하고 설명할 수 있다.
+Pred Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+LLM Response: 4수03-10
+------------------------------------------------------------
+[Sample #108]
+True Code: 9수02-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 시간이 흐름에 따라 속력의 변화을 알 수 있는 그래프로 최고 속력은 60km/h로 25~30분 사이 5분동안 지속되었다.
+True Content: 다양한 상황을 그래프로 나타내고, 주어진 그래프를 해석할 수 있다.
+Pred Content: INVALID
+LLM Response: 9수02-006
+------------------------------------------------------------
+[Sample #32]
+True Code: 10수학02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 직선의 방정식이 $ 3x - 4y + 5 = 0 $이고, 점 $ P(2, 1) $이라면, 다음과 같이 거리를 계산할 수 있습니다.
+True Content: 점과 직선 사이의 거리를 구할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학01-06
+------------------------------------------------------------
+[Sample #131]
+True Code: 9수04-08
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 그림은 $ V = \pi r^2 h $
+True Content: 회전체의 성질을 이해한다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #124]
+True Code: 9수03-10
+Pred Code: 9수04-19
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 삼각형 ABC 안에 점 O를 중심으로 삼각형 3개를 구성하고 변 OB의 길이가 7cm인 그림이다.
+True Content: 삼각형의 외심과 내심의 성질을 이해하고 정당화할 수 있다.
+Pred Content: 원의 현에 관한 성질과 접선에 관한 성질을 이해한다.
+LLM Response: 9수04-19
+------------------------------------------------------------
+[Sample #109]
+True Code: 9수02-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 중간에 멈춘 시간은 2분에서 3 분 사이와 5분에서 6분 사이에서 각각 1분씩 멈추었으므로 총 2분이다.
+True Content: 다양한 상황을 그래프로 나타내고, 주어진 그래프를 해석할 수 있다.
+Pred Content: INVALID
+LLM Response: 6수05-002
+------------------------------------------------------------
+[Sample #146]
+True Code: 9수05-05
+Pred Code: 9수05-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 표본공간: {1, 2, 3, 4, 5, 6} (총 6개의 경우)
+True Content: 확률의 개념과 그 기본 성질을 이해하고, 확률을 구할 수 있다.
+Pred Content: 중앙값, 최빈값, 평균의 의미를 이해하고, 이를 구할 수 있다.
+LLM Response: 9수05-06
+------------------------------------------------------------
+[Sample #125]
+True Code: 9수03-10
+Pred Code: 9수04-19
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 삼각형은 항상 외심이 하나 있다.
+True Content: 삼각형의 외심과 내심의 성질을 이해하고 정당화할 수 있다.
+Pred Content: 원의 현에 관한 성질과 접선에 관한 성질을 이해한다.
+LLM Response: 9수04-19
+------------------------------------------------------------
+[Sample #42]
+True Code: 10수학04-05
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 함수의 증가 및 감소를 확인하여 전체적인 형태를 파악합니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #130]
+True Code: 9수04-08
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 공학에서는 회전체의 성질을 이용해 기계 부품을 설계하거나 건축에서 공간 활용을 최적화할 수 있습니다.
+True Content: 회전체의 성질을 이해한다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #117]
+True Code: 9수02-21
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 점 $(3,-6)$ 을 $y=-\frac{2}{3} x^{2}$ 에 대입하면 성립하므로 점 $(3,-6)$ 을 지난다.
+True Content: 이차함수의 개념을 이해한다.
+Pred Content: INVALID
+LLM Response: 10수학01-06
+------------------------------------------------------------
+[Sample #22]
+True Code: 10수학01-09
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 방정식을 해석할 뿐만 아니라, 함수의 특성을 이해할 수 있습니다.
+True Content: 이차방정식과 이차함수의 관계를 이해한다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #61]
+True Code: 4수02-12
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사각형: 4개의 변과 4개의 꼭짓점 가지고 있죠.
+True Content: 주어진 도형을 이용하여 여러 가지 모양을 만들거나 채울 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #144]
+True Code: 9수05-05
+Pred Code: 9수05-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: P(확실한 사건) = 1: 어떤 사건이 반드시 발생할 경우, 확률은 1입니다.
+True Content: 확률의 개념과 그 기본 성질을 이해하고, 확률을 구할 수 있다.
+Pred Content: 중앙값, 최빈값, 평균의 의미를 이해하고, 이를 구할 수 있다.
+LLM Response: 9수05-06
+------------------------------------------------------------
+[Sample #29]
+True Code: 10수학02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 즉, 기울기 $ m_1 $과 $ m_2 $사이의 관계는 다음과 같습니다.
+True Content: 두 직선의 평행 조건과 수직 조건을 이해한다.
+Pred Content: INVALID
+LLM Response: 10수학02-004
+------------------------------------------------------------
+[Sample #41]
+True Code: 10수학04-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 정의역: $x \neq 1$
+True Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #9]
+True Code: 10공수1-03-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 서로 다른 $n$ 개의 수에서 순서가 정해진(또는 대소 관계가 정해진) 수를 뽑는 경우 조합을 이용하여 푼다.
+True Content: 조합의 개념을 이해하고, 조합의 수를 구하는 방법을 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #23]
+True Code: 10수학01-09
+Pred Code: 10수학01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $D = 0$일 때: 중근이 존재하며, 해가 하나만 존재합니다.
+True Content: 이차방정식과 이차함수의 관계를 이해한다.
+Pred Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+LLM Response: 10수학01-07
+------------------------------------------------------------
+[Sample #129]
+True Code: 9수04-08
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 부피 (V) = πr²h
+True Content: 회전체의 성질을 이해한다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #34]
+True Code: 10수학03-06
+Pred Code: 9수05-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $ Q $를 "땅이 젖는다"라고 할 때,
+True Content: 충분조건과 필요조건을 이해하고 구별할 수 있다.
+Pred Content: 중앙값, 최빈값, 평균의 의미를 이해하고, 이를 구할 수 있다.
+LLM Response: 9수05-06
+------------------------------------------------------------
+[Sample #98]
+True Code: 6수05-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: ~일 것 같다: 하늘이 많이 흐린데요, 이럴 때는 비가 올 것 같아요.
+True Content: 실생활에서 가능성과 관련된 상황을 ‘불가능하다’, ‘~아닐 것 같다’, ‘반반이다’, ‘~일 것 같다’, ‘확실하다’ 등으로 나타낼 수 있다.
+Pred Content: INVALID
+LLM Response: 6수05-005
+------------------------------------------------------------
+[Sample #78]
+True Code: 6수03-01
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 두 꼭짓점이 점선으로 이어져 있는 사각형이다.
+True Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #119]
+True Code: 9수02-21
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 통계
+True Content: 이차함수의 개념을 이해한다.
+Pred Content: INVALID
+LLM Response: 4수04-001
+------------------------------------------------------------
+[Sample #94]
+True Code: 6수05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 그래프는 수치를 시각적으로 표현해 주는 방법으로, 데이터를 쉽게 이해하고 비교할 수 있도록 도와줍니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수04-001
+------------------------------------------------------------
+[Sample #88]
+True Code: 6수03-13
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 가로, 세로가 32cm인 정사각형 안에 각 변에서 하나씩 ㄱ, ㄴ, ㄷ, ㄹ의 사각형을 잘라냈고 ㄱ 옆에 위치한 사각형의 세로는 10cm, ㄴ의 아래 위치한 사각형의 가로는 10cm, ㄷ의 아래 위치한 사각형의 가로 8cm, ㄹ 왼쪽에 위치한 사각형의 세로는 12cm이다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #47]
+True Code: 10수학05-02
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 5명의 학생 중에서 3명을 골라 일렬로 세우는 경우의 수를 구하시오.
+True Content: 순열의 의미를 이해하고, 순열의 수를 구할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #137]
+True Code: 9수04-15
+Pred Code: 4수02-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 비란 두 수나 양을 비교하는 것을 의미하며, 비례는 두 비가 서로 같음을 나타냅니다.
+True Content: 평행선 사이의 선분의 길이의 비를 구할 수 있다.
+Pred Content: 주어진 도형을 이용하여 여러 가지 모양을 만들거나 채울 수 있다.
+LLM Response: 4수02-12
+------------------------------------------------------------
+[Sample #101]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 곱셈의 결합법칙 $(a \times b) \times c=a \times(b \times c)$
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #15]
+True Code: 10수학01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $a^2 + 2ab + b^2 = (a + b)^2$
+True Content: 다항식의 인수분해를 할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #50]
+True Code: 4수01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: (8자리 수) $>$ (7자리 수)
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수01-002
+------------------------------------------------------------
+[Sample #89]
+True Code: 6수03-13
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 평행사변형으로 길이는 14cm x4cm 24cmx8cm 입니다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #72]
+True Code: 6수01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $723-59=664$ 입니다.
+True Content: 덧셈, 뺄셈, 곱셈, 나눗셈의 혼합 계산에서 계산하는 순서를 알고, 혼합 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 6수02-001
+------------------------------------------------------------
+[Sample #63]
+True Code: 4수03-10
+Pred Code: 4수03-25
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 네 각이 모두 직각인 사각형이 아닙니다.
+True Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+Pred Content: 여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.
+LLM Response: 4수03-25
+------------------------------------------------------------
+[Sample #73]
+True Code: 6수01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 괄호 안을 먼저 계산하고 나눗셈, 뺄셈 순서로 계산합니다.
+True Content: 덧셈, 뺄셈, 곱셈, 나눗셈의 혼합 계산에서 계산하는 순서를 알고, 혼합 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 6수02-001
+------------------------------------------------------------
+[Sample #3]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차부등식의 해와 이차함수의 그래프의 관계
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #134]
+True Code: 9수04-12
+Pred Code: 4수03-25
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 모든 내각이 직각(90도)입니다.
+True Content: 사각형의 성질을 이해하고 설명할 수 있다.
+Pred Content: 여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.
+LLM Response: 4수03-25
+------------------------------------------------------------
+[Sample #2]
+True Code: 10공수1-01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 나머지정리: 다항식 $P(x)$ 를 일차식 $x-\alpha$ 로 나누었을 때의 나머지를 $R$ 라고 하면 $R=P(\alpha)$
+True Content: 항등식의 성질과 나머지정리를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #75]
+True Code: 6수02-01
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: → ♠는 ♥를 2로 나눈 몫입니다. (또는 ♥는 ♠의 2배입니다.)
+True Content: 한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #28]
+True Code: 10수학02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 두 직선이 수직이 되기 위해서는 기울기의 곱이 1이 되어야 합니다.
+True Content: 두 직선의 평행 조건과 수직 조건을 이해한다.
+Pred Content: INVALID
+LLM Response: 10수학02-004
+------------------------------------------------------------
+[Sample #18]
+True Code: 10수학01-07
+Pred Code: 9수02-21
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여기서 $a$, $b$, $c$는 실수이고, $a \neq 0$입니다.
+True Content: 이차방정식에서 판별식의 의미를 이해하고 이를 설명할 수 있다.
+Pred Content: 이차함수의 개념을 이해한다.
+LLM Response: 9수02-21
+------------------------------------------------------------
+[Sample #4]
+True Code: 10공수1-02-11
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $2 x^{2}-4 x+3 \leq 0$ 의 해는 이차함수 $y=2 x^{2}-4 x+3$ 의 그래프가 $x$ 축 또는 $x$ 축의 아래쪽에 있을 때의 $x$ 의 값의 범위이 지만 $y=2 x^{2}-4 x+3=2(x-1)^{2}+1$ 의 그래프는 $x$ 축 위쪽에만 존재하므로 해는 없다. $2 x^{2}-4 x+3 \leq 0$ 의 해는 이차함수 $y=2 x^{2}-4 x+3$ 의 그래프가 $x$ 축 또는 $x$ 축의 아래쪽에 있을 때의 $x$ 의 값의 범위이 지만 $y=2 x^{2}-4 x+3=2(x-1)^{2}+1$ 의 그래프는 $x$ 축 위쪽에만 존재하므로 해는 없다.
+True Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #14]
+True Code: 10수학01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 따라서, $ f(x) $를 $ x - 2 $로 나누었을 때의 나머지는 $ 7 $입니다.
+True Content: 나머지정리의 의미를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #43]
+True Code: 10수학04-05
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 만약 $ a < 0 $이라면, 그래프는 왼쪽으로 감소하게 됩니다.
+True Content: 무리함수 y=root(ax+b)+c의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #74]
+True Code: 6수01-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 덧셈과 뺄셈을 앞에서부터 차례로 계산합니다.
+True Content: 덧셈, 뺄셈, 곱셈, 나눗셈의 혼합 계산에서 계산하는 순서를 알고, 혼합 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 6수02-001
+------------------------------------------------------------
+[Sample #113]
+True Code: 9수02-12
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 수직선 위에 $x>-2$가 그려져있다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #48]
+True Code: 4수01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 자릿수가 다를 때: 자릿수가 많은 수가 더 큰 수입니다.
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수01-002
+------------------------------------------------------------
+[Sample #90]
+True Code: 6수03-16
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: (원주) $=($지름$) \times($원주율 $=10 \times 3.14=31.4(\mathrm{~cm})$ 이고, 반지름은 $10 \div 2=5(\mathrm{~cm})$ 입니다.
+True Content: 원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #87]
+True Code: 6수03-13
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: ㄷ자를 눕힌 모양의 도형이 있으며, 밑변의 길이는 18cm이고, 옆변의 길이는 10cm이고, 윗변의 한쪽은 8cm이고, 가운데 파인 부분은 4cm이다.
+True Content: 직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #105]
+True Code: 9수02-01
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 나눗셈은 역수를 이용하여 곱셈으로 바꾼 다음, 곱셈 기호를 생략할 수도 있다.
+True Content: 다양한 상황을 문자를 사용한 식으로 나타내어 그 유용성을 인식하고, 식의 값을 구할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #123]
+True Code: 9수03-10
+Pred Code: 6수03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음 그림과 같이 두 이등변삼각형은 닮은 도형이 아닐 수도 있다.
+True Content: 삼각형의 외심과 내심의 성질을 이해하고 정당화할 수 있다.
+Pred Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+LLM Response: 6수03-01
+------------------------------------------------------------
+[Sample #17]
+True Code: 10수학01-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 각 항은 계수와 변수의 거듭제곱으로 이루어져 있습니다.
+True Content: 다항식의 인수분해를 할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #111]
+True Code: 9수02-12
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "부등식의 모든 항을 좌변으로 이항하여 정리하였을 때, 좌변이 일차식인 식"
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #127]
+True Code: 9수04-07
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 두 별 사이의 거리 구하기
+True Content: 분산과 표준편차를 구하고 자료의 분포를 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학02-005
+------------------------------------------------------------
+[Sample #79]
+True Code: 6수03-01
+Pred Code: 4수02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 이미지는 두 개의 삼각형 모양이 서로 나란히 배치된 도형을 나타냅니다. 각 삼각형은 정해진 그리드 상에 배치되어 있으며, 각 삼각형의 밑변이 평행하게 놓여 있습니다.
+True Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+Pred Content: 다각형과 정다각형의 의미를 안다.
+LLM Response: 4수02-11
+------------------------------------------------------------
+[Sample #30]
+True Code: 10수학02-05
+Pred Code: 10수학01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 계수와 점의 좌표 대입하기:
+True Content: 점과 직선 사이의 거리를 구할 수 있다.
+Pred Content: 다항식의 인수분해를 할 수 있다.
+LLM Response: 10수학01-04
+------------------------------------------------------------
+[Sample #46]
+True Code: 10수학05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: n개의 서로 다른 객체 중에서 r개를 선택하여 나열하는 경우의 수를 순열로 표현하며, 아래와 같은 공식을 사용합니다.
+True Content: 순열의 의미를 이해하고, 순열의 수를 구할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #11]
+True Code: 10공수1-03-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: ${ }_{4} \mathrm{C}_{2}=\frac{4!}{2!(4-2)!}=\frac{4 \times 3 \times 2 \times 1}{(2 \times 1)(2 \times 1)}=6$
+True Content: 조합의 개념을 이해하고, 조합의 수를 구하는 방법을 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-002-11
+------------------------------------------------------------
+[Sample #7]
+True Code: 10공수1-03-02
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 5 명 중 3 명을 뽑아 3 인 의자에 앉히는 경우의 수는 5 개 중에서 3 개를 택하는 순열의 수와 같으므로 \[{ }_{5} \mathrm{P}_{3}=5 \times 4 \times 3=60 \text { 이다. }\]
+True Content: 순열의 개념을 이해하고, 순열의 수를 구하는 방법을 설명할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #99]
+True Code: 9수01-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 두 수 $a, b$ 에 대하여 $a+b=b+a$ 가 성립한다. 이것을 덧셈의 교환법칙이라고 한다.
+True Content: 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.
+Pred Content: INVALID
+LLM Response: 10공수1-02-01
+------------------------------------------------------------
+[Sample #133]
+True Code: 9수04-12
+Pred Code: 4수03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 대칭성이 뛰어나며, 대각선의 길이가 같습니다.
+True Content: 사각형의 성질을 이해하고 설명할 수 있다.
+Pred Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+LLM Response: 4수03-10
+------------------------------------------------------------
+[Sample #83]
+True Code: 6수03-05
+Pred Code: 6수03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주어진 삼각기둥의 밑면은 정삼각형입니다.
+True Content: 각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.
+Pred Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+LLM Response: 6수03-01
+------------------------------------------------------------
+[Sample #64]
+True Code: 4수03-10
+Pred Code: 4수03-25
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 직사각형과 정사각형의 관계
+True Content: 여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.
+Pred Content: 여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.
+LLM Response: 4수03-25
+------------------------------------------------------------
+[Sample #112]
+True Code: 9수02-12
+Pred Code: 10수학01-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $4>-2 x-(x+2)$ 에서 괄호를 풀면 $4>-2 x-x-2,3 x>-6$ 따라서 $x>-2$ 이다.
+True Content: 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10수학01-16
+------------------------------------------------------------
+[Sample #1]
+True Code: 10공수1-01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 다항식 $f(\boldsymbol{a x + b})$ 를 $x-\alpha$ 로 나누는 경우
+True Content: 항등식의 성질과 나머지정리를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #71]
+True Code: 4수04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 자료를 순서대로 하나씩 짚어 가면서 //// 등으로 수 세기를 합니다.
+True Content: 자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수04-001
+------------------------------------------------------------
+[Sample #31]
+True Code: 10수학02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이처럼 점과 직선 간의 거리를 구하는 공식과 계산 방법을 잘 익혀 두면, 다양한 문제를 해결할 수 있습니다.
+True Content: 점과 직선 사이의 거리를 구할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학02-005
+------------------------------------------------------------
+[Sample #76]
+True Code: 6수02-01
+Pred Code: 4수02-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 소의 수(◆)와 소의 다리 수(♥) 사이의 관계
+True Content: 한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.
+Pred Content: 주어진 도형을 이용하여 여러 가지 모양을 만들거나 채울 수 있다.
+LLM Response: 4수02-12
+------------------------------------------------------------
+[Sample #110]
+True Code: 9수02-06
+Pred Code: 4수04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그래프의 종류로는 막대그래프, 그림그래프, 줄기와 잎 그림, 꺾은선그래프, 비율그래프(띠그래프, 원그래프) 등이 있다.
+True Content: 다양한 상황을 그래프로 나타내고, 주어진 그래프를 해석할 수 있다.
+Pred Content: 자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.
+LLM Response: 4수04-01
+------------------------------------------------------------
+[Sample #49]
+True Code: 4수01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $\begin{aligned} \text { 팔천이백삼십칠억 } & \Rightarrow 823700000000 \\ & \Rightarrow 0 \text { 이 } 8 \text { 개 }\end{aligned}$
+True Content: 다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수01-002
+------------------------------------------------------------
+[Sample #81]
+True Code: 6수03-05
+Pred Code: 6수03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 각기둥의 모든 면은 다각형입니다.
+True Content: 각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.
+Pred Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+LLM Response: 6수03-01
+------------------------------------------------------------
+[Sample #120]
+True Code: 9수02-22
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 꼭짓점의 좌표가 $(-1,3)$ 이므로 $y=a(x+1)^{2}+3 \quad \therefore p=-1, q=3$ 이 함수의 그래프가 점 $(0,-2)$ 를 지나므로 \[ \begin{array}{l}-2=a(0+1)^{2}+3,-2=a+3 \quad \therefore a=-5 \\ \therefore a+p+q=-5-1+3=-3 \end{array}\]
+True Content: 이차함수의 그래프를 그릴 수 있고, 그 성질을 설명할 수 있다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #37]
+True Code: 10수학04-03
+Pred Code: 10수학04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $ y $에 대해 $ x $를 표현합니다.
+True Content: 역함수의 의미를 이해하고, 주어진 함수의 역함수를 구할 수 있다.
+Pred Content: 유리함수 y=(ax+b)/(cx+d)의 그래프를 그릴 수 있고, 그 그래프의 성질을 이해한다.
+LLM Response: 10수학04-04
+------------------------------------------------------------
+[Sample #107]
+True Code: 9수02-01
+Pred Code: 4수03-25
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 밑변의 길이가 $b$ cm이고 윗변의 길이가 $a$ cm이고 높이가 $h$ cm인 사다리꼴
+True Content: 다양한 상황을 문자를 사용한 식으로 나타내어 그 유용성을 인식하고, 식의 값을 구할 수 있다.
+Pred Content: 여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.
+LLM Response: 4수03-25
+------------------------------------------------------------
+[Sample #45]
+True Code: 10수학05-02
+Pred Code: 10공수1-02-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주어진 n개의 요소 중에서 r개를 선택하여 나열하는 경우의 수는 다음과 같은 공식을 사용하여 구할 수 있습니다:
+True Content: 순열의 의미를 이해하고, 순열의 수를 구할 수 있다.
+Pred Content: 이차부등식과 이차함수를 연결하여 그 관계를 설명하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+LLM Response: 10공수1-02-11
+------------------------------------------------------------
+[Sample #82]
+True Code: 6수03-05
+Pred Code: 6수03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사각뿔의 밑면의 모양은 사각형이고, 옆면은 4개입니다.
+True Content: 각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.
+Pred Content: 도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.
+LLM Response: 6수03-01
+------------------------------------------------------------
+[Sample #92]
+True Code: 6수03-16
+Pred Code: 9수04-16
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 2번 경주로의 곡선 구간 반원의 지름 구하기
+True Content: 원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.
+Pred Content: 피타고라스 정리를 이해하고 설명할 수 있다.
+LLM Response: 9수04-16
+------------------------------------------------------------
+[Sample #95]
+True Code: 6수05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 그림그래프는 실생활에서 수집한 자료를 쉽게 이해하기 위해 그림이나 아이콘을 사용하여 나타내는 그래프입니다.
+True Content: 실생활 자료를 그림그래프로 나타내고, 이를 활용할 수 있다.
+Pred Content: INVALID
+LLM Response: 4수04-001
+------------------------------------------------------------
+[Sample #0]
+True Code: 10공수1-01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: $x=-5$ 를 대입하면 $25-5 a+b=0,-5 a+b=-25$
+True Content: 항등식의 성질과 나머지정리를 이해하고, 이를 활용하여 문제를 해결할 수 있다.
+Pred Content: INVALID
+LLM Response: 10수학01-002
+------------------------------------------------------------
+[Sample #26]
+True Code: 10수학01-16
+Pred Code: 10수학01-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이차함수의 그래프에 따라 해의 범위를 결정합니다.
+True Content: 이차부등식과 이차함수의 관계를 이해하고, 이차부등식과 연립이차부등식을 풀 수 있다.
+Pred Content: 이차방정식과 이차함수의 관계를 이해한다.
+LLM Response: 10수학01-09
+------------------------------------------------------------
+[Sample #33]
+True Code: 10수학03-06
+Pred Code: 10수학05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 충분조건과 필요조건은 다음과 같은 형태로 서로 관련 지을 수 있습니다.
+True Content: 충분조건과 필요조건을 이해하고 구별할 수 있다.
+Pred Content: 순열의 의미를 이해하고, 순열의 수를 구할 수 있다.
+LLM Response: 10수학05-02
+------------------------------------------------------------

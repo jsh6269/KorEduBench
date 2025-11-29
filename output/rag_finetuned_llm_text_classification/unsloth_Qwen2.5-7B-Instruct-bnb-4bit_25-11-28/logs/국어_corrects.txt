@@ -1,0 +1,752 @@
+Total correct samples: 75
+
+[Sample #112]
+Code: 6국03-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 개요를 바탕으로 통일성에 유의하며 글쓰기
+Content: 쓰기 과정을 점검ㆍ조정하며 글을 쓰고, 글 전체를 대상으로 통일성 있게 고쳐 쓴다.
+Pred Content: 쓰기 과정을 점검ㆍ조정하며 글을 쓰고, 글 전체를 대상으로 통일성 있게 고쳐 쓴다.
+LLM Response: 6국03-05
+------------------------------------------------------------
+[Sample #170]
+Code: 10국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 모음 조화 같은 음절 내의 모음이 조화를 이루기 위해 변화하는 현상입니다.
+Content: 음운의 변동을 탐구하여 올바르게 발음하고 표기한다
+Pred Content: 음운의 변동을 탐구하여 올바르게 발음하고 표기한다
+LLM Response: 10국04-02
+------------------------------------------------------------
+[Sample #115]
+Code: 6국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 또 "누구나 자기가 한 가지 생각을 하면 다른 이의 생각을 무엇이든지 반대한다"(이)라는 내용도 있네.
+Content: 고유어와 관용 표현의 쓰임과 가치를 이해하고 상황에 맞게 표현한다.
+Pred Content: 고유어와 관용 표현의 쓰임과 가치를 이해하고 상황에 맞게 표현한다.
+LLM Response: 6국04-03
+------------------------------------------------------------
+[Sample #148]
+Code: 09-10국04-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주제와 관련된 문장을 적절히 조합하여 내용을 전달하면, 듣는 사람이나 읽는 사람에게 명확한 이해를 제공합니다.
+Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+Pred Content: 올바른 문장 표현과 효과적인 담화 표현의 양상을 탐구한다.
+LLM Response: 09-10국04-10
+------------------------------------------------------------
+[Sample #127]
+Code: 09-9국05-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 다음은 작가의 태도가 드러나는 몇 가지 표현이다.
+Content: 표현에 드러나는 작가의 태도에 주목하며 작품을 이해하고 표현한다.
+Pred Content: 표현에 드러나는 작가의 태도에 주목하며 작품을 이해하고 표현한다.
+LLM Response: 09-9국05-04
+------------------------------------------------------------
+[Sample #146]
+Code: 10국05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 현대 문학은 분단과 전쟁, 산업화 등의 복잡한 사회적 배경을 반영합니다.
+Content: 문학사의 흐름을 고려하여 대표적인 한국 문학 작품을 감상한다.
+Pred Content: 문학사의 흐름을 고려하여 대표적인 한국 문학 작품을 감상한다.
+LLM Response: 10국05-03
+------------------------------------------------------------
+[Sample #111]
+Code: 10국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 자아 성찰: 일기를 쓰거나 자신만의 공간에서 혼자 생각하는 시간을 가지는 것도 좋습니다.
+Content: 삶의 문제에 대한 해결 방안이나 필자의 생각에 대한 대안을 찾으며 읽는다.
+Pred Content: 삶의 문제에 대한 해결 방안이나 필자의 생각에 대한 대안을 찾으며 읽는다.
+LLM Response: 10국02-03
+------------------------------------------------------------
+[Sample #46]
+Code: 10국04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이제 맞춤법을 연습해볼까요?
+Content: 한글 맞춤법의 기본 원리와 내용을 이해한다.
+Pred Content: 한글 맞춤법의 기본 원리와 내용을 이해한다.
+LLM Response: 10국04-04
+------------------------------------------------------------
+[Sample #68]
+Code: 9국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 상대와 사이가 더 좋아집니다.
+Content: 상대의 말을 경청하고 상대의 감정과 입장에 공감하는 반응을 보이며 대화한다.
+Pred Content: 상대의 말을 경청하고 상대의 감정과 입장에 공감하는 반응을 보이며 대화한다.
+LLM Response: 9국01-04
+------------------------------------------------------------
+[Sample #154]
+Code: 09-10국05-15
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여러분이 시를 쓰거나 이야기를 창작할 때, 개인적인 경험을 바탕으로 새로운 의미를 찾고 다양한 사고를 시도할 수 있습니다.
+Content: 문학 작품에 나타난 작가의 개성을 이해하고 작품을 감상한다.
+Pred Content: 문학 작품에 나타난 작가의 개성을 이해하고 작품을 감상한다.
+LLM Response: 09-10국05-15
+------------------------------------------------------------
+[Sample #141]
+Code: 9국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글을 읽을 때 지식이나 경험을 활용해 읽으면 글 내용을 더 잘 이해할 수 있고 새로운 지식을 더 많이 쌓을 수 있습니다.
+Content: 독자의 배경지식과 글에 나타난 정보 등을 활용하여 글에 드러나지 않은 의도나 관점을 추론하며 읽는다.
+Pred Content: 독자의 배경지식과 글에 나타난 정보 등을 활용하여 글에 드러나지 않은 의도나 관점을 추론하며 읽는다.
+LLM Response: 9국02-03
+------------------------------------------------------------
+[Sample #58]
+Code: 10국04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 또한, 국어 사용의 중요성은 사회 전반에 걸쳐 나타납니다.
+Content: 국어를 사랑하고 국어 발전에 참여하는 태도를 지닌다.
+Pred Content: 국어를 사랑하고 국어 발전에 참여하는 태도를 지닌다.
+LLM Response: 10국04-05
+------------------------------------------------------------
+[Sample #193]
+Code: 10공국1-05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 인공 지능의 수행 능력과는 별개 로 인공 지능의 책임. 윤리성, 한계 등은 그것을 활용하고 있는 사회 의 여러 특성과 제도에 따라 구성 됨을 말함.
+Content: 작품 구성 요소의 유기적 관계와 맥락에 유의하여 작품을 수용하고 생산한다.
+Pred Content: 작품 구성 요소의 유기적 관계와 맥락에 유의하여 작품을 수용하고 생산한다.
+LLM Response: 10공국1-05-03
+------------------------------------------------------------
+[Sample #109]
+Code: 09-9국05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예시: A는 B와의 대화를 통해 서로의 입장을 이해하게 됩니다.
+Content: 갈등의 진행과 해결 과정을 파악하며 작품을 이해한다.
+Pred Content: 갈등의 진행과 해결 과정을 파악하며 작품을 이해한다.
+LLM Response: 09-9국05-02
+------------------------------------------------------------
+[Sample #53]
+Code: 09-9국02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 비판적으로 읽기는 우리가 정보의 바다에서 올바른 판단을 내리는 데 도움이 될 것입니다.
+Content: 글이나 매체에 제시된 다양한 자료의 효과와 적절성을 평가하며 읽는다.
+Pred Content: 글이나 매체에 제시된 다양한 자료의 효과와 적절성을 평가하며 읽는다.
+LLM Response: 09-9국02-02
+------------------------------------------------------------
+[Sample #70]
+Code: 4국03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 의견을 제시하는 글 쓰기에서는 또 어떤 것이 중요할까요?
+Content: 대상에 대한 자신의 의견과 그렇게 생각한 이유가 드러나게 글을 쓴다.
+Pred Content: 대상에 대한 자신의 의견과 그렇게 생각한 이유가 드러나게 글을 쓴다.
+LLM Response: 4국03-03
+------------------------------------------------------------
+[Sample #104]
+Code: 10공국1-04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "ㅂ, ㄷ, ㄱ' 은 각각 입술소리, 잇몸소리, 여린입천장소리인데, 이 소리들은 비음과 만나면 같은 위치에서 발음되는 비음 'ㅁ, ㄴ, ㅇ' 으로 바뀜. 즉 발음되는 위치는 같으면서, 코로 숨을 보내는 것만 달라지는 것임 이 예들은 'ㅂ, ㄷ, ㄱ' 이 뒤의 비음의 영향으로 각각 'ㅁ, ㄴ, ㅇ'의 비음으로 바뀐 것이다.
+Content: 음운 변동을 탐구하여 발음과 표기에 올바르게 적용한다.
+Pred Content: 음운 변동을 탐구하여 발음과 표기에 올바르게 적용한다.
+LLM Response: 10공국1-04-02
+------------------------------------------------------------
+[Sample #171]
+Code: 6국06-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 기표소 투표용지에 써넣거나 표시할 수 있도록 투표장 안에 마련한 곳.
+Content: 적합한 양식과 수용자의 반응을 고려하여 복합양식 매체 자료를 제작하고 공유한다.
+Pred Content: 적합한 양식과 수용자의 반응을 고려하여 복합양식 매체 자료를 제작하고 공유한다.
+LLM Response: 6국06-03
+------------------------------------------------------------
+[Sample #0]
+Code: 9국01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 대화를 나눌 때 고려해야 하는 요소
+Content: 담화 공동체에 따른 듣기ㆍ말하기 방식의 다양성을 고려하여 듣고 말한다.
+Pred Content: 담화 공동체에 따른 듣기ㆍ말하기 방식의 다양성을 고려하여 듣고 말한다.
+LLM Response: 9국01-03
+------------------------------------------------------------
+[Sample #166]
+Code: 09-10국03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 심지어 이러한 내용이 일상적인 것처럼 느껴져 폭력에 대한 감각이 둔해질 수도 있습니다.
+Content: 폭력적인 글이 독자에게 미치는 영향을 인식하고, 독자를 존중하고 배려하며 글을 쓴다.
+Pred Content: 폭력적인 글이 독자에게 미치는 영향을 인식하고, 독자를 존중하고 배려하며 글을 쓴다.
+LLM Response: 09-10국03-10
+------------------------------------------------------------
+[Sample #51]
+Code: 4국03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글쓴이의 마음을 생각하며 지우가 쓴 글을 읽어 봅시다.
+Content: 목적과 주제를 고려하여 독자에게 마음을 전하는 글을 쓴다.
+Pred Content: 목적과 주제를 고려하여 독자에게 마음을 전하는 글을 쓴다.
+LLM Response: 4국03-04
+------------------------------------------------------------
+[Sample #40]
+Code: 9국04-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 고유어의 개념 우선 '달리기'처럼 본래부터 우리말에 있던 고유어가 있어.
+Content: 세대⋅분야⋅매체에 따른 어휘의 양상과 쓰임을 분석하고 다양한 집단과 사회의 언어에 관용적 태도를 지닌다.
+Pred Content: 세대⋅분야⋅매체에 따른 어휘의 양상과 쓰임을 분석하고 다양한 집단과 사회의 언어에 관용적 태도를 지닌다.
+LLM Response: 9국04-07
+------------------------------------------------------------
+[Sample #75]
+Code: 09-9국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 어문 규범은 우리말의 신호등 같은 역할을 해요.
+Content: 어문 규범의 기본 원리와 내용을 이해한다.
+Pred Content: 어문 규범의 기본 원리와 내용을 이해한다.
+LLM Response: 09-9국04-03
+------------------------------------------------------------
+[Sample #145]
+Code: 09-9국05-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 독자는 단순히 이야기를 듣는 것이 아니라, 그 세계에 함께 참여하는 경험을 하게 됩니다.
+Content: 작품의 세계가 누구의 눈을 통해 전달되는지 파악하며 작품을 수용한다.
+Pred Content: 작품의 세계가 누구의 눈을 통해 전달되는지 파악하며 작품을 수용한다.
+LLM Response: 09-9국05-05
+------------------------------------------------------------
+[Sample #181]
+Code: 9국03-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: "바람에 실려 온 꽃향기는 내 마음을 설레게 했다."
+Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+Pred Content: 생각이나 느낌, 경험을 드러내는 다양한 표현을 활용하여 글을 쓴다.
+LLM Response: 9국03-07
+------------------------------------------------------------
+[Sample #199]
+Code: 10국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그 글을 통해 어떤 생각이나 느낌을 얻었는지, 그리고 그것이 여러분의 일상 생활에 어떤 영향을 미쳤는지를 친구와 공유해 보세요.
+Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+Pred Content: 읽기는 읽기를 통해 서로 영향을 주고받으며 소통하는 사회적 상호 작용 행위임을 이해하고 글을 읽는다.
+LLM Response: 10국02-01
+------------------------------------------------------------
+[Sample #187]
+Code: 6국02-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 읽기 시간 하루에 얼마나 자주 책을 읽었는지 기록하기 일주일에 4일, 평균 30분씩 읽음 책의 다양성 읽은 책의 종류와 주제를 정리하기 자연과학, 판타지, 역사책 등 다양한 장르 읽음 감상 및 의견 읽은 책에 대한 느낌이나 생각 나누기 재미있거나 인상 깊었던 장면 정리 자기계발 읽기 후의 변화나 목표 설정하기 매일 1페이지 더 읽기 목표 설정
+Content: 자신의 읽기 습관을 점검하며 스스로 글을 찾아 읽는 태도를 지닌다.
+Pred Content: 자신의 읽기 습관을 점검하며 스스로 글을 찾아 읽는 태도를 지닌다.
+LLM Response: 6국02-06
+------------------------------------------------------------
+[Sample #55]
+Code: 09-9국01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 특징: 용감하고 지혜로운 전략가로, '명량해전'에서 큰 승리를 거두었습니다.
+Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+Pred Content: 인물이나 관심사를 다양한 방법으로 소개하거나 설명한다.
+LLM Response: 09-9국01-03
+------------------------------------------------------------
+[Sample #84]
+Code: 4국06-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 말할 내용에 따라 활용할 수 있는 자료가 왜 다른지 친구들과 이야기해 봅시다.
+Content: 매체를 활용하여 간단한 발표 자료를 만든다.
+Pred Content: 매체를 활용하여 간단한 발표 자료를 만든다.
+LLM Response: 4국06-02
+------------------------------------------------------------
+[Sample #78]
+Code: 09-9국03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 2주 동안 관찰을 지속했습니다.
+Content: 관찰, 조사, 실험한 내용을 절차와 결과가 드러나게 보고하는 글을 쓴다.
+Pred Content: 관찰, 조사, 실험한 내용을 절차와 결과가 드러나게 보고하는 글을 쓴다.
+LLM Response: 09-9국03-03
+------------------------------------------------------------
+[Sample #134]
+Code: 4국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 국어사전에서 낱말을 찾는 방법 알기
+Content: 단어를 분류하고 국어사전을 활용하여 능동적인 국어 활동을 한다.
+Pred Content: 단어를 분류하고 국어사전을 활용하여 능동적인 국어 활동을 한다.
+LLM Response: 4국04-02
+------------------------------------------------------------
+[Sample #129]
+Code: 6국03-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이처럼 독자의 입장을 배려하여 글을 쓴다면 더 많은 사람들이 쉽게 이해할 수 있어요.
+Content: 독자를 존중하고 배려하며 글을 쓰는 태도를 지닌다.
+Pred Content: 독자를 존중하고 배려하며 글을 쓰는 태도를 지닌다.
+LLM Response: 6국03-06
+------------------------------------------------------------
+[Sample #159]
+Code: 10국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 활동을 통해 의사소통 과정의 다양한 측면을 경험하고, 효과적인 토론 기술을 습득할 수 있을 것입니다.
+Content: 의사소통 과정을 점검하고 조정하며 듣고 말한다
+Pred Content: 의사소통 과정을 점검하고 조정하며 듣고 말한다
+LLM Response: 10국01-05
+------------------------------------------------------------
+[Sample #95]
+Code: 09-9국01-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 내 주변 사람들을 위해 더 나은 소통을 위해 무엇을 할 수 있을까?
+Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+Pred Content: 전통적 듣기·말하기 문화를 이해하고, 오늘날의 듣기·말하기 문화를 성찰한다.
+LLM Response: 09-9국01-12
+------------------------------------------------------------
+[Sample #91]
+Code: 9국03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 「'빼기' 는 기존의 물건에서 불필요한 부분을 없애고 꼭 필요한 부분만 남기는 발명 방법이다.」 「 」: <개념 정의>
+Content: 대상의 특성에 적합한 설명 방법을 활용하여 글을 쓴다.
+Pred Content: 대상의 특성에 적합한 설명 방법을 활용하여 글을 쓴다.
+LLM Response: 9국03-01
+------------------------------------------------------------
+[Sample #30]
+Code: 09-9국04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예: "그는 사라를 봅니다."에서 '보다'가 동사입니다.
+Content: 품사의 개념과 특성을 이해하고 단어를 적절하게 사용한다.
+Pred Content: 품사의 개념과 특성을 이해하고 단어를 적절하게 사용한다.
+LLM Response: 09-9국04-06
+------------------------------------------------------------
+[Sample #15]
+Code: 4국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여진이의 조사 주제가 적절한지 판단하기
+Content: 목적과 주제에 알맞게 자료를 정리하여 자신감 있게 발표한다.
+Pred Content: 목적과 주제에 알맞게 자료를 정리하여 자신감 있게 발표한다.
+LLM Response: 4국01-05
+------------------------------------------------------------
+[Sample #155]
+Code: 6국01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사회자, 찬성편 토론자, 반대편 토론자입니다.
+Content: 절차와 규칙을 지키고 타당한 이유와 근거를 제시하며 토론한다.
+Pred Content: 절차와 규칙을 지키고 타당한 이유와 근거를 제시하며 토론한다.
+LLM Response: 6국01-07
+------------------------------------------------------------
+[Sample #196]
+Code: 09-9국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 프로토콜: 데이터가 안전하게 이동하도록 도와주는 규칙입니다.
+Content: 설명하고자 하는 대상이나 개념에 맞게 적절한 설명 방법을 사용하여 독자가 이해하기 쉽게 글을 쓴다.
+Pred Content: 설명하고자 하는 대상이나 개념에 맞게 적절한 설명 방법을 사용하여 독자가 이해하기 쉽게 글을 쓴다.
+LLM Response: 09-9국03-02
+------------------------------------------------------------
+[Sample #56]
+Code: 6국03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 에펠 탑은 1889년에 프랑스 혁명 100주년을 기념해 세웠습니다.
+Content: 알맞은 내용을 선정하여 대상의 특성이 나타나게 설명하는 글을 쓴다.
+Pred Content: 알맞은 내용을 선정하여 대상의 특성이 나타나게 설명하는 글을 쓴다.
+LLM Response: 6국03-01
+------------------------------------------------------------
+[Sample #142]
+Code: 10국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서 협상의 기술을 익히고, 실제로 적용해보는 경험이 필요합니다.
+Content: 협상에서 서로 만족할 만한 대안을 탐색하여 의사 결정을 한다
+Pred Content: 협상에서 서로 만족할 만한 대안을 탐색하여 의사 결정을 한다
+LLM Response: 10국01-04
+------------------------------------------------------------
+[Sample #43]
+Code: 9국03-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글을 쓴 후에는 그 내용에 대한 책임을 져야 합니다.
+Content: 쓰기 윤리를 지키며 글을 쓰는 태도를 지닌다.
+Pred Content: 쓰기 윤리를 지키며 글을 쓰는 태도를 지닌다.
+LLM Response: 9국03-10
+------------------------------------------------------------
+[Sample #156]
+Code: 4국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리 집 강아지는 매우 귀여워요.
+Content: 문단과 글의 중심 생각을 파악한다.
+Pred Content: 문단과 글의 중심 생각을 파악한다.
+LLM Response: 4국02-01
+------------------------------------------------------------
+[Sample #42]
+Code: 9국04-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 통일이 이루어지면, 우리는 현재의 국어뿐만 아니라 북한에서 사용하는 국어도 함께 이해해야 합니다.
+Content: 통일 시대의 국어에 관심을 가지는 태도를 지닌다.
+Pred Content: 통일 시대의 국어에 관심을 가지는 태도를 지닌다.
+LLM Response: 9국04-09
+------------------------------------------------------------
+[Sample #165]
+Code: 09-10국04-12
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 한글과 우리 말에 대한 이해를 깊이 있게 하고, 이를 사랑하는 태도를 기르는 것은 매우 중요합니다.
+Content: 어휘의 체계와 양상을 이해하고 그것을 상황에 맞게 활용한다.
+Pred Content: 어휘의 체계와 양상을 이해하고 그것을 상황에 맞게 활용한다.
+LLM Response: 09-10국04-12
+------------------------------------------------------------
+[Sample #17]
+Code: 09-10국03-08
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이때 필요한 두 가지 요소가 바로 통일성과 응집성입니다.
+Content: 작문 맥락에 대한 분석을 바탕으로 여러 가지 타당한 근거를 제시하여 주장하는 글을 쓴다.
+Pred Content: 작문 맥락에 대한 분석을 바탕으로 여러 가지 타당한 근거를 제시하여 주장하는 글을 쓴다.
+LLM Response: 09-10국03-08
+------------------------------------------------------------
+[Sample #13]
+Code: 09-9국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 나의 의견만 주장하기보다는 다른 친구들의 의견도 잘 들어보고 조율하는 것이 중요합니다.
+Content: 주변에서 일어나는 문제에 대해 의견을 조정하며 토의한다.
+Pred Content: 주변에서 일어나는 문제에 대해 의견을 조정하며 토의한다.
+LLM Response: 09-9국01-05
+------------------------------------------------------------
+[Sample #157]
+Code: 10국01-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 우리는 언어 공동체의 일원으로서 우리의 말과 행동이 어떻게 다른 사람에게 영향을 미치는지 성찰해야 합니다.
+Content: 언어 공동체의 담화 관습을 성찰하고 바람직한 의사소통 문화 발전에 기여하는 태도를 지닌다.
+Pred Content: 언어 공동체의 담화 관습을 성찰하고 바람직한 의사소통 문화 발전에 기여하는 태도를 지닌다.
+LLM Response: 10국01-06
+------------------------------------------------------------
+[Sample #3]
+Code: 9국03-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 서진이는 긴장된 모습으로 담임 선생님께 갔다.(좋지 않은 일이 일어났음을 암시함)
+Content: 언어 공동체의 구성원인 필자로서 자신에 대해 성찰하며, 윤리적 소통 문화를 형성하는 데에 기여한다.
+Pred Content: 언어 공동체의 구성원인 필자로서 자신에 대해 성찰하며, 윤리적 소통 문화를 형성하는 데에 기여한다.
+LLM Response: 9국03-09
+------------------------------------------------------------
+[Sample #18]
+Code: 09-9국01-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주제: "학교에서의 휴대폰 사용은 찬성인가 반대인가?"
+Content: 다양한 논제에 대해 토론하고 토론의 과정과 결과를 평가한다.
+Pred Content: 다양한 논제에 대해 토론하고 토론의 과정과 결과를 평가한다.
+LLM Response: 09-9국01-06
+------------------------------------------------------------
+[Sample #101]
+Code: 4국05-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 눈썹 모양(표정)과 이마의 땀으로 인물의 마음을 짐작할 수 있습니 다.
+Content: 작품을 듣거나 읽고 마음에 드는 작품을 소개한다.
+Pred Content: 작품을 듣거나 읽고 마음에 드는 작품을 소개한다.
+LLM Response: 4국05-03
+------------------------------------------------------------
+[Sample #167]
+Code: 9국01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 타당한 근거: 한 조사에 따르면, 스마트폰이 수업 중 유혹이 되어 70%의 학생들이 수업에 집중하기 힘들어한다는 응답이 있었다.
+Content: 토론에서 타당한 근거를 들어 논박한다.
+Pred Content: 토론에서 타당한 근거를 들어 논박한다.
+LLM Response: 9국01-05
+------------------------------------------------------------
+[Sample #5]
+Code: 09-9국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 운율 연습: 짧은 시를 지어보세요.
+Content: 비유, 운율, 상징 등의 표현 방식을 바탕으로 작품을 이해하고 표현한다.
+Pred Content: 비유, 운율, 상징 등의 표현 방식을 바탕으로 작품을 이해하고 표현한다.
+LLM Response: 09-9국05-01
+------------------------------------------------------------
+[Sample #94]
+Code: 9국04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: [바], [다]를 발음해 보면 소리가 나기 전에 이미 두 입술이 맞닿아 있거나 혀끝이 윗잇몸에 닿아 있어 발음을 준비하고 있음을 알 수 있을 거야.
+Content: 국어의 음운 체계와 문자 체계를 이해하고 국어생활에 활용한다.
+Pred Content: 국어의 음운 체계와 문자 체계를 이해하고 국어생활에 활용한다.
+LLM Response: 9국04-01
+------------------------------------------------------------
+[Sample #128]
+Code: 4국03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 지역 시(도)청, 구(군)청의 누리집을 살펴봅니다.
+Content: 절차와 결과가 드러나게 정확한 표현으로 보고하는 글을 쓴다.
+Pred Content: 절차와 결과가 드러나게 정확한 표현으로 보고하는 글을 쓴다.
+LLM Response: 4국03-02
+------------------------------------------------------------
+[Sample #184]
+Code: 09-9국03-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 요즘 제가 느끼기에 학교 주변의 교통 상황이 매우 위험해지고 있습니다.
+Content: 학교나 지역 사회에서 일어난 일에 대해 문제 해결 방안이나 요구 사항을 담은 글을 쓴다.
+Pred Content: 학교나 지역 사회에서 일어난 일에 대해 문제 해결 방안이나 요구 사항을 담은 글을 쓴다.
+LLM Response: 09-9국03-05
+------------------------------------------------------------
+[Sample #136]
+Code: 6국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 아는 것과 새롭게 안 것 어휘의 확장 국어의 낱말 확장 방법을 탐구하고 어휘력을 높인다. 주변의 사물이나 현상을 설명하는 여러 가지 낱말 찾기 유의어나 반의어를 찾아보며 단어의 의미 확장하기 짧은 이야기를 만들고 그에 맞는 어휘를 추가하여 표현력 높이기 새로운 단어를 사용하여 짧은 시나 에세이 작성하기
+Content: 국어의 낱말 확장 방법을 탐구하고 어휘력을 높이는 데에 적용한다.
+Pred Content: 국어의 낱말 확장 방법을 탐구하고 어휘력을 높이는 데에 적용한다.
+LLM Response: 6국04-02
+------------------------------------------------------------
+[Sample #36]
+Code: 9국04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그러나 형용사는 불가능하지.
+Content: 품사의 종류와 특성을 이해하고 국어 자료를 분석한다.
+Pred Content: 품사의 종류와 특성을 이해하고 국어 자료를 분석한다.
+LLM Response: 9국04-03
+------------------------------------------------------------
+[Sample #176]
+Code: 4국05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 작품 속 세계는 현실 세계와 비슷하거나 같은 점도 있습니다.
+Content: 자신의 경험을 바탕으로 작품 속 세계와 현실 세계를 비교하여 작품을 감상한다.
+Pred Content: 자신의 경험을 바탕으로 작품 속 세계와 현실 세계를 비교하여 작품을 감상한다.
+LLM Response: 4국05-02
+------------------------------------------------------------
+[Sample #50]
+Code: 09-10국04-11
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 현대국어: 현재는 ‘이르다’라는 표현이 주로 사용되며, 다양한 의미를 포함하게 되었습니다.
+Content: 국어의 변천을 이해하고 국어의 발전 방향을 탐구한다.
+Pred Content: 국어의 변천을 이해하고 국어의 발전 방향을 탐구한다.
+LLM Response: 09-10국04-11
+------------------------------------------------------------
+[Sample #7]
+Code: 09-9국02-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글의 내용을 자세히 이해하고, 자신만의 질문을 추가로 만들어 봅시다.
+Content: 글의 내용을 토대로 질문을 생성하며 능동적으로 읽는다
+Pred Content: 글의 내용을 토대로 질문을 생성하며 능동적으로 읽는다
+LLM Response: 09-9국02-06
+------------------------------------------------------------
+[Sample #169]
+Code: 4국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 만화 영화를 감상하고 이어질 내용을 역할극으로 나타내기
+Content: 인물과 이야기의 흐름을 중심으로 작품을 감상한다.
+Pred Content: 인물과 이야기의 흐름을 중심으로 작품을 감상한다.
+LLM Response: 4국05-01
+------------------------------------------------------------
+[Sample #168]
+Code: 09-9국04-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 상호작용성: 담화는 주고받으며 이루어지는 상호작용입니다.
+Content: 담화의 개념과 특성을 이해하고 담화 상황에 적합한 국어 생활을 한다.
+Pred Content: 담화의 개념과 특성을 이해하고 담화 상황에 적합한 국어 생활을 한다.
+LLM Response: 09-9국04-10
+------------------------------------------------------------
+[Sample #33]
+Code: 09-9국05-10
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 시인이나 소설가는 자신의 감정을 글로 풀어내면서 독자가 공감할 수 있도록 이끌어줍니다.
+Content: 문학이 인간의 삶에 어떤 가치를 지니는지 이해한다.
+Pred Content: 문학이 인간의 삶에 어떤 가치를 지니는지 이해한다.
+LLM Response: 09-9국05-10
+------------------------------------------------------------
+[Sample #191]
+Code: 09-9국01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이렇게 제한된 기회를 강조하면 소비자는 즉각 구매를 결심할 가능성이 높아집니다.
+Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+Pred Content: 담화에 나타난 설득의 전략을 파악하고 평가한다.
+LLM Response: 09-9국01-04
+------------------------------------------------------------
+[Sample #73]
+Code: 10국05-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 각 갈래는 특유의 표현 방식과 주제를 갖고 있어, 이를 이해하는 것은 작품 감상에 큰 도움을 줍니다.
+Content: 갈래의 특성에 따른 형상화 방법을 중심으로 작품을 감상한다.
+Pred Content: 갈래의 특성에 따른 형상화 방법을 중심으로 작품을 감상한다.
+LLM Response: 10국05-02
+------------------------------------------------------------
+[Sample #65]
+Code: 6국05-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 작가, 작품, 독자의 관계(작품의 소통 맥락)
+Content: 작가의 의도를 생각하며 작품을 읽는다.
+Pred Content: 작가의 의도를 생각하며 작품을 읽는다.
+LLM Response: 6국05-01
+------------------------------------------------------------
+[Sample #162]
+Code: 09-9국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 음운 찾기: 주변에서 자주 듣는 단어들을 적고, 그 단어의 음운을 분석해 보세요.
+Content: 음운 체계를 탐구하고 그 특징을 이해한다.
+Pred Content: 음운 체계를 탐구하고 그 특징을 이해한다.
+LLM Response: 09-9국04-02
+------------------------------------------------------------
+[Sample #21]
+Code: 6국01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그러나 무엇이 옳고 그른지에 대한 판단 없이 더 많은 사람의 의견이라는 이유만으로 정해지기 때문에 잘못된 결정일 가능성이 있으며, 소수 의견이 무시되어 소수의 이해관계를 지속적으로 충족하지 못하는 경우도 있다는 점은 단점이지.
+Content: 주장을 파악하고 이유나 근거가 타당한지 평가하며 듣는다.
+Pred Content: 주장을 파악하고 이유나 근거가 타당한지 평가하며 듣는다.
+LLM Response: 6국01-02
+------------------------------------------------------------
+[Sample #102]
+Code: 9국04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 글은 단어의 짜임새에 대해 설명하는 글이다.
+Content: 단어의 짜임을 분석하여 새말 형성의 원리를 이해한다.
+Pred Content: 단어의 짜임을 분석하여 새말 형성의 원리를 이해한다.
+LLM Response: 9국04-02
+------------------------------------------------------------
+[Sample #131]
+Code: 09-10국05-13
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 조선 시대에는 한글의 창제로 인해 문학이 대중화되었고, 한시와 소설 등의 장르가 발전했습니다.
+Content: 전승 과정에 유의하여 한국 문학의 흐름을 이해한다.
+Pred Content: 전승 과정에 유의하여 한국 문학의 흐름을 이해한다.
+LLM Response: 09-10국05-13
+------------------------------------------------------------
+[Sample #122]
+Code: 4국04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 한글의 모음자는 하늘, 땅, 사람의 모양을 본떠 만들었습니다.
+Content: 언어가 의사소통과 관계 형성의 수단임을 이해하고 국어를 소중히 여기는 태도를 지닌다.
+Pred Content: 언어가 의사소통과 관계 형성의 수단임을 이해하고 국어를 소중히 여기는 태도를 지닌다.
+LLM Response: 4국04-05
+------------------------------------------------------------
+[Sample #180]
+Code: 09-9국02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이런 식으로 글의 내용에 대한 예상을 하며 읽기 시작하면, 이야기가 전개되는 과정에서 더 주의 깊게 내용을 파악할 수 있습니다.
+Content: 지식과 경험, 글의 정보, 읽기 맥락을 토대로 내용을 예측하며 글을 읽는다.
+Pred Content: 지식과 경험, 글의 정보, 읽기 맥락을 토대로 내용을 예측하며 글을 읽는다.
+LLM Response: 09-9국02-01
+------------------------------------------------------------
+[Sample #140]
+Code: 09-9국02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 수영과 해수욕을 즐기고, 캠핑에서는 요리와 별 구경을 할 계획이다.
+Content: 읽기 목적에 따라 적절한 방법으로 글의 내용을 요약한다
+Pred Content: 읽기 목적에 따라 적절한 방법으로 글의 내용을 요약한다
+LLM Response: 09-9국02-03
+------------------------------------------------------------
+[Sample #20]
+Code: 09-9국04-09
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어 친구와의 대화, 선생님과의 대화, 공식적인 자리에서의 발표 등에서는 사용하는 언어의 수준과 문법 표현이 달라질 수 있습니다.
+Content: 문법적 기능을 담당하는 요소들의 특징을 이해하고 담화 상황에 맞게 사용할 수 있다.
+Pred Content: 문법적 기능을 담당하는 요소들의 특징을 이해하고 담화 상황에 맞게 사용할 수 있다.
+LLM Response: 09-9국04-09
+------------------------------------------------------------

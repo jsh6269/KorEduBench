@@ -1,0 +1,682 @@
+Total correct samples: 68
+
+[Sample #179]
+Code: 9영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Am I on time? (제가 제시간에 맞춰 왔나요?)
+Content: 연음이나 축약된 소리를 활용하여 단어, 어구, 문장을 말한다.
+Pred Content: 연음이나 축약된 소리를 활용하여 단어, 어구, 문장을 말한다.
+LLM Response: 9영02-01
+------------------------------------------------------------
+[Sample #67]
+Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: On Saturday, I went to the art festival in the park.
+Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #25]
+Code: 10영01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Jake: Yes!
+Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 화자의 심정이나 태도를 추론할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 화자의 심정이나 태도를 추론할 수 있다.
+LLM Response: 10영01-05
+------------------------------------------------------------
+[Sample #41]
+Code: 10영03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: By adopting, you provide a loving environment for an animal in need.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 세부 정보를 파악할 수 있다.
+LLM Response: 10영03-01
+------------------------------------------------------------
+[Sample #75]
+Code: 4영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: YES
+Content: 알파벳 대소문자를 식별하여 읽는다.
+Pred Content: 알파벳 대소문자를 식별하여 읽는다.
+LLM Response: 4영01-02
+------------------------------------------------------------
+[Sample #20]
+Code: 10영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Instructions: Listen to the following dialogue between two friends discussing their experiences with animals.
+Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 주제 및 요지를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 주제 및 요지를 파악할 수 있다.
+LLM Response: 10영01-02
+------------------------------------------------------------
+[Sample #108]
+Code: 4영03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I have a book.
+Content: 쉽고 간단한 낱말이나 어구, 문장을 따라 읽을 수 있다.
+Pred Content: 쉽고 간단한 낱말이나 어구, 문장을 따라 읽을 수 있다.
+LLM Response: 4영03-03
+------------------------------------------------------------
+[Sample #158]
+Code: 6영04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Now, look at the fruit pictures provided by the teacher.
+Content: 실물이나 그림을 보고 한두 문장으로 표현할 수 있다.
+Pred Content: 실물이나 그림을 보고 한두 문장으로 표현할 수 있다.
+LLM Response: 6영04-04
+------------------------------------------------------------
+[Sample #114]
+Code: 4영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: A A a B B b C C D D d E E e F F f G G g H H h I I i J J j K K k L L l M M m N N n O O o P P p Q Q q R R r S S s T T t U U u V V v W W w X X x Y Y y Z Z z
+Content: 알파벳 대소문자를 구별하여 쓸 수 있다.
+Pred Content: 알파벳 대소문자를 구별하여 쓸 수 있다.
+LLM Response: 4영04-01
+------------------------------------------------------------
+[Sample #139]
+Code: 6영02-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Emily, here is your textbook.
+Content: 주변 사람이나 사물을 간단한 문장으로 소개하거나 묘사한다.
+Pred Content: 주변 사람이나 사물을 간단한 문장으로 소개하거나 묘사한다.
+LLM Response: 6영02-04
+------------------------------------------------------------
+[Sample #54]
+Code: 10영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Smartphones have both positive and negative impacts on our lives.
+Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+LLM Response: 10영04-01
+------------------------------------------------------------
+[Sample #79]
+Code: 4영01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: l
+Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+Pred Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+LLM Response: 4영01-04
+------------------------------------------------------------
+[Sample #161]
+Code: 6영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Let’s celebrate this weekend!
+Content: 예시문을 참고하여 간단한 초대, 감사, 축하 등의 글을 쓸 수 있다.
+Pred Content: 예시문을 참고하여 간단한 초대, 감사, 축하 등의 글을 쓸 수 있다.
+LLM Response: 6영04-05
+------------------------------------------------------------
+[Sample #105]
+Code: 4영03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Cat (C, c)
+Content: 알파벳 대소문자를 식별하여 읽을 수 있다.
+Pred Content: 알파벳 대소문자를 식별하여 읽을 수 있다.
+LLM Response: 4영03-01
+------------------------------------------------------------
+[Sample #149]
+Code: 6영03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Lily's eyes are blue, and she always smiles brightly.
+Content: 그림이나 도표에 대한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: 그림이나 도표에 대한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+LLM Response: 6영03-02
+------------------------------------------------------------
+[Sample #106]
+Code: 4영03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: The sound of pencil starts with the /p/ sound.
+Content: 소리와 철자의 관계를 이해하여 낱말을 읽을 수 있다.
+Pred Content: 소리와 철자의 관계를 이해하여 낱말을 읽을 수 있다.
+LLM Response: 4영03-02
+------------------------------------------------------------
+[Sample #157]
+Code: 6영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Favorite Something you like the most.
+Content: 구두로 익힌 문장을 쓸 수 있다.
+Pred Content: 구두로 익힌 문장을 쓸 수 있다.
+LLM Response: 6영04-03
+------------------------------------------------------------
+[Sample #2]
+Code: 10공영1-01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: When Fayola got to the edge, Aunt Imani lifted her effortlessly with her trunk. Fayola가 가장자리에 이르자 Imani 이모가 코를 써서 손쉽게 그 애를 들어 올렸다.
+Content: 말이나 글에 포함된 세부 정보를 파악한다.
+Pred Content: 말이나 글에 포함된 세부 정보를 파악한다.
+LLM Response: 10공영1-01-01
+------------------------------------------------------------
+[Sample #109]
+Code: 4영03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Pencil PENCIL
+Content: 쉽고 간단한 낱말이나 어구, 문장을 따라 읽을 수 있다.
+Pred Content: 쉽고 간단한 낱말이나 어구, 문장을 따라 읽을 수 있다.
+LLM Response: 4영03-03
+------------------------------------------------------------
+[Sample #23]
+Code: 10영01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Jake: Yeah, I think it’s about using resources in a way that they won't run out.
+Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 내용의 논리적 관계를 파악할 수 있다.
+LLM Response: 10영01-03
+------------------------------------------------------------
+[Sample #80]
+Code: 4영01-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 책이 8권이 있는 그림과 aeiygiht, eight 라는 단어가 적혀있다.
+Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+Pred Content: 소리와 철자의 관계를 이해하며 쉽고 간단한 단어, 어구, 문장을 소리 내어 읽는다.
+LLM Response: 4영01-04
+------------------------------------------------------------
+[Sample #113]
+Code: 4영03-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: They have fun talking and playing together.
+Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+Pred Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+LLM Response: 4영03-05
+------------------------------------------------------------
+[Sample #131]
+Code: 6영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Tom: After that, we can meet at the park at 10 AM.
+Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+Pred Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+LLM Response: 6영01-07
+------------------------------------------------------------
+[Sample #136]
+Code: 6영02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: tall (키가 큰)
+Content: 주변 사람과 사물에 관해 쉽고 간단한 문장으로 묘사할 수 있다.
+Pred Content: 주변 사람과 사물에 관해 쉽고 간단한 문장으로 묘사할 수 있다.
+LLM Response: 6영02-03
+------------------------------------------------------------
+[Sample #93]
+Code: 4영02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 빨간색 체크 무늬 포장지로 되어 있는 지우개가 있다.
+Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 단어를 쓴다.
+Pred Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 단어를 쓴다.
+LLM Response: 4영02-03
+------------------------------------------------------------
+[Sample #174]
+Code: 9영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: In a movie theater 영화관에서
+Content: 단어, 어구, 문장의 함축적 의미를 추론한다.
+Pred Content: 단어, 어구, 문장의 함축적 의미를 추론한다.
+LLM Response: 9영01-07
+------------------------------------------------------------
+[Sample #55]
+Code: 10영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: We can share photos and videos instantly.
+Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 기록할 수 있다.
+LLM Response: 10영04-01
+------------------------------------------------------------
+[Sample #50]
+Code: 10영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: For instance, a painting with dark colors may evoke feelings of sadness, while one with bright colors can inspire joy and happiness.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 필자의 의도나 글의 목적을 파악할 수 있다.
+LLM Response: 10영03-04
+------------------------------------------------------------
+[Sample #118]
+Code: 4영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: An alarm makes a loud sound to tell firefighters when there is a fire.
+Content: 실물이나 그림을 보고 쉽고 간단한 낱말이나 어구를 쓸 수 있다.
+Pred Content: 실물이나 그림을 보고 쉽고 간단한 낱말이나 어구를 쓸 수 있다.
+LLM Response: 4영04-03
+------------------------------------------------------------
+[Sample #133]
+Code: 6영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I bought it from a store in my town."
+Content: 그림, 실물, 동작에 관해 한두 문장으로 표현할 수 있다.
+Pred Content: 그림, 실물, 동작에 관해 한두 문장으로 표현할 수 있다.
+LLM Response: 6영02-01
+------------------------------------------------------------
+[Sample #112]
+Code: 4영03-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Draw a picture of you waiting in line with your friends.
+Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+Pred Content: 쉽고 간단한 문장을 읽고 의미를 이해할 수 있다.
+LLM Response: 4영03-05
+------------------------------------------------------------
+[Sample #140]
+Code: 6영02-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Ryan: Mom, how can I get to the Jungang Post Office?
+Content: 주변 장소나 위치, 행동 순서나 방법을 간단한 문장으로 설명한다.
+Pred Content: 주변 장소나 위치, 행동 순서나 방법을 간단한 문장으로 설명한다.
+LLM Response: 6영02-05
+------------------------------------------------------------
+[Sample #28]
+Code: 10영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: We sit together for dinner, sharing stories and laughter.
+Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+LLM Response: 10영02-01
+------------------------------------------------------------
+[Sample #63]
+Code: 10영04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: We can save energy by turning off lights when we leave a room and using energyefficient appliances.
+Content: 주변의 대상이나 상황을 묘사하는 글을 쓸 수 있다.
+Pred Content: 주변의 대상이나 상황을 묘사하는 글을 쓸 수 있다.
+LLM Response: 10영04-04
+------------------------------------------------------------
+[Sample #87]
+Code: 4영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Chicken (치킨)
+Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+LLM Response: 4영01-07
+------------------------------------------------------------
+[Sample #123]
+Code: 6영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: make robots
+Content: 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 소리 내어 읽는다.
+Pred Content: 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 소리 내어 읽는다.
+LLM Response: 6영01-02
+------------------------------------------------------------
+[Sample #156]
+Code: 6영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I am happy when I go to the park.
+Content: 구두로 익힌 문장을 쓸 수 있다.
+Pred Content: 구두로 익힌 문장을 쓸 수 있다.
+LLM Response: 6영04-03
+------------------------------------------------------------
+[Sample #0]
+Code: 10공영1-01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Did you know that acacia trees and insects rely on each other? 아까시나무와 곤충들이 서로 의지하는 것 알고 있었니?
+Content: 말이나 글에 포함된 세부 정보를 파악한다.
+Pred Content: 말이나 글에 포함된 세부 정보를 파악한다.
+LLM Response: 10공영1-01-01
+------------------------------------------------------------
+[Sample #52]
+Code: 10영03-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Friends can make us laugh, support us in tough times, and create cherished memories.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+LLM Response: 10영03-06
+------------------------------------------------------------
+[Sample #94]
+Code: 4영02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 6시를 나타내는 시계가 있는 공원
+Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 단어를 쓴다.
+Pred Content: 소리와 철자의 관계를 바탕으로 쉽고 간단한 단어를 쓴다.
+LLM Response: 4영02-03
+------------------------------------------------------------
+[Sample #60]
+Code: 10영04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Write a short paragraph explaining why you think it is special.
+Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 쓸 수 있다.
+LLM Response: 10영04-03
+------------------------------------------------------------
+[Sample #5]
+Code: 10공영1-01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: remind A of B: A에게 B를 상기시켜주다
+Content: 말이나 글의 주제나 요지를 파악한다.
+Pred Content: 말이나 글의 주제나 요지를 파악한다.
+LLM Response: 10공영1-01-02
+------------------------------------------------------------
+[Sample #129]
+Code: 6영01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Please read aloud "Jane Goodall" once more at home. Next time, we will do some more reading and writing activities. Have a good day!
+Content: 일상생활 주제에 관한 담화나 글의 중심 내용을 파악한다.
+Pred Content: 일상생활 주제에 관한 담화나 글의 중심 내용을 파악한다.
+LLM Response: 6영01-05
+------------------------------------------------------------
+[Sample #59]
+Code: 10영04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: This can lead to stress and anxiety among young people.
+Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 간단하게 요약할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 간단하게 요약할 수 있다.
+LLM Response: 10영04-02
+------------------------------------------------------------
+[Sample #24]
+Code: 10영01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: B) Curious
+Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 화자의 심정이나 태도를 추론할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 말이나 대화를 듣고 화자의 심정이나 태도를 추론할 수 있다.
+LLM Response: 10영01-05
+------------------------------------------------------------
+[Sample #117]
+Code: 4영04-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Write "cat."
+Content: 구두로 익힌 낱말이나 어구를 따라 쓰거나 보고 쓸 수 있다.
+Pred Content: 구두로 익힌 낱말이나 어구를 따라 쓰거나 보고 쓸 수 있다.
+LLM Response: 4영04-02
+------------------------------------------------------------
+[Sample #101]
+Code: 4영02-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: How many carrots does the rabbit eat?
+Content: 일상생활 속의 친숙한 주제에 관해 쉽고 간단한 표현으로 묻거나 답할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관해 쉽고 간단한 표현으로 묻거나 답할 수 있다.
+LLM Response: 4영02-07
+------------------------------------------------------------
+[Sample #89]
+Code: 4영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Tom: Really?
+Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+LLM Response: 4영01-07
+------------------------------------------------------------
+[Sample #42]
+Code: 10영03-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: By appreciating and caring for animals, we can create a better world for both us and them.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 주제 및 요지를 파악할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 주제 및 요지를 파악할 수 있다.
+LLM Response: 10영03-02
+------------------------------------------------------------
+[Sample #115]
+Code: 4영04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: <table border="1"> <tr> <th>영어 (English)</th> <th>한국어 (Korean)</th> </tr> <tr> <td>A - a</td> <td>ㅏ - ㅏ</td> </tr> <tr> <td>B - b</td> <td>ㅂ - ㅂ</td> </tr> <tr> <td>C - c</td> <td>씨 - 씨</td> </tr> <tr> <td>D - d</td> <td>디 - 디</td> </tr> <tr> <td>E - e</td> <td>이 - 이</td> </tr> <tr> <td>F - f</td> <td>에프 - 에프</td> </tr> <tr> <td>G - g</td> <td>지 - 지</td> </tr> <tr> <td>H - h</td> <td>에이치 - 에이치</td> </tr> <tr> <td>I - i</td> <td>아이 - 아이</td> </tr> <tr> <td>J - j</td> <td>제이 - 제이</td> </tr> <tr> <td>K - k</td> <td>케이 - 케이</td> </tr> <tr> <td>L - l</td> <td>엘 - 엘</td> </tr> <tr> <td>M - m</td> <td>엠 - 엠</td> </tr> <tr> <td>N - n</td> <td>엔 - 엔</td> </tr> <tr> <td>O - o</td> <td>오 - 오</td> </tr> <tr> <td>P - p</td> <td>피 - 피</td> </tr> <tr> <td>Q - q</td> <td>큐 - 큐</td> </tr> <tr> <td>R - r</td> <td>아르 - 아르</td> </tr> <tr> <td>S - s</td> <td>에스 - 에스</td> </tr> <tr> <td>T - t</td> <td>티 - 티</td> </tr> <tr> <td>U - u</td> <td>유 - 유</td> </tr> <tr> <td>V - v</td> <td>브이 - 브이</td> </tr> <tr> <td>W - w</td> <td>더블유 - 더블유</td> </tr> <tr> <td>X - x</td> <td>엑스 - 엑스</td> </tr> <tr> <td>Y - y</td> <td>와이 - 와이</td> </tr> <tr> <td>Z - z</td> <td>지 - 지</td> </tr></table>
+Content: 알파벳 대소문자를 구별하여 쓸 수 있다.
+Pred Content: 알파벳 대소문자를 구별하여 쓸 수 있다.
+LLM Response: 4영04-01
+------------------------------------------------------------
+[Sample #150]
+Code: 6영03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: My name is Mia.
+Content: 일상생활 속의 친숙한 주제에 관한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관한 쉽고 짧은 글을 읽고 세부 정보를 파악할 수 있다.
+LLM Response: 6영03-03
+------------------------------------------------------------
+[Sample #82]
+Code: 4영01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: What did Moni say to the magician?
+Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+LLM Response: 4영01-05
+------------------------------------------------------------
+[Sample #29]
+Code: 10영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: What does Sarah eat for breakfast?
+Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관하여 듣거나 읽고 세부 정보를 설명할 수 있다
+LLM Response: 10영02-01
+------------------------------------------------------------
+[Sample #81]
+Code: 4영01-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: When we leave, we use expressions like "Goodbye" or "Bye."
+Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+Pred Content: 쉽고 간단한 단어, 어구, 문장의 의미를 이해한다.
+LLM Response: 4영01-05
+------------------------------------------------------------
+[Sample #77]
+Code: 4영01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: C c
+Content: 알파벳 대소문자를 식별하여 읽는다.
+Pred Content: 알파벳 대소문자를 식별하여 읽는다.
+LLM Response: 4영01-02
+------------------------------------------------------------
+[Sample #68]
+Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Best regards,
+Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #70]
+Code: 10영04-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: The biggest part of my pie chart is school.
+Content: 일상생활이나 친숙한 일반적 주제에 관한 그림, 도표 등을 설명하는 글을 쓸 수 있다
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관한 그림, 도표 등을 설명하는 글을 쓸 수 있다
+LLM Response: 10영04-06
+------------------------------------------------------------
+[Sample #91]
+Code: 4영02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: $\mathrm{r}, / \mathrm{r} /$, run
+Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+Pred Content: 쉽고 간단한 단어, 어구, 문장을 강세, 리듬, 억양에 맞게 따라 말한다.
+LLM Response: 4영02-01
+------------------------------------------------------------
+[Sample #130]
+Code: 6영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Special green lunch
+Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+Pred Content: 쉽고 간단한 말이나 대화를 듣고 일의 순서를 파악할 수 있다.
+LLM Response: 6영01-07
+------------------------------------------------------------
+[Sample #46]
+Code: 10영03-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Cows, chickens, and sheep are raised for food, while horses and dogs are often used for work and transportation.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 내용의 논리적 관계를 파악할 수 있다
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 내용의 논리적 관계를 파악할 수 있다
+LLM Response: 10영03-03
+------------------------------------------------------------
+[Sample #88]
+Code: 4영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Teacher: Who can tell me some chicken dishes?
+Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+LLM Response: 4영01-07
+------------------------------------------------------------
+[Sample #121]
+Code: 6영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Welcome (환영합니다) Hello (안녕하세요) Hello, how are you? (안녕하세요, 당신은 어떻게 지내나요?) Listen and repeat the greetings. (인사말을 듣고 따라 말하세요.) Colors (색깔) Red (빨간색) The apple is red. (사과는 빨간색입니다.) Identify the stress in the word "red." (단어 "red"의 강세를 식별하세요.) Numbers (숫자) Three (삼) I have three apples. (저는 사과 3개가 있어요.) Listen for the rhythm in the sentence. (문장의 리듬을 듣고 확인하세요.) Actions (행동) Run (달리다) I like to run fast. (저는 빨리 달리는 것을 좋아합니다.) Pay attention to the intonation. (억양에 주의하세요.) Animals (동물) Dog (개) The dog is barking. (개가 짖고 있습니다.) Practice noticing the stress on "barking." (단어 "barking"의 강세를 느껴보세요.)
+Content: 간단한 단어, 어구, 문장을 듣고 강세, 리듬, 억양을 식별한다.
+Pred Content: 간단한 단어, 어구, 문장을 듣고 강세, 리듬, 억양을 식별한다.
+LLM Response: 6영01-01
+------------------------------------------------------------
+[Sample #160]
+Code: 6영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Please come and celebrate with me.
+Content: 예시문을 참고하여 간단한 초대, 감사, 축하 등의 글을 쓸 수 있다.
+Pred Content: 예시문을 참고하여 간단한 초대, 감사, 축하 등의 글을 쓸 수 있다.
+LLM Response: 6영04-05
+------------------------------------------------------------
+[Sample #152]
+Code: 6영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Maybe one day, I will visit New York and see all the wonderful places Jake talks about!
+Content: 쉽고 짧은 글을 읽고 줄거리나 목적 등 중심 내용을 파악할 수 있다.
+Pred Content: 쉽고 짧은 글을 읽고 줄거리나 목적 등 중심 내용을 파악할 수 있다.
+LLM Response: 6영03-04
+------------------------------------------------------------
+[Sample #111]
+Code: 4영03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I have a green pencil, a red pencil, and a black pencil.
+Content: 쉽고 간단한 낱말이나 어구를 읽고 의미를 이해할 수 있다.
+Pred Content: 쉽고 간단한 낱말이나 어구를 읽고 의미를 이해할 수 있다.
+LLM Response: 4영03-04
+------------------------------------------------------------
+[Sample #120]
+Code: 6영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: How does your voice change at the end of sentences?
+Content: 간단한 단어, 어구, 문장을 듣고 강세, 리듬, 억양을 식별한다.
+Pred Content: 간단한 단어, 어구, 문장을 듣고 강세, 리듬, 억양을 식별한다.
+LLM Response: 6영01-01
+------------------------------------------------------------
+[Sample #1]
+Code: 10공영1-01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Chidi는 엄마를 올려다보며 말했다. "Dalia 이모는 늘 우리에게 코가 없다면, 우리가 많은 위험에 처할 거라고 말해요!" Chidi looked up at his mom and said, "Aunt Dalia always says if we didn't have our trunks, we would be in a lot of danger!"
+Content: 말이나 글에 포함된 세부 정보를 파악한다.
+Pred Content: 말이나 글에 포함된 세부 정보를 파악한다.
+LLM Response: 10공영1-01-01
+------------------------------------------------------------
+[Sample #159]
+Code: 6영04-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: (이것들은 레몬입니다.
+Content: 실물이나 그림을 보고 한두 문장으로 표현할 수 있다.
+Pred Content: 실물이나 그림을 보고 한두 문장으로 표현할 수 있다.
+LLM Response: 6영04-04
+------------------------------------------------------------

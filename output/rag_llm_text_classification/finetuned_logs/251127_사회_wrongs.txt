@@ -1,0 +1,970 @@
+Total wrong samples: 88
+
+[Sample #22]
+True Code: 10(통사)04-03
+Pred Code: 10(통사)06-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사례: LGBTQ+ 커뮤니티는 여전히 많은 편견과 차별에 직면해 있습니다.
+True Content: 사회적 소수자 차별, 청소년의 노동권 등 국내 인권 문제와 인권지수를 통해 확인할 수 있는 세계 인권 문제의 양상을 조사하고 이에 대한 해결 방안을 제시한다.
+Pred Content: 사회 및 공간 불평등 현상의 사례를 조사하고, 정의로운 사회를 만들기 위한 다양한 제도와 실천 방안을 탐색한다.
+LLM Response: 10(통사)06-03
+------------------------------------------------------------
+[Sample #186]
+True Code: 9사(지리)08-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 교통 문제: 도시의 교통량 증가로 인한 혼잡과 교통사고
+True Content: 선진국과 개발 도상국의 도시화 과정을 비교하고, 선진국과 개발 도상국의 도시 문제를 탐구한다.
+Pred Content: INVALID
+LLM Response: 901-04-03
+------------------------------------------------------------
+[Sample #19]
+True Code: 10(통사)04-01
+Pred Code: 10(통사)04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여러분도 이러한 인권 관련 이슈에 대해 관심을 갖고, 적극적으로 조사하고 토론하는 시간을 가져보기를 권장합니다.
+True Content: 근대 시민 혁명 등을 통해 확립되어 온 인권의 의미와 변화 양상을 이해하고, 현대 사회에서 주거, 안전, 환경 등 다양한 영역으로 인권이 확장되고 있는 사례를 조사한다.
+Pred Content: 사회적 소수자 차별, 청소년의 노동권 등 국내 인권 문제와 인권지수를 통해 확인할 수 있는 세계 인권 문제의 양상을 조사하고 이에 대한 해결 방안을 제시한다.
+LLM Response: 10(통사)04-03
+------------------------------------------------------------
+[Sample #83]
+True Code: 4사06-02
+Pred Code: 6사06-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 선재네 모둠 친구들이 만든 역사 인물 신문을 살펴봅시다.
+True Content: 지역의 박물관, 기념관, 유적지 등을 체험하고 지역의 역사를 이해한다.
+Pred Content: 일제의 식민 통치와 이에 대한 저항이 사회와 생활에 미친 영향을 이해한다.
+LLM Response: 6사06-01
+------------------------------------------------------------
+[Sample #21]
+True Code: 10(통사)04-02
+Pred Code: 10(통사)01-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 모든 시민이 평등하게 대우받고, 자신의 권리를 주장할 수 있는 환경을 만들어야 합니다.
+True Content: 인간 존엄성 실현과 인권 보장을 위한 헌법의 역할을 파악하고, 준법 의식과 시민 참여의 필요성에 대해 탐구한다.
+Pred Content: 행복한 삶을 실현하기 위한 조건으로 질 높은 정주 환경의 조성, 경제적 안정, 민주주의의 발전 및 도덕적 실천이 필요함을 설명한다.
+LLM Response: 10(통사)01-03
+------------------------------------------------------------
+[Sample #16]
+True Code: 10(통사)03-03
+Pred Code: 10(통사)03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 변화로 인해 나타나는 문제점은 여러 가지가 있습니다.
+True Content: 자신이 거주하는 지역을 사례로 공간 변화가 초래한 양상 및 문제점을 파악하고 이를 해결하기 위한 방안을 제안한다.
+Pred Content: 산업화, 도시화로 인해 나타난 생활공간과 생활양식의 변화 양상을 조사하고, 이에 따른 문제점을 해결하기 위한 방안을 제안한다.
+LLM Response: 10(통사)03-01
+------------------------------------------------------------
+[Sample #125]
+True Code: 6사12-01
+Pred Code: 6사10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사람들의 생활 모습이 담긴 사진이나 영상, 기후도 등을 보고 기후가 어떠 한지 알아봅니다.
+True Content: 세계의 인구 분포를 파악하고 여러 국가의 인구 특징을 탐구한다.
+Pred Content: 세계의 여러 지역의 지형 경관을 살펴보고, 이를 통해 다양한 삶의 모습을 이해한다.
+LLM Response: 6사10-01
+------------------------------------------------------------
+[Sample #199]
+True Code: 9사(지리)12-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이들은 현지 주민들의 목소리를 듣고, 그들의 필요에 기반하여 다양한 프로그램을 운영합니다.
+True Content: 지역 간 불평등을 완화하기 위한 국제 사회의 노력을 조사하고, 그 성과와 한계를 평가한다.
+Pred Content: INVALID
+LLM Response: 909-10-07
+------------------------------------------------------------
+[Sample #159]
+True Code: 9사(일사)12-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 다국적 기업은 여러 나라에서 동시에 활동하는 기업입니다.
+True Content: 국제 사회의 특성을 이해하고, 국제 관계에 영향을 미치는 여러 행위 주체(국가, 국제기구, 다국적 기업 등)의 활동을 조사한다.
+Pred Content: INVALID
+LLM Response: 90영04-06
+------------------------------------------------------------
+[Sample #92]
+True Code: 6사01-05
+Pred Code: 4사04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이는 평균 수명이 늘어났고, 태어나는 아이의 수가 줄어들었기 때문입니다.
+True Content: 우리나라의 인구 분포 및 구조에서 나타난 변화와 도시 발달 과정에서 나타난 특징을 탐구한다.
+Pred Content: 사회 변화(저출산·고령화, 정보화, 세계화 등)로 나타난 일상생활의 모습을 조사하고, 그 특징을 분석한다.
+LLM Response: 4사04-05
+------------------------------------------------------------
+[Sample #105]
+True Code: 6사05-01
+Pred Code: 6사01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그곳에서 본 것들을 이야기해 봅시다.
+True Content: 조선 시대 사람들의 생각과 생활에 유교 문화가 미친 영향을 파악한다.
+Pred Content: 우리나라 산지, 하천, 해안 지형의 위치를 확인하고 지형의 분포 특징을 탐구한다.
+LLM Response: 6사01-01
+------------------------------------------------------------
+[Sample #154]
+True Code: 9사(일사)10-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 상품 시장 재화가 거래되는 시장으로, 소비자와 생산자가 만나는 곳입니다. 슈퍼마켓, 온라인 쇼핑몰 서비스 시장 서비스가 거래되는 시장으로, 전문가나 기업이 제공하는 서비스를 소비자가 구매하는 곳입니다. 병원, 미용실, 여행사 노동 시장 일자리와 인력이 거래되는 시장으로, 구직자와 기업이 만나는 곳입니다. 취업 박람회, 온라인 구직 사이트 자본 시장 자본이 투자되고 거래되는 시장으로, 기업이 자금을 조달하거나 투자하는 곳입니다. 주식 시장, 채권 시장
+True Content: 시장의 의미와 종류를 이해하고, 다양한 시장의 예를 조사한다.
+Pred Content: INVALID
+LLM Response: 901-04-01
+------------------------------------------------------------
+[Sample #77]
+True Code: 4사04-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 우리 지역은 농업이 발달해 있어서 많은 곡식과 채소를 생산합니다.
+True Content: 우리 지역과 다른 지역의 물자 교환 및 교류 사례를 조사하여, 지역 간 경제활동이 밀접하게 관련되어 있음을 탐구한다.
+Pred Content: INVALID
+LLM Response: 909-04-02
+------------------------------------------------------------
+[Sample #166]
+True Code: 9사(지리)02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 아마존 우림(남아메리카)
+True Content: 열대 우림 기후 지역의 위치를 확인하고, 열대 우림 기후 지역의 다양한 생활 모습을 조사하여 그 공통점과 차이점을 분석한다.
+Pred Content: INVALID
+LLM Response: 901-04-01
+------------------------------------------------------------
+[Sample #43]
+True Code: 10(통사)07-03
+Pred Code: 10(통사)07-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사회적 일체감 증진: 다양한 문화가 공존하는 현대 사회에서, 서로 다른 문화에 대해 이해하는 것은 다문화 사회의 통합과 협력의 기반이 됩니다.
+True Content: 문화적 차이에 대한 상대주의적 태도의 필요성을 이해하고, 보편 윤리의 차원에서 자문화와 타문화를 성찰한다.
+Pred Content: 다문화 사회에서 나타날 수 있는 갈등을 해결하기 위한 방안을 모색하고, 문화적 다양성을 존중하는 태도를 갖는다.
+LLM Response: 10(통사)07-04
+------------------------------------------------------------
+[Sample #152]
+True Code: 9사(일사)09-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 경제는 우리 생활과 밀접한 관계가 있습니다.
+True Content: 자유 시장 경제에서 기업의 역할과 사회적 책임을 이해하고, 기업가 정신을 함양할 수 있는 태도를 갖는다.
+Pred Content: INVALID
+LLM Response: 9사(09-01
+------------------------------------------------------------
+[Sample #94]
+True Code: 6사02-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 1960 ~ 1970년대에는 대도시와 남동 해안 지역의 도시들이 성장했음.
+True Content: 우리나라의 지역별 인구 분포의 특징을 알아보고, 이에 따른 문제점과 해결 방안을 탐색한다.
+Pred Content: INVALID
+LLM Response: 6사02-01
+------------------------------------------------------------
+[Sample #169]
+True Code: 9사(지리)03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이러한 산지는 다양한 경관을 만들고, 그곳에 사는 사람들의 생활에 큰 영향을 미칩니다.
+True Content: 세계적으로 유명한 산지 지형과 관련된 지역을 파악하고, 그 경관 특징과 형성 과정 및 그곳에서 살아가는 사람들의 독특한 생활 모습을 조사한다.
+Pred Content: INVALID
+LLM Response: 901-04-02
+------------------------------------------------------------
+[Sample #137]
+True Code: 9사(일사)04-02
+Pred Code: 9사(일사)03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 통해 다양한 의견이 모여 사회가 발전하게 됩니다.
+True Content: 선거의 기능과 기본 원칙을 이해하고, 공정한 선거를 위한 제도 및 기관에 대하여 조사한다.
+Pred Content: 정치의 의미와 기능을 이해하고, 정치 생활에서 국가와 시민이 수행하는 역할을 탐구한다.
+LLM Response: 9사(일사)03-01
+------------------------------------------------------------
+[Sample #62]
+True Code: 4사02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 옛날 가정에서는 어머니가 집안일을 도맡아 했으나, 오늘날에는 집안일을 가족이 함께 나누어 한다.
+True Content: 일상 속에서 시간의 흐름을 경험할 수 있는 사례를 살펴보고, 이를 바탕으로 역사의 시간 개념을 이해한다.
+Pred Content: INVALID
+LLM Response: 4사02-06
+------------------------------------------------------------
+[Sample #33]
+True Code: 10(통사)06-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 불평등 해소: 사회에는 다양한 계층과 집단이 존재합니다.
+True Content: 정의가 요청되는 이유를 파악하고, 정의의 의미와 실질적 기준을 탐구한다.
+Pred Content: INVALID
+LLM Response: 901-02-01
+------------------------------------------------------------
+[Sample #161]
+True Code: 9사(일사)12-03
+Pred Code: 10(통사)02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 정부와 시민 사회는 각기 다른 방식으로 이를 해결하기 위해 노력하고 있습니다.
+True Content: 우리나라가 직면한 국가 간 갈등 문제를 국제 관계 속에서 인식하고, 이를 해결하기 위한 정부 및 시민 사회 활동을 조사한다.
+Pred Content: 자연환경이 인간의 생활에 미치는 영향에 관한 과거와 현재의 사례를 조사하여 분석하고, 안전하고 쾌적한 환경 속에서 살아갈 시민의 권리에 대해 파악한다.
+LLM Response: 10(통사)02-01
+------------------------------------------------------------
+[Sample #146]
+True Code: 9사(일사)07-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 법원은 사람들의 권리를 지키기 위해 존재하는 중요한 기관입니다.
+True Content: 일상생활에서 인권이 침해되는 사례를 분석하고, 국가 기관에 의한 구제 방법을 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(08-03
+------------------------------------------------------------
+[Sample #129]
+True Code: 9사(일사)01-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 소통: 서로의 입장을 이해하기 위해 대화하는 것이 중요합니다.
+True Content: 사회 집단의 의미를 이해하고, 사회 집단에서 나타나는 차별과 갈등의 사례와 이에 대한 해결 방안을 탐구한다.
+Pred Content: INVALID
+LLM Response: 901-03
+------------------------------------------------------------
+[Sample #145]
+True Code: 9사(일사)07-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 공공의 안전: 특정 상황에서 개인의 행동이 타인에게 해를 끼칠 경우, 그 행동을 제한할 수 있습니다.
+True Content: 인권 보장의 중요성을 이해하고, 우리나라 헌법에서 보장하고 있는 기본권의 종류, 기본권 제한의 내용과 한계를 탐구한다.
+Pred Content: INVALID
+LLM Response: 90(통사)04-02
+------------------------------------------------------------
+[Sample #66]
+True Code: 4사02-05
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 옛날 가족의 바람직함을 위해 결혼이 arranged marriage 방식으로 이루어짐. 부모, 자녀, 조부모, 형제자매가 함께 살았음. 부모는 가족의 생계를 책임지고, 자녀는 부모의 도움을 받아 배우고 성장. 오늘날 사랑과 개인의 선택에 따라 결혼하는 경우가 많음. 부모와 자녀가 다양한 형태로 살고 있으며, 한부모 가정도 증가. 각 가족 구성원은 자신의 꿈과 역할을 존중받으면서 함께 협력.
+True Content: 옛날과 오늘날의 혼인 풍습과 가족 구성을 비교하고, 시대별 가족의 모습과 가족 구성원의 역할 변화를 탐색한다.
+Pred Content: INVALID
+LLM Response: 4사02-01
+------------------------------------------------------------
+[Sample #193]
+True Code: 9사(지리)10-03
+Pred Code: 9사(일사)06-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 문제는 우리의 건강과 생활에 큰 영향을 미칩니다.
+True Content: 생활 속의 환경 이슈를 둘러싼 다양한 의견을 비교하고, 환경 이슈에 대한 자신의 의견을 제시한다.
+Pred Content: 현대의 주요한 사회 문제를 조사하고, 이에 대한 해결 방안을 탐구한다.
+LLM Response: 9사(일사)06-03
+------------------------------------------------------------
+[Sample #182]
+True Code: 9사(지리)07-02
+Pred Code: 9사(지리)08-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이곳에는 학생과 학부모가 많이 모입니다.
+True Content: 인구 이동의 다양한 요인을 조사하고, 인구 유입 지역과 인구 유출 지역의 특징과 문제점을 분석한다.
+Pred Content: 도시 중심부에서 주변 지역으로 나가면서 관찰되는 경관과 지가의 변화를 분석한다.
+LLM Response: 9사(지리)08-02
+------------------------------------------------------------
+[Sample #130]
+True Code: 9사(일사)02-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 사람들이 공동체 생활을 하면서 만들어낸 다양한 생활양식과 가치체계 다양성 세계 각국의 음식 문화 (예: 한국의 김치, 일본의 스시) 언어, 예술, 종교, 관습 등을 포함하는 사회적 현상 변화 전통 문화와 현대 문화의 융합 (예: K-POP과 전통 음악) 과거의 경험과 지식이 세대를 통해 전달되는 것 전통성 명절 (예: 설날, 추석)과 관련된 풍습 사회 구성원 간의 소통과 표현 방식 소통 사회적 미디어의 발전 (예: 인스타그램, 블로그)
+True Content: 문화의 의미를 이해하고, 문화가 가지는 특징을 사례를 통하여 분석한다
+Pred Content: INVALID
+LLM Response: 9사(02-01
+------------------------------------------------------------
+[Sample #11]
+True Code: 10(통사)02-03
+Pred Code: 10(통사)02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 신청 서명 운동: 시민들이 환경 보호를 위한 법안의 제정을 요구하는 서명 운동에 참여하는 것도 중요한 방법입니다.
+True Content: 환경 문제 해결을 위한 정부, 시민사회, 기업 등의 다양한 노력을 조사하고, 개인적 차원의 실천 방안을 모색한다.
+Pred Content: 자연환경이 인간의 생활에 미치는 영향에 관한 과거와 현재의 사례를 조사하여 분석하고, 안전하고 쾌적한 환경 속에서 살아갈 시민의 권리에 대해 파악한다.
+LLM Response: 10(통사)02-01
+------------------------------------------------------------
+[Sample #127]
+True Code: 9사(일사)01-01
+Pred Code: 10(통사)01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서 건강한 인간관계를 형성하는 것이 중요합니다.
+True Content: 사회화의 의미와 과정을 이해하고, 사회화 과정에서 청소년기에 나타나는 특징을 설명한다.
+Pred Content: 사례를 통해 시대와 지역에 따라 다르게 나타나는 행복의 기준을 비교하여 평가하고, 삶의 목적으로서 행복의 의미를 성찰한다.
+LLM Response: 10(통사)01-02
+------------------------------------------------------------
+[Sample #123]
+True Code: 6사11-02
+Pred Code: 6사11-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 철을 생산하는 모습입니다.
+True Content: 경제성장이 우리 생활에 미치는 영향을 파악하고, 빠른 경제성장으로 발생한 문제의 해결 방안을 탐색한다.
+Pred Content: 시장경제에서 가계와 기업의 역할을 이해하고, 근로자의 권리와 기업의 자유 및 사회적 책임을 탐색한다.
+LLM Response: 6사11-01
+------------------------------------------------------------
+[Sample #147]
+True Code: 9사(일사)07-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 단체협상권: 근로자는 자신이 일하는 기관과 협상하여 자신의 권리를 보호할 수 있는 권리가 있습니다.
+True Content: 헌법에 보장된 근로자의 권리를 이해하고, 노동권 침해 사례와 구제 방법을 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(07-03
+------------------------------------------------------------
+[Sample #18]
+True Code: 10(통사)04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 학생 여러분도 이러한 인권의 의미와 중요성을 이해하고, 실생활에서 인권을 존중하는 태도를 기르는 것이 중요합니다.
+True Content: 근대 시민 혁명 등을 통해 확립되어 온 인권의 의미와 변화 양상을 이해하고, 현대 사회에서 주거, 안전, 환경 등 다양한 영역으로 인권이 확장되고 있는 사례를 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(07-02
+------------------------------------------------------------
+[Sample #149]
+True Code: 9사(일사)08-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 국세청은 세금과 관련된 업무를 처리하고, 식품의약품안전처는 식품과 의약품의 안전성을 검사하는 역할을 합니다.
+True Content: 대통령의 지위와 권한을 이해하고, 행정부의 주요 조직과 기능을 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(08-02
+------------------------------------------------------------
+[Sample #64]
+True Code: 4사02-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 오랫동안 도구를 사용하면서 지혜가 쌓인 사람들은 단단한 돌을 갈아 다양한 도구를 만들었습니다.
+True Content: 지역의 변화상을 보여주는 역사 자료를 분석하여 지역 사람들의 달라진 생활 모습을 파악한다.
+Pred Content: INVALID
+LLM Response: 4사02-01
+------------------------------------------------------------
+[Sample #151]
+True Code: 9사(일사)09-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 희소성은 어떤 자원이 한정되어 있어 무한한 욕구를 충족시키기 어려운 상태를 말합니다.
+True Content: 경제 활동에서 희소성으로 인한 합리적 선택의 필요성을 이해하고, 기본적인 경제 문제 해결을 위한 방식으로서 경제 체제의 특징을 분석한다.
+Pred Content: INVALID
+LLM Response: 901-10-02
+------------------------------------------------------------
+[Sample #53]
+True Code: 10(통사)09-01
+Pred Code: 10(통사)09-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 현재와 미래의 인구 문제는 여러 가지 방식으로 나타날 수 있습니다.
+True Content: 세계의 인구 분포와 구조 등에 대한 자료 분석을 통해 현재와 미래의 인구 문제 양상을 파악하고, 그 해결 방안을 제안한다.
+Pred Content: 미래 지구촌의 모습을 다양한 측면에서 예측하고, 이를 바탕으로 자신의 미래 삶의 방향을 설정한다.
+LLM Response: 10(통사)09-03
+------------------------------------------------------------
+[Sample #155]
+True Code: 9사(일사)10-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 한 정육점에서 소고기 가격이 10,000원에서 15,000원으로 오르면, 정육점 주인은 더 많은 소고기를 시장에 내놓으려 할 것입니다.
+True Content: 수요 법칙과 공급 법칙을 이해하고, 이를 토대로 시장 가격이 결정되는 원리를 도출한다.
+Pred Content: INVALID
+LLM Response: 9사(10-02
+------------------------------------------------------------
+[Sample #41]
+True Code: 10(통사)07-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 설날이나 추석과 같은 명절에 관여하는 전통적인 관습과 의례는 사람들 간의 유대감을 형성하는 데 기여합니다.
+True Content: 문화 변동의 다양한 양상을 이해하고, 현대사회에서 전통문화가 갖는 의의를 파악한다.
+Pred Content: INVALID
+LLM Response: 90(통사)02-02
+------------------------------------------------------------
+[Sample #160]
+True Code: 9사(일사)12-02
+Pred Code: 9사(일사)12-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 외교 정책은 국가의 이익을 고려하면서도, 국제 사회의 안정과 평화를 위해 협력하는 방향으로 나아가야 합니다.
+True Content: 국제 사회에 존재하는 경쟁과 갈등, 협력의 다양한 모습을 이해하고, 국제 사회의 공존을 위한 노력을 외교 정책을 중심으로 탐구한다.
+Pred Content: 우리나라가 직면한 국가 간 갈등 문제를 국제 관계 속에서 인식하고, 이를 해결하기 위한 정부 및 시민 사회 활동을 조사한다.
+LLM Response: 9사(일사)12-03
+------------------------------------------------------------
+[Sample #132]
+True Code: 9사(일사)02-03
+Pred Code: 9사(일사)02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이를 이해하고 비판적으로 평가하는 능력은 현대 사회에서 중요한 소양 중 하나입니다.
+True Content: 대중 매체와 대중문화의 의미와 특징을 이해하고, 대중문화를 비판적으로 평가하는 태도를 가진다.
+Pred Content: 문화를 바라보는 여러 가지 태도를 비교하고, 다른 문화들을 이해하기 위한 바람직한 태도를 가진다.
+LLM Response: 9사(일사)02-02
+------------------------------------------------------------
+[Sample #99]
+True Code: 6사03-05
+Pred Code: 4사03-04
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그녀의 업적은 다음과 같습니다.
+True Content: 조선을 세우거나 문화 발전에 기여한 인물(이성계, 세종대왕, 신사임당 등)의 업적을 통해 조선 전기 정치와 민족문화의 발전상을 탐색한다.
+Pred Content: 우리 지역과 관련된 역사적 인물의 삶을 알아보고, 지역의 역사에 대해 자부심을 갖는다.
+LLM Response: 4사03-04
+------------------------------------------------------------
+[Sample #80]
+True Code: 4사05-01
+Pred Code: 4사10-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 독도는 역사적으로 삼봉도, 가지도, 우산도, 자산도, 석도 등 다양한 이름으로 불렸으며, 현재의 지명은 독도이다.
+True Content: 우리 지역을 표현한 다양한 종류의 지도를 찾아보고, 지도의 요소를 이해한다.
+Pred Content: 사례에서 도시의 인구, 교통, 산업 등의 특징을 탐구하고, 도시에서의 삶의 모습을 이해한다.
+LLM Response: 4사10-02
+------------------------------------------------------------
+[Sample #192]
+True Code: 9사(지리)10-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 또한, 지역 주민들을 위한 교육과 환경 보호 인식 제고도 필수적입니다.
+True Content: 환경 문제를 유발하는 산업이 다른 국가로 이전한 사례를 조사하고, 해당 지역 환경에 미친 영향을 분석한다.
+Pred Content: INVALID
+LLM Response: 90사(12-03-02
+------------------------------------------------------------
+[Sample #174]
+True Code: 9사(지리)04-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이러한 문화의 다양성은 우리가 살고 있는 세계를 더 풍요롭고 흥미롭게 만들어 줍니다.
+True Content: 서로 다른 문화가 공존하는 지역과 갈등이 있는 지역을 비교하여, 그 차이가 발생하는 이유를 분석한다.
+Pred Content: INVALID
+LLM Response: 9사(02-01
+------------------------------------------------------------
+[Sample #31]
+True Code: 10(통사)05-04
+Pred Code: 9사(일사)09-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 장점: 기업 성장에 따라 높은 수익을 기대할 수 있다.
+True Content: 안정적인 경제생활을 위해 금융 자산의 특징과 자산 관리의 원칙을 파악하고 이를 토대로 생애 주기별 금융 생활을 설계한다.
+Pred Content: 자유 시장 경제에서 기업의 역할과 사회적 책임을 이해하고, 기업가 정신을 함양할 수 있는 태도를 갖는다.
+LLM Response: 9사(일사)09-02
+------------------------------------------------------------
+[Sample #44]
+True Code: 10(통사)07-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이러한 다양성은 우리에게 여러 가지 이점을 줍니다.
+True Content: 다문화 사회에서 나타날 수 있는 갈등을 해결하기 위한 방안을 모색하고, 문화적 다양성을 존중하는 태도를 갖는다.
+Pred Content: INVALID
+LLM Response: 90(통사)03-02
+------------------------------------------------------------
+[Sample #153]
+True Code: 9사(일사)09-03
+Pred Code: 9사(지리)10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 활동은 우리의 삶에 큰 영향을 미치며, 지속 가능한 삶을 위해서는 올바른 선택이 필요합니다.
+True Content: 일생 동안 이루어지는 경제생활을 조사하고, 경제적으로 지속 가능한 생활을 위한 금융 생활(자산 관리, 신용 관리)의 중요성을 이해한다.
+Pred Content: 전 지구적인 차원에서 발생하는 기후 변화의 원인과 그에 따른 지역 변화를 조사하고, 이를 해결하기 위한 지역적·국제적 노력을 평가한다.
+LLM Response: 9사(지리)10-01
+------------------------------------------------------------
+[Sample #133]
+True Code: 9사(일사)03-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 따라서 정치의 의미와 기능, 그리고 국가와 시민이 맡고 있는 역할을 이해하는 것은 민주사회의 구성원으로서 매우 중요해요.
+True Content: 정치의 의미와 기능을 이해하고, 정치 생활에서 국가와 시민이 수행하는 역할을 탐구한다.
+Pred Content: INVALID
+LLM Response: 9사(03-01
+------------------------------------------------------------
+[Sample #191]
+True Code: 9사(지리)10-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 기후 변화는 우리 모두에게 영향을 미치는 중대한 문제입니다.
+True Content: 전 지구적인 차원에서 발생하는 기후 변화의 원인과 그에 따른 지역 변화를 조사하고, 이를 해결하기 위한 지역적·국제적 노력을 평가한다.
+Pred Content: INVALID
+LLM Response: 90(통사)09-03
+------------------------------------------------------------
+[Sample #128]
+True Code: 9사(일사)01-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이 경우, A는 다음과 같은 선택을 할 수 있습니다:
+True Content: 사회적 지위와 역할의 의미를 이해하고, 역할 갈등의 특징을 사례를 통하여 분석한다.
+Pred Content: INVALID
+LLM Response: 901-02-02
+------------------------------------------------------------
+[Sample #176]
+True Code: 9사(지리)05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 그럼, 자연재해가 지역 주민의 삶에 어떻게 영향을 미치는지 알아볼까요?
+True Content: 자연재해가 지역 주민의 삶에 미친 영향을 사례를 중심으로 탐구한다.
+Pred Content: INVALID
+LLM Response: 90사(04-02
+------------------------------------------------------------
+[Sample #134]
+True Code: 9사(일사)03-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이로 인해 모든 시민이 공정하게 투표할 수 있는 권리가 주어집니다.
+True Content: 민주 정치의 발전을 분석하고, 이를 토대로 민주주의의 이념과 민주 정치의 기본 원리를 도출한다.
+Pred Content: INVALID
+LLM Response: 9사(04-02
+------------------------------------------------------------
+[Sample #140]
+True Code: 9사(일사)05-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이 경우 사회법이 작용하여 개인의 권리를 보호합니다.
+True Content: 규율하는 생활 영역 중심으로 법을 공법, 사법, 사회법으로 구분하고, 사례 분석을 통해 각 영역의 특징을 탐구한다.
+Pred Content: INVALID
+LLM Response: 9사(05-02
+------------------------------------------------------------
+[Sample #0]
+True Code: 10(통사)01-01
+Pred Code: 10(통사)02-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 따라서 사회적 불평등이 환경 문제에 미치는 영향을 분석하고 이를 토대로 공정한 해결책을 모색해야 합니다.
+True Content: 시간적, 공간적, 사회적, 윤리적 관점의 특징을 이해하고, 이를 바탕으로 인간, 사회, 환경의 탐구에 통합적 관점이 요청되는 이유를 파악한다.
+Pred Content: 자연에 대한 인간의 다양한 관점을 사례를 통해 설명하고, 인간과 자연의 바람직한 관계에 대해 제안한다.
+LLM Response: 10(통사)02-02
+------------------------------------------------------------
+[Sample #17]
+True Code: 10(통사)03-03
+Pred Code: 10(통사)03-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이러한 변화는 다양한 요인에 의해 영향을 받으며, 이로 인해 우리는 새로운 환경에서 살아가게 됩니다.
+True Content: 자신이 거주하는 지역을 사례로 공간 변화가 초래한 양상 및 문제점을 파악하고 이를 해결하기 위한 방안을 제안한다.
+Pred Content: 산업화, 도시화로 인해 나타난 생활공간과 생활양식의 변화 양상을 조사하고, 이에 따른 문제점을 해결하기 위한 방안을 제안한다.
+LLM Response: 10(통사)03-01
+------------------------------------------------------------
+[Sample #121]
+True Code: 6사10-01
+Pred Code: 4사04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 열대관은 아시아, 중남미, 아프리카의 열대 우림을 재현해 놓은 곳이에요.
+True Content: 세계의 여러 지역의 지형 경관을 살펴보고, 이를 통해 다양한 삶의 모습을 이해한다.
+Pred Content: 사회 변화(저출산·고령화, 정보화, 세계화 등)로 나타난 일상생활의 모습을 조사하고, 그 특징을 분석한다.
+LLM Response: 4사04-05
+------------------------------------------------------------
+[Sample #163]
+True Code: 9사(지리)01-02
+Pred Code: 9사(지리)02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그래서 이곳에 사는 사람들은 두꺼운 옷과 피난처가 필요합니다.
+True Content: 공간 규모에 맞게 위치를 표현하고, 위치의 차이가 인간 생활에 미친 영향을 설명한다.
+Pred Content: 기온과 강수량 자료를 분석하여 이를 기준으로 세계 기후 지역을 구분하고, 인간 거주에 적합한 기후 조건에 대해 논의한다.
+LLM Response: 9사(지리)02-01
+------------------------------------------------------------
+[Sample #188]
+True Code: 9사(지리)09-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 농업의 기업화와 세계화가 진행됨에 따라 농작물의 생산 지역과 소비 지역에도 변화가 생겼습니다.
+True Content: 농업 생산의 기업화와 세계화가 농작물 생산 지역과 소비 지역의 변화에 미친 영향을 조사한다.
+Pred Content: INVALID
+LLM Response: 901-04-01
+------------------------------------------------------------
+[Sample #197]
+True Code: 9사(지리)12-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 지구 온난화 지구의 평균 기온이 상승하고 있으며, 극지방의 얼음이 녹고 있다. 화석 연료 사용, 산림 벌채, 산업 활동 등으로 이산화탄소와 온실가스가 증가하기 때문. 산성 비 비의 pH가 낮아지며, 식물과 수생 생태계에 피해를 주고 있다. 공장 배출가스와 자동차의 배기가스에서 발생하는 황산화물과 질소산화물 때문. 물 부족 많은 지역에서 식수와 농업용수의 부족 현상이 발생하고 있다. 인구 증가와 과도한 물 사용, 기후 변화로 인한 가뭄 등. 생물 종 다양성 감소 많은 동식물이 멸종 위기에 처해 있으며, 생태계의 균형이 깨지고 있다. 서식지 파괴, 환경 오염, 기후 변화와 같은 인간의 활동 때문.
+True Content: 지도를 통하여 지구상의 다양한 지리적 문제를 확인하고, 그 현황과 원인을 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(지리)12-03
+------------------------------------------------------------
+[Sample #168]
+True Code: 9사(지리)02-04
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 우리와 터전이 다른 건조 기후와 툰드라 기후 지역의 사람들은 각기 다른 방법으로 그 환경에 적응하며 살아가고 있어요.
+True Content: 건조 기후와 툰드라 기후지역에서 살아가는 사람들이 기후 환경에 적응하거나 극복한 생활 모습을 조사한다.
+Pred Content: INVALID
+LLM Response: 901-04-02
+------------------------------------------------------------
+[Sample #34]
+True Code: 10(통사)06-02
+Pred Code: 10(통사)06-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사회 정의는 사람들이 공평하게 대우받고, 각자의 권리와 의무가 존중받는 상태를 의미합니다.
+True Content: 다양한 정의관의 특징을 파악하고, 이를 구체적인 사례에 적용하여 평가한다.
+Pred Content: 정의가 요청되는 이유를 파악하고, 정의의 의미와 실질적 기준을 탐구한다.
+LLM Response: 10(통사)06-01
+------------------------------------------------------------
+[Sample #118]
+True Code: 6사08-06
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 친구들과의 대화에서 존중과 이해의 자세 유지하기
+True Content: 지속가능한 미래를 건설하기 위한 과제(친환경적 생산과 소비 방식 확산, 빈곤과 기아 퇴치, 문화적 편견과 차별 해소 등)를 조사하고, 세계시민으로서 이에 적극 참여하는 방안을 모색한다.
+Pred Content: INVALID
+LLM Response: 90(통사)03-02
+------------------------------------------------------------
+[Sample #178]
+True Code: 9사(지리)06-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 반면, 개발도상국들은 상대적으로 적은 양의 자원을 사용합니다.
+True Content: 자원 분포의 편재성과 자원 소비량의 지역적 차이를 파악하고, 이로 인하여 발생하는 국가 간 경쟁과 갈등을 조사한다.
+Pred Content: INVALID
+LLM Response: 90(통사)09-01
+------------------------------------------------------------
+[Sample #156]
+True Code: 9사(일사)10-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 반대로 소득이 줄어들면 수요가 감소합니다.
+True Content: 상품 가격 이외에 수요와 공급을 변화시키는 요인을 이해하고, 이에 따른 시장 가격의 변동 과정을 분석한다.
+Pred Content: INVALID
+LLM Response: 901-02-02
+------------------------------------------------------------
+[Sample #136]
+True Code: 9사(일사)04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 선거관리위원회는 선거의 진행과 투표 방법, 개표 과정을 감독하여 민주적인 절차가 지켜지도록 합니다.
+True Content: 정치 과정의 의미를 이해하고, 정치 과정에 참여하는 다양한 정치 주체의 역할을 설명한다.
+Pred Content: INVALID
+LLM Response: 9사(04-02
+------------------------------------------------------------
+[Sample #7]
+True Code: 10(통사)02-01
+Pred Code: 10(통사)04-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 그러나 이러한 자연환경의 변화, 예를 들어 기후 변화나 홍수는 인류에게 큰 위협이 되었고 결국에는 여러 문명의 멸망으로 이어졌습니다.
+True Content: 자연환경이 인간의 생활에 미치는 영향에 관한 과거와 현재의 사례를 조사하여 분석하고, 안전하고 쾌적한 환경 속에서 살아갈 시민의 권리에 대해 파악한다.
+Pred Content: 근대 시민 혁명 등을 통해 확립되어 온 인권의 의미와 변화 양상을 이해하고, 현대 사회에서 주거, 안전, 환경 등 다양한 영역으로 인권이 확장되고 있는 사례를 조사한다.
+LLM Response: 10(통사)04-01
+------------------------------------------------------------
+[Sample #175]
+True Code: 9사(지리)05-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 이를 통해 자연재해에 대한 경각심을 가질 수 있고, 이를 대비하는 방법도 배울 수 있습니다.
+True Content: 자연재해가 빈번히 발생하는 지역을 조사하고, 그 이유를 설명한다.
+Pred Content: INVALID
+LLM Response: 90사(05-02
+------------------------------------------------------------
+[Sample #135]
+True Code: 9사(일사)03-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 정치적 갈등이 심해지면, 국회와의 협력이 어려워질 수 있습니다.
+True Content: 민주주의를 구현하기 위한 정치 제도를 정부 형태(의원 내각제, 대통령제) 중심으로 탐구한다.
+Pred Content: INVALID
+LLM Response: 9사(03-03
+------------------------------------------------------------
+[Sample #95]
+True Code: 6사03-01
+Pred Code: 6사08-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 주제를 정할 때에는 모둠원들이 충분히 토 의를 하여 정하도록 합니다.
+True Content: 일상 사례에서 법의 의미와 역할을 이해하고, 헌법에 규정된 인권이 일상생활에서 구현되는 사례를 조사하여 인권 친화적 태도를 기른다.
+Pred Content: 민주주의에서 선거의 의미와 역할을 파악하고, 시민의 주권 행사를 위해 선거에 참여하는 태도를 기른다.
+LLM Response: 6사08-01
+------------------------------------------------------------
+[Sample #46]
+True Code: 10(통사)08-01
+Pred Code: 9사(일사)06-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 글로벌 기업의 성장: 다국적 기업들이 세계 여러 나라에 진출하면서, 경제를 크게 변화시키고 있습니다.
+True Content: 세계화 양상을 다양한 측면에서 파악하고, 세계화 시대에 나타나는 문제를 조사하여 이를 해결하기 위한 방안을 제안한다.
+Pred Content: 사회 변동의 의미를 이해하고, 현대 사회의 변동 양상과 문제점을 분석한다.
+LLM Response: 9사(일사)06-01
+------------------------------------------------------------
+[Sample #148]
+True Code: 9사(일사)08-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 국회는 우리가 사는 사회와 국가를 발전시키기 위해 없어서는 안 될 중요한 기관입니다.
+True Content: 입법 기관으로서 국회의 위상을 이해하고, 국회의 주요 조직과 기능을 조사한다.
+Pred Content: INVALID
+LLM Response: 9사(08-01
+------------------------------------------------------------
+[Sample #37]
+True Code: 10(통사)06-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 소득이 낮은 가정에 대한 직접적인 경제적 지원 프로그램을 운영하고, 고용 창출을 위한 정책을 통해 일자리의 기회를 확대해야 합니다.
+True Content: 사회 및 공간 불평등 현상의 사례를 조사하고, 정의로운 사회를 만들기 위한 다양한 제도와 실천 방안을 탐색한다.
+Pred Content: INVALID
+LLM Response: 909-10-03-03
+------------------------------------------------------------
+[Sample #171]
+True Code: 9사(지리)03-03
+Pred Code: 6사01-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 용천수: 제주도는 많은 샘물이 있어 깨끗하고 신선한 물을 쉽게 찾을 수 있습니다.
+True Content: 우리나라의 세계 자연 유산과 매력적인 자연 경관을 조사하고, 그 경관 특징과 형성 과정을 탐구한다.
+Pred Content: 독도의 지리적 특성과 독도에 대한 역사 기록을 바탕으로 영토로서 독도의 중요성을 이해한다.
+LLM Response: 6사01-02
+------------------------------------------------------------
+[Sample #172]
+True Code: 9사(지리)04-01
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 예를 들어, 열대 지방에서는 다양한 열대 과일과 채소를 주로 소비하게 됩니다.
+True Content: 다양한 기준으로 문화 지역을 구분해 보고, 지역별로 문화적 차이가 발생하는 이유를 지역의 자연환경, 경제·사회적 환경의 관점에서 파악한다.
+Pred Content: INVALID
+LLM Response: 901-04-01
+------------------------------------------------------------
+[Sample #106]
+True Code: 6사05-02
+Pred Code: 6사06-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 조선 후기 개혁을 위한 노력과 독립운 동가들의 활동을 알고 싶습니다.
+True Content: 조선 후기 사회·문화적 변화와 개항기 근대 문물 수용 과정에서 달라진 사람들의 생활을 이해한다.
+Pred Content: 일제의 식민 통치와 이에 대한 저항이 사회와 생활에 미친 영향을 이해한다.
+LLM Response: 6사06-01
+------------------------------------------------------------
+[Sample #109]
+True Code: 6사07-01
+Pred Code: 6사04-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이 단원에서 배운 내용을 생활 속에서 어떻게 실천할지 계획을 세워 봅시다.
+True Content: 분단으로 나타난 문제점과 분단과 관련된 장소를 평화의 장소로 만들려는 노력 등을 알아보고, 평화 통일을 위해 우리가 할 수 있는 일을 탐색한다.
+Pred Content: 다양한 역사 자료를 활용하여 고려 시대 사회 모습과 사람들의 생활을 추론한다.
+LLM Response: 6사04-03
+------------------------------------------------------------
+[Sample #54]
+True Code: 10(통사)09-02
+Pred Code: 9사(일사)06-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이와 같은 변화는 모두가 함께 노력해야만 이루어질 수 있습니다.
+True Content: 지구적 차원에서 사용 가능한 자원의 분포와 소비 실태를 파악하고, 지속가능한 발전을 위한 개인적 노력과 제도적 방안을 탐구한다.
+Pred Content: 현대의 주요한 사회 문제를 조사하고, 이에 대한 해결 방안을 탐구한다.
+LLM Response: 9사(일사)06-03
+------------------------------------------------------------
+[Sample #55]
+True Code: 10(통사)09-03
+Pred Code: 10(통사)06-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 자원봉사 활동이나 사회적 기업에 참여하는 것 등이 있습니다.
+True Content: 미래 지구촌의 모습을 다양한 측면에서 예측하고, 이를 바탕으로 자신의 미래 삶의 방향을 설정한다.
+Pred Content: 사회 및 공간 불평등 현상의 사례를 조사하고, 정의로운 사회를 만들기 위한 다양한 제도와 실천 방안을 탐색한다.
+LLM Response: 10(통사)06-03
+------------------------------------------------------------
+[Sample #167]
+True Code: 9사(지리)02-03
+Pred Code: 9사(지리)02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 사람들은 핫토피아(전통적인 농촌)에서 가족 단위로 농업을 하며, 지역 특산물인 올리브유와 와인을 만듭니다.
+True Content: 지중해성 기후와 서안 해양성 기후를 우리나라 기후와 비교하고, 이들 지역의 농업과 생활 모습을 조사한다.
+Pred Content: 기온과 강수량 자료를 분석하여 이를 기준으로 세계 기후 지역을 구분하고, 인간 거주에 적합한 기후 조건에 대해 논의한다.
+LLM Response: 9사(지리)02-01
+------------------------------------------------------------
+[Sample #52]
+True Code: 10(통사)09-01
+Pred Code: 10(통사)09-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 인구 구조는 연령대별 인구 비율을 나타내며, 이를 통해 사회의 다양한 문제를 분석할 수 있습니다.
+True Content: 세계의 인구 분포와 구조 등에 대한 자료 분석을 통해 현재와 미래의 인구 문제 양상을 파악하고, 그 해결 방안을 제안한다.
+Pred Content: 지구적 차원에서 사용 가능한 자원의 분포와 소비 실태를 파악하고, 지속가능한 발전을 위한 개인적 노력과 제도적 방안을 탐구한다.
+LLM Response: 10(통사)09-02
+------------------------------------------------------------
+[Sample #198]
+True Code: 9사(지리)12-02
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 유럽 GDP(국내 총생산) 평균: 높음 교육 수준: 높음 5% 소득 불균형 사회 보장 제도 강화 아프리카 사하라 이남 GDP 평균: 낮음 교육 수준: 낮음 40% 기초 생활 필수품 부족 국제 개발 원조, 교육 프로그램 실시 아시아 GDP 평균: 다양 교육 수준: 중간~높음 10% 도시와 농촌 간 불균형 농촌 개발 정책 추진 남미 GDP 평균: 중간 교육 수준: 중간 25% 불법 자원 채굴 환경 보호 법률 강화
+True Content: 다양한 지표를 통하여 지역별로 발전 수준이 어떻게 다른지 파악하고, 저개발 지역의 빈곤 문제를 해결하기 위한 노력을 조사한다.
+Pred Content: INVALID
+LLM Response: 901-04-01
+------------------------------------------------------------
+[Sample #10]
+True Code: 10(통사)02-03
+Pred Code: 10(통사)02-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 예를 들어, 환경 보호 단체들은 캠페인과 교육 프로그램을 통해 대중에게 환경 보호의 중요성을 알리고 있습니다.
+True Content: 환경 문제 해결을 위한 정부, 시민사회, 기업 등의 다양한 노력을 조사하고, 개인적 차원의 실천 방안을 모색한다.
+Pred Content: 자연환경이 인간의 생활에 미치는 영향에 관한 과거와 현재의 사례를 조사하여 분석하고, 안전하고 쾌적한 환경 속에서 살아갈 시민의 권리에 대해 파악한다.
+LLM Response: 10(통사)02-01
+------------------------------------------------------------
+[Sample #50]
+True Code: 10(통사)08-03
+Pred Code: 6사06-02
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 이때 한반도는 북위 38도선을 기준으로 소련과 미국에 의해 각기 다른 군정지역으로 나뉘었습니다.
+True Content: 남북 분단과 동아시아의 역사 갈등 상황을 분석하고, 우리나라가 국제 사회의 평화에 기여할 수 있는 방안을 탐구한다.
+Pred Content: 8·15 광복과 6·25 전쟁이 사회와 생활에 미친 영향을 파악한다.
+LLM Response: 6사06-02
+------------------------------------------------------------
+[Sample #122]
+True Code: 6사11-01
+Pred Code: 4사07-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 여러 상품을 비교하여 가장 큰 만족감을 주는 상품을 선택하기 위해서입니다.
+True Content: 시장경제에서 가계와 기업의 역할을 이해하고, 근로자의 권리와 기업의 자유 및 사회적 책임을 탐색한다.
+Pred Content: 자원의 희소성으로 인해 경제활동에서 선택의 문제가 발생함을 이해하고, 경제활동에서 합리적 선택의 방법을 탐색한다.
+LLM Response: 4사07-01
+------------------------------------------------------------
+[Sample #29]
+True Code: 10(통사)05-03
+Pred Code: INVALID
+Match Type: invalid
+Confidence: 0.00
+Exact Match: NO
+Input Text: 각국은 자원, 노동, 자본의 분포가 다르기 때문에 특정 분야에서 비교우위를 가지게 됩니다.
+True Content: 자원, 노동, 자본의 지역 분포에 따른 국제 분업과 무역의 필요성을 이해하고, 무역의 확대가 우리 삶에 어떤 영향을 끼치는지 사례를 통해 탐구한다.
+Pred Content: INVALID
+LLM Response: 9사(11-03
+------------------------------------------------------------
+[Sample #96]
+True Code: 6사03-02
+Pred Code: 4사10-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: 남을 배려하는 말과 행동을 더해야 합니다.
+True Content: 일상생활에서 인권이 침해되는 사례를 찾아 그 해결방안을 탐색하고, 인권을 보호하는 활동에 참여한다.
+Pred Content: 여러 지역의 자연환경과 인문환경의 특징을 살펴보고, 환경의 이용과 개발에 따른 변화를 탐구한다.
+LLM Response: 4사10-01
+------------------------------------------------------------

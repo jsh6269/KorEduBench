@@ -1,0 +1,46 @@
+Total correct samples: 4
+
+[Sample #0]
+Code: 10공영1-01-05
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: These jeans do not fit me because I gained weight. 이 청바지는 내가 살이 쪄서 나에게 맞지 않는다.
+Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+True Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+Pred Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+LLM Response: 10공영1-01-0
+------------------------------------------------------------
+[Sample #28]
+Code: 10영03-06
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Life is like a palette of colors, each hue representing different experiences, emotions, and memories.
+Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+True Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+Pred Content: 친숙한 일반적 주제에 관한 글을 읽고 함축적 의미를 추론할 수 있다.
+LLM Response: 10영03-06
+------------------------------------------------------------
+[Sample #7]
+Code: 10공영1-02-04
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: I think Al is the most useful in healthcare.
+Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+True Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+Pred Content: 자신의 생각이나 의견, 감정, 감상 등을 표현한다.
+LLM Response: 10공영1-02-0
+------------------------------------------------------------
+[Sample #1]
+Code: 10공영1-01-05
+Match Type: partial
+Confidence: 0.80
+Exact Match: NO
+Input Text: I think what matters is how you overcome that feeling of gloom. 제 생각에 중요한 것은 어떻게 그 우울한 감정을 극복하느냐인 것 같아요.
+Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+True Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+Pred Content: 말이나 글에 포함된 표현의 함축적 의미를 추론한다.
+LLM Response: 10공영1-01-0
+------------------------------------------------------------

@@ -1,0 +1,82 @@
+Total correct samples: 8
+
+[Sample #45]
+Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Dear [Friend's Name],
+Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #46]
+Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Name: _______________
+Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #47]
+Code: 10영04-05
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: State Your Purpose: Explain why you are writing.
+Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+Pred Content: 간단한 서식, 이메일, 메모 등을 작성할 수 있다.
+LLM Response: 10영04-05
+------------------------------------------------------------
+[Sample #60]
+Code: 4영01-07
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: I like chicken too.
+Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+Pred Content: 일상생활 속의 친숙한 주제에 관한 쉽고 간단한 말이나 대화를 듣고 세부 정보를 파악할 수 있다.
+LLM Response: 4영01-07
+------------------------------------------------------------
+[Sample #49]
+Code: 4영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: B b
+Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+Pred Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+LLM Response: 4영01-01
+------------------------------------------------------------
+[Sample #29]
+Code: 10영02-03
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: How do you feel about having pets at home?
+Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 표현할 수 있다.
+Pred Content: 일상생활이나 친숙한 일반적 주제에 관해 자신의 의견이나 감정을 표현할 수 있다.
+LLM Response: 10영02-03
+------------------------------------------------------------
+[Sample #48]
+Code: 4영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: Q q
+Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+Pred Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+LLM Response: 4영01-01
+------------------------------------------------------------
+[Sample #50]
+Code: 4영01-01
+Match Type: exact
+Confidence: 1.00
+Exact Match: YES
+Input Text: B, B, b, b
+Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+Pred Content: 알파벳과 쉽고 간단한 단어의 소리를 듣고 식별한다.
+LLM Response: 4영01-01
+------------------------------------------------------------
