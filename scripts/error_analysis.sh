@@ -32,6 +32,7 @@ declare -a LOGS_DIRS=(
     "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28/logs"
     "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28_0/logs"
     "output/rag_llm_text_classification/openrouter_qwen_qwen3-next-80b-a3b-instruct_25-11-28_5/logs"
+    "output/rag_llm_text_classification/openrouter_llama_llama-3.3-70B-Instruct/logs"
 )
 
 # If argument is provided, use it instead
