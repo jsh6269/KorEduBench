@@ -13,7 +13,7 @@ DATASET_FOLDER="${PROJECT_ROOT}/dataset/valid_80"
 
 # API Configuration
 API_PROVIDER="openrouter"
-API_MODEL="qwen/qwen3-next-80b-a3b-instruct"
+API_MODEL="openai/gpt-4.1-mini"
 API_DELAY=0.2
 # API_KEY .env에서
 

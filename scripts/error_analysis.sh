@@ -28,11 +28,13 @@ cd "$PROJECT_ROOT"
 
 # Define logs directories to process
 declare -a LOGS_DIRS=(
-    "output/rag_finetuned_llm_text_classification/unsloth_Qwen2.5-7B-Instruct-bnb-4bit_25-11-28/logs"
-    "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28/logs"
-    "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28_0/logs"
-    "output/rag_llm_text_classification/openrouter_qwen_qwen3-next-80b-a3b-instruct_25-11-28_5/logs"
-    "output/rag_llm_text_classification/openrouter_llama_llama-3.3-70B-Instruct/logs"
+    # "output/rag_finetuned_llm_text_classification/unsloth_Qwen2.5-7B-Instruct-bnb-4bit_25-11-28/logs"
+    # "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28/logs"
+    # "output/rag_llm_text_classification/openrouter_qwen_qwen3-8b_25-11-28_0/logs"
+    # "output/rag_llm_text_classification/openrouter_qwen_qwen3-next-80b-a3b-instruct_25-11-28_5/logs"
+    # "output/rag_llm_text_classification/openrouter_llama_llama-3.3-70B-Instruct/logs"
+    # "output/rag_llm_text_classification/openrouter_openai_gpt-4.1-mini_25-12-01_5/logs"
+    "output/rag_llm_text_classification/openrouter_google_gemini-2.5-flash/logs"
 )
 
 # If argument is provided, use it instead

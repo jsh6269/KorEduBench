@@ -130,6 +130,16 @@ def create_api_generate_function(
                 if seed is not None:
                     request_params["seed"] = seed
 
+                # Add reasoning_effort for GPT models to minimize thinking mode
+                # GPT-5-mini supports: "minimal" (lowest), "low", "medium", "high"
+                # GPT-4.1-mini supports: "none", "low", "medium", "high"
+                elif (
+                    "gpt-4.1" in model.lower()
+                    or "gpt-4" in model.lower()
+                    or "gpt-5" in model.lower()
+                ):
+                    request_params["reasoning_effort"] = "none"
+
                 response = client.chat.completions.create(**request_params)
 
                 # Add delay to avoid rate limits
